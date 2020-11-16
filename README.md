@@ -1,0 +1,51 @@
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+# kim
+
+<!-- badges: start -->
+
+<!-- badges: end -->
+
+This package facilitates and simplifies analyses of experimental data.
+Examples of functions include a function that plots sample means of
+groups in a factorial experimental design, a function that conducts
+robust regressions with bootstrapped samples, and a function that
+conducts mediation analyses.
+
+## Installation
+
+You can install the released version of kim from
+[CRAN](https://CRAN.R-project.org) with:
+
+``` r
+install.packages("kim")
+```
+
+You can also install the development version from
+[GitHub](https://github.com/) with:
+
+``` r
+install.packages("devtools")
+devtools::install_github("jinkim3/kim")
+```
+
+## Example
+
+Here are some examples of using this package.
+
+``` r
+library(kim)
+
+# plot sample means of groups in a factorial experimental design
+plot_group_means(data = mtcars, dv_name = "mpg", iv_name = "gear")
+
+# conduct a robust regression with bootstrapped samples
+robust_regression(data = mtcars, formula = mpg ~ cyl * hp)
+
+# conduct a regular multiple regression
+multiple_regression(data = mtcars, formula = mpg ~ gear * cyl)
+
+# conduct a mediation analysis
+mediation_analysis(data = mtcars, iv_name = "cyl", mediator_name = "disp", dv_name = "mpg")
+```

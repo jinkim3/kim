@@ -1,0 +1,30 @@
+Package: kim
+Title: Jin Kim's Collection of Functions for Behavioral Science Researchers
+Version: 0.1.3
+Authors@R: 
+    person(given = "Jin",
+           family = "Kim",
+           role = c("aut", "cre"),
+           email = "jin.m.kim@yale.edu",
+           comment = c(ORCID = "https://orcid.org/0000-0002-5013-3958"))
+Description: Miscellaneous functions designed to facilitate and simplify
+    analyses of experimental data. Examples include a function that plots
+    sample means of groups in a factorial experimental design, a function
+    that conducts robust regressions with bootstrapped samples, 
+    and a function that conducts mediation analyses.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Imports: 
+    boot,
+    datasets,
+    data.table,
+    ggplot2,
+    lm.beta,
+    mediation,
+    pacman,
+    Rmisc,
+    stats,
+    utils
