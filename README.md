@@ -5,6 +5,10 @@
 
 <!-- badges: start -->
 
+[![Travis build
+status](https://travis-ci.com/jinkim3/kim.svg?branch=master)](https://travis-ci.com/jinkim3/kim)
+[![R build
+status](https://github.com/jinkim3/kim/workflows/R-CMD-check/badge.svg)](https://github.com/jinkim3/kim/actions)
 <!-- badges: end -->
 
 This package facilitates and simplifies analyses of experimental data.
@@ -40,12 +44,13 @@ library(kim)
 # plot sample means of groups in a factorial experimental design
 plot_group_means(data = mtcars, dv_name = "mpg", iv_name = "gear")
 
-# conduct a robust regression with bootstrapped samples
+# conduct a robust regression analysis using bootstrapped samples
 robust_regression(data = mtcars, formula = mpg ~ cyl * hp)
 
-# conduct a regular multiple regression
+# conduct a multiple regression analysis
 multiple_regression(data = mtcars, formula = mpg ~ gear * cyl)
 
 # conduct a mediation analysis
-mediation_analysis(data = mtcars, iv_name = "cyl", mediator_name = "disp", dv_name = "mpg")
+mediation_analysis(
+    data = mtcars, iv_name = "cyl", mediator_name = "disp", dv_name = "mpg")
 ```
