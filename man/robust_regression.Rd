@@ -23,12 +23,11 @@ robust_regression(
 (alternative to \code{sigfigs})}
 
 \item{iterations}{number of bootstrap samples. The default is set at 1000,
-but larger values like 5000 or 10000 are recommended if the user
-can tolerate slower handling time.}
+but consider increasing the number of samples to 5000, 10000, or an
+even larger number, if slower handling time is not an issue.}
 }
 \description{
 Estimate coefficients in a multiple regression model by bootstrapping
-Bootstrapping allo
 }
 \examples{
 robust_regression(data = mtcars, formula = mpg ~ cyl * hp)

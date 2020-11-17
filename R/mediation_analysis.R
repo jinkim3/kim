@@ -11,9 +11,9 @@
 #' @param robust_se if \code{TRUE}, heteroskedasticity-consistent
 #' standard errors will be used. Please refer to "mediation" package
 #' (Tingley et al., 2014)
-#' @param iterations number of bootstrap samples. The default is set at 500,
-#' but larger values like 5000 or 10000 are recommended if the user
-#' can tolerate slower handling time.
+#' @param iterations number of bootstrap samples. The default is set at 1000,
+#' but consider increasing the number of samples to 5000, 10000, or an
+#' even larger number, if slower handling time is not an issue.
 #' @param plot if \code{TRUE}, a plot of indirect, direct, and
 #' total effects' respective sizes will be printed.
 #' @param output_type if \code{output_type = summary}, the output will be
@@ -22,7 +22,7 @@
 #' is "summary".
 #' @examples
 #' mediation_analysis(data = mtcars, iv_name = "cyl",
-#' mediator_name = "disp", dv_name = "mpg", iteration = 500)
+#' mediator_name = "disp", dv_name = "mpg", iteration = 100)
 #' @export
 mediation_analysis <- function(
   data = NULL,
@@ -30,11 +30,10 @@ mediation_analysis <- function(
   mediator_name = NULL,
   dv_name = NULL,
   covariates_names = NULL,
-  robust_se = T,
-  iterations = 500,
-  plot = T,
-  output_type = "summary"
-) {
+  robust_se = TRUE,
+  iterations = 1000,
+  plot = TRUE,
+  output_type = "summary") {
   med_model_formula <- stats::as.formula(paste0(
     mediator_name, " ~ ", iv_name))
   outcome_model_formula <- stats::as.formula(paste0(
@@ -60,7 +59,7 @@ mediation_analysis <- function(
     robustSE = robust_se,
     sims = iterations)
   mediation_analysis_summary <- summary(full_model)
-  if(plot) {
+  if(plot == TRUE) {
     plot_output <- plot(full_model)
     print(plot_output)
   }

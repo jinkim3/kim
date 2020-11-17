@@ -11,7 +11,7 @@ barplot_for_counts(data = NULL, x, y)
 
 \item{x}{name of the variable that will be on the x axis of the barplot}
 
-\item{y}{name of the variable that will be on the x axis of the barplot}
+\item{y}{name of the variable that will be on the y axis of the barplot}
 }
 \description{
 Barplot for counts

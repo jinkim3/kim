@@ -16,7 +16,7 @@ pretty_round_p_value <- function(
   round_to_nth_digit_after_decimal = 3,
   include_p_equals = FALSE) {
   if(is.numeric(p_value_vector)) {
-    if(include_p_equals) {
+    if(include_p_equals == TRUE) {
       output <- ifelse(
         p_value_vector < .001, "p < .001",
         paste0(

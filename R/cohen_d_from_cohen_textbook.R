@@ -9,8 +9,7 @@
 #' cohen_d_from_cohen_textbook(1:10, 3:12)
 #' @export
 cohen_d_from_cohen_textbook <- function(
-  sample_1_as_vector, sample_2_as_vector
-) {
+  sample_1_as_vector, sample_2_as_vector) {
   s1 <- sample_1_as_vector[!is.na(sample_1_as_vector)]
   s2 <- sample_2_as_vector[!is.na(sample_2_as_vector)]
   output <- (mean(s1) - mean(s2)) / sqrt(

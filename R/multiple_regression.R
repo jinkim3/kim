@@ -3,8 +3,7 @@
 #' @param data a data.frame or data.table object
 #' @param formula a formula object for the regression equation
 #' @param sigfigs number of significant digits to round to
-#' @param round_to_nth_digit_after_decimal
-#' round to nth digit after decimal
+#' @param round_to_nth_digit_after_decimal round to nth digit after decimal
 #' (alternative to \code{sigfigs})
 #' @examples
 #' multiple_regression(data = mtcars, formula = mpg ~ gear * cyl)
@@ -30,8 +29,8 @@ multiple_regression <- function(
   df_residual <- model_summary[["fstatistic"]][["dendf"]]
   f_stat <- model_summary[["fstatistic"]][["value"]]
   model_p_value <- pretty_round_p_value(
-    stats::pf(f_stat, df_model, df_residual, lower.tail = F),
-    include_p_equals = T)
+    stats::pf(f_stat, df_model, df_residual, lower.tail = FALSE),
+    include_p_equals = TRUE)
   n <- nrow(stats::model.frame(model))
   # standardized betas
   std_beta <- lm.beta::lm.beta(model)[["standardized.coefficients"]]
@@ -68,7 +67,7 @@ multiple_regression <- function(
   # add an empty row
   t2 <- rbind(t1, as.list(rep("", ncol(t1))))
   # add model stats
-  variable_2 = c(
+  variable_2 <- c(
     paste0("R-squared: ", r_squared),
     paste0("Adj. R-squared: ", adj_r_squared),
     paste0("F(", df_model, ", ", df_residual, ") = ", f_stat),

@@ -24,7 +24,7 @@ plot_group_means(
 \arguments{
 \item{data}{a data object (a data frame or a data.table)}
 
-\item{dv_name}{a name (character string) of the dependent variable}
+\item{dv_name}{name of the dependent variable}
 
 \item{iv_name}{name(s) of the independent variable(s).
 Up to two independent variables can be supplied.}
@@ -66,5 +66,5 @@ If \code{output = "table"}, the output will be a data.table object.
 Plot group means
 }
 \examples{
-plot_group_means(data = mtcars, dv_name = "mpg", iv_name = "gear")
+plot_group_means(data = mtcars, dv_name = "mpg", iv_name = c("vs", "am"))
 }

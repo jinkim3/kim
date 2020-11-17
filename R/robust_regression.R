@@ -1,7 +1,6 @@
 #' Robust regression (bootstrapped regression)
 #'
 #' Estimate coefficients in a multiple regression model by bootstrapping
-#' Bootstrapping allo
 #'
 #' @param data a data.frame or data.table object
 #' @param formula a formula object for the regression equation
@@ -10,8 +9,8 @@
 #' round to nth digit after decimal
 #' (alternative to \code{sigfigs})
 #' @param iterations number of bootstrap samples. The default is set at 1000,
-#' but larger values like 5000 or 10000 are recommended if the user
-#' can tolerate slower handling time.
+#' but consider increasing the number of samples to 5000, 10000, or an
+#' even larger number, if slower handling time is not an issue.
 #' @examples
 #' robust_regression(data = mtcars, formula = mpg ~ cyl * hp)
 #' @export
@@ -60,7 +59,8 @@ robust_regression <- function(
     ci_95 <- lapply(ci_95, round, round_to_nth_digit_after_decimal)
   }
   robust_estimate_95_ci <- as.list(c(
-    sapply(ci_95, paste0, collapse = ", "), rep("", 7)))
+    vapply(ci_95, paste0, FUN.VALUE = character(1),
+           collapse = ", "), rep("", 7)))
   t1 <- data.table::data.table(lm_table, robust_estimate_95_ci)
   data.table::setcolorder(t1, c(
     "variable", "estimate", "se", "robust_estimate_95_ci"))

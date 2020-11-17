@@ -1,7 +1,9 @@
 #' Plot group means
 #'
 #' @param data a data object (a data frame or a data.table)
-#' @param dv_name a name (character string) of the dependent variable
+#' @param dv_name name of the dependent variable
+#' @param iv_name name(s) of the independent variable(s).
+#' Up to two independent variables can be supplied.
 #' @param iv_name name(s) of the independent variable(s).
 #' Up to two independent variables can be supplied.
 #' @param ci if \code{TRUE}, error bars will be a confidence interval
@@ -25,7 +27,7 @@
 #' @return by default, the output will be a ggplot object.
 #' If \code{output = "table"}, the output will be a data.table object.
 #' @examples
-#' plot_group_means(data = mtcars, dv_name = "mpg", iv_name = "gear")
+#' plot_group_means(data = mtcars, dv_name = "mpg", iv_name = c("vs", "am"))
 #' @export
 #' @import ggplot2
 plot_group_means <- function(
@@ -43,27 +45,32 @@ plot_group_means <- function(
   position_dodge = 0.13,
   legend_position = "right",
   output = "plot") {
+  # convert to data table
+  dt1 <- data.table::setDT(data)[, c(dv_name, iv_name), with = FALSE]
+  # convert iv to factors
+  for (col in iv_name) {
+    data.table::set(dt1, j = col, value = as.factor(dt1[[col]]))
+  }
   # summary table
-  dt1 <- Rmisc::summarySE(
-    data = data,
+  dt2 <- Rmisc::summarySE(
+    data = dt1,
     measurevar = dv_name,
     groupvars = iv_name,
     conf.interval = ci_range)
   # add 95% prediction intervals
-  dt1[["pi"]] <- dt1$sd * stats::qt(pi_range/2 + 0.5, dt1$N - 1)
+  dt2[["pi"]] <- dt2$sd * stats::qt(pi_range/2 + 0.5, dt2$N - 1)
   # output to a table
   if(output == "table") {
-    requireNamespace("data.table")
-    data.table::setDT(dt1)
-    return(dt1)
+    data.table::setDT(dt2)
+    return(dt2)
   }
   # ci vs se vs pi
   num_of_error_bar_args <- sum(
     c(!is.null(ci), !is.null(se), !is.null(pi)))
   if(num_of_error_bar_args == 0) {
-    ci <- F
-    se <- F
-    pi <- T
+    ci <- FALSE
+    se <- FALSE
+    pi <- TRUE
   } else if(num_of_error_bar_args >= 2) {
     # conflicting arguments
     stop(paste0(
@@ -78,13 +85,13 @@ plot_group_means <- function(
   }
   # ggplot base
   if(length(iv_name) == 1) {
-    g1 <- ggplot(data = dt1, aes(
+    g1 <- ggplot(data = dt2, aes(
       y = get(dv_name),
       x = get(iv_name),
       group = 1)) # connect the dots
   }
   if(length(iv_name) == 2) {
-    g1 <- ggplot(data = dt1, aes(
+    g1 <- ggplot(data = dt2, aes(
       y = get(dv_name),
       x = get(iv_name[1]),
       color = get(iv_name[2]),
@@ -94,20 +101,20 @@ plot_group_means <- function(
   # so use position_dodge to move them horizontally
   pd <- position_dodge(position_dodge)
   # build further
-  if(ci) {
+  if(ci == TRUE) {
     g1 <- g1 + geom_errorbar(aes(
       ymin = get(dv_name) - ci, ymax = get(dv_name) + ci),
       width = error_bar_width, size = line_size, position = pd)
     error_bar_desc_text <- paste0(
       ci_range * 100, "% confidence intervals")
   }
-  if(se) {
+  if(se == TRUE) {
     g1 <- g1 + geom_errorbar(aes(
       ymin = get(dv_name) - se, ymax = get(dv_name) + se),
       width = error_bar_width, size = line_size, position = pd)
     error_bar_desc_text <- "one standard error (+/- 1 SE)"
   }
-  if(pi) {
+  if(pi == TRUE) {
     g1 <- g1 + geom_errorbar(aes(
       ymin = get(dv_name) - pi, ymax = get(dv_name) + pi),
       width = error_bar_width, size = line_size, position = pd)
@@ -130,5 +137,22 @@ plot_group_means <- function(
   g1 <- g1 + labs(
     caption = paste0(
       "\nError bars indicate ", error_bar_desc_text, " around the mean."))
+  # plot theme
+  g1 <- g1 + theme_classic(base_size = 20) %+replace%
+    theme(
+      plot.title = element_text(hjust = 0.5),
+      legend.position = legend_position,
+      axis.title.x = element_text(margin = margin(t = 24)),
+      axis.title.y = element_text(
+        angle = 0, vjust = 0.85,
+        margin = margin(r = 24)),
+      axis.title = element_text(
+        face = "bold", color = "black", size = 24),
+      axis.text = element_text(
+        face = "bold", color= "black", size = 20),
+      legend.title = element_text(
+        face = "bold", color = "black", size = 24),
+      legend.text = element_text(
+        face = "bold", color= "black", size = 20))
   return(g1)
 }
