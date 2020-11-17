@@ -80,8 +80,8 @@ be horizontally offset from each other so as not to overlap?
 
 \item{output}{output type can be one of the following: \code{"anova_table"},
 \code{"group_stats"}, \code{"plot"}, \code{"levene_test_result"},
-\code{"robust_anova_results"}, \code{"robust_anova_post_hoc_tests_results"},
-\code{"robust_anova_post_hoc_contrasts"}}
+\code{"robust_anova_results"}, \code{"robust_anova_post_hoc_results"},
+\code{"robust_anova_post_hoc_contrast"}}
 }
 \value{
 by default, the output will be \code{"anova_table"}
@@ -91,5 +91,5 @@ Two-way ANOVA
 }
 \examples{
 two_way_anova(data = mtcars, dv_name = "mpg", iv_1_name = "vs",
-iv_2_name = "am")
+iv_2_name = "am", iterations = 100)
 }

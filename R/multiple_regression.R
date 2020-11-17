@@ -3,7 +3,7 @@
 #' @param data a data.frame or data.table object
 #' @param formula a formula object for the regression equation
 #' @param sigfigs number of significant digits to round to
-#' @param round_to_nth_digit_after_decimal round to nth digit after decimal
+#' @param round_digits_after_decimal round to nth digit after decimal
 #' (alternative to \code{sigfigs})
 #' @examples
 #' multiple_regression(data = mtcars, formula = mpg ~ gear * cyl)
@@ -12,7 +12,7 @@ multiple_regression <- function(
   data = NULL,
   formula = NULL,
   sigfigs = NULL,
-  round_to_nth_digit_after_decimal = NULL) {
+  round_digits_after_decimal = NULL) {
   # regression model
   model <- stats::lm(formula = formula, data = data)
   model_summary <- summary(model)
@@ -35,15 +35,15 @@ multiple_regression <- function(
   # standardized betas
   std_beta <- lm.beta::lm.beta(model)[["standardized.coefficients"]]
   # rounding
-  if(!is.null(sigfigs) & !is.null(round_to_nth_digit_after_decimal)) {
+  if (!is.null(sigfigs) & !is.null(round_digits_after_decimal)) {
     stop(paste0(
       "Round to nth digit or n sigfigs? ",
       "You can provide a value for EITHER argument, but NOT both."))
   }
-  if(is.null(sigfigs) & is.null(round_to_nth_digit_after_decimal)) {
+  if (is.null(sigfigs) & is.null(round_digits_after_decimal)) {
     sigfigs <- 3
   }
-  if(!is.null(sigfigs)) {
+  if (!is.null(sigfigs)) {
     estimate <- signif(estimate, sigfigs)
     se <- signif(se, sigfigs)
     std_beta <- signif(std_beta, sigfigs)
@@ -52,15 +52,15 @@ multiple_regression <- function(
     adj_r_squared <- signif(adj_r_squared, sigfigs)
     f_stat <- signif(f_stat, sigfigs)
   }
-  if(!is.null(round_to_nth_digit_after_decimal)) {
-    estimate <- round(estimate, round_to_nth_digit_after_decimal)
-    se <- round(se, round_to_nth_digit_after_decimal)
-    std_beta <- round(std_beta, round_to_nth_digit_after_decimal)
-    t_stat <- round(t_stat, round_to_nth_digit_after_decimal)
-    r_squared <- round(r_squared, round_to_nth_digit_after_decimal)
+  if (!is.null(round_digits_after_decimal)) {
+    estimate <- round(estimate, round_digits_after_decimal)
+    se <- round(se, round_digits_after_decimal)
+    std_beta <- round(std_beta, round_digits_after_decimal)
+    t_stat <- round(t_stat, round_digits_after_decimal)
+    r_squared <- round(r_squared, round_digits_after_decimal)
     adj_r_squared <- round(
-      adj_r_squared, round_to_nth_digit_after_decimal)
-    f_stat <- round(f_stat, round_to_nth_digit_after_decimal)
+      adj_r_squared, round_digits_after_decimal)
+    f_stat <- round(f_stat, round_digits_after_decimal)
   }
   t1 <- data.table::data.table(
     variable, estimate, se, std_beta, t_stat, p_value)

@@ -13,7 +13,7 @@ tabulate_vector(
   sort_by_increasing_value = NULL,
   total_included = TRUE,
   sigfigs = NULL,
-  round_to_nth_digit_after_decimal = NULL,
+  round_digits_after_decimal = NULL,
   output_type = "dt"
 )
 }
@@ -40,7 +40,7 @@ a row for total counts.}
 
 \item{sigfigs}{number of significant digits to round to}
 
-\item{round_to_nth_digit_after_decimal}{round to nth digit after decimal
+\item{round_digits_after_decimal}{round to nth digit after decimal
 (alternative to \code{sigfigs})}
 
 \item{output_type}{if \code{output_type = "df"}, return a data.frame.
@@ -63,7 +63,7 @@ sort_by_increasing_value = TRUE)
 tabulate_vector(c("a", "b", "b", "c", "c", "c", NA),
 sigfigs = 4)
 tabulate_vector(c("a", "b", "b", "c", "c", "c", NA),
-round_to_nth_digit_after_decimal = 1)
+round_digits_after_decimal = 1)
 tabulate_vector(c("a", "b", "b", "c", "c", "c", NA),
 output_type = "df")
 }

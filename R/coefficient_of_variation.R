@@ -16,10 +16,10 @@ coefficent_of_variation <- function(
   # deal with NA values
   v_no_na <- vector[!is.na(vector)]
   # population or sample?
-  if(pop_or_sample == "pop") {
+  if (pop_or_sample == "pop") {
     pop_var <- mean((v_no_na - mean(v_no_na))^2)
     output <- sqrt(pop_var) / mean(v_no_na)
-  } else if(pop_or_sample == "sample") {
+  } else if (pop_or_sample == "sample") {
     output <- stats::sd(v_no_na) / mean(v_no_na)
   }
   return(output)

@@ -10,14 +10,13 @@
 #' top_median_or_bottom(c(1, 2, 2, NA))
 #' top_median_or_bottom(c(1, 1, 2, NA))
 #' @export
-#' @importFrom dplyr case_when
 top_median_or_bottom <- function(vector) {
   v_no_na <- vector[!is.na(vector)]
-  median_of_v_no_na <- stats::median(v_no_na)
-  output <- case_when(
-    vector == median_of_v_no_na ~ "median",
-    vector > median_of_v_no_na ~ "top",
-    vector < median_of_v_no_na ~ "bottom"
+  median <- stats::median(v_no_na)
+  output <- dplyr::case_when(
+    vector == median ~ "median",
+    vector > median ~ "top",
+    vector < median ~ "bottom"
   )
   return(output)
 }

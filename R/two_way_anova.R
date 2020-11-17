@@ -33,12 +33,12 @@
 #' "none", "top", "right", "bottom", "left", "none" (default = "right")
 #' @param output output type can be one of the following: \code{"anova_table"},
 #' \code{"group_stats"}, \code{"plot"}, \code{"levene_test_result"},
-#' \code{"robust_anova_results"}, \code{"robust_anova_post_hoc_tests_results"},
-#' \code{"robust_anova_post_hoc_contrasts"}
+#' \code{"robust_anova_results"}, \code{"robust_anova_post_hoc_results"},
+#' \code{"robust_anova_post_hoc_contrast"}
 #' @return by default, the output will be \code{"anova_table"}
 #' @examples
 #' two_way_anova(data = mtcars, dv_name = "mpg", iv_1_name = "vs",
-#' iv_2_name = "am")
+#' iv_2_name = "am", iterations = 100)
 #' @export
 #' @import ggplot2 data.table
 #' @importFrom car Anova leveneTest
@@ -76,10 +76,10 @@ two_way_anova <- function(
   message(paste0(nrow(dt1) - nrow(dt2),
                  " rows were removed due to missing values."))
   # subset for certain values
-  if(!is.null(iv_1_values)) {
+  if (!is.null(iv_1_values)) {
     dt2 <- dt2[get(iv_1_name) %in% iv_1_values]
   }
-  if(!is.null(iv_2_values)) {
+  if (!is.null(iv_2_values)) {
     dt2 <- dt2[get(iv_2_name) %in% iv_2_values]
   }
   # stats by iv
@@ -94,7 +94,7 @@ two_way_anova <- function(
     keyby = c(iv_1_name, iv_2_name)]
   message(paste0("\nGroup Statistics on ", dv_name, ":"))
   print(group_stats)
-  if(plot == TRUE) {
+  if (plot == TRUE) {
     g1 <- kim::plot_group_means(
       data = dt2,
       dv_name = dv_name,
@@ -122,7 +122,7 @@ two_way_anova <- function(
   levene_test_p_value <- levene_test_result[["Pr(>F)"]][1]
   message("\nLevene's Test Results:")
   print(levene_test_result)
-  if(levene_test_p_value < .05) {
+  if (levene_test_p_value < .05) {
     message(paste0("The homogeneity of variance assumption is violated",
                    " for the ANOVA results below."))
   }
@@ -131,48 +131,48 @@ two_way_anova <- function(
   anova_table <- car::Anova(model_1, type = 3)
   message("\nANOVA Results:")
   print(anova_table)
-  if(robust == TRUE) {
+  if (robust == TRUE) {
     # robust anova
     robust_anova_results <-
       WRS2::pbad2way(formula_1, data = dt2, est = "mom",
                      nboot = iterations)
     message("\nRobust ANOVA Results:")
     print(robust_anova_results)
-    robust_anova_post_hoc_tests_results <-
+    robust_anova_post_hoc_results <-
       WRS2::mcp2a(formula_1, data = dt2, est = "mom",
                   nboot = iterations)
     message("\nRobust ANOVA Post Hoc Test Results:")
-    print(robust_anova_post_hoc_tests_results)
+    print(robust_anova_post_hoc_results)
     # contrasts
-    robust_anova_post_hoc_contrasts <-
-      robust_anova_post_hoc_tests_results[["contrasts"]]
+    robust_anova_post_hoc_contrast <-
+      robust_anova_post_hoc_results[["contrasts"]]
     message("\nRobust ANOVA Post Hoc Test Contrasts:")
-    print(robust_anova_post_hoc_contrasts)
+    print(robust_anova_post_hoc_contrast)
   }
   # default output
-  if(is.null(output)) {
+  if (is.null(output)) {
     output <- "anova_table"
   }
   # output by type
-  if(output == "anova_table") {
+  if (output == "anova_table") {
     invisible(anova_table)
   }
-  if(output == "group_stats") {
+  if (output == "group_stats") {
     invisible(group_stats)
   }
-  if(output == "plot") {
+  if (output == "plot") {
     invisible(g1)
   }
-  if(output == "levene_test_result") {
+  if (output == "levene_test_result") {
     invisible(levene_test_result)
   }
-  if(output == "robust_anova_results") {
+  if (output == "robust_anova_results") {
     invisible(robust_anova_results)
   }
-  if(output == "robust_anova_post_hoc_tests_results") {
-    invisible(robust_anova_post_hoc_tests_results)
+  if (output == "robust_anova_post_hoc_results") {
+    invisible(robust_anova_post_hoc_results)
   }
-  if(output == "robust_anova_post_hoc_contrasts") {
-    invisible(robust_anova_post_hoc_contrasts)
+  if (output == "robust_anova_post_hoc_contrast") {
+    invisible(robust_anova_post_hoc_contrast)
   }
 }

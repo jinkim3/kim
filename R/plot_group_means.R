@@ -58,39 +58,39 @@ plot_group_means <- function(
     groupvars = iv_name,
     conf.interval = ci_range)
   # add 95% prediction intervals
-  dt2[["pi"]] <- dt2$sd * stats::qt(pi_range/2 + 0.5, dt2$N - 1)
+  dt2[["pi"]] <- dt2$sd * stats::qt(pi_range / 2 + 0.5, dt2$N - 1)
   # output to a table
-  if(output == "table") {
+  if (output == "table") {
     data.table::setDT(dt2)
     return(dt2)
   }
   # ci vs se vs pi
   num_of_error_bar_args <- sum(
     c(!is.null(ci), !is.null(se), !is.null(pi)))
-  if(num_of_error_bar_args == 0) {
+  if (num_of_error_bar_args == 0) {
     ci <- FALSE
     se <- FALSE
     pi <- TRUE
-  } else if(num_of_error_bar_args >= 2) {
+  } else if (num_of_error_bar_args >= 2) {
     # conflicting arguments
     stop(paste0(
       "Please set only ONE of the following arguments to be TRUE: ",
       "ci, se, or pi"))
   }
   # check the number of ivs
-  if(length(iv_name) > 2) {
+  if (length(iv_name) > 2) {
     stop(paste0(
       "The current version of this function cannot handle more ",
       "than two IVs.\nPlease enter one or two IV(s)."))
   }
   # ggplot base
-  if(length(iv_name) == 1) {
+  if (length(iv_name) == 1) {
     g1 <- ggplot(data = dt2, aes(
       y = get(dv_name),
       x = get(iv_name),
       group = 1)) # connect the dots
   }
-  if(length(iv_name) == 2) {
+  if (length(iv_name) == 2) {
     g1 <- ggplot(data = dt2, aes(
       y = get(dv_name),
       x = get(iv_name[1]),
@@ -101,26 +101,26 @@ plot_group_means <- function(
   # so use position_dodge to move them horizontally
   pd <- position_dodge(position_dodge)
   # build further
-  if(ci == TRUE) {
+  if (ci == TRUE) {
     g1 <- g1 + geom_errorbar(aes(
       ymin = get(dv_name) - ci, ymax = get(dv_name) + ci),
       width = error_bar_width, size = line_size, position = pd)
     error_bar_desc_text <- paste0(
       ci_range * 100, "% confidence intervals")
   }
-  if(se == TRUE) {
+  if (se == TRUE) {
     g1 <- g1 + geom_errorbar(aes(
       ymin = get(dv_name) - se, ymax = get(dv_name) + se),
       width = error_bar_width, size = line_size, position = pd)
     error_bar_desc_text <- "one standard error (+/- 1 SE)"
   }
-  if(pi == TRUE) {
+  if (pi == TRUE) {
     g1 <- g1 + geom_errorbar(aes(
       ymin = get(dv_name) - pi, ymax = get(dv_name) + pi),
       width = error_bar_width, size = line_size, position = pd)
     error_bar_desc_text <- paste0(
       pi_range * 100, "% prediction intervals")
-    if(pi_range == 0.95) {
+    if (pi_range == 0.95) {
       error_bar_desc_text <- paste0(
         error_bar_desc_text, " (+/- ~1.96 SD)")
     }
@@ -128,7 +128,7 @@ plot_group_means <- function(
   # points and lines
   g1 <- g1 + geom_line(size = line_size, position = pd)
   g1 <- g1 + geom_point(size = dot_size, position = pd)
-  if(length(iv_name) == 2) {
+  if (length(iv_name) == 2) {
     g1 <- g1 + theme(legend.position = legend_position)
     g1 <- g1 + labs(color = iv_name[2])
   }
@@ -149,10 +149,10 @@ plot_group_means <- function(
       axis.title = element_text(
         face = "bold", color = "black", size = 24),
       axis.text = element_text(
-        face = "bold", color= "black", size = 20),
+        face = "bold", color = "black", size = 20),
       legend.title = element_text(
         face = "bold", color = "black", size = 24),
       legend.text = element_text(
-        face = "bold", color= "black", size = 20))
+        face = "bold", color = "black", size = 20))
   return(g1)
 }

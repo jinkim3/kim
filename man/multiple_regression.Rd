@@ -8,7 +8,7 @@ multiple_regression(
   data = NULL,
   formula = NULL,
   sigfigs = NULL,
-  round_to_nth_digit_after_decimal = NULL
+  round_digits_after_decimal = NULL
 )
 }
 \arguments{
@@ -18,7 +18,7 @@ multiple_regression(
 
 \item{sigfigs}{number of significant digits to round to}
 
-\item{round_to_nth_digit_after_decimal}{round to nth digit after decimal
+\item{round_digits_after_decimal}{round to nth digit after decimal
 (alternative to \code{sigfigs})}
 }
 \description{

@@ -5,16 +5,16 @@
 #' @param na.exclude if \code{TRUE}, NA values will be removed both from
 #' \code{vector} and \code{values} before calculation
 #' @examples
-#' proportion_of_values_in_a_vector(
+#' proportion_of_values_in_vector(
 #' values = 2:3, vector = c(1:3, NA))
-#' proportion_of_values_in_a_vector(
+#' proportion_of_values_in_vector(
 #' values = 2:3, vector = c(1:3, NA), na.exclude = FALSE)
-#' proportion_of_values_in_a_vector(
+#' proportion_of_values_in_vector(
 #' values = c(2:3, NA), vector = c(1:3, NA), na.exclude = FALSE)
 #' @export
-proportion_of_values_in_a_vector <- function(
+proportion_of_values_in_vector <- function(
   values, vector, na.exclude = TRUE) {
-  if(na.exclude == TRUE) {
+  if (na.exclude == TRUE) {
     message(paste0(
       sum(is.na(values)), " of ", length(values), " values were NA."))
     message(paste0(

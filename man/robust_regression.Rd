@@ -8,7 +8,7 @@ robust_regression(
   data = NULL,
   formula = NULL,
   sigfigs = NULL,
-  round_to_nth_digit_after_decimal = NULL,
+  round_digits_after_decimal = NULL,
   iterations = 1000
 )
 }
@@ -19,7 +19,7 @@ robust_regression(
 
 \item{sigfigs}{number of significant digits to round to}
 
-\item{round_to_nth_digit_after_decimal}{round to nth digit after decimal
+\item{round_digits_after_decimal}{round to nth digit after decimal
 (alternative to \code{sigfigs})}
 
 \item{iterations}{number of bootstrap samples. The default is set at 1000,
@@ -30,5 +30,6 @@ even larger number, if slower handling time is not an issue.}
 Estimate coefficients in a multiple regression model by bootstrapping
 }
 \examples{
-robust_regression(data = mtcars, formula = mpg ~ cyl * hp)
+robust_regression(data = mtcars, formula = mpg ~ cyl * hp,
+iterations = 100)
 }

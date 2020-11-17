@@ -14,7 +14,7 @@ percentile_rank <- function(vector) {
   number_of_values <- length(v_no_na)
   output <- vapply(vector, function(x) {
     # deal with NA values
-    if(is.na(x)) return(NA)
+    if (is.na(x)) return(NA)
     # c = count of all scores less than the score of interest
     c <- sum(v_no_na < x)
     # f = frequency of the score of interest

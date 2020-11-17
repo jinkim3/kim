@@ -22,7 +22,7 @@
 #' is "summary".
 #' @examples
 #' mediation_analysis(data = mtcars, iv_name = "cyl",
-#' mediator_name = "disp", dv_name = "mpg", iteration = 100)
+#' mediator_name = "disp", dv_name = "mpg", iterations = 100)
 #' @export
 mediation_analysis <- function(
   data = NULL,
@@ -38,7 +38,7 @@ mediation_analysis <- function(
     mediator_name, " ~ ", iv_name))
   outcome_model_formula <- stats::as.formula(paste0(
     dv_name, " ~ ", mediator_name, " + ", iv_name))
-  if(!is.null(covariates_names)) {
+  if (!is.null(covariates_names)) {
     med_model_formula <- paste0(
       mediator_name, " ~ ", iv_name, " + ",
       paste0(covariates_names, collapse = " + "))
@@ -59,14 +59,14 @@ mediation_analysis <- function(
     robustSE = robust_se,
     sims = iterations)
   mediation_analysis_summary <- summary(full_model)
-  if(plot == TRUE) {
+  if (plot == TRUE) {
     plot_output <- plot(full_model)
     print(plot_output)
   }
   print(mediation_analysis_summary)
-  if(output_type == "summary") {
+  if (output_type == "summary") {
     output <- mediation_analysis_summary
-  } else if(output_type == "model") {
+  } else if (output_type == "model") {
     output <- full_model
   }
   invisible(output)

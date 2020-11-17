@@ -59,5 +59,6 @@ robust_regression(data = mtcars, formula = mpg ~ cyl * hp)
 multiple_regression(data = mtcars, formula = mpg ~ gear * cyl)
 
 # conduct a mediation analysis
-mediation_analysis(data = mtcars, iv_name = "cyl", mediator_name = "disp", dv_name = "mpg")
+mediation_analysis(
+    data = mtcars, iv_name = "cyl", mediator_name = "disp", dv_name = "mpg")
 ```

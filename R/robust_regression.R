@@ -5,24 +5,25 @@
 #' @param data a data.frame or data.table object
 #' @param formula a formula object for the regression equation
 #' @param sigfigs number of significant digits to round to
-#' @param round_to_nth_digit_after_decimal
+#' @param round_digits_after_decimal
 #' round to nth digit after decimal
 #' (alternative to \code{sigfigs})
 #' @param iterations number of bootstrap samples. The default is set at 1000,
 #' but consider increasing the number of samples to 5000, 10000, or an
 #' even larger number, if slower handling time is not an issue.
 #' @examples
-#' robust_regression(data = mtcars, formula = mpg ~ cyl * hp)
+#' robust_regression(data = mtcars, formula = mpg ~ cyl * hp,
+#' iterations = 100)
 #' @export
 robust_regression <- function(
   data = NULL, formula = NULL, sigfigs = NULL,
-  round_to_nth_digit_after_decimal = NULL,
+  round_digits_after_decimal = NULL,
   iterations = 1000
 ) {
   # print lm first
   lm_table <- kim::multiple_regression(
     data = data, formula = formula, sigfigs = sigfigs,
-    round_to_nth_digit_after_decimal = round_to_nth_digit_after_decimal)
+    round_digits_after_decimal = round_digits_after_decimal)
   # function to obtain regression weights
   bs <- function(formula = formula, data = data, indices) {
     bs_sample <- data[indices, ] # allows boot to select sample
@@ -44,19 +45,19 @@ robust_regression <- function(
     temp_1 <- boot::boot.ci(boot_results, type = "bca", index = i)
     return(utils::tail(temp_1[["bca"]][1, ], 2))
   })
-  if(!is.null(sigfigs) & !is.null(round_to_nth_digit_after_decimal)) {
+  if (!is.null(sigfigs) & !is.null(round_digits_after_decimal)) {
     stop(paste0(
       "Round to nth digit or n sigfigs? ",
       "You can provide a value for EITHER argument, but NOT both."))
   }
-  if(is.null(sigfigs) & is.null(round_to_nth_digit_after_decimal)) {
+  if (is.null(sigfigs) & is.null(round_digits_after_decimal)) {
     sigfigs <- 3
   }
-  if(!is.null(sigfigs)) {
+  if (!is.null(sigfigs)) {
     ci_95 <- lapply(ci_95, signif, sigfigs)
   }
-  if(!is.null(round_to_nth_digit_after_decimal)) {
-    ci_95 <- lapply(ci_95, round, round_to_nth_digit_after_decimal)
+  if (!is.null(round_digits_after_decimal)) {
+    ci_95 <- lapply(ci_95, round, round_digits_after_decimal)
   }
   robust_estimate_95_ci <- as.list(c(
     vapply(ci_95, paste0, FUN.VALUE = character(1),

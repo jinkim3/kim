@@ -1,3 +1,9 @@
+# kim 0.1.7
+* Edited the code with lintr.
+
+# kim 0.1.6
+* Added citation.
+
 # kim 0.1.5
 * Added more functions including tabulate_vector.
 

@@ -13,14 +13,14 @@
 barplot_for_counts <- function(data = NULL, x, y) {
   data <- data.table::setDT(data)
   # check for x axis
-  if(!is.null(data) & x %in% names(data) & y %in% names(data)) {
+  if (!is.null(data) & x %in% names(data) & y %in% names(data)) {
     dt <- data[, c(x, y), with = FALSE]
     g1 <- ggplot(dt, aes(x = get(x), y = get(y)))
     g1 <- g1 + xlab(x)
     g1 <- g1 + ylab(y)
   }
   # set up data table
-  if(is.null(data)) {
+  if (is.null(data)) {
     dt <- data.table::data.table(x = x, y = y)
     g1 <- ggplot(dt, aes(x = x, y = y))
   }
@@ -36,10 +36,10 @@ barplot_for_counts <- function(data = NULL, x, y) {
       axis.title = element_text(
         face = "bold", color = "black", size = 24),
       axis.text = element_text(
-        face = "bold", color= "black", size = 20),
+        face = "bold", color = "black", size = 20),
       legend.title = element_text(
         face = "bold", color = "black", size = 24),
       legend.text = element_text(
-        face = "bold", color= "black", size = 20))
+        face = "bold", color = "black", size = 20))
   return(g1)
 }

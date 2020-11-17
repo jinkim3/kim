@@ -6,14 +6,14 @@
 \usage{
 pretty_round_p_value(
   p_value_vector = NULL,
-  round_to_nth_digit_after_decimal = 3,
+  round_digits_after_decimal = 3,
   include_p_equals = FALSE
 )
 }
 \arguments{
 \item{p_value_vector}{one number or a numeric vector}
 
-\item{round_to_nth_digit_after_decimal}{round to nth digit after decimal}
+\item{round_digits_after_decimal}{round to nth digit after decimal}
 
 \item{include_p_equals}{if \code{TRUE}, output will be a string of
 mathematical expression including "p", e.g., "p < .01"}
@@ -23,6 +23,6 @@ Pretty round p-value
 }
 \examples{
 pretty_round_p_value(p_value_vector = 0.049,
-round_to_nth_digit_after_decimal = 2, include_p_equals = FALSE)
+round_digits_after_decimal = 2, include_p_equals = FALSE)
 pretty_round_p_value(c(0.0015, 0.0014), include_p_equals = TRUE)
 }

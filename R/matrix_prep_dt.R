@@ -12,10 +12,10 @@
 matrix_prep_dt <- function(
   row_var_names = NULL,
   col_var_names = NULL) {
-  if(is.null(col_var_names) & !is.null(row_var_names)) {
+  if (is.null(col_var_names) & !is.null(row_var_names)) {
     col_var_names <- row_var_names
   }
-  if(is.null(row_var_names) & !is.null(col_var_names)) {
+  if (is.null(row_var_names) & !is.null(col_var_names)) {
     row_var_names <- col_var_names
   }
   # row-column pair
