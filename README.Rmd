@@ -52,10 +52,10 @@ library(kim)
 # plot sample means of groups in a factorial experimental design
 plot_group_means(data = mtcars, dv_name = "mpg", iv_name = "gear")
 
-# conduct a robust regression with bootstrapped samples
+# conduct a robust regression analysis using bootstrapped samples
 robust_regression(data = mtcars, formula = mpg ~ cyl * hp)
 
-# conduct a regular multiple regression
+# conduct a multiple regression analysis
 multiple_regression(data = mtcars, formula = mpg ~ gear * cyl)
 
 # conduct a mediation analysis

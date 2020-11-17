@@ -51,7 +51,7 @@ two_way_anova <- function(
   iv_2_values = NULL,
   robust = TRUE,
   iterations = 2000,
-  plot = F,
+  plot = FALSE,
   ci = NULL,
   se = NULL,
   pi = NULL,

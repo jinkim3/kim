@@ -64,7 +64,7 @@ tabulate_vector <-
       if(is.na(x)) {
         count_for_given_value <- sum(is.na(temp_1))
       } else {
-        count_for_given_value <- sum(sum(temp_1 == x, na.rm = T))
+        count_for_given_value <- sum(sum(temp_1 == x, na.rm = TRUE))
       }
       return(count_for_given_value)
     }, FUN.VALUE = numeric(1))
@@ -77,7 +77,7 @@ tabulate_vector <-
           sum(is.na(temp_1)) / total_count * 100
       } else {
         percent_for_given_value <-
-          sum(temp_1 == x, na.rm = T) / total_count * 100
+          sum(temp_1 == x, na.rm = TRUE) / total_count * 100
       }
       return(percent_for_given_value)
     }, FUN.VALUE = numeric(1))

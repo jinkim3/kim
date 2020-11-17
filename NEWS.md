@@ -1,3 +1,6 @@
+# kim 0.1.5
+* Added more functions including tabulate_vector.
+
 # kim 0.1.4
 * Added more functions including two_way_anova.
 

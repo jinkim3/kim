@@ -1,6 +1,6 @@
 Package: kim
 Title: Jin Kim's Collection of Functions for Behavioral Science Researchers
-Version: 0.1.4
+Version: 0.1.5
 Authors@R: 
     person(given = "Jin",
            family = "Kim",
