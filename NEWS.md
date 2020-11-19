@@ -1,3 +1,7 @@
+# kim 0.1.7.9100
+* debugged the plot_group_means function and added 
+desc_stats_by_group function
+
 # kim 0.1.7
 * Edited the code with lintr.
 

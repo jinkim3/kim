@@ -8,17 +8,13 @@ plot_group_means(
   data = NULL,
   dv_name = NULL,
   iv_name = NULL,
-  ci = NULL,
-  se = NULL,
-  pi = NULL,
-  ci_range = 0.95,
-  pi_range = 0.95,
+  error_bar = "ci",
+  error_bar_range = 0.95,
   line_size = 1,
   dot_size = 3,
-  error_bar_width = 0.13,
+  error_bar_tip_width = 0.13,
   position_dodge = 0.13,
-  legend_position = "right",
-  output = "plot"
+  legend_position = "right"
 )
 }
 \arguments{
@@ -29,24 +25,21 @@ plot_group_means(
 \item{iv_name}{name(s) of the independent variable(s).
 Up to two independent variables can be supplied.}
 
-\item{ci}{if \code{TRUE}, error bars will be a confidence interval}
+\item{error_bar}{if \code{error_bar = "se"}; error bars will be +/-1
+standard error, if \code{error_bar = "ci"} error bars will be a
+confidence interval; if \code{error_bar = "pi"}, error bars will be
+a prediction interval}
 
-\item{se}{if \code{TRUE}, error bars will be +/-1 standard error}
-
-\item{pi}{if \code{TRUE}, error bars will be a prediction interval}
-
-\item{ci_range}{width of the confidence interval
-(default = 0.95 for 95 percent confidence interval)}
-
-\item{pi_range}{width of the prediction interval
-(default = 0.95 for 95 percent prediction interval)}
+\item{error_bar_range}{width of the confidence or prediction interval
+(default = 0.95 for 95 percent confidence or prediction interval).
+This argument will not apply when \code{error_bar = "se"}}
 
 \item{line_size}{thickness of the lines connecting group means,
 (default = 1)}
 
 \item{dot_size}{size of the dots indicating group means (default = 3)}
 
-\item{error_bar_width}{graphically, width of the segments
+\item{error_bar_tip_width}{graphically, width of the segments
 at the end of error bars (default = 0.13)}
 
 \item{position_dodge}{by how much should the group means and error bars
@@ -54,17 +47,20 @@ be horizontally offset from each other so as not to overlap?
 (default = 0.13)}
 
 \item{legend_position}{position of the legend:
-"none", "top", "right", "bottom", "left", "none" (default = "right")}
-
-\item{output}{output type: either "plot" or "table"}
+\code{"none", "top", "right", "bottom", "left", "none"}
+(default = \code{"right"})}
 }
 \value{
 by default, the output will be a ggplot object.
 If \code{output = "table"}, the output will be a data.table object.
 }
 \description{
-Plot group means
+Creates a plot of sample means and error bars by group.
 }
 \examples{
 plot_group_means(data = mtcars, dv_name = "mpg", iv_name = c("vs", "am"))
+plot_group_means(data = mtcars, dv_name = "mpg", iv_name = c("vs", "am"),
+error_bar = "se")
+plot_group_means(data = mtcars, dv_name = "mpg", iv_name = c("vs", "am"),
+error_bar = "pi", error_bar_range = 0.99)
 }
