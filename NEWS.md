@@ -1,3 +1,6 @@
+# kim 0.1.9
+* added the histogram_by_group function
+
 # kim 0.1.8
 * added the scatterplot function
 

@@ -56,6 +56,9 @@ scatterplot(data = mtcars, x_var_name = "wt", y_var_name = "mpg")
 desc_stats_by_group(
   data = mtcars, var_for_stats = "mpg", grouping_vars = c("vs", "am"))
 
+# plot histograms by group
+histogram_by_group(data = mtcars, iv_name = "cyl", dv_name = "mpg")
+
 # plot sample means of groups in a factorial experimental design
 plot_group_means(data = mtcars, dv_name = "mpg", iv_name = "gear")
 
