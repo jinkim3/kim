@@ -41,6 +41,9 @@ Here are some examples of using this package.
 ``` r
 library(kim)
 
+# create a scatter plot
+scatterplot(data = mtcars, x_var_name = "wt", y_var_name = "mpg")
+
 # get descriptive statistics by group
 desc_stats_by_group(
   data = mtcars, var_for_stats = "mpg", grouping_vars = c("vs", "am"))

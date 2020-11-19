@@ -7,7 +7,7 @@
 barplot_for_counts(data = NULL, x, y)
 }
 \arguments{
-\item{data}{a data.frame or data.table object}
+\item{data}{a data object (a data frame or a data.table)}
 
 \item{x}{name of the variable that will be on the x axis of the barplot}
 

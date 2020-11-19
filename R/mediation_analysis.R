@@ -3,7 +3,7 @@
 #' Conducts a mediation analysis to estimate an independent variable's
 #' indirect effect on dependent variable through the mediator variable
 #'
-#' @param data a data.frame or data.table object
+#' @param data a data object (a data frame or a data.table)
 #' @param iv_name name of the independent variable
 #' @param mediator_name name of the mediator variable
 #' @param dv_name name of the dependent variable

@@ -17,7 +17,7 @@ mediation_analysis(
 )
 }
 \arguments{
-\item{data}{a data.frame or data.table object}
+\item{data}{a data object (a data frame or a data.table)}
 
 \item{iv_name}{name of the independent variable}
 

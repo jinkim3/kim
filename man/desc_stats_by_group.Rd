@@ -7,7 +7,7 @@
 desc_stats_by_group(data = NULL, var_for_stats = NULL, grouping_vars = NULL)
 }
 \arguments{
-\item{data}{a data.frame or data.table object}
+\item{data}{a data object (a data frame or a data.table)}
 
 \item{var_for_stats}{name of the variable for which descriptive
 statistics will be calculated}

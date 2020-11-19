@@ -12,7 +12,7 @@ multiple_regression(
 )
 }
 \arguments{
-\item{data}{a data.frame or data.table object}
+\item{data}{a data object (a data frame or a data.table)}
 
 \item{formula}{a formula object for the regression equation}
 

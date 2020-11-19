@@ -2,7 +2,7 @@
 #'
 #' Returns descriptive statistics by group
 #'
-#' @param data a data.frame or data.table object
+#' @param data a data object (a data frame or a data.table)
 #' @param var_for_stats name of the variable for which descriptive
 #' statistics will be calculated
 #' @param grouping_vars name(s) of grouping variables

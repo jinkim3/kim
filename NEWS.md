@@ -1,3 +1,6 @@
+# kim 0.1.8
+* added the scatterplot function
+
 # kim 0.1.7.9101
 * debugged the plot_group_means function and added 
 desc_stats_by_group function

@@ -1,6 +1,6 @@
 #' Barplot for counts
 #'
-#' @param data a data.frame or data.table object
+#' @param data a data object (a data frame or a data.table)
 #' @param x name of the variable that will be on the x axis of the barplot
 #' @param y name of the variable that will be on the y axis of the barplot
 #' @examples

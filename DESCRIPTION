@@ -1,6 +1,6 @@
 Package: kim
 Title: Functions for Behavioral Science Researchers
-Version: 0.1.7.9101
+Version: 0.1.8
 Authors@R: 
     person(given = "Jin",
            family = "Kim",
@@ -26,6 +26,7 @@ Imports:
     moments,
     stats,
     utils,
+    weights,
     WRS2
 Encoding: UTF-8
 LazyData: true

@@ -1,6 +1,6 @@
 #' Summarize multiple regression results in a data.table
 #'
-#' @param data a data.frame or data.table object
+#' @param data a data object (a data frame or a data.table)
 #' @param formula a formula object for the regression equation
 #' @param sigfigs number of significant digits to round to
 #' @param round_digits_after_decimal round to nth digit after decimal
