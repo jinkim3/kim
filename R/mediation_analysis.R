@@ -21,8 +21,8 @@
 #' the output will be a mediation model object. The default value
 #' is "summary".
 #' @examples
-#' mediation_analysis(data = mtcars, iv_name = "cyl",
-#' mediator_name = "disp", dv_name = "mpg", iterations = 100)
+#' \donttest{mediation_analysis(data = mtcars, iv_name = "cyl",
+#' mediator_name = "disp", dv_name = "mpg", iterations = 100)}
 #' @export
 mediation_analysis <- function(
   data = NULL,
@@ -34,6 +34,14 @@ mediation_analysis <- function(
   iterations = 1000,
   plot = TRUE,
   output_type = "summary") {
+  if (iterations < 1000) {
+    message(paste0(
+      "The number of bootstrapping samples you entered, iterations = ",
+      iterations, " seems too low.\nPlease consider using a ",
+      "larger number of bootstrapping samples ",
+      "(e.g., 1000, 2000, 5000, or 10000) if you can tolerate a",
+      "slow running time."))
+  }
   med_model_formula <- stats::as.formula(paste0(
     mediator_name, " ~ ", iv_name))
   outcome_model_formula <- stats::as.formula(paste0(

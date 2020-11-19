@@ -5,7 +5,7 @@ citEntry(
   author   = "Jin Kim",
   year     = "2020",
   title    = "kim: Functions for Behavioral Science Researchers",
-  note     = "R package version 0.1.8",
+  note     = "R package version 0.1.9",
   url      = "https://github.com/jinkim3/kim",
   textVersion = paste0(
   "Jin Kim (2020). ",

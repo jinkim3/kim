@@ -48,6 +48,6 @@ Conducts a mediation analysis to estimate an independent variable's
 indirect effect on dependent variable through the mediator variable
 }
 \examples{
-mediation_analysis(data = mtcars, iv_name = "cyl",
-mediator_name = "disp", dv_name = "mpg", iterations = 100)
+\donttest{mediation_analysis(data = mtcars, iv_name = "cyl",
+mediator_name = "disp", dv_name = "mpg", iterations = 100)}
 }
