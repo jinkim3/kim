@@ -30,6 +30,7 @@
 #' range of y values
 #' @return a ggplot object
 #' @examples
+#' \dontrun{
 #' scatterplot(data = mtcars, x_var_name = "wt", y_var_name = "mpg")
 #' scatterplot(data = mtcars, x_var_name = "wt", y_var_name = "mpg",
 #' point_label_var_name = "hp", weight_var_name = "drat",
@@ -37,6 +38,7 @@
 #' scatterplot(data = mtcars, x_var_name = "wt", y_var_name = "mpg",
 #' point_label_var_name = "hp", weight_var_name = "cyl",
 #' annotate_stats = TRUE)
+#' }
 #' @export
 #' @import data.table ggplot2
 scatterplot <- function(

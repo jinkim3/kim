@@ -1,3 +1,7 @@
+# kim 0.1.10
+* Wrapped the scatterplot function's examples in "dontrun" to avoid going over
+5 seconds when testing in a linux system.
+
 # kim 0.1.9
 * added the histogram_by_group function
 
