@@ -9,8 +9,7 @@
 #' @param dv_name name of the dependent variable
 #' @param covariates_names names of covariates to control for
 #' @param robust_se if \code{TRUE}, heteroskedasticity-consistent
-#' standard errors will be used. Please refer to "mediation" package
-#' (Tingley et al., 2014)
+#' standard errors will be used.
 #' @param iterations number of bootstrap samples. The default is set at 1000,
 #' but consider increasing the number of samples to 5000, 10000, or an
 #' even larger number, if slower handling time is not an issue.

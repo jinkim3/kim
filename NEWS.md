@@ -1,3 +1,9 @@
+# kim 0.1.11
+* Following the suggestion by Ms. Julia Haider, I wrapped the scatterplot
+function's examples in "\donttest{}" as the execution time was greater 
+than 5 seconds on linux.
+* I also removed a reference that was not essential.
+
 # kim 0.1.10
 * Wrapped the scatterplot function's examples in "dontrun" to avoid going over
 5 seconds when testing in a linux system.
