@@ -21,6 +21,7 @@ Imports:
     data.table,
     devtools,
     dplyr,
+    effsize,
     ggplot2,
     ggridges,
     lm.beta,

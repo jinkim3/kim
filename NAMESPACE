@@ -3,6 +3,7 @@
 export(barplot_for_counts)
 export(capitalize_first_letter)
 export(coefficent_of_variation)
+export(cohen_d)
 export(cohen_d_from_cohen_textbook)
 export(comma_sep_string_to_numbers)
 export(desc_stats)

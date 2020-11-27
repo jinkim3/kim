@@ -4,12 +4,24 @@
 \alias{cohen_d_from_cohen_textbook}
 \title{Cohen's d from Jacob Cohen's textbook (1988)}
 \usage{
-cohen_d_from_cohen_textbook(sample_1_as_vector, sample_2_as_vector)
+cohen_d_from_cohen_textbook(
+  sample_1 = NULL,
+  sample_2 = NULL,
+  data = NULL,
+  iv_name = NULL,
+  dv_name = NULL
+)
 }
 \arguments{
-\item{sample_1_as_vector}{a vector of values in the first of two samples}
+\item{sample_1}{a vector of values in the first of two samples}
 
-\item{sample_2_as_vector}{a vector of values in the second of two samples}
+\item{sample_2}{a vector of values in the second of two samples}
+
+\item{data}{a data object (a data frame or a data.table)}
+
+\item{iv_name}{name of the independent variable}
+
+\item{dv_name}{name of the dependent variable}
 }
 \description{
 Calculates Cohen's d as described in Jacob Cohen's textbook (1988),
@@ -17,4 +29,6 @@ Statistical Power Analysis for the Behavioral Sciences, 2nd Edition
 }
 \examples{
 cohen_d_from_cohen_textbook(1:10, 3:12)
+cohen_d_from_cohen_textbook(
+data = mtcars, iv_name = "vs", dv_name = "mpg")
 }
