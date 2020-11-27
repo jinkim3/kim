@@ -11,9 +11,7 @@ mediation_analysis(
   dv_name = NULL,
   covariates_names = NULL,
   robust_se = TRUE,
-  iterations = 1000,
-  plot = TRUE,
-  output_type = "summary"
+  iterations = 1000
 )
 }
 \arguments{
@@ -28,25 +26,28 @@ mediation_analysis(
 \item{covariates_names}{names of covariates to control for}
 
 \item{robust_se}{if \code{TRUE}, heteroskedasticity-consistent
-standard errors will be used.}
+standard errors will be used in quasi-Bayesian simulations. By default,
+it will be set as \code{FALSE} if nonparametric bootstrap is used and
+as \code{TRUE} if quasi-Bayesian approximation is used.}
 
 \item{iterations}{number of bootstrap samples. The default is set at 1000,
 but consider increasing the number of samples to 5000, 10000, or an
 even larger number, if slower handling time is not an issue.}
-
-\item{plot}{if \code{TRUE}, a plot of indirect, direct, and
-total effects' respective sizes will be printed.}
-
-\item{output_type}{if \code{output_type = summary}, the output will be
-a summary of the mediation anaylsis or if \code{output_type = model},
-the output will be a mediation model object. The default value
-is "summary".}
 }
 \description{
 Conducts a mediation analysis to estimate an independent variable's
-indirect effect on dependent variable through the mediator variable
+indirect effect on dependent variable through a mediator variable.
+The current version of the package only supports a simple mediation
+model consisting of one independent variable, one mediator variable,
+and one dependent variable.
+Uses the source code from 'mediation' package v4.5.0,
+Tingley et al. (2019)
+\url{https://cran.r-project.org/web/packages/mediation/index.html}
 }
 \examples{
-\donttest{mediation_analysis(data = mtcars, iv_name = "cyl",
-mediator_name = "disp", dv_name = "mpg", iterations = 100)}
+\donttest{
+mediation_analysis(data = mtcars, iv_name = "cyl",
+mediator_name = "disp", dv_name = "mpg", iterations = 100)
+}
+
 }

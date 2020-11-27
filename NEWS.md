@@ -1,3 +1,6 @@
+# kim 0.2.1
+* Added more functions including prep and update_kim
+
 # kim 0.1.11
 * Following the suggestion by Ms. Julia Haider, I wrapped the scatterplot
 function's examples in "\donttest{}" as the execution time was greater 

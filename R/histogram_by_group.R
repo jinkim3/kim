@@ -45,9 +45,6 @@ histogram_by_group <- function(
   order_of_groups_top_to_bot <- as.character(order_of_groups_top_to_bot)
   # only the groups specified in iv_order
   dt01 <- dt01[get("iv") %in% order_of_groups_top_to_bot]
-  # minimum and maximum values
-  dv_min <- min(dt01$dv)
-  dv_max <- max(dt01$dv)
   # means and medians
   stats_by_iv <-
     dt01[, list(
@@ -90,7 +87,7 @@ histogram_by_group <- function(
         vjust = 0.95,
         margin = margin(r = 12)),
       legend.position = "none")
-  g1 <- g1 + coord_cartesian(clip = 'off')
+  g1 <- g1 + coord_cartesian(clip = "off")
   g1 <- g1 + xlab(dv_name)
   g1 <- g1 + ylab(iv_name)
   g1 <- g1 + geom_point(
