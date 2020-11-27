@@ -22,7 +22,9 @@ mathematical expression including "p", e.g., "p < .01"}
 Pretty round p-value
 }
 \examples{
-pretty_round_p_value(p_value_vector = 0.049,
-round_digits_after_decimal = 2, include_p_equals = FALSE)
+pretty_round_p_value(
+  p_value_vector = 0.049,
+  round_digits_after_decimal = 2, include_p_equals = FALSE
+)
 pretty_round_p_value(c(0.0015, 0.0014), include_p_equals = TRUE)
 }

@@ -11,6 +11,10 @@ comma_sep_string_to_numbers <- function(string) {
     as.numeric(
       unlist(
         strsplit(
-          gsub(" ", "", string), ","))))
+          gsub(" ", "", string), ","
+        )
+      )
+    )
+  )
   return(output)
 }

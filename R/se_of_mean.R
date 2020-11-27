@@ -17,7 +17,8 @@ se_of_mean <- function(vector, na.rm = TRUE, notify_na_count = NULL) {
   if (notify_na_count == TRUE) {
     message(paste0(
       length(vector) - length(x),
-      " observations were removed due to missing values."))
+      " observations were removed due to missing values."
+    ))
   }
   output <- stats::sd(x) / sqrt(length(x))
   return(output)

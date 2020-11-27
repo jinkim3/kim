@@ -5,23 +5,20 @@
 \title{Two-way ANOVA}
 \usage{
 two_way_anova(
-  data,
-  dv_name,
-  iv_1_name,
-  iv_2_name,
+  data = NULL,
+  dv_name = NULL,
+  iv_1_name = NULL,
+  iv_2_name = NULL,
   iv_1_values = NULL,
   iv_2_values = NULL,
   robust = TRUE,
   iterations = 2000,
   plot = FALSE,
-  ci = NULL,
-  se = NULL,
-  pi = NULL,
-  ci_range = 0.95,
-  pi_range = 0.95,
+  error_bar = "ci",
+  error_bar_range = 0.95,
   line_size = 1,
   dot_size = 3,
-  error_bar_width = 0.13,
+  error_bar_tip_width = 0.13,
   position_dodge = 0.13,
   legend_position = "right",
   output = NULL
@@ -51,24 +48,21 @@ handling time is not an issue.}
 
 \item{plot}{if \code{TRUE}, print a plot and enable returning an output.}
 
-\item{ci}{if \code{TRUE}, error bars will be a confidence interval}
+\item{error_bar}{if \code{error_bar = "se"}; error bars will be +/-1
+standard error, if \code{error_bar = "ci"} error bars will be a
+confidence interval; if \code{error_bar = "pi"}, error bars will be
+a prediction interval}
 
-\item{se}{if \code{TRUE}, error bars will be +/-1 standard error}
-
-\item{pi}{if \code{TRUE}, error bars will be a prediction interval}
-
-\item{ci_range}{width of the confidence interval
-(default = 0.95 for 95 percent confidence interval)}
-
-\item{pi_range}{width of the prediction interval
-(default = 0.95 for 95 percent prediction interval)}
+\item{error_bar_range}{width of the confidence or prediction interval
+(default = 0.95 for 95 percent confidence or prediction interval).
+This argument will not apply when \code{error_bar = "se"}}
 
 \item{line_size}{thickness of the lines connecting group means,
 (default = 1)}
 
 \item{dot_size}{size of the dots indicating group means (default = 3)}
 
-\item{error_bar_width}{graphically, width of the segments
+\item{error_bar_tip_width}{graphically, width of the segments
 at the end of error bars (default = 0.13)}
 
 \item{position_dodge}{by how much should the group means and error bars
@@ -76,7 +70,8 @@ be horizontally offset from each other so as not to overlap?
 (default = 0.13)}
 
 \item{legend_position}{position of the legend:
-"none", "top", "right", "bottom", "left", "none" (default = "right")}
+\code{"none", "top", "right", "bottom", "left", "none"}
+(default = \code{"right"})}
 
 \item{output}{output type can be one of the following: \code{"anova_table"},
 \code{"group_stats"}, \code{"plot"}, \code{"levene_test_result"},
@@ -90,6 +85,8 @@ by default, the output will be \code{"anova_table"}
 Two-way ANOVA
 }
 \examples{
-two_way_anova(data = mtcars, dv_name = "mpg", iv_1_name = "vs",
-iv_2_name = "am", iterations = 100)
+two_way_anova(
+  data = mtcars, dv_name = "mpg", iv_1_name = "vs",
+  iv_2_name = "am", iterations = 100
+)
 }

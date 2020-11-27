@@ -27,6 +27,7 @@ Imports:
     lm.beta,
     mediation,
     moments,
+    paran,
     stats,
     utils,
     weights,

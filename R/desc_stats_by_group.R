@@ -15,7 +15,7 @@ desc_stats_by_group <- function(
   data = NULL,
   var_for_stats = NULL,
   grouping_vars = NULL) {
-  dt1 <- data.table::setDT(data)
+  dt1 <- data.table::setDT(copy(data))
   dt2 <- dt1[, list(
     n = length(get(var_for_stats)),
     mean = mean(get(var_for_stats)),

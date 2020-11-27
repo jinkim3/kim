@@ -5,13 +5,16 @@
 #' @param y name of the variable that will be on the y axis of the barplot
 #' @examples
 #' barplot_for_counts(
-#' data = data.frame(cyl = names(table(mtcars$cyl)),
-#' count = as.vector(table(mtcars$cyl))),
-#' x = "cyl", y = "count")
+#'   data = data.frame(
+#'     cyl = names(table(mtcars$cyl)),
+#'     count = as.vector(table(mtcars$cyl))
+#'   ),
+#'   x = "cyl", y = "count"
+#' )
 #' @export
 #' @import ggplot2
 barplot_for_counts <- function(data = NULL, x, y) {
-  data <- data.table::setDT(data)
+  data <- data.table::setDT(copy(data))
   # check for x axis
   if (!is.null(data) & x %in% names(data) & y %in% names(data)) {
     dt <- data[, c(x, y), with = FALSE]
@@ -31,15 +34,30 @@ barplot_for_counts <- function(data = NULL, x, y) {
       plot.title = element_text(hjust = 0.5),
       axis.title.x = element_text(margin = margin(t = 24)),
       axis.title.y = element_text(
-        angle = 0, vjust = 0.85,
-        margin = margin(r = 24)),
+        angle = 0,
+        vjust = 0.85,
+        margin = margin(r = 24)
+      ),
       axis.title = element_text(
-        face = "bold", color = "black", size = 24),
+        face = "bold",
+        color = "black",
+        size = 24
+      ),
       axis.text = element_text(
-        face = "bold", color = "black", size = 20),
+        face = "bold",
+        color = "black",
+        size = 20
+      ),
       legend.title = element_text(
-        face = "bold", color = "black", size = 24),
+        face = "bold",
+        color = "black",
+        size = 24
+      ),
       legend.text = element_text(
-        face = "bold", color = "black", size = 20))
+        face = "bold",
+        color = "black",
+        size = 20
+      )
+    )
   return(g1)
 }

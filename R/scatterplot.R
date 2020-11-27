@@ -32,12 +32,16 @@
 #' @examples
 #' \donttest{
 #' scatterplot(data = mtcars, x_var_name = "wt", y_var_name = "mpg")
-#' scatterplot(data = mtcars, x_var_name = "wt", y_var_name = "mpg",
-#' point_label_var_name = "hp", weight_var_name = "drat",
-#' annotate_stats = TRUE)
-#' scatterplot(data = mtcars, x_var_name = "wt", y_var_name = "mpg",
-#' point_label_var_name = "hp", weight_var_name = "cyl",
-#' annotate_stats = TRUE)
+#' scatterplot(
+#'   data = mtcars, x_var_name = "wt", y_var_name = "mpg",
+#'   point_label_var_name = "hp", weight_var_name = "drat",
+#'   annotate_stats = TRUE
+#' )
+#' scatterplot(
+#'   data = mtcars, x_var_name = "wt", y_var_name = "mpg",
+#'   point_label_var_name = "hp", weight_var_name = "cyl",
+#'   annotate_stats = TRUE
+#' )
 #' }
 #' @export
 #' @import data.table ggplot2
@@ -55,14 +59,15 @@ scatterplot <- function(
   y_axis_label = NULL,
   point_labels_size_range = c(3, 12),
   jitter_x_percent = 0,
-  jitter_y_percent = 0
-) {
+  jitter_y_percent = 0) {
   # create a temporary dataset
   dt01 <- data.table(x = data[[x_var_name]], y = data[[y_var_name]])
   # add the point label or weight column
   if (!is.null(point_label_var_name)) {
     dt01 <- data.table(
-      dt01, point_labels = data[[point_label_var_name]])
+      dt01,
+      point_labels = data[[point_label_var_name]]
+    )
   }
   if (!is.null(weight_var_name)) {
     dt01 <- data.table(dt01, weight = data[[weight_var_name]])
@@ -73,8 +78,10 @@ scatterplot <- function(
   # remove na values
   dt02 <- stats::na.omit(dt01)
   if (nrow(dt02) < nrow(dt01)) {
-    message(paste0(nrow(dt01) - nrow(dt02),
-                  " rows were removed because of missing values."))
+    message(paste0(
+      nrow(dt01) - nrow(dt02),
+      " rows were removed because of missing values."
+    ))
   }
   # ranges for x and y
   x_range <- max(dt02$x) - min(dt02$x)
@@ -84,7 +91,8 @@ scatterplot <- function(
   # add jitter
   pj <- position_jitter(
     width = jitter_x_percent / 100 * x_range,
-    height = jitter_y_percent / 100 * y_range)
+    height = jitter_y_percent / 100 * y_range
+  )
   # scale points
   if (!is.null(weight_var_name)) {
     g1 <- g1 + aes(size = dt02$weight)
@@ -94,7 +102,9 @@ scatterplot <- function(
   if (!is.null(point_label_var_name)) {
     g1 <- g1 + aes(label = dt02$point_labels)
     g1 <- g1 + geom_text(
-      aes(label = dt02$point_labels, fontface = "bold"), position = pj)
+      aes(label = dt02$point_labels, fontface = "bold"),
+      position = pj
+    )
   } else {
     g1 <- g1 + geom_point(position = pj)
   }
@@ -103,7 +113,8 @@ scatterplot <- function(
     g1 <- g1 + geom_smooth(
       formula = y ~ x,
       method = line_of_fit_type, mapping = aes(weight = dt02$weight),
-      se = ci_for_line_of_fit)
+      se = ci_for_line_of_fit
+    )
   }
   # plot theme
   g1 <- g1 + theme_classic(base_size = 20) %+replace%
@@ -113,12 +124,16 @@ scatterplot <- function(
       axis.title.x = element_text(margin = margin(t = 24)),
       axis.title.y = element_text(
         angle = 0, vjust = 0.85,
-        margin = margin(r = 24)),
+        margin = margin(r = 24)
+      ),
       axis.title = element_text(
-        face = "bold", color = "black", size = 24),
+        face = "bold", color = "black", size = 24
+      ),
       axis.text = element_text(
-        face = "bold", color = "black", size = 20),
-      plot.margin = unit(c(25, 7, 7, 7), "pt"))
+        face = "bold", color = "black", size = 20
+      ),
+      plot.margin = unit(c(25, 7, 7, 7), "pt")
+    )
   g1 <- g1 + coord_cartesian(clip = "off")
   # correlation
   cor_test <- stats::cor.test(dt02[["x"]], dt02[["y"]])
@@ -131,7 +146,8 @@ scatterplot <- function(
     cor_test <-
       weights::wtd.cor(
         x = dt02$x, y = dt02$y,
-        weight = dt02$weight)
+        weight = dt02$weight
+      )
     cor_test_r <- cor_test[1, "correlation"]
     cor_test_p_value <- cor_test[1, "p.value"]
     weighted_r_text <- "weighted"
@@ -144,13 +160,18 @@ scatterplot <- function(
     annotation_01 <-
       as.character(as.expression(substitute(
         t06 * italic(t01)(t02) == t03 * t04 * italic(p) * t05,
-        list(t01 = " r",
-             t02 = cor_test_df,
-             t03 = sub("^(-?)0.", "\\1.",
-                       sprintf(paste0("%.", 2, "f"), cor_test_r)),
-             t04 = ", ",
-             t05 = gsub("p", "", cor_test_p_value_text),
-             t06 = weighted_r_text))))
+        list(
+          t01 = " r",
+          t02 = cor_test_df,
+          t03 = sub(
+            "^(-?)0.", "\\1.",
+            sprintf(paste0("%.", 2, "f"), cor_test_r)
+          ),
+          t04 = ", ",
+          t05 = gsub("p", "", cor_test_p_value_text),
+          t06 = weighted_r_text
+        )
+      )))
     g1 <- g1 + annotate(
       "text",
       x = min(dt02$x) + x_range / 2,
@@ -158,7 +179,8 @@ scatterplot <- function(
       label = annotation_01, parse = TRUE,
       hjust = 0.5, vjust = -0.5,
       size = 6,
-      fontface = "bold")
+      fontface = "bold"
+    )
   }
   # axis labels
   if (is.null(x_axis_label)) {

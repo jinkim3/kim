@@ -5,3 +5,4 @@
 ^cran-comments\.md$
 ^\.travis\.yml$
 ^\.github$
+^function_drafts$

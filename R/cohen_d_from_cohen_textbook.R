@@ -11,7 +11,8 @@
 #' @examples
 #' cohen_d_from_cohen_textbook(1:10, 3:12)
 #' cohen_d_from_cohen_textbook(
-#' data = mtcars, iv_name = "vs", dv_name = "mpg")
+#'   data = mtcars, iv_name = "vs", dv_name = "mpg"
+#' )
 #' @export
 cohen_d_from_cohen_textbook <- function(
   sample_1 = NULL, sample_2 = NULL,
@@ -26,18 +27,22 @@ cohen_d_from_cohen_textbook <- function(
       stop(paste0(
         "The independent variable has ",
         length(unique(data[[iv_name]])), " levels.\n",
-        "Cohen's d can be calculated when there are exactly 2 levels."))
+        "Cohen's d can be calculated when there are exactly 2 levels."
+      ))
     } else {
       s1 <- subset(
-        data, get(iv_name) == sort(unique(data[[iv_name]]))[1])
+        data, get(iv_name) == sort(unique(data[[iv_name]]))[1]
+      )[[dv_name]]
       s2 <- subset(
-        data, get(iv_name) == sort(unique(data[[iv_name]]))[2])
+        data, get(iv_name) == sort(unique(data[[iv_name]]))[2]
+      )[[dv_name]]
       s1 <- s1[!is.na(s2)]
       s2 <- s2[!is.na(s2)]
     }
   }
   output <- (mean(s1) - mean(s2)) / sqrt(
     (sum((s1 - mean(s1))^2) + sum((s2 - mean(s2))^2)) /
-      (length(s1) + length(s2) - 2))
+      (length(s1) + length(s2) - 2)
+  )
   return(output)
 }

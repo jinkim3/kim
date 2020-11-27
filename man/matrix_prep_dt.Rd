@@ -17,6 +17,8 @@ header of a column in the eventual matrix}
 Prepare a two-column data.table that will be used to fill values in a matrix
 }
 \examples{
-matrix_prep_dt(row_var_names = c("mpg", "cyl"),
-col_var_names = c("hp", "gear"))
+matrix_prep_dt(
+  row_var_names = c("mpg", "cyl"),
+  col_var_names = c("hp", "gear")
+)
 }

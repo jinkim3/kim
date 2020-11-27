@@ -21,7 +21,8 @@ desc_stats <- function(vector = NULL, notify_na_count = NULL) {
   }
   if (notify_na_count == TRUE) {
     message(paste0(
-      na_count, " observation(s) were removed due to missing values."))
+      na_count, " observation(s) were removed due to missing values."
+    ))
   }
   # get stats
   n <- length(v_no_na)
@@ -35,9 +36,11 @@ desc_stats <- function(vector = NULL, notify_na_count = NULL) {
   kurtosis <- moments::kurtosis(v_no_na)
   # combine into a named vector
   statistic <- c(
-    n, mean, sd, median, min, max, se_of_mean, skewness, kurtosis)
+    n, mean, sd, median, min, max, se_of_mean, skewness, kurtosis
+  )
   names(statistic) <- c(
     "n", "mean", "sd", "median", "min", "max",
-    "se_of_mean", "skewness", "kurtosis")
+    "se_of_mean", "skewness", "kurtosis"
+  )
   return(statistic)
 }

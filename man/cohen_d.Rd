@@ -34,5 +34,4 @@ Torchiano (2020) \url{https://github.com/mtorchiano/effsize/}
 \examples{
 cohen_d(1:10, 3:12)
 cohen_d(data = mtcars, iv_name = "vs", dv_name = "mpg", ci_range = 0.99)
-
 }

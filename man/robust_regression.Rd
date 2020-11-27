@@ -30,6 +30,8 @@ even larger number, if slower handling time is not an issue.}
 Estimate coefficients in a multiple regression model by bootstrapping
 }
 \examples{
-robust_regression(data = mtcars, formula = mpg ~ cyl * hp,
-iterations = 100)
+robust_regression(
+  data = mtcars, formula = mpg ~ cyl * hp,
+  iterations = 100
+)
 }

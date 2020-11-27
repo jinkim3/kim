@@ -38,7 +38,9 @@ Creates histograms by group to compare distributions
 }
 \examples{
 histogram_by_group(data = mtcars, iv_name = "cyl", dv_name = "mpg")
-histogram_by_group(data = mtcars, iv_name = "cyl", dv_name = "mpg",
-order_of_groups_top_to_bot = c("8", "4"), number_of_bins = 10,
-space_between_histograms = 0.5)
+histogram_by_group(
+  data = mtcars, iv_name = "cyl", dv_name = "mpg",
+  order_of_groups_top_to_bot = c("8", "4"), number_of_bins = 10,
+  space_between_histograms = 0.5
+)
 }

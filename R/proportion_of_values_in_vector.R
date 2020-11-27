@@ -6,20 +6,25 @@
 #' \code{vector} and \code{values} before calculation
 #' @examples
 #' proportion_of_values_in_vector(
-#' values = 2:3, vector = c(1:3, NA))
+#'   values = 2:3, vector = c(1:3, NA)
+#' )
 #' proportion_of_values_in_vector(
-#' values = 2:3, vector = c(1:3, NA), na.exclude = FALSE)
+#'   values = 2:3, vector = c(1:3, NA), na.exclude = FALSE
+#' )
 #' proportion_of_values_in_vector(
-#' values = c(2:3, NA), vector = c(1:3, NA), na.exclude = FALSE)
+#'   values = c(2:3, NA), vector = c(1:3, NA), na.exclude = FALSE
+#' )
 #' @export
 proportion_of_values_in_vector <- function(
   values, vector, na.exclude = TRUE) {
   if (na.exclude == TRUE) {
     message(paste0(
-      sum(is.na(values)), " of ", length(values), " values were NA."))
+      sum(is.na(values)), " of ", length(values), " values were NA."
+    ))
     message(paste0(
       sum(is.na(vector)), " of ", length(vector),
-      " elements in the vector were NA."))
+      " elements in the vector were NA."
+    ))
     values_with_no_na <- values[!is.na(values)]
     vector_with_no_na <- vector[!is.na(vector)]
     output <- sum(values_with_no_na %in% vector_with_no_na) /

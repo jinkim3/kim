@@ -11,8 +11,7 @@
 #' coefficent_of_variation(1:4, pop_or_sample = "sample")
 #' coefficent_of_variation(1:4, pop_or_sample = "pop")
 #' @export
-coefficent_of_variation <- function(
-  vector, pop_or_sample = "pop") {
+coefficent_of_variation <- function(vector, pop_or_sample = "pop") {
   # deal with NA values
   v_no_na <- vector[!is.na(vector)]
   # population or sample?

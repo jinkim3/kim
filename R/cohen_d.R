@@ -13,7 +13,6 @@
 #' @examples
 #' cohen_d(1:10, 3:12)
 #' cohen_d(data = mtcars, iv_name = "vs", dv_name = "mpg", ci_range = 0.99)
-#'
 #' @export
 cohen_d <- function(
   sample_1 = NULL, sample_2 = NULL,
@@ -24,12 +23,15 @@ cohen_d <- function(
       df <- data.frame(
         "iv" = c(
           rep("sample_1", length(sample_1)),
-          rep("sample_2", length(sample_2))),
-        "dv" = c(sample_1, sample_2))
+          rep("sample_2", length(sample_2))
+        ),
+        "dv" = c(sample_1, sample_2)
+      )
     } else {
       stop(paste0(
         "Please make sure that both of the vectors, sample_1 ",
-        "and sample_2 are numeric vectors."))
+        "and sample_2 are numeric vectors."
+      ))
     }
   }
   # if data object is provided
@@ -38,11 +40,13 @@ cohen_d <- function(
       stop(paste0(
         "The independent variable has ",
         length(unique(data[[iv_name]])), " levels.\n",
-        "Cohen's d can be calculated when there are exactly 2 levels."))
+        "Cohen's d can be calculated when there are exactly 2 levels."
+      ))
     } else {
       df <- data.frame(
         "iv" = data[[iv_name]],
-        "dv" = data[[dv_name]])
+        "dv" = data[[dv_name]]
+      )
     }
   }
   # convert iv to factor

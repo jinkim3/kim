@@ -30,5 +30,6 @@ Statistical Power Analysis for the Behavioral Sciences, 2nd Edition
 \examples{
 cohen_d_from_cohen_textbook(1:10, 3:12)
 cohen_d_from_cohen_textbook(
-data = mtcars, iv_name = "vs", dv_name = "mpg")
+  data = mtcars, iv_name = "vs", dv_name = "mpg"
+)
 }

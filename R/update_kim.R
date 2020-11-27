@@ -6,7 +6,9 @@
 #' (default = "github")
 #'
 #' @examples
-#' \donttest{update_kim()}
+#' \donttest{
+#' update_kim()
+#' }
 #'
 #' @export
 #' @import devtools

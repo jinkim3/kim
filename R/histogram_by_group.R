@@ -15,9 +15,11 @@
 #' @return a ggplot object
 #' @examples
 #' histogram_by_group(data = mtcars, iv_name = "cyl", dv_name = "mpg")
-#' histogram_by_group(data = mtcars, iv_name = "cyl", dv_name = "mpg",
-#' order_of_groups_top_to_bot = c("8", "4"), number_of_bins = 10,
-#' space_between_histograms = 0.5)
+#' histogram_by_group(
+#'   data = mtcars, iv_name = "cyl", dv_name = "mpg",
+#'   order_of_groups_top_to_bot = c("8", "4"), number_of_bins = 10,
+#'   space_between_histograms = 0.5
+#' )
 #' @export
 #' @import data.table ggplot2 ggridges
 histogram_by_group <- function(
@@ -26,11 +28,11 @@ histogram_by_group <- function(
   dv_name = NULL,
   order_of_groups_top_to_bot = NULL,
   number_of_bins = 40,
-  space_between_histograms = 0.15
-) {
+  space_between_histograms = 0.15) {
   # create the dataset
   dt01 <- stats::na.omit(
-    setDT(data)[, c(iv_name, dv_name), with = FALSE])
+    data.table::setDT(copy(data))[, c(iv_name, dv_name), with = FALSE]
+  )
   # change names to just iv and dv
   names(dt01) <- c("iv", "dv")
   # if iv is numeric, change it to character
@@ -52,57 +54,82 @@ histogram_by_group <- function(
       n = length(get("dv")),
       se_of_mean = stats::sd(get("dv")) / sqrt(length(get("dv"))),
       # ran into an error without the "as.double" below
-      median = as.double(stats::median(get("dv")))),
-      keyby = "iv"]
+      median = as.double(stats::median(get("dv")))
+    ),
+    keyby = "iv"
+    ]
   # order the stats table
   stats_by_iv <- stats_by_iv[
-    match(make.unique(order_of_groups_top_to_bot),
-          make.unique(stats_by_iv[["iv"]]))]
+    match(
+      make.unique(order_of_groups_top_to_bot),
+      make.unique(stats_by_iv[["iv"]])
+    )
+  ]
   reversed_order <- rev(order_of_groups_top_to_bot)
   y_tick_mark_labels <- vapply(reversed_order, function(x) {
-    paste0(x, "  \n(n = ", stats_by_iv[stats_by_iv$iv == x]$n,
-           ")  ")},
-    FUN.VALUE = character(1))
+    paste0(
+      x, "  \n(n = ", stats_by_iv[stats_by_iv$iv == x]$n,
+      ")  "
+    )
+  },
+  FUN.VALUE = character(1)
+  )
   # begin plotting
   g1 <- ggplot(
     data = dt01,
-    aes(x = get("dv"), y = get("iv"),
-        stat(stats::density), fill = get("iv"))) +
+    aes(
+      x = get("dv"), y = get("iv"),
+      stat(stats::density), fill = get("iv")
+    )
+  ) +
     ggridges::geom_density_ridges2(
       stat = "binline", bins = number_of_bins,
-      scale = (1 - space_between_histograms), draw_baseline = FALSE)
+      scale = (1 - space_between_histograms), draw_baseline = FALSE
+    )
   g1 <- g1 + scale_y_discrete(
     limits = reversed_order,
     breaks = reversed_order,
-    labels = y_tick_mark_labels)
+    labels = y_tick_mark_labels
+  )
   g1 <- g1 + scale_x_continuous(expand = c(0, 0))
   g1 <- g1 + theme_classic(base_size = 16) %+replace%
     theme(
       plot.title = element_text(hjust = 0.5),
       axis.text = element_text(
-        face = "bold", color = "black", size = 12, hjust = 0.5),
+        face = "bold", color = "black", size = 12, hjust = 0.5
+      ),
       axis.text.y = element_text(hjust = 0.5),
       axis.title.x = element_text(margin = margin(t = 12)),
       axis.title.y = element_text(
         vjust = 0.95,
-        margin = margin(r = 12)),
-      legend.position = "none")
+        margin = margin(r = 12)
+      ),
+      legend.position = "none"
+    )
   g1 <- g1 + coord_cartesian(clip = "off")
   g1 <- g1 + xlab(dv_name)
   g1 <- g1 + ylab(iv_name)
   g1 <- g1 + geom_point(
     data = stats_by_iv, aes(
-      x = stats_by_iv$mean, y = stats_by_iv$iv), size = 4)
+      x = stats_by_iv$mean, y = stats_by_iv$iv
+    ), size = 4
+  )
   g1 <- g1 + geom_errorbarh(
     data = stats_by_iv,
-    aes(xmin = stats_by_iv$mean - stats_by_iv$se_of_mean,
-        xmax = stats_by_iv$mean + stats_by_iv$se_of_mean,
-        y = stats_by_iv$iv),
-    size = 2, height = 0.2, inherit.aes = FALSE)
+    aes(
+      xmin = stats_by_iv$mean - stats_by_iv$se_of_mean,
+      xmax = stats_by_iv$mean + stats_by_iv$se_of_mean,
+      y = stats_by_iv$iv
+    ),
+    size = 2, height = 0.2, inherit.aes = FALSE
+  )
   # medians
   g1 <- g1 + geom_text(
     data = stats_by_iv,
-    aes(x = stats_by_iv$median, y = stats_by_iv$iv, label = "Mdn\nX",
-        fontface = 2), vjust = -0.5)
+    aes(
+      x = stats_by_iv$median, y = stats_by_iv$iv, label = "Mdn\nX",
+      fontface = 2
+    ), vjust = -0.5
+  )
   return(g1)
 }

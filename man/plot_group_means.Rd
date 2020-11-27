@@ -59,8 +59,12 @@ Creates a plot of sample means and error bars by group.
 }
 \examples{
 plot_group_means(data = mtcars, dv_name = "mpg", iv_name = c("vs", "am"))
-plot_group_means(data = mtcars, dv_name = "mpg", iv_name = c("vs", "am"),
-error_bar = "se")
-plot_group_means(data = mtcars, dv_name = "mpg", iv_name = c("vs", "am"),
-error_bar = "pi", error_bar_range = 0.99)
+plot_group_means(
+  data = mtcars, dv_name = "mpg", iv_name = c("vs", "am"),
+  error_bar = "se"
+)
+plot_group_means(
+  data = mtcars, dv_name = "mpg", iv_name = c("vs", "am"),
+  error_bar = "pi", error_bar_range = 0.99
+)
 }

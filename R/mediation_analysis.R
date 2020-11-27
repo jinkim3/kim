@@ -23,8 +23,10 @@
 #' even larger number, if slower handling time is not an issue.
 #' @examples
 #' \donttest{
-#' mediation_analysis(data = mtcars, iv_name = "cyl",
-#' mediator_name = "disp", dv_name = "mpg", iterations = 100)
+#' mediation_analysis(
+#'   data = mtcars, iv_name = "cyl",
+#'   mediator_name = "disp", dv_name = "mpg", iterations = 100
+#' )
 #' }
 #'
 #' @export
@@ -41,7 +43,8 @@ mediation_analysis <- function(
     stop(paste0(
       "The current version of the package can only handle only ",
       "one independent variable, one dependent variable, and ",
-      "one mediator variable."))
+      "one mediator variable."
+    ))
   }
   if (iterations < 1000) {
     message(paste0(
@@ -49,25 +52,32 @@ mediation_analysis <- function(
       iterations, ", seems too low.\n\nPlease consider using a ",
       "larger number of bootstrapping samples",
       "\n(e.g., 1000, 2000, 5000, or 10000) if you can tolerate a ",
-      "slow running time.\n"))
+      "slow running time.\n"
+    ))
   }
   med_model_formula <- stats::as.formula(paste0(
-    mediator_name, " ~ ", iv_name))
+    mediator_name, " ~ ", iv_name
+  ))
   outcome_model_formula <- stats::as.formula(paste0(
-    dv_name, " ~ ", mediator_name, " + ", iv_name))
+    dv_name, " ~ ", mediator_name, " + ", iv_name
+  ))
   if (!is.null(covariates_names)) {
     med_model_formula <- paste0(
       mediator_name, " ~ ", iv_name, " + ",
-      paste0(covariates_names, collapse = " + "))
+      paste0(covariates_names, collapse = " + ")
+    )
     outcome_model_formula <- paste0(
       dv_name, " ~ ", mediator_name, " + ", iv_name, " + ",
-      paste0(covariates_names, collapse = " + "))
+      paste0(covariates_names, collapse = " + ")
+    )
   }
   med_model <- stats::lm(
     formula = med_model_formula,
-    data = data)
+    data = data
+  )
   outcome_model <- stats::lm(
-    formula = outcome_model_formula, data = data)
+    formula = outcome_model_formula, data = data
+  )
   # x: full model after mediation analysis
   x <- mediation::mediate(
     med_model,
@@ -75,7 +85,8 @@ mediation_analysis <- function(
     sims = iterations,
     treat = iv_name,
     mediator = mediator_name,
-    robustSE = robust_se)
+    robustSE = robust_se
+  )
   # table output, adapted from the mediation package v4.5.0 source code
   smat <- c(x$d1, x$d1.ci, x$d1.p)
   smat <- rbind(smat, c(x$z0, x$z0.ci, x$z0.p))
@@ -84,15 +95,18 @@ mediation_analysis <- function(
   clp <- 100 * x$conf.level
   rownames(smat) <- c(
     "Indirect Effect", "Direct Effect", "Total Effect",
-    "Proportion Mediated")
+    "Proportion Mediated"
+  )
   colnames(smat) <- c(
     "Estimate", paste0(clp, "% CI Lower"),
-    paste0(clp, "% CI Upper"), "p-value")
+    paste0(clp, "% CI Upper"), "p-value"
+  )
   # print mediation output
   cat(paste0(
     "\nMediation analysis using 'mediation' package ",
     "(Tingley et al. 2019; v4.5.0)\n\n",
-    "Quasi-Bayesian Confidence Intervals\n\n"))
+    "Quasi-Bayesian Confidence Intervals\n\n"
+  ))
   stats::printCoefmat(smat, digits = 4)
   cat("\nSample Size Used:", x$nobs, "\n\n")
   cat("Simulations:", x$sims, "\n")

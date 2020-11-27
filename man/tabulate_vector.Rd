@@ -55,15 +55,21 @@ Shows frequency and proportion of unique values in a table format
 \examples{
 tabulate_vector(c("a", "b", "b", "c", "c", "c", NA))
 tabulate_vector(c("a", "b", "b", "c", "c", "c", NA),
-sort_by_increasing_count = TRUE)
+  sort_by_increasing_count = TRUE
+)
 tabulate_vector(c("a", "b", "b", "c", "c", "c", NA),
-sort_by_decreasing_value = TRUE)
+  sort_by_decreasing_value = TRUE
+)
 tabulate_vector(c("a", "b", "b", "c", "c", "c", NA),
-sort_by_increasing_value = TRUE)
+  sort_by_increasing_value = TRUE
+)
 tabulate_vector(c("a", "b", "b", "c", "c", "c", NA),
-sigfigs = 4)
+  sigfigs = 4
+)
 tabulate_vector(c("a", "b", "b", "c", "c", "c", NA),
-round_digits_after_decimal = 1)
+  round_digits_after_decimal = 1
+)
 tabulate_vector(c("a", "b", "b", "c", "c", "c", NA),
-output_type = "df")
+  output_type = "df"
+)
 }

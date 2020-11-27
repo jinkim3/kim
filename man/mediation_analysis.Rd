@@ -46,8 +46,10 @@ Tingley et al. (2019)
 }
 \examples{
 \donttest{
-mediation_analysis(data = mtcars, iv_name = "cyl",
-mediator_name = "disp", dv_name = "mpg", iterations = 100)
+mediation_analysis(
+  data = mtcars, iv_name = "cyl",
+  mediator_name = "disp", dv_name = "mpg", iterations = 100
+)
 }
 
 }

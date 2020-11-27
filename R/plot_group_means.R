@@ -28,10 +28,14 @@
 #' If \code{output = "table"}, the output will be a data.table object.
 #' @examples
 #' plot_group_means(data = mtcars, dv_name = "mpg", iv_name = c("vs", "am"))
-#' plot_group_means(data = mtcars, dv_name = "mpg", iv_name = c("vs", "am"),
-#' error_bar = "se")
-#' plot_group_means(data = mtcars, dv_name = "mpg", iv_name = c("vs", "am"),
-#' error_bar = "pi", error_bar_range = 0.99)
+#' plot_group_means(
+#'   data = mtcars, dv_name = "mpg", iv_name = c("vs", "am"),
+#'   error_bar = "se"
+#' )
+#' plot_group_means(
+#'   data = mtcars, dv_name = "mpg", iv_name = c("vs", "am"),
+#'   error_bar = "pi", error_bar_range = 0.99
+#' )
 #' @export
 #' @import ggplot2
 plot_group_means <- function(
@@ -46,7 +50,7 @@ plot_group_means <- function(
   position_dodge = 0.13,
   legend_position = "right") {
   # convert to data table
-  dt1 <- data.table::setDT(data)[, c(dv_name, iv_name), with = FALSE]
+  dt1 <- data.table::setDT(copy(data))[, c(dv_name, iv_name), with = FALSE]
   # convert iv to factors
   for (col in iv_name) {
     data.table::set(dt1, j = col, value = as.factor(dt1[[col]]))
@@ -55,26 +59,30 @@ plot_group_means <- function(
   dt2 <- kim::desc_stats_by_group(
     data = dt1,
     var_for_stats = dv_name,
-    grouping_vars = iv_name)
+    grouping_vars = iv_name
+  )
   # check the number of ivs
   if (length(iv_name) > 2) {
     stop(paste0(
       "The current version of this function cannot handle more ",
-      "than two IVs.\nPlease enter one or two IV(s)."))
+      "than two IVs.\nPlease enter one or two IV(s)."
+    ))
   }
   # ggplot base
   if (length(iv_name) == 1) {
     g1 <- ggplot(data = dt2, aes(
       y = mean,
       x = get(iv_name),
-      group = 1)) # connect the dots
+      group = 1
+    )) # connect the dots
   }
   if (length(iv_name) == 2) {
     g1 <- ggplot(data = dt2, aes(
       y = mean,
       x = get(iv_name[1]),
       color = get(iv_name[2]),
-      group = get(iv_name[2])))
+      group = get(iv_name[2])
+    ))
   }
   # The errorbars will overlap,
   # so use position_dodge to move them horizontally
@@ -82,26 +90,35 @@ plot_group_means <- function(
   # build further
   if (error_bar == "ci") {
     g1 <- g1 + geom_errorbar(aes(
-      ymin = dt2$ci_95_ll, ymax = dt2$ci_95_ul),
-      width = error_bar_tip_width, size = line_size, position = pd)
+      ymin = dt2$ci_95_ll, ymax = dt2$ci_95_ul
+    ),
+    width = error_bar_tip_width, size = line_size, position = pd
+    )
     error_bar_desc_text <- paste0(
-      error_bar_range * 100, "% confidence intervals")
+      error_bar_range * 100, "% confidence intervals"
+    )
   }
   if (error_bar == "se") {
     g1 <- g1 + geom_errorbar(aes(
-      ymin = dt2$mean - dt2$se, ymax = dt2$mean + dt2$se),
-      width = error_bar_tip_width, size = line_size, position = pd)
+      ymin = dt2$mean - dt2$se, ymax = dt2$mean + dt2$se
+    ),
+    width = error_bar_tip_width, size = line_size, position = pd
+    )
     error_bar_desc_text <- "one standard error (+/- 1 SE)"
   }
   if (error_bar == "pi") {
     g1 <- g1 + geom_errorbar(aes(
-      ymin = dt2$pi_95_ll, ymax = dt2$pi_95_ul),
-      width = error_bar_tip_width, size = line_size, position = pd)
+      ymin = dt2$pi_95_ll, ymax = dt2$pi_95_ul
+    ),
+    width = error_bar_tip_width, size = line_size, position = pd
+    )
     error_bar_desc_text <- paste0(
-      error_bar_range * 100, "% prediction intervals")
+      error_bar_range * 100, "% prediction intervals"
+    )
     if (error_bar_range == 0.95) {
       error_bar_desc_text <- paste0(
-        error_bar_desc_text, " (+/- ~1.96 SD)")
+        error_bar_desc_text, " (+/- ~1.96 SD)"
+      )
     }
   }
   # points and lines
@@ -115,7 +132,9 @@ plot_group_means <- function(
   g1 <- g1 + ylab(dv_name)
   g1 <- g1 + labs(
     caption = paste0(
-      "\nError bars indicate ", error_bar_desc_text, " around the mean."))
+      "\nError bars indicate ", error_bar_desc_text, " around the mean."
+    )
+  )
   # plot theme
   g1 <- g1 + theme_classic(base_size = 20) %+replace%
     theme(
@@ -124,14 +143,20 @@ plot_group_means <- function(
       axis.title.x = element_text(margin = margin(t = 24)),
       axis.title.y = element_text(
         angle = 0, vjust = 0.85,
-        margin = margin(r = 24)),
+        margin = margin(r = 24)
+      ),
       axis.title = element_text(
-        face = "bold", color = "black", size = 24),
+        face = "bold", color = "black", size = 24
+      ),
       axis.text = element_text(
-        face = "bold", color = "black", size = 20),
+        face = "bold", color = "black", size = 20
+      ),
       legend.title = element_text(
-        face = "bold", color = "black", size = 24),
+        face = "bold", color = "black", size = 24
+      ),
       legend.text = element_text(
-        face = "bold", color = "black", size = 20))
+        face = "bold", color = "black", size = 20
+      )
+    )
   return(g1)
 }

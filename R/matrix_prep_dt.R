@@ -5,8 +5,10 @@
 #' @param col_var_names a vector of variable names, each of which will be
 #' header of a column in the eventual matrix
 #' @examples
-#' matrix_prep_dt(row_var_names = c("mpg", "cyl"),
-#' col_var_names = c("hp", "gear"))
+#' matrix_prep_dt(
+#'   row_var_names = c("mpg", "cyl"),
+#'   col_var_names = c("hp", "gear")
+#' )
 #' @export
 # create a matrix
 matrix_prep_dt <- function(

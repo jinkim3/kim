@@ -19,9 +19,12 @@ Proportion of given values in a vector
 }
 \examples{
 proportion_of_values_in_vector(
-values = 2:3, vector = c(1:3, NA))
+  values = 2:3, vector = c(1:3, NA)
+)
 proportion_of_values_in_vector(
-values = 2:3, vector = c(1:3, NA), na.exclude = FALSE)
+  values = 2:3, vector = c(1:3, NA), na.exclude = FALSE
+)
 proportion_of_values_in_vector(
-values = c(2:3, NA), vector = c(1:3, NA), na.exclude = FALSE)
+  values = c(2:3, NA), vector = c(1:3, NA), na.exclude = FALSE
+)
 }
