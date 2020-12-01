@@ -42,7 +42,7 @@ model consisting of one independent variable, one mediator variable,
 and one dependent variable.
 Uses the source code from 'mediation' package v4.5.0,
 Tingley et al. (2019)
-\url{https://cran.r-project.org/web/packages/mediation/index.html}
+\url{https://cran.r-project.org/package=mediation}
 }
 \examples{
 \donttest{
