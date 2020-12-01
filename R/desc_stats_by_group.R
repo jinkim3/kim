@@ -13,13 +13,14 @@
 #' desc_stats_by_group(data = mtcars, var_for_stats = "mpg",
 #' grouping_vars = c("vs", "am"))
 #' @export
+#' @import data.table
 desc_stats_by_group <- function(
   data = NULL,
   var_for_stats = NULL,
   grouping_vars = NULL,
   sigfigs = NULL,
   cols_to_round = NULL) {
-  dt1 <- data.table::setDT(copy(data))
+  dt1 <- setDT(copy(data))
   dt2 <- dt1[, list(
     n = as.numeric(length(get(var_for_stats))),
     mean = as.numeric(mean(get(var_for_stats))),
