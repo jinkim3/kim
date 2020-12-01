@@ -7,7 +7,7 @@
 #' and one dependent variable.
 #' Uses the source code from 'mediation' package v4.5.0,
 #' Tingley et al. (2019)
-#' <https://cran.r-project.org/web/packages/mediation/index.html>
+#' <https://cran.r-project.org/package=mediation>
 #'
 #' @param data a data object (a data frame or a data.table)
 #' @param iv_name name of the independent variable
