@@ -51,7 +51,7 @@ desc_stats_by_group <- function(
         "mean", "sd", "median", "se", "ci_95_ll", "ci_95_ul", "pi_95_ll",
         "pi_95_ul", "skewness", "kurtosis")
       dt2 <- dt2[, (cols_to_round) := signif(.SD, sigfigs),
-          .SDcols = cols_to_round]
+          .SDcols = cols_to_round][]
     }
   }
   return(dt2)
