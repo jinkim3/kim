@@ -6,6 +6,8 @@
 #' @param var_for_stats name of the variable for which descriptive
 #' statistics will be calculated
 #' @param grouping_vars name(s) of grouping variables
+#' @param sigfigs number of significant digits to round to
+#' @param cols_to_round names of columns whose values will be rounded
 #' @return a data.frame
 #' @examples
 #' desc_stats_by_group(data = mtcars, var_for_stats = "mpg",
@@ -14,7 +16,9 @@
 desc_stats_by_group <- function(
   data = NULL,
   var_for_stats = NULL,
-  grouping_vars = NULL) {
+  grouping_vars = NULL,
+  sigfigs = NULL,
+  cols_to_round = NULL) {
   dt1 <- data.table::setDT(copy(data))
   dt2 <- dt1[, list(
     n = as.numeric(length(get(var_for_stats))),
@@ -39,5 +43,15 @@ desc_stats_by_group <- function(
     kurtosis = as.numeric(
       moments::kurtosis(get(var_for_stats)))),
     keyby = grouping_vars]
+  # round to significant digits
+  if (!is.null(sigfigs)) {
+    if (is.null(cols_to_round)) {
+      cols_to_round <- c(
+        "mean", "sd", "median", "se", "ci_95_ll", "ci_95_ul", "pi_95_ll",
+        "pi_95_ul", "skewness", "kurtosis")
+      dt2 <- dt2[, (cols_to_round) := signif(.SD, sigfigs),
+          .SDcols = cols_to_round]
+    }
+  }
   return(dt2)
 }

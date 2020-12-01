@@ -4,7 +4,13 @@
 \alias{desc_stats_by_group}
 \title{Descriptive statistics by group}
 \usage{
-desc_stats_by_group(data = NULL, var_for_stats = NULL, grouping_vars = NULL)
+desc_stats_by_group(
+  data = NULL,
+  var_for_stats = NULL,
+  grouping_vars = NULL,
+  sigfigs = NULL,
+  cols_to_round = NULL
+)
 }
 \arguments{
 \item{data}{a data object (a data frame or a data.table)}
@@ -13,6 +19,10 @@ desc_stats_by_group(data = NULL, var_for_stats = NULL, grouping_vars = NULL)
 statistics will be calculated}
 
 \item{grouping_vars}{name(s) of grouping variables}
+
+\item{sigfigs}{number of significant digits to round to}
+
+\item{cols_to_round}{names of columns whose values will be rounded}
 }
 \value{
 a data.frame
