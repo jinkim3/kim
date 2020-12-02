@@ -55,6 +55,9 @@ setup_r_env <- function(
       detach("package:kim", unload = TRUE, character.only = TRUE)
     }
     kim::prep("kim")
-    message("Package 'kim' has been unloaded and loaded.")
+    message(paste0(
+      "Package 'kim' v",
+      utils::packageVersion("kim"),
+      " has been unloaded and loaded."))
   }
 }

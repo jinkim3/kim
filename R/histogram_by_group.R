@@ -20,6 +20,8 @@
 #'   order_of_groups_top_to_bot = c("8", "4"), number_of_bins = 10,
 #'   space_between_histograms = 0.5
 #' )
+#' histogram_by_group(
+#' data = iris, iv_name = "Species", dv_name = "Sepal.Length")
 #' @export
 #' @import data.table ggplot2 ggridges
 histogram_by_group <- function(
@@ -31,7 +33,8 @@ histogram_by_group <- function(
   space_between_histograms = 0.15) {
   # create the dataset
   dt01 <- stats::na.omit(
-    data.table::setDT(copy(data))[, c(iv_name, dv_name), with = FALSE]
+    data.table::setDT(
+      data.table::copy(data))[, c(iv_name, dv_name), with = FALSE]
   )
   # change names to just iv and dv
   names(dt01) <- c("iv", "dv")
@@ -62,7 +65,7 @@ histogram_by_group <- function(
   stats_by_iv <- stats_by_iv[
     match(
       make.unique(order_of_groups_top_to_bot),
-      make.unique(stats_by_iv[["iv"]])
+      make.unique(as.character(stats_by_iv[["iv"]]))
     )
   ]
   reversed_order <- rev(order_of_groups_top_to_bot)

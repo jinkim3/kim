@@ -34,7 +34,7 @@ a result of interest)}
 \item{sigfigs}{number of significant digits to round to}
 }
 \description{
-Conducts chi-square tests for all possible pairwise comparisons
+Conducts a chi-square test for every possible pairwise comparison
 with Bonferroni correction
 }
 \examples{

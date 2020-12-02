@@ -43,4 +43,6 @@ histogram_by_group(
   order_of_groups_top_to_bot = c("8", "4"), number_of_bins = 10,
   space_between_histograms = 0.5
 )
+histogram_by_group(
+data = iris, iv_name = "Species", dv_name = "Sepal.Length")
 }

@@ -154,7 +154,7 @@ scatterplot <- function(
   }
   # nice p value
   cor_test_p_value_text <-
-    pretty_round_p_value(cor_test_p_value, include_p_equals = TRUE)
+    kim::pretty_round_p_value(cor_test_p_value, include_p_equals = TRUE)
   # annotate stats
   if (annotate_stats) {
     annotation_01 <-

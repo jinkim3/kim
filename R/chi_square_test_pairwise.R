@@ -1,6 +1,6 @@
 #' Chi square test, pairwise
 #'
-#' Conducts chi-square tests for all possible pairwise comparisons
+#' Conducts a chi-square test for every possible pairwise comparison
 #' with Bonferroni correction
 #'
 #' @param data a data object (a data frame or a data.table)
