@@ -36,12 +36,18 @@ setup_r_env <- function(
   if (set_wd_to_current_file == TRUE) {
     kim::prep(rstudioapi)
     setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+    message(paste0(
+    "The working directory has been set to the location of the current",
+    " file:\n"))
+    cat(paste0(getwd(), "\n"))
   }
+  # unload and load package kim
   if (prep_kim == TRUE) {
     # unload and attach the package kim
     while ("package:kim" %in% search()) {
       detach("package:kim", unload = TRUE, character.only = TRUE)
     }
     kim::prep(kim)
+    message("Package 'kim' has been unloaded and loaded.")
   }
 }
