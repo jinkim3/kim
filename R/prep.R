@@ -1,9 +1,9 @@
 #' Prepare package(s) for use
 #'
-#' Loads package(s). If package(s) are not installed,
-#' install them before loading.
+#' Installs, loads, and attaches package(s). If package(s) are not
+#' installed, installs them prior to loading and attaching.
 #'
-#' @param ... names of packages to load, separated by commas,
+#' @param ... names of packages to load and attach, separated by commas,
 #' e.g., \code{"ggplot2", data.table}. The arguments can be any number
 #' of packages, and they may or may not be wrapped in quotes.
 #'
@@ -41,7 +41,7 @@ prep <- function(...) {
   pkg_that_failed_to_install <- setdiff(
     pkg_to_install, installed_packages_2
   )
-  # check which packages can be loaded
+  # check which packages can be loaded (and attached)
   pkg_to_check_if_loaded <- entered_pkg[
     which(entered_pkg %in% installed_packages_2)
   ]
@@ -52,7 +52,7 @@ prep <- function(...) {
       which(!pkg_to_check_if_loaded %in% pkg_loaded)
     ]
     if (length(pkg_to_load) > 0) {
-      # load packages
+      # load and attach packages
       invisible(lapply(pkg_to_load, library, character.only = TRUE))
     }
   }

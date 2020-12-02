@@ -1,4 +1,4 @@
-# kim 0.2.1
+# kim 0.2.17
 * Added more functions including prep and update_kim
 
 # kim 0.1.11

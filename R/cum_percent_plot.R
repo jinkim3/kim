@@ -10,8 +10,9 @@
 #' @examples
 #' cum_percent_plot(c(1:100, NA, NA))
 #' cum_percent_plot(mtcars$mpg)
-#' cum_percent_plot(mtcars$mpg, output_type = "dt")
+#' cum_percent_plot(vector= mtcars$mpg, output_type = "dt")
 #' @export
+#' @import ggplot2
 cum_percent_plot <- function(vector, output_type = "plot") {
   # omit na
   v_no_na <- stats::na.omit(vector)
@@ -19,7 +20,7 @@ cum_percent_plot <- function(vector, output_type = "plot") {
     v_no_na, total_included = FALSE,
     sort_by_increasing_value = TRUE)
   cum_count <- cumsum(freq_table$count)
-  cum_percent <- cum_count / length(v_no_na)
+  cum_percent <- cum_count / length(v_no_na) * 100
   dt <- data.table::data.table(
     value = freq_table$value, cum_count, cum_percent)
   if (output_type == "dt") {
@@ -39,7 +40,7 @@ cum_percent_plot <- function(vector, output_type = "plot") {
       legend.position = "none")
   g1 <- g1 + geom_line() + geom_point()
   g1 <- g1 + scale_y_continuous(
-    breaks = seq(0, 1, 0.2), labels = scales::percent)
+    breaks = seq(0, 100, 20))
   g1 <- g1 + xlab("Value")
   g1 <- g1 + ylab("Cumulative\nPercentage")
   print(g1)

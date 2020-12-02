@@ -7,13 +7,13 @@
 prep(...)
 }
 \arguments{
-\item{...}{names of packages to load, separated by commas,
+\item{...}{names of packages to load and attach, separated by commas,
 e.g., \code{"ggplot2", data.table}. The arguments can be any number
 of packages, and they may or may not be wrapped in quotes.}
 }
 \description{
-Loads package(s). If package(s) are not installed,
-install them before loading.
+Installs, loads, and attaches package(s). If package(s) are not
+installed, installs them prior to loading and attaching.
 }
 \examples{
 \donttest{

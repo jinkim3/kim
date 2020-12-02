@@ -20,5 +20,5 @@ elements in a vector
 \examples{
 cum_percent_plot(c(1:100, NA, NA))
 cum_percent_plot(mtcars$mpg)
-cum_percent_plot(mtcars$mpg, output_type = "dt")
+cum_percent_plot(vector= mtcars$mpg, output_type = "dt")
 }
