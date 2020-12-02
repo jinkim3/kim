@@ -29,7 +29,7 @@ objects in the global environment; (3) setting the working directory
 to the current file; (4) unloading and loading the kim package
 }
 \examples{
-\donttest{
+\dontrun{
 setup_r_env()
 }
 }

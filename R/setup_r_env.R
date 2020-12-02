@@ -12,7 +12,7 @@
 #' @param prep_kim if \code{TRUE}, unload and load the kim package
 #' (default = TRUE)
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' setup_r_env()
 #' }
 #' @export
@@ -34,12 +34,19 @@ setup_r_env <- function(
   }
   # set wd to the current file
   if (set_wd_to_current_file == TRUE) {
-    kim::prep(rstudioapi)
-    setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
-    message(paste0(
-    "The working directory has been set to the location of the current",
-    " file:\n"))
-    cat(paste0(getwd(), "\n"))
+    if (Sys.getenv("RSTUDIO") == 1) {
+      kim::prep("rstudioapi")
+      setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
+      message(paste0(
+        "The working directory has been set to the location of the current",
+        " file:\n"))
+      cat(paste0(getwd(), "\n"))
+    } else {
+      message(paste0(
+        "The function for setting the working directory requires that",
+        " RStudio is running.\n",
+        "Please manually set the working directory."))
+    }
   }
   # unload and load package kim
   if (prep_kim == TRUE) {
@@ -47,7 +54,7 @@ setup_r_env <- function(
     while ("package:kim" %in% search()) {
       detach("package:kim", unload = TRUE, character.only = TRUE)
     }
-    kim::prep(kim)
+    kim::prep("kim")
     message("Package 'kim' has been unloaded and loaded.")
   }
 }
