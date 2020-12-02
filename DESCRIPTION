@@ -1,6 +1,6 @@
 Package: kim
 Title: Functions for Behavioral Science Researchers
-Version: 0.2.6
+Version: 0.2.7
 Authors@R: 
     person(given = "Jin",
            family = "Kim",
@@ -28,6 +28,7 @@ Imports:
     mediation,
     moments,
     paran,
+    rstudioapi,
     scales,
     stats,
     utils,
