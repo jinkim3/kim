@@ -94,7 +94,6 @@ chi_square_test_pairwise <- function(
     }
   }
   # chi-square test p values
-  stats::chisq.test(dt01$iv, dt01$dv, correct = FALSE)
   chi_sq_p_value <- vapply(1:nrow(dt02), function(i) {
     dt03 <- dt01[iv %in% dt02[i, ]]
     stats::chisq.test(dt03$iv, dt03$dv, correct = FALSE)[["p.value"]]

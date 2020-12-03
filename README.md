@@ -5,10 +5,10 @@
 
 <!-- badges: start -->
 
-[![Travis build
-status](https://travis-ci.com/jinkim3/kim.svg?branch=master)](https://travis-ci.com/jinkim3/kim)
 [![R build
 status](https://github.com/jinkim3/kim/workflows/R-CMD-check/badge.svg)](https://github.com/jinkim3/kim/actions)
+[![Total
+Downloads](http://cranlogs.r-pkg.org/badges/grand-total/kim?color=blue)](https://cran.r-project.org/package=kim)
 <!-- badges: end -->
 
 This package facilitates and simplifies analyses of experimental data.

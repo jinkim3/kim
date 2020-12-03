@@ -1,5 +1,5 @@
-# kim 0.2.17
-* Added more functions including prep and update_kim
+# kim 0.2.20
+* Added crucial functions including prep and update_kim
 
 # kim 0.1.11
 * Following the suggestion by Ms. Julia Haider, I wrapped the scatterplot
