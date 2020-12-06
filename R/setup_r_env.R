@@ -24,8 +24,12 @@ setup_r_env <- function(
 ) {
   # clear console
   if (clear_console == TRUE) {
-    cat("\014")
-    message("The console has been cleared.")
+    if (Sys.getenv("RSTUDIO") == 1) {
+      cat("\014")
+      message("The console has been cleared.")
+    } else {
+      message("The console-clearing function works on RStudio.")
+    }
   }
   # clear objects in the global environment
   if (clear_global_env == TRUE) {
