@@ -15,7 +15,10 @@
 #' and the axis line
 #'
 #' @examples
-#' ggplot(mtcars, aes(x = cyl, y = mpg)) + geom_point() + theme_kim()
+#' \donttest{
+#' prep(ggplot2); ggplot2::ggplot(
+#' mtcars, aes(x = cyl, y = mpg)) + geom_point() + theme_kim()
+#' }
 #' @export
 #' @import ggplot2
 theme_kim <- function(

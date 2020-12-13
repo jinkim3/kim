@@ -37,5 +37,8 @@ and the axis line}
 A custom ggplot theme
 }
 \examples{
-ggplot(mtcars, aes(x = cyl, y = mpg)) + geom_point() + theme_kim()
+\donttest{
+prep(ggplot2); ggplot2::ggplot(
+mtcars, aes(x = cyl, y = mpg)) + geom_point() + theme_kim()
+}
 }

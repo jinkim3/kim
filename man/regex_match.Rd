@@ -24,7 +24,7 @@ regular expression
 }
 \examples{
 regex_match("p$", names(mtcars))
-\\donttest{
+\donttest{
 colnames_ending_with_p <- regex_match("p$", names(mtcars))
 }
 }
