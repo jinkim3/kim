@@ -72,7 +72,7 @@ tabulate_vector <- function(
       count_for_given_value <- sum(sum(temp_1 == x, na.rm = TRUE))
     }
     return(count_for_given_value)
-  }, FUN.VALUE = numeric(1))
+  }, FUN.VALUE = numeric(1L))
   # total count
   total_count <- sum(count)
   # percent
@@ -85,7 +85,7 @@ tabulate_vector <- function(
         sum(temp_1 == x, na.rm = TRUE) / total_count * 100
     }
     return(percent_for_given_value)
-  }, FUN.VALUE = numeric(1))
+  }, FUN.VALUE = numeric(1L))
   # data table without totals
   dt_1 <- data.table::data.table(
     value, count, percent
@@ -139,6 +139,11 @@ tabulate_vector <- function(
   }
   # include totals
   if (total_included == TRUE) {
+    # convert the value column to a character column to accommodate
+    # the last row showing the total
+    dt_1[["value"]] <- as.character(dt_1[["value"]])
+    dt_1[["count"]] <- as.numeric(dt_1[["count"]])
+    dt_1[["percent"]] <- as.numeric(dt_1[["percent"]])
     dt_2 <- data.table::data.table(
       value = "..Total:",
       count = total_count,

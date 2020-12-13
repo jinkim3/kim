@@ -75,7 +75,7 @@ histogram_by_group <- function(
       ")  "
     )
   },
-  FUN.VALUE = character(1)
+  FUN.VALUE = character(1L)
   )
   # begin plotting
   g1 <- ggplot(

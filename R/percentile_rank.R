@@ -23,6 +23,6 @@ percentile_rank <- function(vector) {
     f <- sum(v_no_na == x)
     percentile_rank <- (c + 0.5 * f) / number_of_values * 100
     return(percentile_rank)
-  }, FUN.VALUE = numeric(1))
+  }, FUN.VALUE = numeric(1L))
   return(output)
 }

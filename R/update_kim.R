@@ -6,7 +6,7 @@
 #' (default = "github")
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' update_kim()
 #' }
 #'

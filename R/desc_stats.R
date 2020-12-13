@@ -37,7 +37,7 @@ desc_stats <- function(vector = NULL, notify_na_count = NULL) {
   # combine into a list
   stats_list <- list(
     n, mean, sd, median, min, max, se_of_mean, skewness, kurtosis)
-  statistic <- vapply(stats_list, as.numeric, FUN.VALUE = numeric(1))
+  statistic <- vapply(stats_list, as.numeric, FUN.VALUE = numeric(1L))
   names(statistic) <- c(
     "n", "mean", "sd", "median", "min", "max",
     "se_of_mean", "skewness", "kurtosis"

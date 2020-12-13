@@ -45,14 +45,14 @@ chi_square_test_pairwise <- function(
   counts_1 <- data.table::setDT(
     lapply(values_of_dv, function(j) {
       vapply(dt02$grp_1, function(i) {
-        nrow(dt01[iv == i & dv == j])}, FUN.VALUE = numeric(1))}))
+        nrow(dt01[iv == i & dv == j])}, FUN.VALUE = numeric(1L))}))
   percentages_1 <- signif(data.table::setDT(
     lapply(seq_along(counts_1), function(i) {
     counts_1[[i]] / rowSums(counts_1) * 100})), sigfigs)
   counts_2 <- data.table::setDT(
     lapply(values_of_dv, function(j) {
       vapply(dt02$grp_2, function(i) {
-        nrow(dt01[iv == i & dv == j])}, FUN.VALUE = numeric(1))}))
+        nrow(dt01[iv == i & dv == j])}, FUN.VALUE = numeric(1L))}))
   percentages_2 <- signif(data.table::setDT(
     lapply(seq_along(counts_2), function(i) {
       counts_2[[i]] / rowSums(counts_2) * 100})), sigfigs)
@@ -97,7 +97,7 @@ chi_square_test_pairwise <- function(
   chi_sq_p_value <- vapply(1:nrow(dt02), function(i) {
     dt03 <- dt01[iv %in% dt02[i, ]]
     stats::chisq.test(dt03$iv, dt03$dv, correct = FALSE)[["p.value"]]
-  }, FUN.VALUE = numeric(1))
+  }, FUN.VALUE = numeric(1L))
   # bonferroni
   bonferroni_sig <- ifelse(
     chi_sq_p_value < .05 / nrow(dt02), "Yes", "No")

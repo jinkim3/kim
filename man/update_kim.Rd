@@ -14,7 +14,7 @@ update_kim(source = "github")
 Updates the current package 'kim' by installing the most recent version
 }
 \examples{
-\donttest{
+\dontrun{
 update_kim()
 }
 

@@ -4,7 +4,13 @@
 \alias{t_test_pairwise}
 \title{t test, pairwise}
 \usage{
-t_test_pairwise(data = NULL, iv_name = NULL, dv_name = NULL, sigfigs = 3)
+t_test_pairwise(
+  data = NULL,
+  iv_name = NULL,
+  dv_name = NULL,
+  sigfigs = 3,
+  mann_whitney = TRUE
+)
 }
 \arguments{
 \item{data}{a data object (a data frame or a data.table)}
@@ -14,6 +20,10 @@ t_test_pairwise(data = NULL, iv_name = NULL, dv_name = NULL, sigfigs = 3)
 \item{dv_name}{name of the dependent variable}
 
 \item{sigfigs}{number of significant digits to round to}
+
+\item{mann_whitney}{if \code{TRUE}, Mann-Whitney test results will be
+included in the output data.table. If \code{TRUE}, Mann-Whitney
+tests will not be performed.}
 }
 \value{
 the output will be a data.table
@@ -24,4 +34,6 @@ with Bonferroni correction
 }
 \examples{
 t_test_pairwise(data = iris, iv_name = "Species", dv_name = "Sepal.Length")
+t_test_pairwise(data = iris, iv_name = "Species", dv_name = "Sepal.Length",
+mann_whitney = FALSE)
 }

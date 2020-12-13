@@ -65,7 +65,7 @@ robust_regression <- function(
   }
   robust_estimate_95_ci <- as.list(c(
     vapply(ci_95, paste0,
-           FUN.VALUE = character(1),
+           FUN.VALUE = character(1L),
            collapse = ", "
     ), rep("", 7)
   ))
