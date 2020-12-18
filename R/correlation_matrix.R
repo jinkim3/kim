@@ -13,6 +13,13 @@
 #' correlation coefficients (default = 2)
 #' @param round_p number of decimal places to which to round
 #' p-values (default = 3)
+#' @param output_type which value should be filled in cells of the
+#' correlation matrix? If \code{output_type = "r"}, correlation
+#' coefficients; if \code{output_type = "p"}, p-values;
+#' if \code{output_type = "rp"}, correlation coefficients with
+#' significance symbols based on p-values;
+#' if \code{output_type = "n"}, sizes of the samples used to calculate
+#' the correlation coefficients
 #' @return the output will be a correlation matrix in a data.table format
 #' @examples
 #' correlation_matrix(data = mtcars, var_names = c("mpg", "cyl", "wt"))
