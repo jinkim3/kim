@@ -26,8 +26,8 @@ You can install the released version of kim from
 install.packages("kim")
 ```
 
-You can also install the development version from
-[GitHub](https://github.com/) with:
+You can also install the development version from [kim on
+GitHub](https://github.com/jinkim3/kim) with:
 
 ``` r
 install.packages("devtools")
