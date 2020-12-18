@@ -42,6 +42,14 @@ install.packages("devtools")
 devtools::install_github("jinkim3/kim")
 ```
 
+If you run into errors while using the package, try updating 
+the package to the most recent version available on 
+[kim on GitHub](https://github.com/jinkim3/kim) with:
+
+``` r
+update_kim()
+```
+
 ## Example
 
 Here are some examples of using this package.
