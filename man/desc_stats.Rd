@@ -4,17 +4,28 @@
 \alias{desc_stats}
 \title{Descriptive statistics}
 \usage{
-desc_stats(vector = NULL, notify_na_count = NULL)
+desc_stats(
+  vector = NULL,
+  output_type = "vector",
+  sigfigs = 3,
+  notify_na_count = NULL
+)
 }
 \arguments{
 \item{vector}{a numeric vector}
+
+\item{output_type}{if \code{output_type = "vector"}, return a vector
+of descriptive statistics; if \code{output_type = "dt"}, return a
+data.table of descriptive statistics}
+
+\item{sigfigs}{number of significant digits to round to (default = 3)}
 
 \item{notify_na_count}{if \code{TRUE}, notify how many observations
 were removed due to missing values. By default, NA count will be printed
 only if there are any NA values.}
 }
 \value{
-a named numeric vector
+a named numeric vector or a data.table
 }
 \description{
 Returns descriptive statistics for a numeric vector.
@@ -22,4 +33,5 @@ Returns descriptive statistics for a numeric vector.
 \examples{
 desc_stats(1:100)
 desc_stats(c(1:100, NA))
+desc_stats(vector = c(1:100, NA), output_type = "dt")
 }
