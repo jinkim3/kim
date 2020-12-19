@@ -11,7 +11,8 @@ theme_kim(
   axis_tick_font_size = 20,
   axis_title_font_size = 24,
   y_axis_title_vjust = 0.85,
-  axis_title_margin_size = 24
+  axis_title_margin_size = 24,
+  cap_axis_lines = TRUE
 )
 }
 \arguments{
@@ -32,13 +33,16 @@ will be positioned at 85\% of the way up from the bottom of the plot.}
 
 \item{axis_title_margin_size}{size of the margin between axis title
 and the axis line}
+
+\item{cap_axis_lines}{logical. Should the axis lines be capped at the
+outer tick marks? (default = TRUE)}
 }
 \description{
 A custom ggplot theme
 }
 \examples{
 \donttest{
-prep(ggplot2); ggplot2::ggplot(
-mtcars, aes(x = cyl, y = mpg)) + geom_point() + theme_kim()
+prep(ggplot2)
+ggplot2::ggplot(mtcars, aes(x = cyl, y = mpg)) + geom_point() + theme_kim()
 }
 }
