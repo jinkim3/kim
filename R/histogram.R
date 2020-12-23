@@ -13,6 +13,8 @@
 #' @param fill_color color for inside of the bins (default = "cyan4")
 #' @param border_color color for borders of the bins (default = "black")
 #' @param y_axis_title_vjust position of the y axis title (default = 0.85).
+#' @param x_axis_title title for x axis (default = "Value")
+#' @param y_axis_title title for y axis (default = "Count")
 #' @param notify_na_count if \code{TRUE}, notify how many observations
 #' were removed due to missing values. By default, NA count will be printed
 #' only if there are any NA values.
@@ -38,6 +40,8 @@ histogram <- function(
   x_axis_title = NULL,
   y_axis_title = NULL,
   notify_na_count = NULL) {
+  # bind the vars locally to the function
+  value <- bins <- NULL
   # deal with NA values
   v_no_na <- vector[!is.na(vector)]
   na_count <- length(vector) - length(v_no_na)
@@ -53,45 +57,6 @@ histogram <- function(
   }
   # create a data.frame
   data = data.frame(value = v_no_na)
-  # remove the base line (counts of 0) from the histogram
-  # the function below is from Z.lin on stackoverflow
-  # https://stackoverflow.com/questions/57128090/
-  stat_bin_for_no_0_counts <- ggproto(
-    "stat_bin_for_no_0_counts",
-    StatBin,
-    compute_group = function (
-      data, scales, binwidth = NULL, bins = NULL,
-      center = NULL, boundary = NULL,
-      closed = c("right", "left"), pad = FALSE,
-      breaks = NULL, origin = NULL, right = NULL,
-      drop = NULL, width = NULL) {
-      if (!is.null(breaks)) {
-        if (!scales$x$is_discrete()) {
-          breaks <- scales$x$transform(breaks)
-        }
-        bins <- ggplot2:::bin_breaks(breaks, closed)
-      }
-      else if (!is.null(binwidth)) {
-        if (is.function(binwidth)) {
-          binwidth <- binwidth(data$x)
-        }
-        bins <- ggplot2:::bin_breaks_width(
-          scales$x$dimension(), binwidth,
-          center = center, boundary = boundary,
-          closed = closed)
-      }
-      else {
-        bins <- ggplot2:::bin_breaks_bins(
-          scales$x$dimension(), bins,
-          center = center, boundary = boundary,
-          closed = closed)
-      }
-      res <- ggplot2:::bin_vector(
-        data$x, bins, weight = data$weight, pad = pad)
-      # drop 0-count bins completely before returning the data.frame
-      res <- res[res$count > 0, ]
-      res
-    })
   # plot it
   g1 <- ggplot(data = data, aes(x = value))
   if (!is.null(x_tick_marks)) {
@@ -101,8 +66,7 @@ histogram <- function(
     g1 <- g1 + geom_histogram(
       breaks = x_tick_marks,
       fill = fill_color,
-      color = border_color,
-      stat = stat_bin_for_no_0_counts)
+      color = border_color)
     # adjust x axis tick marks
     g1 <- g1 + scale_x_continuous(
       limits = c(
@@ -111,10 +75,9 @@ histogram <- function(
       breaks = x_tick_marks)
   } else {
     g1 <- g1 + geom_histogram(
-      bins = bins,
+      bins = number_of_bins,
       fill = fill_color,
-      color = border_color,
-      stat = stat_bin_for_no_0_counts)
+      color = border_color)
   }
   # update y tick marks
   if (!is.null(y_tick_marks)) {

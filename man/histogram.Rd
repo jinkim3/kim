@@ -36,6 +36,10 @@ put tick marks at 0, 5, and 10.)}
 
 \item{y_axis_title_vjust}{position of the y axis title (default = 0.85).}
 
+\item{x_axis_title}{title for x axis (default = "Value")}
+
+\item{y_axis_title}{title for y axis (default = "Count")}
+
 \item{notify_na_count}{if \code{TRUE}, notify how many observations
 were removed due to missing values. By default, NA count will be printed
 only if there are any NA values.}
