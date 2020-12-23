@@ -1,3 +1,6 @@
+# kim 0.2.25
+* Added the histogram function and updated code using CodeFactor
+
 # kim 0.2.20
 * Added crucial functions including prep and update_kim
 

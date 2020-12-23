@@ -5,10 +5,17 @@
 
 <!-- badges: start -->
 
+[![CRAN
+checks](https://cranchecks.info/badges/summary/kim)](https://cran.r-project.org/web/checks/check_results_kim.html)
+[![Travis build
+status](https://travis-ci.com/jinkim3/kim.svg?branch=master)](https://travis-ci.com/jinkim3/kim)
 [![R build
 status](https://github.com/jinkim3/kim/workflows/R-CMD-check/badge.svg)](https://github.com/jinkim3/kim/actions)
+
 [![Total
 Downloads](http://cranlogs.r-pkg.org/badges/grand-total/kim?color=blue)](https://cran.r-project.org/package=kim)
+[![](https://img.shields.io/github/last-commit/jinkim3/kim.svg)](https://github.com/jinkim3/kim/commits/master)
+[![CodeFactor](https://www.codefactor.io/repository/github/jinkim3/kim/badge)](https://www.codefactor.io/repository/github/jinkim3/kim)
 <!-- badges: end -->
 
 This package facilitates and simplifies analyses of experimental data.

@@ -47,7 +47,7 @@ mann_whitney <- function(
       stats::median(dt01[iv == i]$dv, na.rm = T)},
       FUN.VALUE = numeric(1L))
   # wilcoxon test results
-  wilcoxon_results <- lapply(1:nrow(dt02), function(i) {
+  wilcoxon_results <- lapply(seq_len(nrow(dt02)), function(i) {
     results_for_1_pair <- stats::wilcox.test(
       formula = dv ~ iv,
       data = dt01[iv %in% dt02[i, ]],

@@ -50,7 +50,7 @@ correlation_matrix <- function(
   cols <- lapply(seq_along(col_var_names), function(i) {
     focal_col_var_name <- col_var_names[i]
     # fill each column
-    col_i <- sapply(seq_along(row_var_names), function(j) {
+    col_i <- unlist(lapply(seq_along(row_var_names), function(j) {
       cor_result <- stats::cor.test(
         x = dt[, get(row_var_names[j])],
         y = dt[, get(focal_col_var_name)])
@@ -74,7 +74,7 @@ correlation_matrix <- function(
             output_type == "rp", rp, ifelse(
               output_type == "n", n, NULL))))
       return(output)
-    })
+    }))
   })
   dt2 <- data.table::setDT(cols)
   names(dt2) <- col_var_names
