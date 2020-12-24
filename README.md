@@ -27,7 +27,7 @@ conducts mediation analyses.
 ## Installation
 
 You can install the released version of kim from
-[CRAN](https://CRAN.R-project.org) with:
+[CRAN](https://cran.r-project.org/package=kim) with:
 
 ``` r
 install.packages("kim")
