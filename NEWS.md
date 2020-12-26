@@ -1,3 +1,8 @@
+# kim 0.2.27
+
+# kim 0.2.26
+* Added clean_data_from_qualtrics function
+
 # kim 0.2.25
 * Added the histogram function and updated code using CodeFactor
 
