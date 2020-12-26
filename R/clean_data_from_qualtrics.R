@@ -27,6 +27,7 @@
 #' will be moved to the right (end) of the data set.
 #' @return a data.table object
 #' @examples
+#' clean_data_from_qualtrics(mtcars)
 #' clean_data_from_qualtrics(mtcars, default_cols_by_qualtrics = "mpg",
 #' default_cols_by_qualtrics_new = "mpg2")
 #' @import data.table
@@ -41,6 +42,8 @@ clean_data_from_qualtrics <- function(
 ) {
   # convert data to data.table
   dt <- setDT(copy(data))
+  # change id
+  change_id <- 0
   # change column names according to the argument inputs
   if (is.null(default_cols_by_qualtrics) &
       is.null(default_cols_by_qualtrics_new)) {
@@ -72,31 +75,44 @@ clean_data_from_qualtrics <- function(
       ") does not match that of new column names (",
       length(default_cols_by_qualtrics_new), ")."))
   }
-  # indices of default qualtrics column names
-  col_number <- match(default_cols_by_qualtrics, names(dt))
-  # change default column names
-  setnames(
-    x = dt,
-    old = default_cols_by_qualtrics,
-    new = default_cols_by_qualtrics_new,
-    skip_absent = TRUE)
-  # summarize column name changes
-  message(paste0(
-    "\nFollowing changes were made to the data set:\n\n",
-    "1. Column names were changed as follows:\n"))
-  col_name_change_summary <- data.table(
-    col_number,
-    old_col_name = default_cols_by_qualtrics,
-    new_col_name = default_cols_by_qualtrics_new)
-  print(col_name_change_summary)
+  # check if the column names set as default_cols_by_qualtrics
+  # exist in the data set
+  if (length(intersect(default_cols_by_qualtrics, names(dt))) > 0) {
+    # indices of default qualtrics column names
+    col_number <- match(default_cols_by_qualtrics, names(dt))
+    # change default column names
+    setnames(
+      x = dt,
+      old = default_cols_by_qualtrics,
+      new = default_cols_by_qualtrics_new,
+      skip_absent = TRUE)
+    # update change id
+    change_id <- change_id + 1
+    # report
+    message(paste0(
+      "\nFollowing changes were made to the data set:\n\n",
+      change_id,
+      ". Column names were changed as follows:\n"))
+    # summarize column name changes
+    col_name_change_summary <- data.table(
+      col_number,
+      old_col_name = default_cols_by_qualtrics,
+      new_col_name = default_cols_by_qualtrics_new)
+    print(col_name_change_summary)
+  }
   # check if first two rows should be removed
   if ("qualt_start_date" %in% names(dt) &
       "qualt_end_date" %in% names(dt)) {
     if (grep("ImportId", dt[, qualt_start_date]) == 2 &
         grep("ImportId", dt[, qualt_end_date]) == 2) {
       dt <- dt[-(1:2), ]
+      # update change id
+      change_id <- change_id + 1
+      # report
       message(paste0(
-        "\n2. The first two rows that look like column headers",
+        "\n",
+        change_id,
+        ". The first two rows that look like column headers",
         " were deleted.\n"))
     }
   }
@@ -116,76 +132,102 @@ clean_data_from_qualtrics <- function(
     vapply(dt, class, FUN.VALUE = character(1L)) == "character")
   number_of_converted_cols <-
     number_of_char_cols_before - number_of_char_cols_after
-  message(paste0(
-    "3. Number of character columns converted to numeric: ",
-    number_of_converted_cols,
-    " out of ",
-    number_of_all_cols,
-    ".\n"))
-  # remove page submit (response time) data
-  if (page_submit_cols == "rm") {
-    number_of_remaining_cols <- length(dt)
-    number_of_page_submit_cols <- length(grep(
-      "_Page Submit$", names(dt)))
-    dt <- dt[, (grep("_Page Submit$", names(dt))) := NULL]
+  if (number_of_converted_cols > 0) {
+    # update change id
+    change_id <- change_id + 1
+    # report
     message(paste0(
-      "4. Number of columns with page submit data that were removed ",
-      "from the data set: ",
-      number_of_page_submit_cols,
+      change_id,
+      ". Number of character columns converted to numeric: ",
+      number_of_converted_cols,
       " out of ",
-      number_of_remaining_cols,
+      number_of_all_cols,
       ".\n"))
   }
-  # move page submit (response time) data columns to the right
-  if (page_submit_cols == "move_to_right") {
-    number_of_remaining_cols <- length(dt)
-    number_of_page_submit_cols <- length(grep(
-      "_Page Submit$", names(dt)))
-    setcolorder(
-      dt,
-      names(dt)[grep(
-        "_Page Submit$",
-        names(dt), invert = TRUE)])
-    message(paste0(
-      "4. Number of columns with page submit data that were moved ",
-      "to the right: ",
-      number_of_page_submit_cols,
-      " out of ",
-      number_of_remaining_cols,
-      ".\n"))
+  # check number of columns
+  number_of_remaining_cols <- length(dt)
+  number_of_page_submit_cols <- length(grep(
+    "_Page Submit$", names(dt)))
+  if (number_of_page_submit_cols > 0) {
+    # remove page submit (response time) data
+    if (page_submit_cols == "rm") {
+      dt <- dt[, (grep("_Page Submit$", names(dt))) := NULL]
+      # update change id
+      change_id <- change_id + 1
+      # report
+      message(paste0(
+        change_id,
+        ". Number of columns with page submit data that were removed ",
+        "from the data set: ",
+        number_of_page_submit_cols,
+        " out of ",
+        number_of_remaining_cols,
+        ".\n"))
+    }
+    # move page submit (response time) data columns to the right
+    if (page_submit_cols == "move_to_right") {
+      number_of_remaining_cols <- length(dt)
+      number_of_page_submit_cols <- length(grep(
+        "_Page Submit$", names(dt)))
+      setcolorder(
+        dt,
+        names(dt)[grep(
+          "_Page Submit$",
+          names(dt), invert = TRUE)])
+      # update change id
+      change_id <- change_id + 1
+      # report
+      message(paste0(
+        change_id,
+        ". Number of columns with page submit data that were moved ",
+        "to the right: ",
+        number_of_page_submit_cols,
+        " out of ",
+        number_of_remaining_cols,
+        ".\n"))
+    }
   }
-  # remove click data
-  if (click_data_cols == "rm") {
-    number_of_remaining_cols <- length(dt)
-    number_of_click_data_cols <- length(grep(
-      "_First Click|_Last Click|_Click Count$", names(dt)))
-    dt <- dt[, (grep(
-      "_First Click|_Last Click|_Click Count$", names(dt))) := NULL]
-    message(paste0(
-      "5. Number of columns with click data that were removed ",
-      "from the data set: ",
-      number_of_click_data_cols,
-      " out of ",
-      number_of_remaining_cols,
-      ".\n"))
-  }
-  # move click data columns to the end
-  if (click_data_cols == "move_to_right") {
-    number_of_remaining_cols <- length(dt)
-    number_of_click_data_cols <- length(grep(
-      "_First Click|_Last Click|_Click Count$", names(dt)))
-    setcolorder(
-      dt,
-      names(dt)[grep(
-        "_First Click|_Last Click|_Click Count$",
-        names(dt), invert = TRUE)])
-    message(paste0(
-      "5. Number of columns with click data that were moved ",
-      "to the right: ",
-      number_of_click_data_cols,
-      " out of ",
-      number_of_remaining_cols,
-      ".\n"))
+  # check number of columns
+  number_of_remaining_cols <- length(dt)
+  number_of_click_data_cols <- length(grep(
+    "_First Click|_Last Click|_Click Count$", names(dt)))
+  # check if click data columns exist
+  if (number_of_click_data_cols > 0) {
+    # remove click data
+    if (click_data_cols == "rm") {
+      dt <- dt[, (grep(
+        "_First Click|_Last Click|_Click Count$", names(dt))) := NULL]
+      # update change id
+      change_id <- change_id + 1
+      # report
+      message(paste0(
+        change_id,
+        ". Number of columns with click data that were removed ",
+        "from the data set: ",
+        number_of_click_data_cols,
+        " out of ",
+        number_of_remaining_cols,
+        ".\n"))
+    }
+    # move click data columns to the end
+    if (click_data_cols == "move_to_right") {
+      setcolorder(
+        dt,
+        names(dt)[grep(
+          "_First Click|_Last Click|_Click Count$",
+          names(dt), invert = TRUE)])
+      # update change id
+      change_id <- change_id + 1
+      # report
+      message(paste0(
+        change_id,
+        ". Number of columns with click data that were moved ",
+        "to the right: ",
+        number_of_click_data_cols,
+        " out of ",
+        number_of_remaining_cols,
+        ".\n"))
+    }
   }
   # indices of meta info column names
   meta_info_col_indices <- grep(
@@ -207,10 +249,14 @@ clean_data_from_qualtrics <- function(
       names(dt)[meta_info_col_indices] <-
         gsub("_Resolution$", "_resolution",
              names(dt)[meta_info_col_indices])
+      # update change id
+      change_id <- change_id + 1
+      # report
       message(paste0(
-        "6. Names of meta information columns were ",
+        change_id,
+        ". Names of meta information columns were ",
         "converted to snake_case.\n"))
     }
   }
-  return(dt)
+  invisible(dt)
 }

@@ -3,6 +3,7 @@
 export(barplot_for_counts)
 export(capitalize)
 export(chi_square_test_pairwise)
+export(clean_data_from_qualtrics)
 export(coefficent_of_variation)
 export(cohen_d)
 export(cohen_d_from_cohen_textbook)
