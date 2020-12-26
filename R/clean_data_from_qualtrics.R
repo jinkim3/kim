@@ -40,6 +40,8 @@ clean_data_from_qualtrics <- function(
   click_data_cols = "rm",
   page_submit_cols = "move_to_right"
 ) {
+  # bind the vars locally to the function
+  qualt_start_date <- qualt_end_date <- NULL
   # convert data to data.table
   dt <- setDT(copy(data))
   # change id
