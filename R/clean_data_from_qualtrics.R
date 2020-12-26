@@ -3,6 +3,10 @@
 #' Clean a data set downloaded from Qualtrics
 #'
 #' @param data a data object (a data frame or a data.table)
+#' @param remove_survey_preview_data logical. Whether to remove data
+#' from survey preview (default = TRUE)
+#' @param remove_test_respose_data logical. Whether to remove data
+#' from test response (default = TRUE)
 #' @param default_cols_by_qualtrics names of columns that Qualtrics
 #' includes in the data set by default (e.g., "StartDate", "Finished").
 #' Accepting the default value \code{default_cols_by_qualtrics = NULL}
@@ -34,6 +38,8 @@
 #' @export
 clean_data_from_qualtrics <- function(
   data = NULL,
+  remove_survey_preview_data = TRUE,
+  remove_test_respose_data = TRUE,
   default_cols_by_qualtrics = NULL,
   default_cols_by_qualtrics_new = NULL,
   warn_accuracy_loss = FALSE,
@@ -41,9 +47,11 @@ clean_data_from_qualtrics <- function(
   page_submit_cols = "move_to_right"
 ) {
   # bind the vars locally to the function
-  qualt_start_date <- qualt_end_date <- NULL
+  qualt_start_date <- qualt_end_date <- qualt_dist_channel <- NULL
   # convert data to data.table
   dt <- setDT(copy(data))
+  # functions skipped
+  functions_skipped <- c()
   # change id
   change_id <- 0
   # change column names according to the argument inputs
@@ -260,5 +268,87 @@ clean_data_from_qualtrics <- function(
         "converted to snake_case.\n"))
     }
   }
+  # convert workerId etc column names,
+  # the three "query string parameters" from CloudResearch to snake case
+  # indices of CloudResearch column names
+  cloud_research_col_indices <- grep(
+    "^workerId|assignmentId|hitId$", names(dt))
+  if (length(cloud_research_col_indices) > 0) {
+    # if cloud research columns are right next to each other,
+    # (i.e., if the cloud research columns were most likely set by
+    # CloudResarch), change the column names to snake case
+    if (all(abs(diff(cloud_research_col_indices)) == 1)) {
+      setnames(
+        dt,
+        old = c("workerId", "assignmentId", "hitId"),
+        new = c("cloud_research_worker_id",
+                "cloud_research_assignment_id",
+                "cloud_research_hit_id"))
+      # update change id
+      change_id <- change_id + 1
+      # report
+      message(paste0(
+        change_id,
+        '. Names of Cloud Research columns (e.g., "workerId") were ',
+        "converted to snake_case.\n"))
+    }
+  }
+  # check if qualt_dist_channel column exists
+  if ("qualt_dist_channel" %in% names(dt)) {
+    # remove survey preview data
+    if (remove_survey_preview_data == TRUE) {
+      # current number of rows
+      number_of_remaining_rows <- nrow(dt)
+      # remove data from survey preview
+      dt <- dt[qualt_dist_channel != "preview"]
+      nrow_of_preview_data <- number_of_remaining_rows - nrow(dt)
+      if (nrow_of_preview_data > 0) {
+        # update change id
+        change_id <- change_id + 1
+        # report
+        message(paste0(
+          change_id,
+          ". Number of rows from survey preview that were removed: ",
+          nrow_of_preview_data,
+          " out of ",
+          number_of_remaining_rows,
+          ".\n"))
+      }
+    }
+    # remove test response data
+    if (remove_test_respose_data == TRUE) {
+      # current number of rows
+      number_of_remaining_rows <- nrow(dt)
+      # remove data from test response
+      dt <- dt[qualt_dist_channel != "test"]
+      nrow_of_test_resp_data <- number_of_remaining_rows - nrow(dt)
+      if (nrow_of_test_resp_data > 0) {
+        # update change id
+        change_id <- change_id + 1
+        # report
+        message(paste0(
+          change_id,
+          ". Number of rows from test response that were removed: ",
+          nrow_of_test_resp_data,
+          " out of ",
+          number_of_remaining_rows,
+          ".\n"))
+      }
+    }
+  } else {
+    if (any(c(remove_survey_preview_data, remove_test_respose_data))) {
+      message(paste0(
+        "\nFailed to remove survey preview or test response data.",
+        ' The column name "qualt_dist_channel"',
+        ' (originally "DistributionChannel")',
+        " does not exist.\n"
+      ))
+    }
+  }
+  # report functions not run
+  if (change_id == 0) {
+    message("No change was made to the data set.\n")
+  }
+  # output data set
   invisible(dt)
 }
