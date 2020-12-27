@@ -5,11 +5,11 @@ citEntry(
   author   = "Jin Kim",
   year     = "2020",
   title    = "kim: Functions for Behavioral Science Researchers",
-  note     = "R package version 0.2.28",
+  note     = "R package version 0.2.29",
   url      = "https://cran.r-project.org/package=kim",
   textVersion = paste0(
   "Jin Kim (2020). ",
   "kim: Functions for Behavioral Science Researchers. ",
-  "R package version 0.2.28"
+  "R package version 0.2.29"
   )
 )

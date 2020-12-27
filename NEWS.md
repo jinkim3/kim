@@ -1,4 +1,4 @@
-# kim 0.2.28
+# kim 0.2.29
 * Added clean_data_from_qualtrics function
 
 # kim 0.2.25

@@ -179,18 +179,23 @@ clean_data_from_qualtrics <- function(
       number_of_remaining_cols <- length(dt)
       number_of_page_submit_cols <- length(grep(
         "_Page Submit$", names(dt)))
+      # move columns
       setcolorder(
         dt,
         names(dt)[grep(
           "_Page Submit$",
           names(dt), invert = TRUE)])
+      # change names to snake case
+      names(dt)[grep("_Page Submit$", names(dt))] <-
+        gsub("_Page Submit$", "_page_submit",
+             names(dt)[grep("_Page Submit$", names(dt))])
       # update change id
       change_id <- change_id + 1
       # report
       message(paste0(
         change_id,
         ". Number of columns with page submit data that were moved ",
-        "to the right: ",
+        "to the right with names converted to snake_case: ",
         number_of_page_submit_cols,
         " out of ",
         number_of_remaining_cols,
