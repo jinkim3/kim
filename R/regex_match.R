@@ -26,6 +26,7 @@ regex_match <- function(
     message(paste0(
       "A total of ", length(output), " matches were found:"))
     cat(output)
+    cat("\n")
   }
   invisible(output)
 }
