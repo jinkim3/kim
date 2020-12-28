@@ -51,9 +51,15 @@ correlation_matrix <- function(
     focal_col_var_name <- col_var_names[i]
     # fill each column
     col_i <- unlist(lapply(seq_along(row_var_names), function(j) {
-      cor_result <- stats::cor.test(
-        x = dt[, get(row_var_names[j])],
-        y = dt[, get(focal_col_var_name)])
+      cor_result <- tryCatch(
+        stats::cor.test(
+          x = dt[, get(row_var_names[j])],
+          y = dt[, get(focal_col_var_name)]),
+        error = function(e) "error",
+        warning = function(w) "warning")
+      if (cor_result[1] %in% c("error", "warning")) {
+        return(NA)
+      }
       r <- round(
         cor_result[["estimate"]], round_r)
       p <- cor_result[["p.value"]]
