@@ -132,7 +132,7 @@ compare_datasets <- function(
       , .SD, .SDcols = c(
         index_of_dt_w_diff_colnames, index_of_dt_w_diff_colnames + 1)])
   }
-  # check column types
+  # check whether column classes match
   col_types_by_dt <- setDT(as.data.frame(do.call(
     rbind,
     lapply(seq_len(length(dt_list)), function(i) {
@@ -143,12 +143,14 @@ compare_datasets <- function(
   if (length(cols_w_diff_class) > 0) {
     col_types_by_dt <- col_types_by_dt[
       , cols_w_diff_class, with = FALSE]
+    names(col_types_by_dt) <- paste0("class_of_", cols_w_diff_class)
     col_types_by_dt <- data.table(
       dataset = dataset_name, col_types_by_dt)
     # print the different column types
     message(paste0(
       'The column with the name(s) "',
-      paste0(cols_w_diff_class, collapse = ", "), '" were different ',
+      paste0(cols_w_diff_class, collapse = ", "),
+      '" were of different class ',
       "in the following two data sets:"))
     return(col_types_by_dt)
   }

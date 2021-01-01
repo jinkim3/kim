@@ -1,6 +1,6 @@
 Package: kim
 Title: Functions for Behavioral Science Researchers
-Version: 0.2.31
+Version: 0.2.32
 Authors@R: 
     person(given = "Jin",
            family = "Kim",
