@@ -40,4 +40,13 @@ dataset_2 = data.frame(a = 1:2, b = 3:4))
 compare_datasets(
 dataset_1 = data.frame(a = 1:2, b = c(3, 400)),
 dataset_2 = data.frame(a = 1:2, b = 3:4))
+compare_datasets(
+dataset_1 = data.frame(a = 1:2, b = 3:4, c = 5:6),
+dataset_2 = data.frame(a = 1:2, b = c(3, 4), c = c(5, 6)))
+# check if data sets in a list are identical
+compare_datasets(
+dataset_list = list(
+dt1 = data.frame(a = 1:2, b = 3:4, c = 5:6),
+dt2 = data.frame(a = 1:2, b = 3:4),
+dt3 = data.frame(a = 1:2, b = 3:4, c = 5:6)))
 }

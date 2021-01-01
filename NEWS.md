@@ -1,4 +1,4 @@
-# kim 0.2.30
+# kim 0.2.31
 * Added functions including clean_data_from_qualtrics and compare_datasets
 
 # kim 0.2.25

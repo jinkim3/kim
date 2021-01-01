@@ -27,6 +27,15 @@
 #' compare_datasets(
 #' dataset_1 = data.frame(a = 1:2, b = c(3, 400)),
 #' dataset_2 = data.frame(a = 1:2, b = 3:4))
+#' compare_datasets(
+#' dataset_1 = data.frame(a = 1:2, b = 3:4, c = 5:6),
+#' dataset_2 = data.frame(a = 1:2, b = c(3, 4), c = c(5, 6)))
+#' # check if data sets in a list are identical
+#' compare_datasets(
+#' dataset_list = list(
+#' dt1 = data.frame(a = 1:2, b = 3:4, c = 5:6),
+#' dt2 = data.frame(a = 1:2, b = 3:4),
+#' dt3 = data.frame(a = 1:2, b = 3:4, c = 5:6)))
 #' @import data.table
 #' @importFrom utils head
 #' @export
@@ -65,7 +74,7 @@ compare_datasets <- function(
       paste0(sort(class(dt)), collapse = ", ")
     }, FUN.VALUE = character(1L)))
   if (length(unique(check_class_result[["class"]])) > 1) {
-    message("The class attributes differ for the data sets:")
+    message('Data sets have different "class" attributes:')
     return(check_class_result)
   }
   # check number of columns
@@ -123,6 +132,26 @@ compare_datasets <- function(
       , .SD, .SDcols = c(
         index_of_dt_w_diff_colnames, index_of_dt_w_diff_colnames + 1)])
   }
+  # check column types
+  col_types_by_dt <- setDT(as.data.frame(do.call(
+    rbind,
+    lapply(seq_len(length(dt_list)), function(i) {
+      vapply(dt_list[[i]], class, FUN.VALUE = character(1L))
+    }))))
+  cols_w_diff_class <- names(which(apply(
+    col_types_by_dt, 2, function(x) length(unique(x))) > 1))
+  if (length(cols_w_diff_class) > 0) {
+    col_types_by_dt <- col_types_by_dt[
+      , cols_w_diff_class, with = FALSE]
+    col_types_by_dt <- data.table(
+      dataset = dataset_name, col_types_by_dt)
+    # print the different column types
+    message(paste0(
+      'The column with the name(s) "',
+      paste0(cols_w_diff_class, collapse = ", "), '" were different ',
+      "in the following two data sets:"))
+    return(col_types_by_dt)
+  }
   # check columns
   for (i in seq_along(dt_list[[1]])) {
     # get ith column from each of the data sets
@@ -139,12 +168,11 @@ compare_datasets <- function(
           individual_cols[[j + 1]])
         names(check_ind_cols_result) <- paste0(
           "data set: ", dataset_name[j:(j + 1)])
-        # label rows as having different or same values
+        # label rows as having identical values or not
         check_ind_cols_result[
-          , ..different_vs_same := ifelse(
-            apply(check_ind_cols_result, 1, function(x) {
-              sum(!duplicated(x))
-            }) == 2, "different", "same")][]
+          , identical := c("not_identical", "identical")[
+            (uniqueN(unlist(.SD)) == 1) + 1],
+          by = seq_len(nrow(check_ind_cols_result))][]
         # print the pair of different columns
         message(paste0(
           'The column with the name "',
