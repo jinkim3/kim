@@ -8,6 +8,8 @@
 #' these values for the first independent variable
 #' @param iv_2_values restrict all analyses to observations having
 #' these values for the second independent variable
+#' @param sigfigs number of significant digits to which to round
+#' values in anova table (default = 3)
 #' @param robust if \code{TRUE}, conduct a robust ANOAVA in addition.
 #' @param iterations number of bootstrap samples for robust ANOVA.
 #' The default is set at 2000, but consider increasing the number
@@ -52,6 +54,7 @@ two_way_anova <- function(
   iv_2_name = NULL,
   iv_1_values = NULL,
   iv_2_values = NULL,
+  sigfigs = 3,
   robust = FALSE,
   iterations = 2000,
   plot = FALSE,
@@ -68,11 +71,11 @@ two_way_anova <- function(
     output <- "anova_table"
   }
   # convert data to data table
-  dt1 <- data.table::setDT(copy(data))
+  dt1 <- setDT(copy(data))
   dt1 <- dt1[, c(iv_1_name, iv_2_name, dv_name), with = FALSE]
   # convert iv to factors
   for (col in c(iv_1_name, iv_2_name)) {
-    data.table::set(dt1, j = col, value = as.factor(dt1[[col]]))
+    set(dt1, j = col, value = as.factor(dt1[[col]]))
   }
   # remove na
   dt2 <- stats::na.omit(dt1)
@@ -124,7 +127,7 @@ two_way_anova <- function(
     print(g1)
   }
   # order the data table
-  data.table::setorderv(dt2, c(iv_1_name, iv_2_name))
+  setorderv(dt2, c(iv_1_name, iv_2_name))
   # levene's test
   formula_1 <- stats::as.formula(
     paste0(dv_name, " ~ ", iv_1_name, " * ", iv_2_name)
@@ -145,6 +148,15 @@ two_way_anova <- function(
   # anova instead of regression
   model_1 <- stats::aov(formula = formula_1, data = dt2)
   anova_table <- car::Anova(model_1, type = 3)
+  source <- row.names(anova_table)
+  setDT(anova_table)
+  anova_table <- data.table(source, anova_table)
+  names(anova_table) <- c("source", "type_3_sum_sq", "df", "f", "p")
+  cols_to_round <- c("type_3_sum_sq", "f")
+  for (j in cols_to_round) {
+    set(anova_table, j = j, value = signif(anova_table[[j]], sigfigs))
+  }
+  anova_table[, p := kim::pretty_round_p_value(p)]
   message("\nANOVA Results:")
   print(anova_table)
   # output by type
