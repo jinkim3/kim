@@ -27,6 +27,9 @@
 #' @param legend_position position of the legend:
 #' \code{"none", "top", "right", "bottom", "left", "none"}
 #' (default = \code{"right"})
+#' @param y_axis_title_vjust position of the y axis title (default = 0.85).
+#' If default is used, \code{y_axis_title_vjust = 0.85}, the y axis title
+#' will be positioned at 85% of the way up from the bottom of the plot.
 #' @return by default, the output will be a ggplot object.
 #' If \code{output = "table"}, the output will be a data.table object.
 #' @examples
@@ -52,7 +55,8 @@ plot_group_means <- function(
   dot_size = 3,
   error_bar_tip_width = 0.13,
   position_dodge = 0.13,
-  legend_position = "right") {
+  legend_position = "right",
+  y_axis_title_vjust = 0.85) {
   # convert to data table
   dt1 <- data.table::setDT(
     data.table::copy(data))[, c(dv_name, iv_name), with = FALSE]
@@ -134,7 +138,6 @@ plot_group_means <- function(
   g1 <- g1 + geom_line(size = line_size, position = pd)
   g1 <- g1 + geom_point(size = dot_size, position = pd)
   if (length(iv_name) == 2) {
-    g1 <- g1 + theme(legend.position = legend_position)
     g1 <- g1 + labs(color = iv_name[2])
   }
   g1 <- g1 + xlab(iv_name[1])
@@ -145,6 +148,8 @@ plot_group_means <- function(
     )
   )
   # plot theme
-  g1 <- g1 + theme_kim()
+  g1 <- g1 + theme_kim(
+    y_axis_title_vjust = y_axis_title_vjust,
+    legend_position = legend_position)
   return(g1)
 }
