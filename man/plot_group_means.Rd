@@ -15,7 +15,8 @@ plot_group_means(
   dot_size = 3,
   error_bar_tip_width = 0.13,
   position_dodge = 0.13,
-  legend_position = "right"
+  legend_position = "right",
+  y_axis_title_vjust = 0.85
 )
 }
 \arguments{
@@ -54,6 +55,10 @@ be horizontally offset from each other so as not to overlap?
 \item{legend_position}{position of the legend:
 \code{"none", "top", "right", "bottom", "left", "none"}
 (default = \code{"right"})}
+
+\item{y_axis_title_vjust}{position of the y axis title (default = 0.85).
+If default is used, \code{y_axis_title_vjust = 0.85}, the y axis title
+will be positioned at 85\% of the way up from the bottom of the plot.}
 }
 \value{
 by default, the output will be a ggplot object.

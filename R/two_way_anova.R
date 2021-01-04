@@ -66,6 +66,8 @@ two_way_anova <- function(
   position_dodge = 0.13,
   legend_position = "right",
   output = NULL) {
+  # bind the vars locally to the function
+  p <- NULL
   # default output
   if (is.null(output)) {
     output <- "anova_table"
