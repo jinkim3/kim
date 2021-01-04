@@ -50,7 +50,8 @@ plot_group_means <- function(
   position_dodge = 0.13,
   legend_position = "right") {
   # convert to data table
-  dt1 <- data.table::setDT(copy(data))[, c(dv_name, iv_name), with = FALSE]
+  dt1 <- data.table::setDT(
+    data.table::copy(data))[, c(dv_name, iv_name), with = FALSE]
   # convert iv to factors
   for (col in iv_name) {
     data.table::set(dt1, j = col, value = as.factor(dt1[[col]]))

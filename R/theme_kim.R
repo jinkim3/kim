@@ -2,8 +2,6 @@
 #'
 #' A custom ggplot theme
 #'
-#' @param theme_name name of the custom ggplot theme. If no name is
-#' provided, a default theme will be used.
 #' @param legend_position position of the legend (default = "none")
 #' @param base_size base font size
 #' @param axis_tick_font_size font size for axis tick marks
@@ -24,7 +22,6 @@
 #' @importFrom ggplot2 theme
 #' @importFrom lemon coord_capped_cart
 theme_kim <- function(
-  theme_name = NULL,
   legend_position = "none",
   base_size = 20,
   axis_tick_font_size = 20,
