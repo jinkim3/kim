@@ -136,27 +136,6 @@ plot_group_means <- function(
     )
   )
   # plot theme
-  g1 <- g1 + theme_classic(base_size = 20) %+replace%
-    theme(
-      plot.title = element_text(hjust = 0.5),
-      legend.position = legend_position,
-      axis.title.x = element_text(margin = margin(t = 24)),
-      axis.title.y = element_text(
-        angle = 0, vjust = 0.85,
-        margin = margin(r = 24)
-      ),
-      axis.title = element_text(
-        face = "bold", color = "black", size = 24
-      ),
-      axis.text = element_text(
-        face = "bold", color = "black", size = 20
-      ),
-      legend.title = element_text(
-        face = "bold", color = "black", size = 24
-      ),
-      legend.text = element_text(
-        face = "bold", color = "black", size = 20
-      )
-    )
+  g1 <- g1 + theme_kim()
   return(g1)
 }

@@ -148,7 +148,7 @@ compare_datasets <- function(
       dataset = dataset_name, col_types_by_dt)
     # print the different column types
     message(paste0(
-      'The column with the name(s) "',
+      'The columnS with the name(s) "',
       paste0(cols_w_diff_class, collapse = ", "),
       '" were of different class ',
       "in the following two data sets:"))
