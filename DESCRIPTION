@@ -1,14 +1,14 @@
 Package: kim
 Title: Functions for Behavioral Science Researchers
-Version: 0.2.34
+Version: 0.2.35
 Authors@R: 
     person(given = "Jin",
            family = "Kim",
            role = c("aut", "cre"),
            email = "jin.m.kim@yale.edu",
            comment = c(ORCID = "https://orcid.org/0000-0002-5013-3958"))
-Description: Miscellaneous functions designed to facilitate and
-    simplify analyses of experimental data. Examples include a function
+Description: Miscellaneous functions to simplify and expedite
+    analyses of experimental data. Examples include a function
     that plots sample means of groups in a factorial experimental design,
     a function that conducts robust regressions with bootstrapped samples,
     and a function that conducts two-way analysis of variance.

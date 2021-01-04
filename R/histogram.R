@@ -56,7 +56,7 @@ histogram <- function(
     ))
   }
   # create a data.frame
-  data = data.frame(value = v_no_na)
+  data <- data.frame(value = v_no_na)
   # plot it
   g1 <- ggplot(data = data, aes(x = value))
   if (!is.null(x_tick_marks)) {
