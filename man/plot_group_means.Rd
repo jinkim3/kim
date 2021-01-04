@@ -8,6 +8,7 @@ plot_group_means(
   data = NULL,
   dv_name = NULL,
   iv_name = NULL,
+  na.rm = TRUE,
   error_bar = "ci",
   error_bar_range = 0.95,
   line_size = 1,
@@ -24,6 +25,10 @@ plot_group_means(
 
 \item{iv_name}{name(s) of the independent variable(s).
 Up to two independent variables can be supplied.}
+
+\item{na.rm}{logical. If \code{na.rm = TRUE}, NA values in
+independent and dependent variables will be removed before
+calculating group means.}
 
 \item{error_bar}{if \code{error_bar = "se"}; error bars will be +/-1
 standard error, if \code{error_bar = "ci"} error bars will be a

@@ -11,7 +11,7 @@ two_way_anova(
   iv_2_name = NULL,
   iv_1_values = NULL,
   iv_2_values = NULL,
-  robust = TRUE,
+  robust = FALSE,
   iterations = 2000,
   plot = FALSE,
   error_bar = "ci",

@@ -63,6 +63,10 @@ two_way_anova <- function(
   position_dodge = 0.13,
   legend_position = "right",
   output = NULL) {
+  # default output
+  if (is.null(output)) {
+    output <- "anova_table"
+  }
   # convert data to data table
   dt1 <- data.table::setDT(copy(data))
   dt1 <- dt1[, c(iv_1_name, iv_2_name, dv_name), with = FALSE]
@@ -172,10 +176,7 @@ two_way_anova <- function(
     message("\nRobust ANOVA Post Hoc Test Contrasts:")
     print(robust_anova_post_hoc_contrast)
   }
-  # default output
-  if (is.null(output)) {
-    output <- "anova_table"
-  }
+  # output for robust anova
   if (output == "robust_anova_post_hoc_results") {
     invisible(robust_anova_post_hoc_results)
   }

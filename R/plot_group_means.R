@@ -6,6 +6,9 @@
 #' @param dv_name name of the dependent variable
 #' @param iv_name name(s) of the independent variable(s).
 #' Up to two independent variables can be supplied.
+#' @param na.rm logical. If \code{na.rm = TRUE}, NA values in
+#' independent and dependent variables will be removed before
+#' calculating group means.
 #' @param error_bar if \code{error_bar = "se"}; error bars will be +/-1
 #' standard error, if \code{error_bar = "ci"} error bars will be a
 #' confidence interval; if \code{error_bar = "pi"}, error bars will be
@@ -42,6 +45,7 @@ plot_group_means <- function(
   data = NULL,
   dv_name = NULL,
   iv_name = NULL,
+  na.rm = TRUE,
   error_bar = "ci",
   error_bar_range = 0.95,
   line_size = 1,
@@ -52,6 +56,10 @@ plot_group_means <- function(
   # convert to data table
   dt1 <- data.table::setDT(
     data.table::copy(data))[, c(dv_name, iv_name), with = FALSE]
+  # remove na
+  if (na.rm == TRUE) {
+    dt1 <- stats::na.omit(dt1)
+  }
   # convert iv to factors
   for (col in iv_name) {
     data.table::set(dt1, j = col, value = as.factor(dt1[[col]]))
