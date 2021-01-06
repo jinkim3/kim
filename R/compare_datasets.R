@@ -1,4 +1,4 @@
-#' compare data sets
+#' Compare data sets
 #'
 #' Compares whether or not data sets are identical
 #'

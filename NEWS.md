@@ -1,3 +1,6 @@
+# kim 0.2.36
+* Added functions including read_sole_csv and read_csv
+
 # kim 0.2.35
 * Added functions including clean_data_from_qualtrics and compare_datasets
 

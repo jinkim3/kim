@@ -2,7 +2,7 @@
 % Please edit documentation in R/compare_datasets.R
 \name{compare_datasets}
 \alias{compare_datasets}
-\title{compare data sets}
+\title{Compare data sets}
 \usage{
 compare_datasets(dataset_1 = NULL, dataset_2 = NULL, dataset_list = NULL)
 }
