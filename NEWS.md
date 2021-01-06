@@ -1,4 +1,4 @@
-# kim 0.2.37
+# kim 0.2.38
 * Added functions including read_sole_csv, read_csv, ggsave_quick
 
 # kim 0.2.35

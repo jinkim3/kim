@@ -22,23 +22,29 @@ desc_stats_by_group <- function(
   cols_to_round = NULL) {
   dt1 <- setDT(copy(data))
   dt2 <- dt1[, list(
-    n = as.numeric(length(get(var_for_stats))),
+    n = length(get(var_for_stats)),
     mean = as.numeric(mean(get(var_for_stats))),
     sd = as.numeric(stats::sd(get(var_for_stats))),
     median = as.numeric(stats::median(get(var_for_stats))),
     min = as.numeric(min(get(var_for_stats))),
     max = as.numeric(max(get(var_for_stats))),
     se = as.numeric(kim::se_of_mean(get(var_for_stats))),
-    ci_95_ll = as.numeric(
-      stats::t.test(get(var_for_stats))[["conf.int"]][1]),
-    ci_95_ul = as.numeric(
-      stats::t.test(get(var_for_stats))[["conf.int"]][2]),
-    pi_95_ll = as.numeric(
-      mean(get(var_for_stats)) + stats::sd(get(var_for_stats)) *
-      stats::qt(0.025, length(get(var_for_stats)) - 1)),
-    pi_95_ul = as.numeric(
-      mean(get(var_for_stats)) + stats::sd(get(var_for_stats)) *
-      stats::qt(0.975, length(get(var_for_stats)) - 1)),
+    ci_95_ll = tryCatch(
+      as.numeric(stats::t.test(get(var_for_stats))[["conf.int"]][1]),
+      warning = function(w) NA_real_, error = function(e) NA_real_),
+    ci_95_ul = tryCatch(
+      as.numeric(stats::t.test(get(var_for_stats))[["conf.int"]][2]),
+      warning = function(w) NA_real_, error = function(e) NA_real_),
+    pi_95_ll = tryCatch(
+      as.numeric(
+        mean(get(var_for_stats)) + stats::sd(get(var_for_stats)) *
+          stats::qt(0.025, length(get(var_for_stats)) - 1)),
+      warning = function(w) NA_real_, error = function(e) NA_real_),
+    pi_95_ul = tryCatch(
+      as.numeric(
+        mean(get(var_for_stats)) + stats::sd(get(var_for_stats)) *
+          stats::qt(0.975, length(get(var_for_stats)) - 1)),
+      warning = function(w) NA_real_, error = function(e) NA_real_),
     skewness = as.numeric(
       moments::skewness(get(var_for_stats))),
     kurtosis = as.numeric(

@@ -18,11 +18,11 @@ Downloads](http://cranlogs.r-pkg.org/badges/grand-total/kim?color=blue)](https:/
 [![CodeFactor](https://www.codefactor.io/repository/github/jinkim3/kim/badge)](https://www.codefactor.io/repository/github/jinkim3/kim)
 <!-- badges: end -->
 
-This package facilitates and simplifies analyses of experimental data.
-Examples of functions include a function that plots sample means of
-groups in a factorial experimental design, a function that conducts
-robust regressions with bootstrapped samples, and a function that
-conducts mediation analyses.
+This package contains miscellaneous functions to simplify and expedite
+analyses of experimental data. Examples include a function that plots
+sample means of groups in a factorial experimental design, a function
+that conducts robust regressions with bootstrapped samples, and a
+function that conducts two-way analysis of variance.
 
 ## Installation
 

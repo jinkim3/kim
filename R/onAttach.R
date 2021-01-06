@@ -60,12 +60,12 @@
     } else if (compare_version_result == 1) {
       startup_message <- paste0(
         "You are running a newer, but possibly unstable version of ",
-        "the package 'kim'.\n",
+        "the package 'kim'.\n\n",
         "Currently installed version: ", installed_pkg_version, "\n",
-        "Older version on github:     ", github_pkg_version, "\n",
+        "Older version on github:     ", github_pkg_version, "\n\n",
         "If you run into errors using the package, please",
         " consider downgrading the package to the older version on",
-        " github by running 'update_kim()'")
+        " github by running 'update_kim()'\n")
     }
   }
   packageStartupMessage(startup_message)
