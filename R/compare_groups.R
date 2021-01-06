@@ -30,7 +30,8 @@ compare_groups <- function(
     sigfigs = sigfigs)
   # pairwise comparison results
   output_3 <- kim::t_test_pairwise(
-    data = data, iv_name = iv_name, dv_name = dv_name)
+    data = data, iv_name = iv_name, dv_name = dv_name,
+    sigfigs = sigfigs)
   # print outputs
   output_1
   output_2
