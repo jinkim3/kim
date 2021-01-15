@@ -7,8 +7,8 @@
 read_csv(name = NULL, head = FALSE)
 }
 \arguments{
-\item{name}{a character string of the csv file name.
-For example, if the csv file to read is "myfile.csv",
+\item{name}{a character string of the csv file name without the
+".csv" extension. For example, if the csv file to read is "myfile.csv",
 enter \code{name = "myfile"}}
 
 \item{head}{logical. if \code{head = TRUE}, prints the first five
