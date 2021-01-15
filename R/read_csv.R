@@ -41,7 +41,7 @@ read_csv <- function(
   }
   # read csv
   if (csv_file_name %in% file_name_vector) {
-    dt <- data.table::fread(input = name_of_file_to_read)
+    dt <- data.table::fread(input = csv_file_name)
     if (head == TRUE) {
       message("First five (or fewer) rows of the data:")
       print(utils::head(dt, n = 5L))
