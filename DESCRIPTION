@@ -1,6 +1,6 @@
 Package: kim
 Title: Functions for Behavioral Science Researchers
-Version: 0.2.43
+Version: 0.2.44
 Authors@R: 
     person(given = "Jin",
            family = "Kim",
@@ -11,7 +11,7 @@ Description: Miscellaneous functions to simplify and expedite
     analyses of experimental data. Examples include a function
     that plots sample means of groups in a factorial experimental design,
     a function that conducts robust regressions with bootstrapped samples,
-    and a function that conducts two-way analysis of variance.
+    and a function that conducts robust two-way analysis of variance.
 License: GPL-3
 URL: https://github.com/jinkim3/kim
 BugReports: https://github.com/jinkim3/kim/issues
