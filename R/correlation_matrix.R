@@ -66,13 +66,13 @@ correlation_matrix <- function(
       p_nice <- kim::pretty_round_p_value(
         p, round_digits_after_decimal = round_p)
       n <- cor_result[["parameter"]][["df"]] + 2
-      rp <- dplyr::case_when(
-        r == 1 ~ "1",
-        p < .001 ~ paste0(r, "***"),
-        p < .01 ~ paste0(r, "**"),
-        p < .05 ~ paste0(r, "*"),
-        p < .1 ~ paste0(r, " m.s."),
-        T ~ as.character(r)
+      rp <- data.table::fcase(
+        r == 1, "1",
+        p < .001, paste0(r, "***"),
+        p < .01, paste0(r, "**"),
+        p < .05, paste0(r, "*"),
+        p < .1, paste0(r, " m.s."),
+        default = as.character(r)
       )
       output <- ifelse(
         output_type == "r", r, ifelse(

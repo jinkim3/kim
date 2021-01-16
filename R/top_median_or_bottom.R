@@ -13,10 +13,10 @@
 top_median_or_bottom <- function(vector) {
   v_no_na <- vector[!is.na(vector)]
   median <- stats::median(v_no_na)
-  output <- dplyr::case_when(
-    vector == median ~ "median",
-    vector > median ~ "top",
-    vector < median ~ "bottom"
+  output <- data.table::fcase(
+    vector == median, "median",
+    vector > median, "top",
+    vector < median, "bottom"
   )
   return(output)
 }
