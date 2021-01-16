@@ -11,7 +11,7 @@
 #' @return the output will be a .csv file in the working directory,
 #' that is, an output from the data.table function, \code{fwrite}
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' write_csv(mtcars, "mtcars_from_write_csv")
 #' }
 #' @export

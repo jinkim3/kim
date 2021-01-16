@@ -20,7 +20,7 @@
 #' function within \code{ggplot2} package (default = 9)
 #' @return the output will be a .png image file in the working directory.
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' kim::histogram(rep(1:30, 3))
 #' ggsave_quick()
 #' }

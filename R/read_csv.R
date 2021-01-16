@@ -10,7 +10,7 @@
 #' @return the output will be a data.table object, that is,
 #' an output from the data.table function, \code{fread}
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' mydata <- read_csv("myfile")
 #' }
 #' @export

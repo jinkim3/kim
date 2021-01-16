@@ -41,7 +41,7 @@ the output will be a .png image file in the working directory.
 quickly save the current plot with a timestamp
 }
 \examples{
-\donttest{
+\dontrun{
 kim::histogram(rep(1:30, 3))
 ggsave_quick()
 }

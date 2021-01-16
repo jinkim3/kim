@@ -22,7 +22,7 @@ an output from the data.table function, \code{fread}
 Read a csv file
 }
 \examples{
-\donttest{
+\dontrun{
 mydata <- read_csv("myfile")
 }
 }

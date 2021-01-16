@@ -24,7 +24,7 @@ that is, an output from the data.table function, \code{fwrite}
 Write to a csv file
 }
 \examples{
-\donttest{
+\dontrun{
 write_csv(mtcars, "mtcars_from_write_csv")
 }
 }
