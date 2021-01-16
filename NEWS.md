@@ -1,5 +1,6 @@
-# kim 0.2.40
-* Fixed bugs and added function(s), including write_csv
+# kim 0.2.42
+* Fixed bugs, removed dependency for dplyr, and added 
+function(s), including write_csv
 
 # kim 0.2.38
 * Added functions including read_sole_csv, read_csv, ggsave_quick

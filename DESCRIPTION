@@ -1,6 +1,6 @@
 Package: kim
 Title: Functions for Behavioral Science Researchers
-Version: 0.2.40
+Version: 0.2.42
 Authors@R: 
     person(given = "Jin",
            family = "Kim",
@@ -20,7 +20,6 @@ Imports:
     car,
     data.table,
     devtools,
-    dplyr,
     effsize,
     ggplot2,
     ggridges,
