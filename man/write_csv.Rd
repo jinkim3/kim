@@ -26,5 +26,6 @@ Write to a csv file
 \examples{
 \dontrun{
 write_csv(mtcars, "mtcars_from_write_csv")
+write_csv(mtcars)
 }
 }

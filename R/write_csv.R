@@ -13,6 +13,7 @@
 #' @examples
 #' \dontrun{
 #' write_csv(mtcars, "mtcars_from_write_csv")
+#' write_csv(mtcars)
 #' }
 #' @export
 write_csv <- function(
@@ -34,6 +35,10 @@ write_csv <- function(
       # if file name is given, then do not add the timestamp by default
       timestamp <- FALSE
     }
+  }
+  # set name if none is given
+  if (is.null(name)) {
+    name <- as.character(substitute(data))
   }
   # create a timestamp
   if (timestamp == TRUE) {
