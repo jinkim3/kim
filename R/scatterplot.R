@@ -29,7 +29,11 @@
 #' confidence interval for the line of fit will be shaded
 #' @param x_axis_label alternative label for the x axis
 #' @param y_axis_label alternative label for the y axis
-#' @param point_label_size size for dots' labels on the plot
+#' @param point_label_size size for dots' labels on the plot. If no
+#' input is entered for this argument, it will be set as
+#' \code{point_label_size = 5} by default. If the plot is to be
+#' weighted by some variable, this argument will be ignored, and
+#' dot sizes will be determined by the argument \code{point_size_range}
 #' @param point_size_range minimum and maximum size for dots
 #' on the plot when they are weighted
 #' @param jitter_x_percent horizontally jitter dots by a percentage of the
@@ -68,7 +72,7 @@ scatterplot <- function(
   ci_for_line_of_fit = FALSE,
   x_axis_label = NULL,
   y_axis_label = NULL,
-  point_label_size = 5,
+  point_label_size = NULL,
   point_size_range = c(3, 12),
   jitter_x_percent = 0,
   jitter_y_percent = 0,
@@ -106,21 +110,27 @@ scatterplot <- function(
     width = jitter_x_percent / 100 * x_range,
     height = jitter_y_percent / 100 * y_range
   )
+  # add point labels or dots
+  if (!is.null(point_label_var_name)) {
+    g1 <- g1 + aes(label = dt02$point_labels)
+    if (is.null(point_label_size)) {
+      g1 <- g1 + geom_text(
+        aes(label = dt02$point_labels, fontface = "bold"),
+        position = pj)
+    } else {
+      g1 <- g1 + geom_text(
+        aes(label = dt02$point_labels, fontface = "bold"),
+        position = pj,
+        size = point_label_size)
+    }
+  } else {
+    g1 <- g1 + geom_point(position = pj)
+  }
   # scale points
   if (!is.null(weight_var_name)) {
     g1 <- g1 + aes(size = dt02$weight)
     g1 <- g1 + scale_size(
       range = point_size_range, guide = FALSE)
-  }
-  # add point labels or dots
-  if (!is.null(point_label_var_name)) {
-    g1 <- g1 + aes(label = dt02$point_labels)
-    g1 <- g1 + geom_text(
-      aes(label = dt02$point_labels, fontface = "bold"),
-      position = pj,
-      size = point_label_size)
-  } else {
-    g1 <- g1 + geom_point(position = pj)
   }
   # weighted least squares line
   if (line_of_fit_type %in% c("lm", "loess")) {
