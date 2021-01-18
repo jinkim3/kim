@@ -23,12 +23,12 @@ desc_stats_by_group <- function(
   dt1 <- setDT(copy(data))
   dt2 <- dt1[, list(
     n = length(get(var_for_stats)),
-    mean = as.numeric(mean(get(var_for_stats))),
-    sd = as.numeric(stats::sd(get(var_for_stats))),
-    median = as.numeric(stats::median(get(var_for_stats))),
-    min = as.numeric(min(get(var_for_stats))),
-    max = as.numeric(max(get(var_for_stats))),
-    se = as.numeric(kim::se_of_mean(get(var_for_stats))),
+    mean = as.numeric(mean(get(var_for_stats), na.rm = TRUE)),
+    sd = as.numeric(stats::sd(get(var_for_stats), na.rm = TRUE)),
+    median = as.numeric(stats::median(get(var_for_stats), na.rm = TRUE)),
+    min = as.numeric(min(get(var_for_stats), na.rm = TRUE)),
+    max = as.numeric(max(get(var_for_stats), na.rm = TRUE)),
+    se = as.numeric(kim::se_of_mean(get(var_for_stats), na.rm = TRUE)),
     ci_95_ll = tryCatch(
       as.numeric(stats::t.test(get(var_for_stats))[["conf.int"]][1]),
       warning = function(w) NA_real_, error = function(e) NA_real_),
@@ -37,18 +37,20 @@ desc_stats_by_group <- function(
       warning = function(w) NA_real_, error = function(e) NA_real_),
     pi_95_ll = tryCatch(
       as.numeric(
-        mean(get(var_for_stats)) + stats::sd(get(var_for_stats)) *
+        mean(get(var_for_stats), na.rm = TRUE) +
+          stats::sd(get(var_for_stats)) *
           stats::qt(0.025, length(get(var_for_stats)) - 1)),
       warning = function(w) NA_real_, error = function(e) NA_real_),
     pi_95_ul = tryCatch(
       as.numeric(
-        mean(get(var_for_stats)) + stats::sd(get(var_for_stats)) *
+        mean(get(var_for_stats), na.rm = TRUE) +
+          stats::sd(get(var_for_stats)) *
           stats::qt(0.975, length(get(var_for_stats)) - 1)),
       warning = function(w) NA_real_, error = function(e) NA_real_),
     skewness = as.numeric(
-      moments::skewness(get(var_for_stats))),
+      moments::skewness(get(var_for_stats), na.rm = TRUE)),
     kurtosis = as.numeric(
-      moments::kurtosis(get(var_for_stats)))),
+      moments::kurtosis(get(var_for_stats), na.rm = TRUE))),
     keyby = grouping_vars]
   # round to significant digits
   if (!is.null(sigfigs)) {
