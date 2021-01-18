@@ -12,13 +12,16 @@ scatterplot(
   weight_var_name = NULL,
   alpha = 1,
   annotate_stats = FALSE,
+  annotate_y_pos = 5,
   line_of_fit_type = "lm",
   ci_for_line_of_fit = FALSE,
   x_axis_label = NULL,
   y_axis_label = NULL,
-  point_labels_size_range = c(3, 12),
+  point_label_size = 5,
+  point_size_range = c(3, 12),
   jitter_x_percent = 0,
-  jitter_y_percent = 0
+  jitter_y_percent = 0,
+  cap_axis_lines = FALSE
 )
 }
 \arguments{
@@ -41,6 +44,14 @@ the line of fit}
 \item{annotate_stats}{if \code{TRUE}, the correlation and p-value will
 be annotated at the top of the plot}
 
+\item{annotate_y_pos}{position of the annotated stats, expressed
+as a percentage of the range of y values by which the annotated
+stats will be placed above the maximum value of y in the data set
+(default = 5). If \code{annotate_y_pos = 5}, and the minimum and
+maximum y values in the data set are 0 and 100, respectively,
+the annotated stats will be placed at 5\% of the y range (100 - 0)
+above the maximum y value, y = 0.05 * (100 - 0) + 100 = 105.}
+
 \item{line_of_fit_type}{if \code{line_of_fit_type = "lm"}, a regression
 line will be fit; if \code{line_of_fit_type = "loess"}, a local
 regression line will be fit; if \code{line_of_fit_type = "none"},
@@ -53,7 +64,9 @@ confidence interval for the line of fit will be shaded}
 
 \item{y_axis_label}{alternative label for the y axis}
 
-\item{point_labels_size_range}{minimum and maximum size for dots
+\item{point_label_size}{size for dots' labels on the plot}
+
+\item{point_size_range}{minimum and maximum size for dots
 on the plot when they are weighted}
 
 \item{jitter_x_percent}{horizontally jitter dots by a percentage of the
@@ -61,6 +74,9 @@ range of x values}
 
 \item{jitter_y_percent}{vertically jitter dots by a percentage of the
 range of y values}
+
+\item{cap_axis_lines}{logical. Should the axis lines be capped at the
+outer tick marks? (default = TRUE)}
 }
 \value{
 a ggplot object
@@ -79,7 +95,7 @@ scatterplot(
 scatterplot(
   data = mtcars, x_var_name = "wt", y_var_name = "mpg",
   point_label_var_name = "hp", weight_var_name = "cyl",
-  annotate_stats = TRUE
+  point_label_size = 7, annotate_stats = TRUE
 )
 }
 }

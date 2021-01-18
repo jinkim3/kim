@@ -1,11 +1,11 @@
 #' print loop progress
 #'
-#' Print the current progress in a loop (e.g., for loop or lapply)
+#' Print current progress inside a loop (e.g., for loop or lapply)
 #'
-#' @param iteration_number the current number of iteration
-#' @param iteration_start the iteration number at which the loop begins
+#' @param iteration_number current number of iteration
+#' @param iteration_start iteration number at which the loop begins
 #' (default = 1)
-#' @param iteration_end the iteration number at which the loop ends.
+#' @param iteration_end iteration number at which the loop ends.
 #' @param percent if \code{percent = 1}, progress level will be printed
 #' at every 1 percent progress (default = 1)
 #' @examples

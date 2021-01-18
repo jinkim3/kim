@@ -14,6 +14,13 @@
 #' 1 = completely opaque)
 #' @param annotate_stats if \code{TRUE}, the correlation and p-value will
 #' be annotated at the top of the plot
+#' @param annotate_y_pos position of the annotated stats, expressed
+#' as a percentage of the range of y values by which the annotated
+#' stats will be placed above the maximum value of y in the data set
+#' (default = 5). If \code{annotate_y_pos = 5}, and the minimum and
+#' maximum y values in the data set are 0 and 100, respectively,
+#' the annotated stats will be placed at 5% of the y range (100 - 0)
+#' above the maximum y value, y = 0.05 * (100 - 0) + 100 = 105.
 #' @param line_of_fit_type if \code{line_of_fit_type = "lm"}, a regression
 #' line will be fit; if \code{line_of_fit_type = "loess"}, a local
 #' regression line will be fit; if \code{line_of_fit_type = "none"},
@@ -22,12 +29,15 @@
 #' confidence interval for the line of fit will be shaded
 #' @param x_axis_label alternative label for the x axis
 #' @param y_axis_label alternative label for the y axis
-#' @param point_labels_size_range minimum and maximum size for dots
+#' @param point_label_size size for dots' labels on the plot
+#' @param point_size_range minimum and maximum size for dots
 #' on the plot when they are weighted
 #' @param jitter_x_percent horizontally jitter dots by a percentage of the
 #' range of x values
 #' @param jitter_y_percent vertically jitter dots by a percentage of the
 #' range of y values
+#' @param cap_axis_lines logical. Should the axis lines be capped at the
+#' outer tick marks? (default = TRUE)
 #' @return a ggplot object
 #' @examples
 #' \donttest{
@@ -40,7 +50,7 @@
 #' scatterplot(
 #'   data = mtcars, x_var_name = "wt", y_var_name = "mpg",
 #'   point_label_var_name = "hp", weight_var_name = "cyl",
-#'   annotate_stats = TRUE
+#'   point_label_size = 7, annotate_stats = TRUE
 #' )
 #' }
 #' @export
@@ -53,13 +63,16 @@ scatterplot <- function(
   weight_var_name = NULL,
   alpha = 1,
   annotate_stats = FALSE,
+  annotate_y_pos = 5,
   line_of_fit_type = "lm",
   ci_for_line_of_fit = FALSE,
   x_axis_label = NULL,
   y_axis_label = NULL,
-  point_labels_size_range = c(3, 12),
+  point_label_size = 5,
+  point_size_range = c(3, 12),
   jitter_x_percent = 0,
-  jitter_y_percent = 0) {
+  jitter_y_percent = 0,
+  cap_axis_lines = FALSE) {
   # create a temporary dataset
   dt01 <- data.table(x = data[[x_var_name]], y = data[[y_var_name]])
   # add the point label or weight column
@@ -96,15 +109,16 @@ scatterplot <- function(
   # scale points
   if (!is.null(weight_var_name)) {
     g1 <- g1 + aes(size = dt02$weight)
-    g1 <- g1 + scale_size(range = point_labels_size_range, guide = FALSE)
+    g1 <- g1 + scale_size(
+      range = point_size_range, guide = FALSE)
   }
   # add point labels or dots
   if (!is.null(point_label_var_name)) {
     g1 <- g1 + aes(label = dt02$point_labels)
     g1 <- g1 + geom_text(
       aes(label = dt02$point_labels, fontface = "bold"),
-      position = pj
-    )
+      position = pj,
+      size = point_label_size)
   } else {
     g1 <- g1 + geom_point(position = pj)
   }
@@ -116,25 +130,6 @@ scatterplot <- function(
       se = ci_for_line_of_fit
     )
   }
-  # plot theme
-  g1 <- g1 + theme_classic(base_size = 20) %+replace%
-    theme(
-      plot.title = element_text(hjust = 0.5),
-      legend.position = "none",
-      axis.title.x = element_text(margin = margin(t = 24)),
-      axis.title.y = element_text(
-        angle = 0, vjust = 0.85,
-        margin = margin(r = 24)
-      ),
-      axis.title = element_text(
-        face = "bold", color = "black", size = 24
-      ),
-      axis.text = element_text(
-        face = "bold", color = "black", size = 20
-      ),
-      plot.margin = unit(c(25, 7, 7, 7), "pt")
-    )
-  g1 <- g1 + coord_cartesian(clip = "off")
   # correlation
   cor_test <- stats::cor.test(dt02[["x"]], dt02[["y"]])
   cor_test_df <- cor_test[["parameter"]][["df"]]
@@ -156,7 +151,7 @@ scatterplot <- function(
   cor_test_p_value_text <-
     kim::pretty_round_p_value(cor_test_p_value, include_p_equals = TRUE)
   # annotate stats
-  if (annotate_stats) {
+  if (annotate_stats == TRUE) {
     annotation_01 <-
       as.character(as.expression(substitute(
         t06 * italic(t01)(t02) == t03 * t04 * italic(p) * t05,
@@ -172,12 +167,13 @@ scatterplot <- function(
           t06 = weighted_r_text
         )
       )))
-    g1 <- g1 + annotate(
-      "text",
-      x = min(dt02$x) + x_range / 2,
-      y = max(dt02$y), color = "green4",
+    g1 <- g1 + geom_text(
+      aes(
+        x = min(dt02$x) + x_range / 2,
+        y = max(dt02$y) + y_range * annotate_y_pos / 100),
+      color = "green4",
       label = annotation_01, parse = TRUE,
-      hjust = 0.5, vjust = -0.5,
+      hjust = 0.5, vjust = 0.5,
       size = 6,
       fontface = "bold"
     )
@@ -191,6 +187,8 @@ scatterplot <- function(
   }
   g1 <- g1 + xlab(x_axis_label)
   g1 <- g1 + ylab(y_axis_label)
+  # plot theme
+  g1 <- g1 + kim::theme_kim(cap_axis_lines = cap_axis_lines)
   # return the ggplot
   return(g1)
 }

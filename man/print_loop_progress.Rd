@@ -12,18 +12,18 @@ print_loop_progress(
 )
 }
 \arguments{
-\item{iteration_number}{the current number of iteration}
+\item{iteration_number}{current number of iteration}
 
-\item{iteration_start}{the iteration number at which the loop begins
+\item{iteration_start}{iteration number at which the loop begins
 (default = 1)}
 
-\item{iteration_end}{the iteration number at which the loop ends.}
+\item{iteration_end}{iteration number at which the loop ends.}
 
 \item{percent}{if \code{percent = 1}, progress level will be printed
 at every 1 percent progress (default = 1)}
 }
 \description{
-Print the current progress in a loop (e.g., for loop or lapply)
+Print current progress inside a loop (e.g., for loop or lapply)
 }
 \examples{
 for(i in seq_len(250)) {
