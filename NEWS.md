@@ -1,4 +1,4 @@
-# kim 0.2.48
+# kim 0.2.49
 * Fixed bugs, removed dependency for dplyr, and added 
 function(s), including write_csv and print_loop_progress
 

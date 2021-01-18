@@ -26,10 +26,17 @@ at every 1 percent progress (default = 1)}
 Print current progress inside a loop (e.g., for loop or lapply)
 }
 \examples{
-for(i in seq_len(250)) {
+for (i in seq_len(250)) {
   Sys.sleep(0.002)
   print_loop_progress(
     iteration_number = i,
     iteration_end = 250)
 }
+unlist(lapply(seq_len(7), function (i) {
+  Sys.sleep(0.2)
+  print_loop_progress(
+    iteration_number = i,
+    iteration_end = 7)
+  return(i)
+}))
 }
