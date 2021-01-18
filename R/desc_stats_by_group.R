@@ -38,13 +38,13 @@ desc_stats_by_group <- function(
     pi_95_ll = tryCatch(
       as.numeric(
         mean(get(var_for_stats), na.rm = TRUE) +
-          stats::sd(get(var_for_stats)) *
+          stats::sd(get(var_for_stats), na.rm = TRUE) *
           stats::qt(0.025, length(get(var_for_stats)) - 1)),
       warning = function(w) NA_real_, error = function(e) NA_real_),
     pi_95_ul = tryCatch(
       as.numeric(
         mean(get(var_for_stats), na.rm = TRUE) +
-          stats::sd(get(var_for_stats)) *
+          stats::sd(get(var_for_stats), na.rm = TRUE) *
           stats::qt(0.975, length(get(var_for_stats)) - 1)),
       warning = function(w) NA_real_, error = function(e) NA_real_),
     skewness = as.numeric(
