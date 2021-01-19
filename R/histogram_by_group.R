@@ -13,7 +13,7 @@
 #' @param space_between_histograms space between histograms
 #' (minimum = 0, maximum = 1, default = 0.15)
 #' @param draw_baseline logical. Should the baseline and the trailing
-#' lines to either side of the histogram be drawn? (default = FALSE)
+#' lines to either side of the histogram be drawn? (default = TRUE)
 #' @return a ggplot object
 #' @examples
 #' histogram_by_group(data = mtcars, iv_name = "cyl", dv_name = "mpg")
@@ -33,7 +33,7 @@ histogram_by_group <- function(
   order_of_groups_top_to_bot = NULL,
   number_of_bins = 40,
   space_between_histograms = 0.15,
-  draw_baseline = FALSE) {
+  draw_baseline = TRUE) {
   # create the dataset
   dt01 <- stats::na.omit(
     data.table::setDT(
