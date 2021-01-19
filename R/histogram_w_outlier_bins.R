@@ -38,11 +38,20 @@
 #' as opposed to proportions? (default = FALSE).
 #' If \code{plot_frequency = TRUE}, \code{plot_proportion} will
 #' switch to be FALSE.
+#' @param mean logical. Should mean marked on the histogram?
+#' (default = TRUE)
+#' @param median logical. Should median marked on the histogram?
+#' (default = TRUE)
+#' @param median_position position of the median label as a percentage of
+#' height of the tallest bin (default = 15)
 #' @return a ggplot object
 #' @examples
 #' histogram_w_outlier_bin(vector = 1:100, bin_cutoffs = seq(0, 100, 10))
 #' histogram_w_outlier_bin(vector = 0:89, bin_cutoffs = seq(0, 90, 10),
 #' x_tick_marks = seq(0.5, 9.5, 3), x_tick_mark_labels = seq(0, 90, 30))
+#' histogram_w_outlier_bin(vector = 1:10, bin_cutoffs = seq(0, 10, 2.5))
+#' histogram_w_outlier_bin(vector = 1:5, bin_cutoffs = seq(0, 10, 2.5))
+#' histogram_w_outlier_bin(vector = 1:15, bin_cutoffs = c(5.52, 10.5))
 #' @import data.table ggplot2
 #' @export
 histogram_w_outlier_bin <- function(
@@ -61,7 +70,10 @@ histogram_w_outlier_bin <- function(
   y_axis_title = NULL,
   notify_na_count = NULL,
   plot_proportion = TRUE,
-  plot_frequency = FALSE) {
+  plot_frequency = FALSE,
+  mean = TRUE,
+  median = TRUE,
+  median_position = 15) {
   # deal with NA values
   v_no_na <- vector[!is.na(vector)]
   na_count <- length(vector) - length(v_no_na)
@@ -74,6 +86,12 @@ histogram_w_outlier_bin <- function(
       "\n", na_count,
       " observation(s) were removed due to missing values.\n"
     ))
+  }
+  # check if bin_cutoffs argument is null
+  if (is.null(bin_cutoffs)) {
+    stop(paste0(
+      "Please set cutoff points for bins by entering a numeric vector ",
+      "for bin_cutoffs"))
   }
   # do bin_cutoffs include min and max values?
   # if not, add min and max values to bin_cutoffs
@@ -172,5 +190,51 @@ histogram_w_outlier_bin <- function(
         max(y_tick_marks, na.rm = TRUE)),
       breaks = y_tick_marks)
   }
+  # actual bin cutoffs, which are different from cutoffs that are
+  # displayed on the plot
+  actual_bin_cutoffs <- seq_len(n_bins + 1) - 0.5
+  # get the x coordinate for mean
+  mean_x_coordinate <- rel_value_of_pos_in_vector(
+    vector = actual_bin_cutoffs,
+    position = rel_pos_of_value_in_vector(mean(v_no_na), bin_cutoffs))
+  # get the x coordinate for median
+  median_x_coordinate <- rel_value_of_pos_in_vector(
+    vector = actual_bin_cutoffs,
+    position = rel_pos_of_value_in_vector(median(v_no_na), bin_cutoffs))
+  # get the x coordinate for lower and upper limits of 95% ci
+  ci_95_ll = tryCatch(
+    as.numeric(stats::t.test(v_no_na)[["conf.int"]][1]),
+    warning = function(w) NA_real_, error = function(e) NA_real_)
+  ci_95_ul = tryCatch(
+    as.numeric(stats::t.test(v_no_na)[["conf.int"]][2]),
+    warning = function(w) NA_real_, error = function(e) NA_real_)
+  ci_95_ll_x_coordinate <- rel_value_of_pos_in_vector(
+    vector = actual_bin_cutoffs,
+    position = rel_pos_of_value_in_vector(ci_95_ll, bin_cutoffs))
+  ci_95_ul_x_coordinate <- rel_value_of_pos_in_vector(
+    vector = actual_bin_cutoffs,
+    position = rel_pos_of_value_in_vector(ci_95_ul, bin_cutoffs))
+  # mark 95% ci
+  g1 <- g1 + geom_errorbarh(
+    aes(
+      xmin = ci_95_ll_x_coordinate,
+      xmax = ci_95_ul_x_coordinate,
+      y = 0),
+    size = 3,
+    height = (max(dt[, get(y)]) - 0) * median_position / 100,
+    color = "black")
+  # mark mean
+  g1 <- g1 + geom_point(
+    data = data.frame(mean_x_coordinate),
+    aes(x = mean_x_coordinate, y = 0),
+    size = 5, color = "black")
+  # mark median
+  g1 <- g1 + geom_text(
+    data = data.frame(median_x_coordinate),
+    aes(x = median_x_coordinate,
+        y = (max(dt[, get(y)]) - 0) * median_position / 100,
+        label = "Mdn\nX"),
+    fontface = "bold", hjust = 0.5, vjust = 0.5,
+    size = 7, color = "black")
   return(g1)
 }

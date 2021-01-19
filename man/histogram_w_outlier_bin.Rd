@@ -20,7 +20,10 @@ histogram_w_outlier_bin(
   y_axis_title = NULL,
   notify_na_count = NULL,
   plot_proportion = TRUE,
-  plot_frequency = FALSE
+  plot_frequency = FALSE,
+  mean = TRUE,
+  median = TRUE,
+  median_position = 15
 )
 }
 \arguments{
@@ -75,6 +78,15 @@ as opposed to frequencies? (default = TRUE)}
 as opposed to proportions? (default = FALSE).
 If \code{plot_frequency = TRUE}, \code{plot_proportion} will
 switch to be FALSE.}
+
+\item{mean}{logical. Should mean marked on the histogram?
+(default = TRUE)}
+
+\item{median}{logical. Should median marked on the histogram?
+(default = TRUE)}
+
+\item{median_position}{position of the median label as a percentage of
+height of the tallest bin (default = 15)}
 }
 \value{
 a ggplot object
@@ -86,4 +98,7 @@ Create a histogram with outlier bins
 histogram_w_outlier_bin(vector = 1:100, bin_cutoffs = seq(0, 100, 10))
 histogram_w_outlier_bin(vector = 0:89, bin_cutoffs = seq(0, 90, 10),
 x_tick_marks = seq(0.5, 9.5, 3), x_tick_mark_labels = seq(0, 90, 30))
+histogram_w_outlier_bin(vector = 1:10, bin_cutoffs = seq(0, 10, 2.5))
+histogram_w_outlier_bin(vector = 1:5, bin_cutoffs = seq(0, 10, 2.5))
+histogram_w_outlier_bin(vector = 1:15, bin_cutoffs = c(5.52, 10.5))
 }

@@ -8,6 +8,8 @@ desc_stats(
   vector = NULL,
   output_type = "vector",
   sigfigs = 3,
+  ci = FALSE,
+  pi = FALSE,
   notify_na_count = NULL
 )
 }
@@ -19,6 +21,12 @@ of descriptive statistics; if \code{output_type = "dt"}, return a
 data.table of descriptive statistics}
 
 \item{sigfigs}{number of significant digits to round to (default = 3)}
+
+\item{ci}{logical. Should 95\% CI be included in the descriptive stats?
+(default = FALSE)}
+
+\item{pi}{logical. Should 95\% PI be included in the descriptive stats?
+(default = FALSE)}
 
 \item{notify_na_count}{if \code{TRUE}, notify how many observations
 were removed due to missing values. By default, NA count will be printed
@@ -32,6 +40,7 @@ Returns descriptive statistics for a numeric vector.
 }
 \examples{
 desc_stats(1:100)
+desc_stats(1:100, ci = TRUE, pi = TRUE, sigfigs = 2)
 desc_stats(c(1:100, NA))
 desc_stats(vector = c(1:100, NA), output_type = "dt")
 }

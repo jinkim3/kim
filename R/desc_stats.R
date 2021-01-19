@@ -7,12 +7,17 @@
 #' of descriptive statistics; if \code{output_type = "dt"}, return a
 #' data.table of descriptive statistics
 #' @param sigfigs number of significant digits to round to (default = 3)
+#' @param ci logical. Should 95% CI be included in the descriptive stats?
+#' (default = FALSE)
+#' @param pi logical. Should 95% PI be included in the descriptive stats?
+#' (default = FALSE)
 #' @param notify_na_count if \code{TRUE}, notify how many observations
 #' were removed due to missing values. By default, NA count will be printed
 #' only if there are any NA values.
 #' @return a named numeric vector or a data.table
 #' @examples
 #' desc_stats(1:100)
+#' desc_stats(1:100, ci = TRUE, pi = TRUE, sigfigs = 2)
 #' desc_stats(c(1:100, NA))
 #' desc_stats(vector = c(1:100, NA), output_type = "dt")
 #' @export
@@ -20,6 +25,8 @@ desc_stats <- function(
   vector = NULL,
   output_type = "vector",
   sigfigs = 3,
+  ci = FALSE,
+  pi = FALSE,
   notify_na_count = NULL) {
   # deal with NA values
   v_no_na <- vector[!is.na(vector)]
@@ -42,17 +49,66 @@ desc_stats <- function(
   min <- min(v_no_na)
   max <- max(v_no_na)
   se_of_mean <- kim::se_of_mean(v_no_na, notify_na_count = FALSE)
+  if (ci == TRUE) {
+    ci_95_ll <- tryCatch(
+      as.numeric(stats::t.test(v_no_na)[["conf.int"]][1]),
+      warning = function(w) NA_real_, error = function(e) NA_real_)
+    ci_95_ul <- tryCatch(
+      as.numeric(stats::t.test(v_no_na)[["conf.int"]][2]),
+      warning = function(w) NA_real_, error = function(e) NA_real_)
+  }
+  if (pi == TRUE) {
+    pi_95_ll <- tryCatch(
+      as.numeric(mean(v_no_na) + stats::sd(v_no_na) *
+                   stats::qt(0.025, length(v_no_na) - 1)),
+      warning = function(w) NA_real_, error = function(e) NA_real_)
+    pi_95_ul <- tryCatch(
+      as.numeric(mean(v_no_na) + stats::sd(v_no_na) *
+          stats::qt(0.975, length(v_no_na) - 1)),
+      warning = function(w) NA_real_, error = function(e) NA_real_)
+  }
   skewness <- moments::skewness(v_no_na)
   kurtosis <- moments::kurtosis(v_no_na)
+  # stats to report
+  stats_to_report <- list(
+    n = n,
+    mean = mean,
+    sd = sd,
+    median = median,
+    min = min,
+    max = max,
+    se_of_mean = se_of_mean)
+  # add ci
+  if (ci == TRUE) {
+    stats_to_report <- c(
+      stats_to_report,
+      ci_95_ll = ci_95_ll,
+      ci_95_ul = ci_95_ul)
+  }
+  # add pi
+  if (pi == TRUE) {
+    stats_to_report <- c(
+      stats_to_report,
+      pi_95_ll = pi_95_ll,
+      pi_95_ul = pi_95_ul)
+  }
+  # add skewness and kurtosis
+  stats_to_report <- c(
+    stats_to_report,
+    skewness = skewness,
+    kurtosis = kurtosis)
   # stats in a data table format
-  dt <- data.table::data.table(
-    n, mean, sd, median, min, max, se_of_mean, skewness, kurtosis)
+  dt <- setDT(stats_to_report)
   # round
-  for (j in c(
-    "mean", "sd", "median", "se_of_mean", "skewness", "kurtosis")) {
-    data.table::set(
-      dt, j = j,
-      value = signif(dt[[j]], sigfigs))
+  stats_to_round <- c(
+    "mean", "sd", "median", "se_of_mean", "ci_95_ll", "ci_95_ul",
+    "pi_95_ll", "pi_95_ul", "skewness", "kurtosis")
+  for (j in stats_to_round) {
+    if (j %in% names(dt)) {
+      data.table::set(
+        dt, j = j,
+        value = signif(dt[[j]], sigfigs))
+    }
   }
   # print the data table
   print(dt)
@@ -61,14 +117,7 @@ desc_stats <- function(
   if (output_type == "dt") {
     invisible(dt)
   } else {
-    # combine into a list
-    stats_list <- list(
-      n, mean, sd, median, min, max, se_of_mean, skewness, kurtosis)
-    statistic <- vapply(stats_list, as.numeric, FUN.VALUE = numeric(1L))
-    names(statistic) <- c(
-      "n", "mean", "sd", "median", "min", "max",
-      "se_of_mean", "skewness", "kurtosis"
-    )
-    return(statistic)
+    output_vector <- vapply(dt, as.numeric, FUN.VALUE = numeric(1L))
+    return(output_vector)
   }
 }
