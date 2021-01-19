@@ -58,7 +58,8 @@ non-outlier bins (default = "cyan4")}
 
 \item{y_axis_title_vjust}{position of the y axis title (default = 0.85).}
 
-\item{x_axis_title}{title for x axis (default = "Value")}
+\item{x_axis_title}{title for x axis (default = "Value"). If
+\code{x_axis_title = FALSE}, x axis title will be removed from the plot.}
 
 \item{y_axis_title}{title for y axis. By default, it will be either
 "Proportion" or "Count".}

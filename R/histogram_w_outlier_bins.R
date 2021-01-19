@@ -25,7 +25,8 @@
 #' non-outlier bins (default = "cyan4")
 #' @param border_color color for borders of the bins (default = "black")
 #' @param y_axis_title_vjust position of the y axis title (default = 0.85).
-#' @param x_axis_title title for x axis (default = "Value")
+#' @param x_axis_title title for x axis (default = "Value"). If
+#' \code{x_axis_title = FALSE}, x axis title will be removed from the plot.
 #' @param y_axis_title title for y axis. By default, it will be either
 #' "Proportion" or "Count".
 #' @param notify_na_count if \code{TRUE}, notify how many observations
@@ -135,7 +136,11 @@ histogram_w_outlier_bin <- function(
     y_axis_title_vjust = y_axis_title_vjust)
   # label axes
   if (!is.null(x_axis_title)) {
-    g1 <- g1 + xlab(x_axis_title)
+    if (x_axis_title == FALSE) {
+      g1 <- g1 + theme(axis.title.x = element_blank())
+    } else {
+      g1 <- g1 + xlab(x_axis_title)
+    }
   } else {
     g1 <- g1 + xlab("Value")
   }
