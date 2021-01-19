@@ -194,13 +194,13 @@ histogram_w_outlier_bin <- function(
   # displayed on the plot
   actual_bin_cutoffs <- seq_len(n_bins + 1) - 0.5
   # get the x coordinate for mean
-  mean_x_coordinate <- rel_value_of_pos_in_vector(
+  mean_x_coordinate <- kim::rel_value_of_pos_in_vector(
     vector = actual_bin_cutoffs,
-    position = rel_pos_of_value_in_vector(mean(v_no_na), bin_cutoffs))
+    position = kim::rel_pos_of_value_in_vector(mean(v_no_na), bin_cutoffs))
   # get the x coordinate for median
-  median_x_coordinate <- rel_value_of_pos_in_vector(
+  median_x_coordinate <- kim::rel_value_of_pos_in_vector(
     vector = actual_bin_cutoffs,
-    position = rel_pos_of_value_in_vector(median(v_no_na), bin_cutoffs))
+    position = kim::rel_pos_of_value_in_vector(median(v_no_na), bin_cutoffs))
   # get the x coordinate for lower and upper limits of 95% ci
   ci_95_ll = tryCatch(
     as.numeric(stats::t.test(v_no_na)[["conf.int"]][1]),
@@ -208,12 +208,12 @@ histogram_w_outlier_bin <- function(
   ci_95_ul = tryCatch(
     as.numeric(stats::t.test(v_no_na)[["conf.int"]][2]),
     warning = function(w) NA_real_, error = function(e) NA_real_)
-  ci_95_ll_x_coordinate <- rel_value_of_pos_in_vector(
+  ci_95_ll_x_coordinate <- kim::rel_value_of_pos_in_vector(
     vector = actual_bin_cutoffs,
-    position = rel_pos_of_value_in_vector(ci_95_ll, bin_cutoffs))
-  ci_95_ul_x_coordinate <- rel_value_of_pos_in_vector(
+    position = kim::rel_pos_of_value_in_vector(ci_95_ll, bin_cutoffs))
+  ci_95_ul_x_coordinate <- kim::rel_value_of_pos_in_vector(
     vector = actual_bin_cutoffs,
-    position = rel_pos_of_value_in_vector(ci_95_ul, bin_cutoffs))
+    position = kim::rel_pos_of_value_in_vector(ci_95_ul, bin_cutoffs))
   # mark 95% ci
   g1 <- g1 + geom_errorbarh(
     aes(
