@@ -22,8 +22,10 @@ histogram_w_outlier_bins(
   plot_proportion = TRUE,
   plot_frequency = FALSE,
   mean = TRUE,
+  ci = TRUE,
   median = TRUE,
-  median_position = 15
+  median_position = 15,
+  error_bar_size = 3
 )
 }
 \arguments{
@@ -82,11 +84,16 @@ switch to be FALSE.}
 \item{mean}{logical. Should mean marked on the histogram?
 (default = TRUE)}
 
+\item{ci}{logical. Should 95\% confidence interval marked on the histogram?
+(default = TRUE)}
+
 \item{median}{logical. Should median marked on the histogram?
 (default = TRUE)}
 
 \item{median_position}{position of the median label as a percentage of
 height of the tallest bin (default = 15)}
+
+\item{error_bar_size}{size of the error bars (default = 3)}
 }
 \value{
 a ggplot object

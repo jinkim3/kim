@@ -40,10 +40,13 @@
 #' switch to be FALSE.
 #' @param mean logical. Should mean marked on the histogram?
 #' (default = TRUE)
+#' @param ci logical. Should 95% confidence interval marked on the histogram?
+#' (default = TRUE)
 #' @param median logical. Should median marked on the histogram?
 #' (default = TRUE)
 #' @param median_position position of the median label as a percentage of
 #' height of the tallest bin (default = 15)
+#' @param error_bar_size size of the error bars (default = 3)
 #' @return a ggplot object
 #' @examples
 #' histogram_w_outlier_bins(vector = 1:100, bin_cutoffs = seq(0, 100, 10))
@@ -72,8 +75,10 @@ histogram_w_outlier_bins <- function(
   plot_proportion = TRUE,
   plot_frequency = FALSE,
   mean = TRUE,
+  ci = TRUE,
   median = TRUE,
-  median_position = 15) {
+  median_position = 15,
+  error_bar_size = 3) {
   # deal with NA values
   v_no_na <- vector[!is.na(vector)]
   na_count <- length(vector) - length(v_no_na)
@@ -104,7 +109,7 @@ histogram_w_outlier_bins <- function(
   # warn
   if (length(unique(diff(bin_cutoffs))) > 1) {
     warning(paste0(
-      "\n\nBin widths are not identical.\n",
+      "\nBin widths are not identical.\n",
       "Be careful when comparing the areas of bars.\n"))
   }
   # characteristics of the histogram
@@ -202,10 +207,10 @@ histogram_w_outlier_bins <- function(
     vector = actual_bin_cutoffs,
     position = kim::rel_pos_of_value_in_vector(median(v_no_na), bin_cutoffs))
   # get the x coordinate for lower and upper limits of 95% ci
-  ci_95_ll = tryCatch(
+  ci_95_ll <- tryCatch(
     as.numeric(stats::t.test(v_no_na)[["conf.int"]][1]),
     warning = function(w) NA_real_, error = function(e) NA_real_)
-  ci_95_ul = tryCatch(
+  ci_95_ul <- tryCatch(
     as.numeric(stats::t.test(v_no_na)[["conf.int"]][2]),
     warning = function(w) NA_real_, error = function(e) NA_real_)
   ci_95_ll_x_coordinate <- kim::rel_value_of_pos_in_vector(
@@ -215,26 +220,32 @@ histogram_w_outlier_bins <- function(
     vector = actual_bin_cutoffs,
     position = kim::rel_pos_of_value_in_vector(ci_95_ul, bin_cutoffs))
   # mark 95% ci
-  g1 <- g1 + geom_errorbarh(
-    aes(
-      xmin = ci_95_ll_x_coordinate,
-      xmax = ci_95_ul_x_coordinate,
-      y = 0),
-    size = 3,
-    height = (max(dt[, get(y)]) - 0) * median_position / 100,
-    color = "black")
+  if (ci == TRUE) {
+    g1 <- g1 + geom_errorbarh(
+      aes(
+        xmin = ci_95_ll_x_coordinate,
+        xmax = ci_95_ul_x_coordinate,
+        y = 0),
+      size = error_bar_size,
+      height = (max(dt[, get(y)]) - 0) * median_position / 100,
+      color = "black")
+  }
   # mark mean
-  g1 <- g1 + geom_point(
-    data = data.frame(mean_x_coordinate),
-    aes(x = mean_x_coordinate, y = 0),
-    size = 5, color = "black")
+  if (mean == TRUE) {
+    g1 <- g1 + geom_point(
+      data = data.frame(mean_x_coordinate),
+      aes(x = mean_x_coordinate, y = 0),
+      size = 5, color = "black")
+  }
   # mark median
-  g1 <- g1 + geom_text(
-    data = data.frame(median_x_coordinate),
-    aes(x = median_x_coordinate,
-        y = (max(dt[, get(y)]) - 0) * median_position / 100,
-        label = "Mdn\nX"),
-    fontface = "bold", hjust = 0.5, vjust = 0.5,
-    size = 7, color = "black")
+  if (median == TRUE) {
+    g1 <- g1 + geom_text(
+      data = data.frame(median_x_coordinate),
+      aes(x = median_x_coordinate,
+          y = (max(dt[, get(y)]) - 0) * median_position / 100,
+          label = "Mdn\nX"),
+      fontface = "bold", hjust = 0.5, vjust = 0.5,
+      size = 7, color = "black")
+  }
   return(g1)
 }
