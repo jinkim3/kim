@@ -12,6 +12,8 @@
 #' @param number_of_bins number of bins for the histograms (default = 40)
 #' @param space_between_histograms space between histograms
 #' (minimum = 0, maximum = 1, default = 0.15)
+#' @param draw_baseline logical. Should the baseline and the trailing
+#' lines to either side of the histogram be drawn? (default = FALSE)
 #' @return a ggplot object
 #' @examples
 #' histogram_by_group(data = mtcars, iv_name = "cyl", dv_name = "mpg")
@@ -30,7 +32,8 @@ histogram_by_group <- function(
   dv_name = NULL,
   order_of_groups_top_to_bot = NULL,
   number_of_bins = 40,
-  space_between_histograms = 0.15) {
+  space_between_histograms = 0.15,
+  draw_baseline = FALSE) {
   # create the dataset
   dt01 <- stats::na.omit(
     data.table::setDT(
@@ -85,9 +88,10 @@ histogram_by_group <- function(
       stat(stats::density), fill = get("iv")
     )
   ) +
-    ggridges::geom_density_ridges2(
+    ggridges::geom_density_ridges(
       stat = "binline", bins = number_of_bins,
-      scale = (1 - space_between_histograms), draw_baseline = FALSE
+      scale = (1 - space_between_histograms),
+      draw_baseline = draw_baseline
     )
   g1 <- g1 + scale_y_discrete(
     limits = reversed_order,

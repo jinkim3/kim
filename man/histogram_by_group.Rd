@@ -10,7 +10,8 @@ histogram_by_group(
   dv_name = NULL,
   order_of_groups_top_to_bot = NULL,
   number_of_bins = 40,
-  space_between_histograms = 0.15
+  space_between_histograms = 0.15,
+  draw_baseline = FALSE
 )
 }
 \arguments{
@@ -29,6 +30,9 @@ remove the group in the set of histograms.}
 
 \item{space_between_histograms}{space between histograms
 (minimum = 0, maximum = 1, default = 0.15)}
+
+\item{draw_baseline}{logical. Should the baseline and the trailing
+lines to either side of the histogram be drawn? (default = FALSE)}
 }
 \value{
 a ggplot object
