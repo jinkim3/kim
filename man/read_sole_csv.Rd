@@ -4,11 +4,14 @@
 \alias{read_sole_csv}
 \title{Read the sole csv file in the working directory}
 \usage{
-read_sole_csv(head = FALSE)
+read_sole_csv(head = FALSE, ...)
 }
 \arguments{
 \item{head}{logical. if \code{head = TRUE}, prints the first five
 rows of the data set.}
+
+\item{...}{optional arguments for fread. Arguments for data.table's
+fread function can be used, e.g., \code{fill = TRUE}, \code{nrows = 100}}
 }
 \value{
 the output will be a data.table object, that is,
@@ -20,8 +23,7 @@ Read the sole csv file in the working directory
 \examples{
 \donttest{
 mydata <- read_sole_csv()
-}
-\donttest{
 mydata <- read_sole_csv(head = TRUE)
+mydata <- read_sole_csv(fill = TRUE, nrows = 5)
 }
 }

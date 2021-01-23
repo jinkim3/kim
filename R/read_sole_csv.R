@@ -4,17 +4,19 @@
 #'
 #' @param head logical. if \code{head = TRUE}, prints the first five
 #' rows of the data set.
+#' @param ... optional arguments for fread. Arguments for data.table's
+#' fread function can be used, e.g., \code{fill = TRUE}, \code{nrows = 100}
 #' @return the output will be a data.table object, that is,
 #' an output from the data.table function, \code{fread}
 #' @examples
 #' \donttest{
 #' mydata <- read_sole_csv()
-#' }
-#' \donttest{
 #' mydata <- read_sole_csv(head = TRUE)
+#' mydata <- read_sole_csv(fill = TRUE, nrows = 5)
 #' }
 #' @export
-read_sole_csv <- function(head = FALSE) {
+read_sole_csv <- function(
+  head = FALSE, ...) {
   # print the working directory
   message(paste0("\nCurrent working directory:\n", getwd(), "\n"))
   # vector of file names
@@ -35,7 +37,7 @@ read_sole_csv <- function(head = FALSE) {
     message(paste0(
       "The following csv file was read from the working directory:\n",
       csv_file_name_vector, "\n"))
-    dt <- data.table::fread(input = csv_file_name_vector)
+    dt <- data.table::fread(input = csv_file_name_vector, ...)
     if (head == TRUE) {
       message("First five (or fewer) rows of the data:")
       print(utils::head(dt, n = 5L))
