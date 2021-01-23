@@ -10,8 +10,9 @@ read_sole_csv(head = FALSE, ...)
 \item{head}{logical. if \code{head = TRUE}, prints the first five
 rows of the data set.}
 
-\item{...}{optional arguments for fread. Arguments for data.table's
-fread function can be used, e.g., \code{fill = TRUE}, \code{nrows = 100}}
+\item{...}{optional arguments for the \code{fread} function
+from the data.table package. Any arguments for data.table's \code{fread}
+function can be used, e.g., \code{fill = TRUE}, \code{nrows = 100}}
 }
 \value{
 the output will be a data.table object, that is,

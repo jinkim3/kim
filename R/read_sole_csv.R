@@ -4,8 +4,9 @@
 #'
 #' @param head logical. if \code{head = TRUE}, prints the first five
 #' rows of the data set.
-#' @param ... optional arguments for fread. Arguments for data.table's
-#' fread function can be used, e.g., \code{fill = TRUE}, \code{nrows = 100}
+#' @param ... optional arguments for the \code{fread} function
+#' from the data.table package. Any arguments for data.table's \code{fread}
+#' function can be used, e.g., \code{fill = TRUE}, \code{nrows = 100}
 #' @return the output will be a data.table object, that is,
 #' an output from the data.table function, \code{fread}
 #' @examples

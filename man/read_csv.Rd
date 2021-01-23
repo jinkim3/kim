@@ -4,7 +4,7 @@
 \alias{read_csv}
 \title{Read a csv file}
 \usage{
-read_csv(name = NULL, head = FALSE)
+read_csv(name = NULL, head = FALSE, ...)
 }
 \arguments{
 \item{name}{a character string of the csv file name without the
@@ -13,6 +13,10 @@ enter \code{name = "myfile"}}
 
 \item{head}{logical. if \code{head = TRUE}, prints the first five
 rows of the data set.}
+
+\item{...}{optional arguments for the \code{fread} function
+from the data.table package. Any arguments for data.table's \code{fread}
+function can be used, e.g., \code{fill = TRUE}, \code{nrows = 100}}
 }
 \value{
 the output will be a data.table object, that is,

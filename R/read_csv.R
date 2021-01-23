@@ -7,6 +7,9 @@
 #' enter \code{name = "myfile"}
 #' @param head logical. if \code{head = TRUE}, prints the first five
 #' rows of the data set.
+#' @param ... optional arguments for the \code{fread} function
+#' from the data.table package. Any arguments for data.table's \code{fread}
+#' function can be used, e.g., \code{fill = TRUE}, \code{nrows = 100}
 #' @return the output will be a data.table object, that is,
 #' an output from the data.table function, \code{fread}
 #' @examples
@@ -16,7 +19,8 @@
 #' @export
 read_csv <- function(
   name = NULL,
-  head = FALSE) {
+  head = FALSE,
+  ...) {
   # check the name argument
   if (is.null(name)) {
     stop('Please enter a name of the csv file (e.g., name = "filename").')
@@ -41,7 +45,7 @@ read_csv <- function(
   }
   # read csv
   if (csv_file_name %in% file_name_vector) {
-    dt <- data.table::fread(input = csv_file_name)
+    dt <- data.table::fread(input = csv_file_name, ...)
     if (head == TRUE) {
       message("First five (or fewer) rows of the data:")
       print(utils::head(dt, n = 5L))
