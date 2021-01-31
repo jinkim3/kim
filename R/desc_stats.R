@@ -8,12 +8,13 @@
 #' data.table of descriptive statistics
 #' @param sigfigs number of significant digits to round to (default = 3)
 #' @param ci logical. Should 95% CI be included in the descriptive stats?
-#' (default = FALSE)
+#' (default = TRUE)
 #' @param pi logical. Should 95% PI be included in the descriptive stats?
-#' (default = FALSE)
+#' (default = TRUE)
 #' @param notify_na_count if \code{TRUE}, notify how many observations
 #' were removed due to missing values. By default, NA count will be printed
 #' only if there are any NA values.
+#' @param print_dt if \code{TRUE}, print the descriptive stats data.table
 #' @return a named numeric vector or a data.table
 #' @examples
 #' desc_stats(1:100)
@@ -25,9 +26,10 @@ desc_stats <- function(
   vector = NULL,
   output_type = "vector",
   sigfigs = 3,
-  ci = FALSE,
-  pi = FALSE,
-  notify_na_count = NULL) {
+  ci = TRUE,
+  pi = TRUE,
+  notify_na_count = NULL,
+  print_dt = TRUE) {
   # deal with NA values
   v_no_na <- vector[!is.na(vector)]
   na_count <- length(vector) - length(v_no_na)

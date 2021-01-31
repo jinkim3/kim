@@ -2,13 +2,29 @@
 % Please edit documentation in R/update_kim.R
 \name{update_kim}
 \alias{update_kim}
-\title{Update 'kim' package}
+\title{Update 'kim'}
 \usage{
-update_kim(source = "github")
+update_kim(source = "github", force = FALSE, upgrade = FALSE)
 }
 \arguments{
 \item{source}{location of the most recent version of the package
 (default = "github")}
+
+\item{force}{logical. If \code{force = TRUE}, forces the installation
+even if the package 'kim' from the source has not changed since
+last install.}
+
+\item{upgrade}{input for \code{upgrade} argument to be passed on to
+\code{remotes::install_github}.
+The default value is \code{FALSE}.
+An input could be \code{TRUE} or \code{FALSE}, but it could also
+be one of the following: "default", "ask", "always", or "never".
+"default" respects the value of the R_REMOTES_UPGRADE
+environment variable if set, and falls back to "ask" if unset.
+"ask" prompts the user for which out of date packages to upgrade.
+For non-interactive sessions "ask" is equivalent to "always".
+TRUE and FALSE are also accepted and correspond
+to "always" and "never" respectively.}
 }
 \description{
 Updates the current package 'kim' by installing the most recent version

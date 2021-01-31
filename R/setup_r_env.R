@@ -34,7 +34,7 @@ setup_r_env <- function(
   # clear objects in the global environment
   if (clear_global_env == TRUE) {
     rm(list = ls(pos = ".GlobalEnv"), pos = ".GlobalEnv")
-    message("All objects in the global environment has been removed")
+    message("All objects in the global environment has been removed.")
   }
   # set wd to the current file
   if (set_wd_to_current_file == TRUE) {
