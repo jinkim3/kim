@@ -27,6 +27,8 @@ Start kim (update kim; attach default packages; set working directory, etc.)
 }
 \examples{
 \dontrun{
-start_kim(update = T, setup_r_env = F)
+start_kim()
+start_kim(default_packages = c("dplyr", "ggplot2"))
+start_kim(update = TRUE, setup_r_env = FALSE)
 }
 }

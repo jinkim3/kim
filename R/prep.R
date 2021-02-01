@@ -6,19 +6,62 @@
 #' @param ... names of packages to load and attach, separated by commas,
 #' e.g., \code{"ggplot2", data.table}. The arguments can be any number
 #' of packages, and they may or may not be wrapped in quotes.
+#' @param pkg_names_as_object logical. If \code{pkg_names_as_object = TRUE},
+#' the input will be evaluated as one object containing package names.
+#' If \code{pkg_names_as_object = FALSE}, the input will be considered
+#' as literal packages names (default = FALSE).
+#' @param silent_if_successful logical. If \code{silent_if_successful = TRUE},
+#' no message will be printed if preparation of package(s) is successful.
+#' If \code{silent_if_successful = FALSE}, a message indicating which
+#' package(s) were successfully loaded and attached will be printed
+#' (default = FALSE).
 #'
 #' @examples
 #' \donttest{
-#' prep(data.table)
+#' prep("data.table")
+#' prep("data.table", silent_if_successful = TRUE)
 #' prep("base", utils, ggplot2, "data.table")
+#' pkgs <- c("ggplot2", "data.table")
+#' prep(pkgs, pkg_names_as_object = TRUE)
 #' }
 #'
 #' @export
-prep <- function(...) {
-  # which packages were entered?
-  entered_pkg <- utils::tail(
-    as.character(match.call(expand.dots = TRUE)), -1
-  )
+prep <- function(
+  ...,
+  pkg_names_as_object = FALSE,
+  silent_if_successful = FALSE) {
+  # list of packages entered
+  arg_list <- as.list(match.call(expand.dots = FALSE))[["..."]]
+  # if "... = x" was entered
+  if ("..." %in% names(arg_list)) {
+    arg_list <- arg_list[["..."]]
+  }
+  # if arg_list at this point is language, evaluate it
+  if (typeof(arg_list) == "language") {
+    arg_list <- eval(arg_list)
+  }
+  # names of packages
+  # check whether an object containing package names was entered
+  # (e.g., a vector of package names)
+  if (pkg_names_as_object == TRUE) {
+    if (length(arg_list) != 1) {
+      stop(paste0(
+        "If pkg_names_as_object = TRUE, exactly one object containing ",
+        "package names can be entered.\n",
+        "You have entered ", length(arg_list), " object(s)."))
+    } else {
+      pkg_names <- eval(arg_list[[1]])
+    }
+  } else {
+    pkg_names <- lapply(arg_list, as.character)
+  }
+  if (length(pkg_names) < 1) {
+    stop("Please enter name(s) of package(s) to prepare for use")
+  }
+  # unlist package names
+  entered_pkg <- unlist(pkg_names)
+  # done dealing with inputs
+
   # list of currently installed packages
   installed_packages_1 <- rownames(utils::installed.packages())
   # which packages need to be installed?
@@ -85,9 +128,11 @@ prep <- function(...) {
     entered_pkg, rownames(utils::installed.packages())
   )
   if (length(loaded_pkg_final) > 0) {
-    message(paste0(
-      "The following package(s) were successfully loaded:\n",
-      paste(loaded_pkg_final, collapse = ", "), "\n"
-    ))
+    if (silent_if_successful == FALSE) {
+      message(paste0(
+        "The following package(s) were successfully loaded:\n",
+        paste(loaded_pkg_final, collapse = ", "), "\n"
+      ))
+    }
   }
 }

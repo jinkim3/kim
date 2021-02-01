@@ -39,7 +39,7 @@ setup_r_env <- function(
   # set wd to the current file
   if (set_wd_to_current_file == TRUE) {
     if (Sys.getenv("RSTUDIO") == 1) {
-      kim::prep("rstudioapi")
+      kim::prep("rstudioapi", silent_if_successful = TRUE)
       setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
       message(paste0(
         "The working directory has been set to the location of the current",

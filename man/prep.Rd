@@ -4,12 +4,23 @@
 \alias{prep}
 \title{Prepare package(s) for use}
 \usage{
-prep(...)
+prep(..., pkg_names_as_object = FALSE, silent_if_successful = FALSE)
 }
 \arguments{
 \item{...}{names of packages to load and attach, separated by commas,
 e.g., \code{"ggplot2", data.table}. The arguments can be any number
 of packages, and they may or may not be wrapped in quotes.}
+
+\item{pkg_names_as_object}{logical. If \code{pkg_names_as_object = TRUE},
+the input will be evaluated as one object containing package names.
+If \code{pkg_names_as_object = FALSE}, the input will be considered
+as literal packages names (default = FALSE).}
+
+\item{silent_if_successful}{logical. If \code{silent_if_successful = TRUE},
+no message will be printed if preparation of package(s) is successful.
+If \code{silent_if_successful = FALSE}, a message indicating which
+package(s) were successfully loaded and attached will be printed
+(default = FALSE).}
 }
 \description{
 Installs, loads, and attaches package(s). If package(s) are not
@@ -17,8 +28,11 @@ installed, installs them prior to loading and attaching.
 }
 \examples{
 \donttest{
-prep(data.table)
+prep("data.table")
+prep("data.table", silent_if_successful = TRUE)
 prep("base", utils, ggplot2, "data.table")
+pkgs <- c("ggplot2", "data.table")
+prep(pkgs, pkg_names_as_object = TRUE)
 }
 
 }
