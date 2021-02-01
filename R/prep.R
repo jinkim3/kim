@@ -23,6 +23,7 @@
 #' prep("base", utils, ggplot2, "data.table")
 #' pkgs <- c("ggplot2", "data.table")
 #' prep(pkgs, pkg_names_as_object = TRUE)
+#' prep(default_packages, pkg_names_as_object = TRUE)
 #' }
 #'
 #' @export
@@ -50,7 +51,7 @@ prep <- function(
         "package names can be entered.\n",
         "You have entered ", length(arg_list), " object(s)."))
     } else {
-      pkg_names <- eval(arg_list[[1]])
+      pkg_names <- eval.parent(arg_list[[1]])
     }
   } else {
     pkg_names <- lapply(arg_list, as.character)

@@ -58,7 +58,7 @@ setup_r_env <- function(
     while ("package:kim" %in% search()) {
       detach("package:kim", unload = TRUE, character.only = TRUE)
     }
-    kim::prep("kim")
+    kim::prep("kim", silent_if_successful = TRUE)
     message(paste0(
       "Package 'kim' v",
       utils::packageVersion("kim"),
