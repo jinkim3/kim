@@ -33,7 +33,6 @@ prep("data.table", silent_if_successful = TRUE)
 prep("base", utils, ggplot2, "data.table")
 pkgs <- c("ggplot2", "data.table")
 prep(pkgs, pkg_names_as_object = TRUE)
-prep(default_packages, pkg_names_as_object = TRUE)
 }
 
 }
