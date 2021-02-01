@@ -8,7 +8,7 @@ start_kim(
   update = TRUE,
   setup_r_env = TRUE,
   default_packages = c("data.table", "ggplot2"),
-  silent_load_data_table = TRUE
+  silent_load_pkgs = c("data.table")
 )
 }
 \arguments{
@@ -23,10 +23,9 @@ By default, \code{setup_r_env = TRUE}}
 \item{default_packages}{a vector of names of packages to load and attach.
 By default, \code{default_packages = c("data.table", "ggplot2")}}
 
-\item{silent_load_data_table}{logical. If
-\code{silent_load_data_table = TRUE}, the data.table package will be
-loaded and attached silently. If \code{silent_load_data_table = FALSE},
-the data.table package will be loaded with its default message.}
+\item{silent_load_pkgs}{a character vector indicating names of
+packages to load silently (i.e., suppress messages that get printed
+when loading the packaged). By default, \code{silent_load_pkgs = NULL}}
 }
 \description{
 Start kim (update kim; attach default packages; set working directory, etc.)
