@@ -38,15 +38,15 @@
     if (is.na(compare_version_result)) {
       if (is.na(installed_pkg_version)) {
         startup_message <- paste0(
-          "\nAttached package: kim (version unknown). ", update_suggestion)
+          "Attached package: kim (version unknown). ", update_suggestion)
       } else {
         startup_message <- paste0(
-          "\nAttached package: kim ", installed_pkg_version,
+          "Attached package: kim ", installed_pkg_version,
           ". ", update_suggestion)
       }
     } else if (compare_version_result == -1) {
       startup_message <- paste0(
-        "\nA more recent version of the package 'kim' is available ",
+        "A more recent version of the package 'kim' is available ",
         "on github.\n",
         "Currently installed version: ", installed_pkg_version, "\n",
         "Newer version on github:     ", github_pkg_version, "\n",
@@ -55,11 +55,11 @@
         " github by running 'update_kim()'")
     } else if (compare_version_result == 0) {
       startup_message <- paste0(
-        "\nAttached package: kim ", installed_pkg_version, " (same ",
+        "Attached package: kim ", installed_pkg_version, " (same ",
         "version as the most recent version available on github.)")
     } else if (compare_version_result == 1) {
       startup_message <- paste0(
-        "\nYou are running a newer, but possibly unstable version of ",
+        "You are running a newer, but possibly unstable version of ",
         "the package 'kim'.\n\n",
         "Currently installed version: ", installed_pkg_version, "\n",
         "Older version on github:     ", github_pkg_version, "\n\n",
