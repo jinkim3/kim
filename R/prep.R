@@ -72,8 +72,6 @@ prep <- function(
     # install packages
     utils::install.packages(pkg_to_install)
   }
-  # line break
-  cat("\n")
   # list of installed packages after installing entered packages
   installed_packages_2 <- rownames(utils::installed.packages())
   # newly installed packages
@@ -102,7 +100,7 @@ prep <- function(
   # packages that failed to install
   if (length(pkg_that_failed_to_install) > 0) {
     message(paste0(
-      "The following package(s) failed to install:\n",
+      "\nThe following package(s) failed to install:\n",
       paste(pkg_that_failed_to_install, collapse = ", "), "\n"
     ))
   }
@@ -112,14 +110,14 @@ prep <- function(
   )
   if (length(pkg_that_failed_to_load) > 0) {
     message(paste0(
-      "The following package(s) failed to load:\n",
+      "\nThe following package(s) failed to load:\n",
       paste(pkg_that_failed_to_load, collapse = ", "), "\n"
     ))
   }
   # newly installed packages
   if (length(newly_installed_pkg) > 0) {
     message(paste0(
-      "The following package(s) were newly installed:\n",
+      "\nThe following package(s) were newly installed:\n",
       paste(newly_installed_pkg, collapse = ", "), "\n"
     ))
   }
@@ -130,7 +128,7 @@ prep <- function(
   if (length(loaded_pkg_final) > 0) {
     if (silent_if_successful == FALSE) {
       message(paste0(
-        "The following package(s) were successfully loaded:\n",
+        "\nThe following package(s) were successfully loaded:\n",
         paste(loaded_pkg_final, collapse = ", "), "\n"
       ))
     }
