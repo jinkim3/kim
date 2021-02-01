@@ -44,7 +44,7 @@ setup_r_env <- function(
       message(paste0(
         "The working directory has been set to the location of the current",
         " file:\n"))
-      cat(paste0(getwd(), "\n"))
+      cat(paste0(getwd(), "\n\n"))
     } else {
       message(paste0(
         "The function for setting the working directory requires that",
@@ -59,9 +59,9 @@ setup_r_env <- function(
       detach("package:kim", unload = TRUE, character.only = TRUE)
     }
     kim::prep("kim", silent_if_successful = TRUE)
-    message(paste0(
-      "Package 'kim' v",
-      utils::packageVersion("kim"),
-      " has been unloaded and loaded."))
+    # message(paste0(
+    #   "Package 'kim' v",
+    #   utils::packageVersion("kim"),
+    #   " has been unloaded and loaded."))
   }
 }

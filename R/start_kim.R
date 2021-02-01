@@ -10,6 +10,10 @@
 #' By default, \code{setup_r_env = TRUE}
 #' @param default_packages a vector of names of packages to load and attach.
 #' By default, \code{default_packages = c("data.table", "ggplot2")}
+#' @param silent_load_data_table logical. If
+#' \code{silent_load_data_table = TRUE}, the data.table package will be
+#' loaded and attached silently. If \code{silent_load_data_table = FALSE},
+#' the data.table package will be loaded with its default message.
 #' @examples
 #' \dontrun{
 #' start_kim()
@@ -20,7 +24,8 @@
 start_kim <- function(
   update = TRUE,
   setup_r_env = TRUE,
-  default_packages = c("data.table", "ggplot2")) {
+  default_packages = c("data.table", "ggplot2"),
+  silent_load_data_table = TRUE) {
   # update the package
   if (update == TRUE) {
     kim::update_kim()
@@ -31,6 +36,20 @@ start_kim <- function(
   }
   # default packages to attach
   if (length(default_packages) > 0) {
-    kim::prep(default_packages, pkg_names_as_object = TRUE)
+    # if data.table should be loaded, load it silently?
+    if (silent_load_data_table == TRUE &
+        "data.table" %in% default_packages) {
+      # load data table silently
+      suppressMessages(kim::prep("data.table"))
+      # load other packages
+      pkgs_other_than_data_table <-
+        default_packages[default_packages != "data.table"]
+      if (length(pkgs_other_than_data_table) > 0) {
+        kim::prep(pkgs_other_than_data_table,
+                  pkg_names_as_object = TRUE)
+      }
+    } else {
+      kim::prep(default_packages, pkg_names_as_object = TRUE)
+    }
   }
 }
