@@ -15,6 +15,9 @@
 #' If \code{silent_if_successful = FALSE}, a message indicating which
 #' package(s) were successfully loaded and attached will be printed
 #' (default = FALSE).
+#' @param silent_load_pkgs a character vector indicating names of
+#' packages to load silently (i.e., suppress messages that get printed
+#' when loading the packaged). By default, \code{silent_load_pkgs = NULL}
 #'
 #' @examples
 #' \donttest{
@@ -23,13 +26,15 @@
 #' prep("base", utils, ggplot2, "data.table")
 #' pkgs <- c("ggplot2", "data.table")
 #' prep(pkgs, pkg_names_as_object = TRUE)
+#' prep("data.table", silent_load_pkgs = "data.table")
 #' }
 #'
 #' @export
 prep <- function(
   ...,
   pkg_names_as_object = FALSE,
-  silent_if_successful = FALSE) {
+  silent_if_successful = FALSE,
+  silent_load_pkgs = NULL) {
   # list of packages entered
   arg_list <- as.list(match.call(expand.dots = FALSE))[["..."]]
   # if "... = x" was entered
@@ -93,8 +98,33 @@ prep <- function(
       which(!pkg_to_check_if_loaded %in% pkg_loaded)
     ]
     if (length(pkg_to_load) > 0) {
-      # load and attach packages
-      invisible(lapply(pkg_to_load, library, character.only = TRUE))
+      # silently load packages
+      if (length(silent_load_pkgs) > 0) {
+        # split pkg_to_load into two groups: (1) packages to be loaded
+        # silently and (2) packages to be loaded not silently
+        pkg_to_actually_load_silently <- intersect(
+          silent_load_pkgs, pkg_to_load)
+        pkg_to_load_not_silently <- setdiff(
+          pkg_to_load, silent_load_pkgs)
+        # is any of the packages to be loaded silently in pkg_to_load?
+        if (length(pkg_to_actually_load_silently) > 0) {
+          invisible(lapply(pkg_to_actually_load_silently, function(x) {
+            suppressMessages(library(x, character.only = TRUE))
+          }))
+          if (length(pkg_to_load_not_silently) > 0) {
+            # load and attach packages
+            invisible(lapply(
+              pkg_to_load_not_silently, library, character.only = TRUE))
+          }
+        } else {
+          stop(paste0(
+            "None of the packages given for the argument silent_load_pkgs",
+            "is in the packages given for the argument pkg_to_load."))
+        }
+      } else {
+        # load and attach packages
+        invisible(lapply(pkg_to_load, library, character.only = TRUE))
+      }
     }
   }
   # packages that failed to install

@@ -65,7 +65,7 @@
         "Older version on github:     ", github_pkg_version, "\n\n",
         "If you run into errors using the package, please",
         " consider downgrading the package to the older version on",
-        " github by running 'update_kim()'\n")
+        " github by running 'update_kim()'")
     }
   }
   packageStartupMessage(startup_message)

@@ -4,7 +4,12 @@
 \alias{prep}
 \title{Prepare package(s) for use}
 \usage{
-prep(..., pkg_names_as_object = FALSE, silent_if_successful = FALSE)
+prep(
+  ...,
+  pkg_names_as_object = FALSE,
+  silent_if_successful = FALSE,
+  silent_load_pkgs = NULL
+)
 }
 \arguments{
 \item{...}{names of packages to load and attach, separated by commas,
@@ -21,6 +26,10 @@ no message will be printed if preparation of package(s) is successful.
 If \code{silent_if_successful = FALSE}, a message indicating which
 package(s) were successfully loaded and attached will be printed
 (default = FALSE).}
+
+\item{silent_load_pkgs}{a character vector indicating names of
+packages to load silently (i.e., suppress messages that get printed
+when loading the packaged). By default, \code{silent_load_pkgs = NULL}}
 }
 \description{
 Installs, loads, and attaches package(s). If package(s) are not
@@ -33,6 +42,7 @@ prep("data.table", silent_if_successful = TRUE)
 prep("base", utils, ggplot2, "data.table")
 pkgs <- c("ggplot2", "data.table")
 prep(pkgs, pkg_names_as_object = TRUE)
+prep("data.table", silent_load_pkgs = "data.table")
 }
 
 }
