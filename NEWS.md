@@ -1,4 +1,4 @@
-# kim 0.2.68
+# kim 0.2.69
 * Fixed bugs, removed dependency for dplyr, and added 
 function(s), including write_csv, print_loop_progress, 
 histogram_w_outlier_bin, find_duplicates, start_kim
