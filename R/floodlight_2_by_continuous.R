@@ -38,11 +38,14 @@
 #' (0 = completely transparent, 1 = completely opaque).
 #' By default, \code{nonsig_region_alpha = 0.08}
 #' @param x_axis_title title of the x axis. By default, it will be set
-#' as input for \code{mod_name}
+#' as input for \code{mod_name}. If \code{x_axis_title = FALSE}, it will
+#' be removed.
 #' @param y_axis_title title of the y axis. By default, it will be set
-#' as input for \code{dv_name}
+#' as input for \code{dv_name}. If \code{y_axis_title = FALSE}, it will
+#' be removed.
 #' @param legend_title title of the legend. By default, it will be set
-#' as input for \code{iv_name}
+#' as input for \code{iv_name}. If \code{legend_title = FALSE}, it will
+#' be removed.
 #' @examples
 #' floodlight_2_by_continuous(
 #' data = mtcars,
@@ -241,15 +244,31 @@ floodlight_2_by_continuous <- function(
   }
   # x axis title
   if (is.null(x_axis_title)) {
-    g1 <- g1 + xlab(mod_name)
+    g1 <- g1 + labs(
+      color = iv_name,
+      linetype = iv_name)
   } else {
-    g1 <- g1 + xlab(x_axis_title)
+    if (x_axis_title == FALSE) {
+      g1 <- g1 + theme(axis.title.x = element_blank())
+    } else {
+      g1 <- g1 + labs(
+        color = x_axis_title,
+        linetype = x_axis_title)
+    }
   }
   # y axis title
   if (is.null(y_axis_title)) {
-    g1 <- g1 + ylab(dv_name)
+    g1 <- g1 + labs(
+      color = iv_name,
+      linetype = iv_name)
   } else {
-    g1 <- g1 + ylab(y_axis_title)
+    if (y_axis_title == FALSE) {
+      g1 <- g1 + theme(axis.title.y = element_blank())
+    } else {
+      g1 <- g1 + labs(
+        color = y_axis_title,
+        linetype = y_axis_title)
+    }
   }
   # legend title
   if (is.null(legend_title)) {
@@ -257,9 +276,13 @@ floodlight_2_by_continuous <- function(
       color = iv_name,
       linetype = iv_name)
   } else {
-    g1 <- g1 + labs(
-      color = legend_title,
-      linetype = legend_title)
+    if (legend_title == FALSE) {
+      g1 <- g1 + theme(legend.title = element_blank())
+    } else {
+      g1 <- g1 + labs(
+        color = legend_title,
+        linetype = legend_title)
+    }
   }
   print(g1)
   return(g1)

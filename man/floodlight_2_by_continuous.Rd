@@ -81,13 +81,16 @@ statistically significant.}
 By default, \code{nonsig_region_alpha = 0.08}}
 
 \item{x_axis_title}{title of the x axis. By default, it will be set
-as input for \code{mod_name}}
+as input for \code{mod_name}. If \code{x_axis_title = FALSE}, it will
+be removed.}
 
 \item{y_axis_title}{title of the y axis. By default, it will be set
-as input for \code{dv_name}}
+as input for \code{dv_name}. If \code{y_axis_title = FALSE}, it will
+be removed.}
 
 \item{legend_title}{title of the legend. By default, it will be set
-as input for \code{iv_name}}
+as input for \code{iv_name}. If \code{legend_title = FALSE}, it will
+be removed.}
 }
 \description{
 Conduct a floodlight analysis for 2 x Continuous design
