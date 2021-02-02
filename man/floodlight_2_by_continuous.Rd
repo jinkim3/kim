@@ -9,6 +9,7 @@ floodlight_2_by_continuous(
   iv_name = NULL,
   dv_name = NULL,
   mod_name = NULL,
+  interaction_p_include = TRUE,
   iv_level_order = NULL,
   output = "reg_lines_plot",
   jitter_x_percent = 0,
@@ -35,6 +36,9 @@ floodlight_2_by_continuous(
 \item{dv_name}{name of the dependent variable}
 
 \item{mod_name}{name of the continuous moderator variable}
+
+\item{interaction_p_include}{logical. Should the plot include a
+p-value for the interaction term?}
 
 \item{iv_level_order}{order of levels in the independent
 variable for legend. By default, it will be set as levels of the

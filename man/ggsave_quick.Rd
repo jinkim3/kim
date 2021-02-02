@@ -5,15 +5,17 @@
 \title{ggsave quick}
 \usage{
 ggsave_quick(
-  name = "ggplot",
-  timestamp = TRUE,
+  name = NULL,
+  timestamp = NULL,
   file_name_extension = ".png",
   w = 16,
   h = 9
 )
 }
 \arguments{
-\item{name}{a character string of the png file name (default = "ggplot")
+\item{name}{a character string of the png file name.
+By default, if no input is given (\code{name = NULL}),
+the file name will begin with "ggplot".
 If the desired output file name is "myplot.png",
 enter \code{name = "myplot", timestamp = FALSE}}
 
@@ -22,7 +24,10 @@ current time will be appended to the file name.
 The timestamp will be in the format, jan_01_2021_1300_10_000001,
 where "jan_01_2021" would indicate January 01, 2021;
 1300 would indicate 13:00 (i.e., 1 PM); and 10_000001 would
-indicate 10.000001 seconds after the hour.}
+indicate 10.000001 seconds after the hour.
+By default, \code{timestamp} will be set as TRUE, if no input
+is given for the \code{name} argument, and as FALSE, if an input
+is given for the \code{name} argument.}
 
 \item{file_name_extension}{file name extension (default = ".png")}
 

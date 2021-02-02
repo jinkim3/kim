@@ -6,6 +6,8 @@
 #' @param iv_name name of the binary independent variable
 #' @param dv_name name of the dependent variable
 #' @param mod_name name of the continuous moderator variable
+#' @param interaction_p_include logical. Should the plot include a
+#' p-value for the interaction term?
 #' @param iv_level_order order of levels in the independent
 #' variable for legend. By default, it will be set as levels of the
 #' independent variable ordered using R's base function \code{sort}.
@@ -59,6 +61,7 @@ floodlight_2_by_continuous <- function(
   iv_name = NULL,
   dv_name = NULL,
   mod_name = NULL,
+  interaction_p_include = TRUE,
   iv_level_order = NULL,
   output = "reg_lines_plot",
   jitter_x_percent = 0,
@@ -161,7 +164,26 @@ floodlight_2_by_continuous <- function(
     method = "lm", se = F)
   g1 <- g1 + scale_linetype_manual(
     values = reg_line_types)
-  # limit plotting to observed data range
+  # include interaction p value
+  if (interaction_p_include == TRUE) {
+    lm_summary <- summary(stats::lm(dv ~ iv_binary * mod, data = dt_2))
+    interaction_p_value <- kim::pretty_round_p_value(
+      lm_summary[["coefficients"]]["iv_binary:mod", "Pr(>|t|)"],
+      include_p_equals = TRUE)
+    interaction_p_value_text <- paste0(
+      "Interaction ", interaction_p_value)
+    # label jn points
+    g1 <- g1 + annotate(
+      geom = "text",
+      x = min(dt_2[, mod]) + x_range * 0.5,
+      y = Inf,
+      label = interaction_p_value_text,
+      hjust = 0.5, vjust = -3,
+      fontface = "bold",
+      color = "black",
+      size = 6)
+  }
+  # positions of the lines marking johnson neyman points
   jn_line_pos <- jn_points
   mod_min_observed <- min(dt_2[, mod])
   mod_max_observed <- max(dt_2[, mod])
@@ -175,7 +197,7 @@ floodlight_2_by_continuous <- function(
   g1 <- g1 + kim::theme_kim(legend_position = legend_position)
   # allow labeling outside the plot area
   suppressMessages(g1 <- g1 + coord_cartesian(clip = "off"))
-  g1 <- g1 + theme(plot.margin = unit(c(30, 7, 7, 7), "pt"))
+  g1 <- g1 + theme(plot.margin = unit(c(60, 7, 7, 7), "pt"))
   # if only one type is entered for jn line
   if (length(jn_line_types) == 1) {
     jn_line_types <- rep(jn_line_types, sum(is.finite(jn_line_pos)))
@@ -194,7 +216,7 @@ floodlight_2_by_continuous <- function(
       x = jn_line_pos[i],
       y = Inf,
       label = round(jn_line_pos[i], 2),
-      hjust = 0.5, vjust = -1,
+      hjust = 0.5, vjust = -0.5,
       fontface = "bold",
       color = "black",
       size = 6)
