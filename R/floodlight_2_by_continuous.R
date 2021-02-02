@@ -244,30 +244,22 @@ floodlight_2_by_continuous <- function(
   }
   # x axis title
   if (is.null(x_axis_title)) {
-    g1 <- g1 + labs(
-      color = iv_name,
-      linetype = iv_name)
+    g1 <- g1 + xlab(mod_name)
   } else {
     if (x_axis_title == FALSE) {
       g1 <- g1 + theme(axis.title.x = element_blank())
     } else {
-      g1 <- g1 + labs(
-        color = x_axis_title,
-        linetype = x_axis_title)
+      g1 <- g1 + xlab(x_axis_title)
     }
   }
   # y axis title
   if (is.null(y_axis_title)) {
-    g1 <- g1 + labs(
-      color = iv_name,
-      linetype = iv_name)
+    g1 <- g1 + ylab(dv_name)
   } else {
     if (y_axis_title == FALSE) {
       g1 <- g1 + theme(axis.title.y = element_blank())
     } else {
-      g1 <- g1 + labs(
-        color = y_axis_title,
-        linetype = y_axis_title)
+      g1 <- g1 + ylab(y_axis_title)
     }
   }
   # legend title
