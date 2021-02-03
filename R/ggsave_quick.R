@@ -17,10 +17,10 @@
 #' is given for the \code{name} argument, and as FALSE, if an input
 #' is given for the \code{name} argument.
 #' @param file_name_extension file name extension (default = ".png")
-#' @param w width of the plot to be saved. This argument will be
+#' @param width width of the plot to be saved. This argument will be
 #' directly entered as the \code{width} argument for the \code{ggsave}
 #' function within \code{ggplot2} package (default = 16)
-#' @param h height of the plot to be saved. This argument will be
+#' @param height height of the plot to be saved. This argument will be
 #' directly entered as the \code{height} argument for the \code{ggsave}
 #' function within \code{ggplot2} package (default = 9)
 #' @return the output will be a .png image file in the working directory.
@@ -34,8 +34,8 @@ ggsave_quick <- function(
   name = NULL,
   timestamp = NULL,
   file_name_extension = ".png",
-  w = 16,
-  h = 9) {
+  width = 16,
+  height = 9) {
   # set default values
   if (is.null(name) & is.null(timestamp)) {
     timestamp <- TRUE
@@ -53,5 +53,5 @@ ggsave_quick <- function(
   # set file name
   file_name <- paste0(name, ts, file_name_extension)
   # save
-  ggplot2::ggsave(filename = file_name, width = w, height = h)
+  ggplot2::ggsave(filename = file_name, width = width, height = height)
 }

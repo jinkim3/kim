@@ -8,8 +8,8 @@ ggsave_quick(
   name = NULL,
   timestamp = NULL,
   file_name_extension = ".png",
-  w = 16,
-  h = 9
+  width = 16,
+  height = 9
 )
 }
 \arguments{
@@ -31,11 +31,11 @@ is given for the \code{name} argument.}
 
 \item{file_name_extension}{file name extension (default = ".png")}
 
-\item{w}{width of the plot to be saved. This argument will be
+\item{width}{width of the plot to be saved. This argument will be
 directly entered as the \code{width} argument for the \code{ggsave}
 function within \code{ggplot2} package (default = 16)}
 
-\item{h}{height of the plot to be saved. This argument will be
+\item{height}{height of the plot to be saved. This argument will be
 directly entered as the \code{height} argument for the \code{ggsave}
 function within \code{ggplot2} package (default = 9)}
 }

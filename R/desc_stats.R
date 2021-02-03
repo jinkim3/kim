@@ -113,8 +113,10 @@ desc_stats <- function(
     }
   }
   # print the data table
-  print(dt)
-  cat("\n")
+  if (print_dt == TRUE) {
+    print(dt)
+    cat("\n")
+  }
   # return data table
   if (output_type == "dt") {
     invisible(dt)
