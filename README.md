@@ -56,6 +56,11 @@ Here are some examples of using this package.
 ``` r
 library(kim)
 
+# update the package 'kim', clear the console and environment,
+# set up working directory to location of the current file,
+# and load the default packages ('data.table' and 'ggplot2')
+start_kim()
+
 # create a scatter plot
 scatterplot(data = mtcars, x_var_name = "wt", y_var_name = "mpg")
 
@@ -82,4 +87,8 @@ robust_regression(data = mtcars, formula = mpg ~ cyl * hp)
 # conduct a mediation analysis
 mediation_analysis(
   data = mtcars, iv_name = "cyl", mediator_name = "disp", dv_name = "mpg")
+
+# conduct a floodlight analysis for a 2 x continuous design
+floodlight_2_by_continuous(
+  data = mtcars, iv_name = "am", dv_name = "mpg", mod_name = "qsec")
 ```

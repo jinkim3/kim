@@ -1,4 +1,4 @@
-# kim 0.2.77
+# kim 0.2.85
 * Fixed bugs, and added function(s) including floodlight_2_by_continuous
 
 # kim 0.2.71
