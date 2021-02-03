@@ -21,7 +21,7 @@
 #'
 #' @examples
 #' \donttest{
-#' prep("data.table")
+#' prep(data.table)
 #' prep("data.table", silent_if_successful = TRUE)
 #' prep("base", utils, ggplot2, "data.table")
 #' pkgs <- c("ggplot2", "data.table")
@@ -118,7 +118,7 @@ prep <- function(
           }
         } else {
           stop(paste0(
-            "None of the packages given for the argument silent_load_pkgs",
+            "None of the packages given for the argument silent_load_pkgs ",
             "is in the packages given for the argument pkg_to_load."))
         }
       } else {

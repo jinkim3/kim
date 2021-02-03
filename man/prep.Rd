@@ -37,7 +37,7 @@ installed, installs them prior to loading and attaching.
 }
 \examples{
 \donttest{
-prep("data.table")
+prep(data.table)
 prep("data.table", silent_if_successful = TRUE)
 prep("base", utils, ggplot2, "data.table")
 pkgs <- c("ggplot2", "data.table")
