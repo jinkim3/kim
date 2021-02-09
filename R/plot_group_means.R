@@ -102,6 +102,14 @@ plot_group_means <- function(
       group = get(iv_name[2])
     ))
   }
+  # points and lines
+  if (lines_connecting_means == TRUE) {
+    g1 <- g1 + geom_line(size = line_size, position = pd)
+  }
+  g1 <- g1 + geom_point(size = dot_size, position = pd)
+  if (length(iv_name) == 2) {
+    g1 <- g1 + labs(color = iv_name[2])
+  }
   # The errorbars will overlap,
   # so use position_dodge to move them horizontally
   pd <- position_dodge(position_dodge)
@@ -138,14 +146,6 @@ plot_group_means <- function(
         error_bar_desc_text, " (+/- ~1.96 SD)"
       )
     }
-  }
-  # points and lines
-  if (lines_connecting_means == TRUE) {
-    g1 <- g1 + geom_line(size = line_size, position = pd)
-  }
-  g1 <- g1 + geom_point(size = dot_size, position = pd)
-  if (length(iv_name) == 2) {
-    g1 <- g1 + labs(color = iv_name[2])
   }
   g1 <- g1 + xlab(iv_name[1])
   g1 <- g1 + ylab(dv_name)
