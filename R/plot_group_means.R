@@ -102,6 +102,9 @@ plot_group_means <- function(
       group = get(iv_name[2])
     ))
   }
+  # The errorbars will overlap,
+  # so use position_dodge to move them horizontally
+  pd <- position_dodge(width = position_dodge)
   # points and lines
   if (lines_connecting_means == TRUE) {
     g1 <- g1 + geom_line(size = line_size, position = pd)
@@ -110,9 +113,6 @@ plot_group_means <- function(
   if (length(iv_name) == 2) {
     g1 <- g1 + labs(color = iv_name[2])
   }
-  # The errorbars will overlap,
-  # so use position_dodge to move them horizontally
-  pd <- position_dodge(position_dodge)
   # build further
   if (error_bar == "ci") {
     g1 <- g1 + geom_errorbar(aes(
