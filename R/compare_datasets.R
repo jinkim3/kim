@@ -151,7 +151,7 @@ compare_datasets <- function(
       dataset = dataset_name, col_types_by_dt)
     # print the different column types
     message(paste0(
-      'The columnS with the name(s) "',
+      'The columns with the name(s) "',
       paste0(cols_w_diff_class, collapse = ", "),
       '" were of different class ',
       "in the following two data sets:"))
@@ -185,6 +185,27 @@ compare_datasets <- function(
           "in the following two data sets:"))
         return(check_ind_cols_result)
       }
+    }
+  }
+  # check if all data sets are data tables
+  is_data_table <- vapply(
+    dt_list, is.data.table, FUN.VALUE = logical(1L))
+  # check data.table keys
+  if (all(is_data_table)) {
+    keys <- vapply(dt_list, function(x) {
+      if (is.null(key(x))) {
+        return("..No key has been set for this data table.")
+      } else {
+        return(key(x))
+      }
+    }, FUN.VALUE = character(1L))
+    # print keys if key values are not all identical
+    if (length(unique(keys)) != 1) {
+      check_key_result <- data.table(
+        dataset = dataset_name,
+        "data_table_key" = keys)
+      message("The data table keys were different in the data sets: ")
+      return(check_key_result)
     }
   }
   # check whether data sets are identical
