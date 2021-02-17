@@ -1,5 +1,6 @@
-# kim 0.2.85
-* Fixed bugs, and added function(s) including floodlight_2_by_continuous
+# kim 0.2.91
+* Fixed bugs, and added function(s) including floodlight_2_by_continuous,
+merge_data_tables, order_rows_specifically_in_dt
 
 # kim 0.2.71
 * Fixed bugs, removed dependency for dplyr, and added 

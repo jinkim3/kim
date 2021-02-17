@@ -13,8 +13,8 @@ prep(
 }
 \arguments{
 \item{...}{names of packages to load and attach, separated by commas,
-e.g., \code{"ggplot2", data.table}. The arguments can be any number
-of packages, and they may or may not be wrapped in quotes.}
+e.g., \code{"ggplot2", data.table}. The input can be any number
+of packages, whose names may or may not be wrapped in quotes.}
 
 \item{pkg_names_as_object}{logical. If \code{pkg_names_as_object = TRUE},
 the input will be evaluated as one object containing package names.

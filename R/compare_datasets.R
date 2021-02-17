@@ -45,11 +45,14 @@ compare_datasets <- function(
   dataset_list = NULL) {
   # bind the vars locally to the function
   ..different_vs_same <- NULL
+  # copy data sets
+  dt1 <- copy(dataset_1)
+  dt2 <- copy(dataset_2)
   # check inputs
-  if (is.null(dataset_list) & !is.null(dataset_1) & !is.null(dataset_2)) {
-    dt_list <- list(dataset_1, dataset_2)
+  if (is.null(dataset_list) & !is.null(dt1) & !is.null(dt2)) {
+    dt_list <- list(dt1, dt2)
   } else if (
-    !is.null(dataset_list) & is.null(dataset_1) & is.null(dataset_2)) {
+    !is.null(dataset_list) & is.null(dt1) & is.null(dt2)) {
     if (!is.list(dataset_list)) {
       stop(paste0("The input for dataset_list is not a list."))
     }
@@ -58,8 +61,8 @@ compare_datasets <- function(
     stop(paste0(
       "Please check the data set inputs.\nEither enter a list of ",
       "data sets, e.g., dataset_list = list(mtcars, iris)\n",
-      "or enter two data sets, e.g., dataset_1 = mtcars, ",
-      "dataset_2 = iris"))
+      "or enter two data sets, e.g., dt1 = mtcars, ",
+      "dt2 = iris"))
   }
   # set names of the data sets
   if (is.null(names(dt_list))) {

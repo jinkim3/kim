@@ -4,8 +4,8 @@
 #' installed, installs them prior to loading and attaching.
 #'
 #' @param ... names of packages to load and attach, separated by commas,
-#' e.g., \code{"ggplot2", data.table}. The arguments can be any number
-#' of packages, and they may or may not be wrapped in quotes.
+#' e.g., \code{"ggplot2", data.table}. The input can be any number
+#' of packages, whose names may or may not be wrapped in quotes.
 #' @param pkg_names_as_object logical. If \code{pkg_names_as_object = TRUE},
 #' the input will be evaluated as one object containing package names.
 #' If \code{pkg_names_as_object = FALSE}, the input will be considered
