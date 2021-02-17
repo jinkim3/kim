@@ -30,7 +30,11 @@ a data.table object, which merges (joins) the second data.table
 around the first data.table.
 }
 \description{
-Merge two data.table objects
+Merge two data.table objects. If there are any duplicated
+ID values and column names across the two data tables, the
+cell values in the first data.table will remain intact and
+the cell values in the second data.table will be discarded for the
+resulting merged data table.
 }
 \examples{
 data_1 <- data.table::data.table(

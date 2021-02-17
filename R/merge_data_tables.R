@@ -1,6 +1,10 @@
 #' Merge data tables
 #'
-#' Merge two data.table objects
+#' Merge two data.table objects. If there are any duplicated
+#' ID values and column names across the two data tables, the
+#' cell values in the first data.table will remain intact and
+#' the cell values in the second data.table will be discarded for the
+#' resulting merged data table.
 #'
 #' @param dt1 the first data.table which will remain intact
 #' @param dt2 the second data.table which will be joined outside of
