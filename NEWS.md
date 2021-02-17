@@ -1,4 +1,4 @@
-# kim 0.2.91
+# kim 0.2.92
 * Fixed bugs, and added function(s) including floodlight_2_by_continuous,
 merge_data_tables, order_rows_specifically_in_dt
 

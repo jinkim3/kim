@@ -4,7 +4,7 @@
 \alias{merge_data_tables}
 \title{Merge data tables}
 \usage{
-merge_data_tables(dt1 = NULL, dt2 = NULL, id = NULL)
+merge_data_tables(dt1 = NULL, dt2 = NULL, id = NULL, silent = TRUE)
 }
 \arguments{
 \item{dt1}{the first data.table which will remain intact}
@@ -19,6 +19,11 @@ resulting merged data table.}
 \item{id}{name of the column that will contain the ID values
 in the two data tables. The name of the ID column must be identical
 in the two data tables.}
+
+\item{silent}{If \code{silent = TRUE}, no message will be printed
+regarding how many ID values and column names were duplicated.
+If \code{silent = FALSE}, messages will be printed regarding
+how many ID values and column names were duplicated. (default = FALSE)}
 }
 \value{
 a data.table object, which merges (joins) the second data.table

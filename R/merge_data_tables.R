@@ -12,6 +12,10 @@
 #' @param id name of the column that will contain the ID values
 #' in the two data tables. The name of the ID column must be identical
 #' in the two data tables.
+#' @param silent If \code{silent = TRUE}, no message will be printed
+#' regarding how many ID values and column names were duplicated.
+#' If \code{silent = FALSE}, messages will be printed regarding
+#' how many ID values and column names were duplicated. (default = FALSE)
 #' @return a data.table object, which merges (joins) the second data.table
 #' around the first data.table.
 #' @examples
@@ -31,7 +35,8 @@
 merge_data_tables <- function(
   dt1 = NULL,
   dt2 = NULL,
-  id = NULL
+  id = NULL,
+  silent = TRUE
 ) {
   # stop if an input is missing
   if (is.null(dt1)) {
@@ -67,6 +72,12 @@ merge_data_tables <- function(
   id_in_final_dt <- union(dt1_id_values, dt2_id_values)
   # id values unique in dt2
   unique_id_in_dt2 <- setdiff(dt2_id_values, dt1_id_values)
+  # print duplicated id values
+  duplicated_id_values <- intersect(dt1_id_values, dt2_id_values)
+  if (silent == FALSE) {
+    message(paste0("Number of duplicated ID values: ",
+                   length(duplicated_id_values)))
+  }
   # column names in each data table
   dt1_col_names <- names(dt1)
   dt2_col_names <- names(dt2)
@@ -75,6 +86,11 @@ merge_data_tables <- function(
   # names of non-ID columns that are in both data tables
   duplicated_col_names <- setdiff(
     intersect(dt1_col_names, dt2_col_names), id)
+  # print duplicated column names
+  if (silent == FALSE) {
+    message(paste0("Number of duplicated column names: ",
+                   length(duplicated_col_names)))
+  }
   # set keys in each dt
   setkeyv(dt1, id)
   setkeyv(dt2, id)
@@ -95,7 +111,8 @@ merge_data_tables <- function(
   # with the newly created merged columns
   cols_to_replace <- paste0(duplicated_col_names, ".x")
   for (col in cols_to_replace) {
-    set(merged_dt, j = col, value = merged_cols[[gsub(".x", "", col)]])
+    set(merged_dt, j = col,
+        value = merged_cols[[gsub("\\.x$", "", col)]])
   }
   # remove the second set of duplicated columns (those with suffix ".y")
   cols_to_remove <- paste0(duplicated_col_names, ".y")
