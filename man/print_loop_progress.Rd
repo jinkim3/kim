@@ -27,7 +27,7 @@ Print current progress inside a loop (e.g., for loop or lapply)
 }
 \examples{
 for (i in seq_len(250)) {
-  Sys.sleep(0.002)
+  Sys.sleep(0.001)
   print_loop_progress(
     iteration_number = i,
     iteration_end = 250)

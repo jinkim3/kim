@@ -10,7 +10,7 @@
 #' at every 1 percent progress (default = 1)
 #' @examples
 #' for (i in seq_len(250)) {
-#'   Sys.sleep(0.002)
+#'   Sys.sleep(0.001)
 #'   print_loop_progress(
 #'     iteration_number = i,
 #'     iteration_end = 250)

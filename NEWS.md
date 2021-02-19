@@ -1,11 +1,11 @@
-# kim 0.2.92
+# kim 0.2.96
 * Fixed bugs, and added function(s) including floodlight_2_by_continuous,
-merge_data_tables, order_rows_specifically_in_dt
+merge_data_tables, and order_rows_specifically_in_dt
 
 # kim 0.2.71
 * Fixed bugs, removed dependency for dplyr, and added 
 function(s), including write_csv, print_loop_progress, 
-histogram_w_outlier_bin, find_duplicates, start_kim
+histogram_w_outlier_bin, find_duplicates, and start_kim
 
 # kim 0.2.38
 * Added functions including read_sole_csv, read_csv, ggsave_quick
