@@ -86,7 +86,7 @@ floodlight_2_by_continuous <- function(
   # remove rows with na
   dt_1 <- stats::na.omit(dt_1[, c(iv_name, dv_name, mod_name), with = F])
   # unique values in iv
-  iv_unique_values <- unique(dt_1[, get(iv_name)])
+  iv_unique_values <- sort(unique(dt_1[, get(iv_name)]))
   # check if iv is binary
   num_of_levels_in_iv <- length(iv_unique_values)
   if (num_of_levels_in_iv != 2) {
