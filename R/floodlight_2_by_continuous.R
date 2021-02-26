@@ -103,13 +103,13 @@ floodlight_2_by_continuous <- function(
   } else {
     # check if the iv levels match
     if (!identical(sort(unique(iv_level_order)),
-                   sort(iv_unique_values))) {
+                   iv_unique_values)) {
       stop(paste0(
         "The levels of independent variables do not match:\n",
         "iv_level_order input: ",
-        paste0(sort(unique(dt_1[, get(iv_name)])), collapse = ", "),
+        paste0(iv_level_order, collapse = ", "),
         "\nLevels of IV in the data set: ",
-        paste0(sort(unique(iv_level_order)), collapse = ", ")))
+        paste0(iv_unique_values, collapse = ", ")))
     }
     iv_level_1 <- iv_level_order[1]
     iv_level_2 <- iv_level_order[2]
