@@ -96,10 +96,10 @@ two_way_anova <- function(
   # stats by iv
   group_stats <- dt2[, list(
     n = .N,
-    mean = mean(get(dv_name)),
+    mean = signif(mean(get(dv_name)), sigfigs),
     median = as.numeric(stats::median(get(dv_name))),
-    sd = stats::sd(get(dv_name)),
-    se = kim::se_of_mean(get(dv_name)),
+    sd = signif(stats::sd(get(dv_name)), sigfigs),
+    se = signif(kim::se_of_mean(get(dv_name)), sigfigs),
     min = min(get(dv_name)),
     max = max(get(dv_name))
   ),
@@ -163,7 +163,7 @@ two_way_anova <- function(
   print(anova_table)
   # output by type
   if (output == "anova_table") {
-    return(anova_table)
+    invisible(anova_table)
   }
   if (robust == TRUE) {
     # robust anova
