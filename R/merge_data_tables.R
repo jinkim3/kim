@@ -101,27 +101,29 @@ merge_data_tables <- function(
   # merge data tables
   merged_dt <- merge(dt1, dt2, all = TRUE)
   # merge duplicated columns
-  merged_cols <- lapply(duplicated_col_names, function(x) {
-    dt1_rows <- merged_dt[[id]] %in% dt1_id_values
-    v1 <- merged_dt[[paste0(x, ".x")]][dt1_rows]
-    dt2_rows <- merged_dt[[id]] %in% unique_id_in_dt2
-    v2 <- merged_dt[[paste0(x, ".y")]][dt2_rows]
-    output <- c(v1, v2)
-    return(output)
-  })
-  # give names for merged_cols
-  names(merged_cols) <- duplicated_col_names
-  # replace the first set of duplicated columns (those with suffix ".x")
-  # with the newly created merged columns
-  cols_to_replace <- paste0(duplicated_col_names, ".x")
-  for (col in cols_to_replace) {
-    set(merged_dt, j = col,
-        value = merged_cols[[gsub("\\.x$", "", col)]])
+  if (length(duplicated_col_names) > 0) {
+    merged_cols <- lapply(duplicated_col_names, function(x) {
+      dt1_rows <- merged_dt[[id]] %in% dt1_id_values
+      v1 <- merged_dt[[paste0(x, ".x")]][dt1_rows]
+      dt2_rows <- merged_dt[[id]] %in% unique_id_in_dt2
+      v2 <- merged_dt[[paste0(x, ".y")]][dt2_rows]
+      output <- c(v1, v2)
+      return(output)
+    })
+    # give names for merged_cols
+    names(merged_cols) <- duplicated_col_names
+    # replace the first set of duplicated columns (those with suffix ".x")
+    # with the newly created merged columns
+    cols_to_replace <- paste0(duplicated_col_names, ".x")
+    for (col in cols_to_replace) {
+      set(merged_dt, j = col,
+          value = merged_cols[[gsub("\\.x$", "", col)]])
+    }
+    # remove the second set of duplicated columns (those with suffix ".y")
+    cols_to_remove <- paste0(duplicated_col_names, ".y")
+    merged_dt[, (cols_to_remove) := NULL]
+    setnames(merged_dt, old = cols_to_replace, duplicated_col_names)
   }
-  # remove the second set of duplicated columns (those with suffix ".y")
-  cols_to_remove <- paste0(duplicated_col_names, ".y")
-  merged_dt[, (cols_to_remove) := NULL]
-  setnames(merged_dt, old = cols_to_replace, duplicated_col_names)
   # restore the original order of rows
   output <- kim::order_rows_specifically_in_dt(
     dt = merged_dt,
