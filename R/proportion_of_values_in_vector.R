@@ -109,7 +109,7 @@ proportion_of_values_in_vector <- function(
       ci_ul = conf_int[2])
     names(results_dt) <- c(
       "proportion",
-      paste0(ci_percent, "_ci_", c("ll", "ul")))
+      paste0("ci_", ci_percent, "_", c("ll", "ul")))
     print(results_dt)
   }
   # return by output type
