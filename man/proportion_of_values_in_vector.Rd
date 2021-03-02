@@ -41,12 +41,6 @@ in the \code{prop.test} function from the default stats package.}
 correction should be applied where possible (default = TRUE).
 Input to this argument will be passed onto the \code{correct} argument
 in the \code{prop.test} function from the default stats package.}
-
-\item{...}{optional arguments for the \code{prop.test} function
-from the default stats package. Any arguments for the \code{prop.test}
-function can be used, e.g., \code{correct = TRUE}, which applies
-Yates's correction for continuity, or \code{conf.level = 0.99}, which
-applies a 99\% CI rather than the default 95\% CI.}
 }
 \description{
 Proportion of given values in a vector

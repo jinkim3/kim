@@ -20,11 +20,6 @@
 #' will return the standard error of the sample proportion;
 #' if \code{output_type = "dt"}, the function will return the
 #' the data table of proportion and confidence intervals.
-#' @param ... optional arguments for the \code{prop.test} function
-#' from the default stats package. Any arguments for the \code{prop.test}
-#' function can be used, e.g., \code{correct = TRUE}, which applies
-#' Yates's correction for continuity, or \code{conf.level = 0.99}, which
-#' applies a 99% CI rather than the default 95% CI.
 #' @examples
 #' proportion_of_values_in_vector(
 #'   values = 2:3, vector = c(rep(1:3, each = 10), rep(NA, 10))
