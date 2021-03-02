@@ -102,7 +102,7 @@ proportion_of_values_in_vector <- function(
   # ci percent
   ci_percent <- conf.level * 100
   # print proportion and confidence interval
-  if (silent == FALSE) {
+  if (silent == FALSE | output_type == "dt") {
     results_dt <- data.table::data.table(
       proportion = proportion,
       ci_ll = conf_int[1],
