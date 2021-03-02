@@ -5,34 +5,61 @@
 \title{Proportion of given values in a vector}
 \usage{
 proportion_of_values_in_vector(
-  values,
-  vector,
+  values = NULL,
+  vector = NULL,
   na.exclude = TRUE,
-  silent = FALSE
+  output_type = "proportion",
+  silent = FALSE,
+  conf.level = 0.95,
+  ...
 )
 }
 \arguments{
-\item{values}{a set of values}
+\item{values}{a set of values that will count as successes (hits)}
 
-\item{vector}{a numeric or character vector}
+\item{vector}{a numeric or character vector containing
+successes (hits) and failures (misses)}
 
 \item{na.exclude}{if \code{TRUE}, NA values will be removed both from
-\code{vector} and \code{values} before calculation}
+\code{vector} and \code{values} before calculation (default = TRUE).}
+
+\item{output_type}{By default, \code{output_type = "proportion"}.
+If \code{output_type = "proportion"}, the function will return
+the calculated proportion; if \code{output_type = "se"}, the function
+will return the standard error of the sample proportion;
+if \code{output_type = "dt"}, the function will return the
+the data table of proportion and confidence intervals.}
 
 \item{silent}{If \code{silent = TRUE}, no message will be printed
-regarding number of NA values. (default = FALSE)}
+regarding number of NA values or confidence interval. (default = FALSE)}
+
+\item{conf.level}{confidence level of the returned confidence interval.
+Input to this argument will be passed onto the conf.level argument
+in the \code{prop.test} function from the default stats package.}
+
+\item{...}{optional arguments for the \code{prop.test} function
+from the default stats package. Any arguments for the \code{prop.test}
+function can be used, e.g., \code{correct = TRUE}, which applies
+Yates's correction for continuity, or \code{conf.level = 0.99}, which
+applies a 99\% CI rather than the default 95\% CI.}
 }
 \description{
 Proportion of given values in a vector
 }
 \examples{
 proportion_of_values_in_vector(
-  values = 2:3, vector = c(1:3, NA)
+  values = 2:3, vector = c(rep(1:3, each = 10), rep(NA, 10))
 )
 proportion_of_values_in_vector(
-  values = 2:3, vector = c(1:3, NA), na.exclude = FALSE
+  values = 2:3, vector = c(rep(1:3, each = 10), rep(NA, 10)),
+  output_type = "se"
 )
 proportion_of_values_in_vector(
-  values = c(2:3, NA), vector = c(1:3, NA), na.exclude = FALSE
+  values = 2:3, vector = c(rep(1:3, each = 10), rep(NA, 10)),
+  conf.level = 0.99
+)
+proportion_of_values_in_vector(
+  values = c(2:3, NA), vector = c(rep(1:3, each = 10), rep(NA, 10)),
+  na.exclude = FALSE
 )
 }
