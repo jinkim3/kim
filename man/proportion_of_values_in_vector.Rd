@@ -11,7 +11,7 @@ proportion_of_values_in_vector(
   output_type = "proportion",
   silent = FALSE,
   conf.level = 0.95,
-  ...
+  correct_yates = TRUE
 )
 }
 \arguments{
@@ -35,6 +35,11 @@ regarding number of NA values or confidence interval. (default = FALSE)}
 
 \item{conf.level}{confidence level of the returned confidence interval.
 Input to this argument will be passed onto the conf.level argument
+in the \code{prop.test} function from the default stats package.}
+
+\item{correct_yates}{a logical indicating whether Yates' continuity
+correction should be applied where possible (default = TRUE).
+Input to this argument will be passed onto the \code{correct} argument
 in the \code{prop.test} function from the default stats package.}
 
 \item{...}{optional arguments for the \code{prop.test} function

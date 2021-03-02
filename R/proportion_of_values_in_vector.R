@@ -10,6 +10,10 @@
 #' @param conf.level confidence level of the returned confidence interval.
 #' Input to this argument will be passed onto the conf.level argument
 #' in the \code{prop.test} function from the default stats package.
+#' @param correct_yates a logical indicating whether Yates' continuity
+#' correction should be applied where possible (default = TRUE).
+#' Input to this argument will be passed onto the \code{correct} argument
+#' in the \code{prop.test} function from the default stats package.
 #' @param output_type By default, \code{output_type = "proportion"}.
 #' If \code{output_type = "proportion"}, the function will return
 #' the calculated proportion; if \code{output_type = "se"}, the function
@@ -45,7 +49,7 @@ proportion_of_values_in_vector <- function(
   output_type = "proportion",
   silent = FALSE,
   conf.level = 0.95,
-  ...) {
+  correct_yates = TRUE) {
   if (silent == FALSE) {
     # notify of na values
     message(paste0(
@@ -94,8 +98,7 @@ proportion_of_values_in_vector <- function(
   prop_test_results <- stats::prop.test(
     x = successes,
     n = n,
-    conf.level = conf.level,
-    ...)
+    conf.level = conf.level)
   # proportion and confidence interval
   proportion <- unname(prop_test_results[["estimate"]])
   conf_int <- unname(prop_test_results[["conf.int"]])
