@@ -110,7 +110,10 @@ proportion_of_values_in_vector <- function(
     names(results_dt) <- c(
       "proportion",
       paste0("ci_", ci_percent, "_", c("ll", "ul")))
-    print(results_dt)
+    # print table only if necessary
+    if (silent == FALSE) {
+      print(results_dt)
+    }
   }
   # return by output type
   if (output_type == "proportion") {
