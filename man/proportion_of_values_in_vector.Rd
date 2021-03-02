@@ -4,7 +4,12 @@
 \alias{proportion_of_values_in_vector}
 \title{Proportion of given values in a vector}
 \usage{
-proportion_of_values_in_vector(values, vector, na.exclude = TRUE)
+proportion_of_values_in_vector(
+  values,
+  vector,
+  na.exclude = TRUE,
+  silent = FALSE
+)
 }
 \arguments{
 \item{values}{a set of values}
@@ -13,6 +18,9 @@ proportion_of_values_in_vector(values, vector, na.exclude = TRUE)
 
 \item{na.exclude}{if \code{TRUE}, NA values will be removed both from
 \code{vector} and \code{values} before calculation}
+
+\item{silent}{If \code{silent = TRUE}, no message will be printed
+regarding number of NA values. (default = FALSE)}
 }
 \description{
 Proportion of given values in a vector
