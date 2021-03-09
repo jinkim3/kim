@@ -10,6 +10,8 @@
 #' @param mann_whitney if \code{TRUE}, Mann-Whitney test results will be
 #' included in the output data.table. If \code{TRUE}, Mann-Whitney
 #' tests will not be performed.
+#' @param t_test_stats if \code{t_test_stats = TRUE}, t-test statistic
+#' and degrees of freedom will be included in the output data.table.
 #' @return the output will be a data.table
 #' @examples
 #' t_test_pairwise(data = iris, iv_name = "Species", dv_name = "Sepal.Length")
@@ -22,7 +24,8 @@ t_test_pairwise <- function(
   iv_name = NULL,
   dv_name = NULL,
   sigfigs = 3,
-  mann_whitney = TRUE) {
+  mann_whitney = TRUE,
+  t_test_stats = FALSE) {
   # bind the vars locally to the function
   iv <- dv <- group_1 <- group_2 <- NULL
   # check number of iv_name and dv_name
@@ -66,8 +69,12 @@ t_test_pairwise <- function(
     effsize::cohen.d(dv ~ iv, temp)[["estimate"]]},
     FUN.VALUE = numeric(1L))
   # t stat
-  t_stat <- vapply(seq_len(nrow(dt02)), function(i) {
+  t_test_stat <- vapply(seq_len(nrow(dt02)), function(i) {
     stats::t.test(dv ~ iv, dt01[iv %in% dt02[i, ]])[["statistic"]]},
+    FUN.VALUE = numeric(1L))
+  # t stat df
+  t_test_df <- vapply(seq_len(nrow(dt02)), function(i) {
+    stats::t.test(dv ~ iv, dt01[iv %in% dt02[i, ]])[["parameter"]][["df"]]},
     FUN.VALUE = numeric(1L))
   # t test p values
   t_test_p_value <- vapply(seq_len(nrow(dt02)), function(i) {
@@ -85,6 +92,19 @@ t_test_pairwise <- function(
     cohen_d = signif(cohen_d, sigfigs),
     t_test_p_value = kim::pretty_round_p_value(t_test_p_value),
     bonferroni_signif_for_t_test = bonferroni_signif_for_t_test)
+  # add t test stats
+  if (t_test_stats == TRUE) {
+    output <- data.table(
+      dt02,
+      group_sizes_dt,
+      group_1_mean = signif(group_1_mean, sigfigs),
+      group_2_mean = signif(group_2_mean, sigfigs),
+      cohen_d = signif(cohen_d, sigfigs),
+      t_test_df,
+      t_test_stat,
+      t_test_p_value = kim::pretty_round_p_value(t_test_p_value),
+      bonferroni_signif_for_t_test = bonferroni_signif_for_t_test)
+  }
   # mann whitney
   if (mann_whitney == TRUE) {
     mann_whitney_p_value <- vapply(seq_len(nrow(dt02)), function(i) {

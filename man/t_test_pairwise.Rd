@@ -9,7 +9,8 @@ t_test_pairwise(
   iv_name = NULL,
   dv_name = NULL,
   sigfigs = 3,
-  mann_whitney = TRUE
+  mann_whitney = TRUE,
+  t_test_stats = FALSE
 )
 }
 \arguments{
@@ -24,6 +25,9 @@ t_test_pairwise(
 \item{mann_whitney}{if \code{TRUE}, Mann-Whitney test results will be
 included in the output data.table. If \code{TRUE}, Mann-Whitney
 tests will not be performed.}
+
+\item{t_test_stats}{if \code{t_test_stats = TRUE}, t-test statistic
+and degrees of freedom will be included in the output data.table.}
 }
 \value{
 the output will be a data.table

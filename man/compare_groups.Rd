@@ -4,7 +4,14 @@
 \alias{compare_groups}
 \title{Compare groups}
 \usage{
-compare_groups(data = NULL, iv_name = NULL, dv_name = NULL, sigfigs = 3)
+compare_groups(
+  data = NULL,
+  iv_name = NULL,
+  dv_name = NULL,
+  sigfigs = 3,
+  mann_whitney = TRUE,
+  t_test_stats = FALSE
+)
 }
 \arguments{
 \item{data}{a data object (a data frame or a data.table)}
