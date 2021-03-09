@@ -100,8 +100,8 @@ t_test_pairwise <- function(
       group_1_mean = signif(group_1_mean, sigfigs),
       group_2_mean = signif(group_2_mean, sigfigs),
       cohen_d = signif(cohen_d, sigfigs),
-      t_test_df,
-      t_test_stat,
+      t_test_df = signif(t_test_df, sigfigs),
+      t_test_stat = signif(t_test_stat, sigfigs),
       t_test_p_value = kim::pretty_round_p_value(t_test_p_value),
       bonferroni_signif_for_t_test = bonferroni_signif_for_t_test)
   }
