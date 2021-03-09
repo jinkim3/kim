@@ -22,6 +22,14 @@ compare_groups(
 of interest)}
 
 \item{sigfigs}{number of significant digits to round to}
+
+\item{mann_whitney}{if \code{mann_whitney = TRUE}, Mann-Whitney test
+results will be included in the pairwise comparison data.table.
+If \code{mann_whitney = FALSE}, Mann-Whitney tests will not be performed.}
+
+\item{t_test_stats}{if \code{t_test_stats = TRUE}, t-test statistic
+and degrees of freedom will be included in the pairwise
+comparison data.table.}
 }
 \value{
 the output will be a list of (1) ggplot object
