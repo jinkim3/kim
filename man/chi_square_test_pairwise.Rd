@@ -11,7 +11,8 @@ chi_square_test_pairwise(
   focal_dv_value = NULL,
   percentages_only = NULL,
   counts_only = NULL,
-  sigfigs = 3
+  sigfigs = 3,
+  chi_sq_test_stats = FALSE
 )
 }
 \arguments{
@@ -32,6 +33,10 @@ a result of interest)}
 \item{counts_only}{tabulate counts of the focal DV value only}
 
 \item{sigfigs}{number of significant digits to round to}
+
+\item{chi_sq_test_stats}{if \code{chi_sq_test_stats = TRUE},
+chi-square test statistic and degrees of freedom will be included
+in the pairwise comparison data.table.}
 }
 \description{
 Conducts a chi-square test for every possible pairwise comparison
