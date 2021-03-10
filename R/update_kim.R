@@ -44,7 +44,6 @@ update_kim <- function(
     #   "However, if you run into errors later using the package 'kim',\n",
     #   'try updating the relevant packages then.\n'
     # ))
-    kim::prep("devtools", silent_if_successful = TRUE)
     devtools::install_github(
       "jinkim3/kim", force = force, upgrade = upgrade)
   }
