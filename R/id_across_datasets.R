@@ -11,6 +11,8 @@
 #' If \code{id_col_position = "last"}, the new ID column will
 #' be placed as the last column in respective data sets.
 #' @examples
+#' # running the examples below requires importing the data.table package.
+#' kim::prep(data.table)
 #' id_across_datasets(
 #' dt_list = list(setDT(copy(mtcars)), setDT(copy(iris))))
 #' id_across_datasets(

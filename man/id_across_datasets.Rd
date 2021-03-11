@@ -26,6 +26,8 @@ Create an ID column in each of the data sets. The ID values will
 span across the data sets.
 }
 \examples{
+# running the examples below requires importing the data.table package.
+kim::prep(data.table)
 id_across_datasets(
 dt_list = list(setDT(copy(mtcars)), setDT(copy(iris))))
 id_across_datasets(
