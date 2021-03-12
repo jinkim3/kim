@@ -1,11 +1,12 @@
 Package: kim
 Title: Functions for Behavioral Science Researchers
-Version: 0.2.127
+Version: 0.2.128
 Authors@R: 
     person(given = "Jin",
            family = "Kim",
            role = c("aut", "cre"),
            email = "jin.m.kim@yale.edu",
+           website = "jinkim.science",
            comment = c(ORCID = "https://orcid.org/0000-0002-5013-3958"))
 Description: Miscellaneous functions to simplify and expedite
     analyses of experimental data. Examples include a function
