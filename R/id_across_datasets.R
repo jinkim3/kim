@@ -10,6 +10,10 @@
 #' be placed as the first column in respective data sets.
 #' If \code{id_col_position = "last"}, the new ID column will
 #' be placed as the last column in respective data sets.
+#' @param silent If \code{silent = TRUE}, a summary of starting and
+#' ending ID values in each data set will not be printed.
+#' If \code{silent = FALSE}, a summary of starting and
+#' ending ID values in each data set will be printed. (default = FALSE)
 #' @examples
 #' # running the examples below requires importing the data.table package.
 #' kim::prep(data.table)
@@ -23,7 +27,8 @@
 id_across_datasets <- function(
   dt_list = NULL,
   id_col_name = "id",
-  id_col_position = "first"
+  id_col_position = "first",
+  silent = FALSE
 ) {
   # check the dt_list argument
   if (is.list(dt_list) == FALSE) {
@@ -61,16 +66,19 @@ id_across_datasets <- function(
       setcolorder(dt_list[[i]], id_col_name)
     }
   }
-  # report success
-  message(paste0(
-    'The ID column with the name "', id_col_name,
-    '" was created in each of the ', length(dt_list), " data sets."))
-  # print summary
-  summary_dt <- data.table(
-    data_set = seq_along(dt_list),
-    start_id = starting_id_values,
-    end_id = ending_id_values)
-  print(summary_dt)
+  # print unless silent
+  if (silent == FALSE) {
+    # report success
+    message(paste0(
+      'The ID column with the name "', id_col_name,
+      '" was created in each of the ', length(dt_list), " data sets."))
+    # print summary
+    summary_dt <- data.table(
+      data_set = seq_along(dt_list),
+      start_id = starting_id_values,
+      end_id = ending_id_values)
+    print(summary_dt)
+  }
   # return
   output <- dt_list
   invisible(output)

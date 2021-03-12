@@ -7,7 +7,8 @@
 id_across_datasets(
   dt_list = NULL,
   id_col_name = "id",
-  id_col_position = "first"
+  id_col_position = "first",
+  silent = FALSE
 )
 }
 \arguments{
@@ -20,6 +21,11 @@ If \code{id_col_position = "first"}, the new ID column will
 be placed as the first column in respective data sets.
 If \code{id_col_position = "last"}, the new ID column will
 be placed as the last column in respective data sets.}
+
+\item{silent}{If \code{silent = TRUE}, a summary of starting and
+ending ID values in each data set will not be printed.
+If \code{silent = FALSE}, a summary of starting and
+ending ID values in each data set will be printed. (default = FALSE)}
 }
 \description{
 Create an ID column in each of the data sets. The ID values will
