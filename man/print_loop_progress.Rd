@@ -9,7 +9,8 @@ print_loop_progress(
   iteration_start = 1,
   iteration_end = NULL,
   text_before = "",
-  percent = 1
+  percent = 1,
+  output_method = "cat"
 )
 }
 \arguments{
@@ -21,10 +22,15 @@ print_loop_progress(
 \item{iteration_end}{iteration number at which the loop ends.}
 
 \item{text_before}{text to add before "Loop Progress..."
-By default it is set to be blank, i.e., \code{text_before = ""}}
+By default, it is set to be blank, i.e., \code{text_before = ""}}
 
 \item{percent}{if \code{percent = 1}, progress level will be printed
 at every 1 percent progress (default = 1)}
+
+\item{output_method}{if \code{output_method = "cat"}, progress level
+will be printed using the 'cat' function;
+if \code{output_method = "return"}, progress level will be
+returned as the output of the function (default = "cat")}
 }
 \description{
 Print current progress inside a loop (e.g., for loop or lapply)
