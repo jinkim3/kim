@@ -24,7 +24,9 @@
 #' @param output_type if \code{output_type = "summary_dt"},
 #' return the summary data.table; if \code{output_type = "mediate_output"},
 #' return the output from the \code{mediate} function in the
-#' 'mediate' package (default = "summary_dt")
+#' 'mediate' package; if \code{output_type = "indirect_effect_p"},
+#' return the p value associated with the indirect effect estimated
+#' in the mediation model (default = "summary_dt")
 #' @param sigfigs number of significant digits to round to
 #' @param silent if \code{silent = FALSE}, mediation analysis summary,
 #' estimation method, sample size, and number of simulations will be
