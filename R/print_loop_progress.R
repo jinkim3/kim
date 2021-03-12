@@ -6,6 +6,8 @@
 #' @param iteration_start iteration number at which the loop begins
 #' (default = 1)
 #' @param iteration_end iteration number at which the loop ends.
+#' @param text_before text to add before "Loop Progress..."
+#' By default it is set to be blank, i.e., \code{text_before = ""}
 #' @param percent if \code{percent = 1}, progress level will be printed
 #' at every 1 percent progress (default = 1)
 #' @examples
@@ -27,6 +29,7 @@ print_loop_progress <- function(
   iteration_number = NULL,
   iteration_start = 1,
   iteration_end = NULL,
+  text_before = "",
   percent = 1) {
   # make sure every_n_iterations is at least 1
   every_n_iterations <- max(round(
@@ -35,19 +38,19 @@ print_loop_progress <- function(
   progress_marker_position <-
     seq(iteration_start, iteration_end, every_n_iterations)
   if (iteration_number == iteration_start) {
-    cat("Loop Progress:   0% \r")
+    cat(paste0(text_before, "Loop Progress:   0% \r"))
     utils::flush.console()
   }
   if (iteration_number %in% progress_marker_position) {
     number_of_space_to_add <- 3 - nchar(as.character(round(
       iteration_number / iteration_end * 100)))
     cat(paste0(
-      "Loop Progress: ",
+      text_before, "Loop Progress: ",
       paste0(rep(" ", number_of_space_to_add), collapse = ""),
       round(iteration_number / iteration_end * 100), "% \r"))
     utils::flush.console()
   }
   if (iteration_number == iteration_end) {
-    cat("Loop Progress: 100%. Done!\n")
+    cat(paste0(text_before, "Loop Progress: 100%. Done!\n"))
   }
 }

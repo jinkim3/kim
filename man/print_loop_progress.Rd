@@ -8,6 +8,7 @@ print_loop_progress(
   iteration_number = NULL,
   iteration_start = 1,
   iteration_end = NULL,
+  text_before = "",
   percent = 1
 )
 }
@@ -18,6 +19,9 @@ print_loop_progress(
 (default = 1)}
 
 \item{iteration_end}{iteration number at which the loop ends.}
+
+\item{text_before}{text to add before "Loop Progress..."
+By default it is set to be blank, i.e., \code{text_before = ""}}
 
 \item{percent}{if \code{percent = 1}, progress level will be printed
 at every 1 percent progress (default = 1)}
