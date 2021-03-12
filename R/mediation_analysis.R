@@ -129,8 +129,9 @@ mediation_analysis <- function(
   if (silent == FALSE) {
     cat(paste0(
       "\nMediation analysis using 'mediation' package ",
-      "(Tingley et al. 2019; v4.5.0)\n\n",
-      "Quasi-Bayesian Confidence Intervals\n\n"
+      "(Tingley et al. 2019; v",
+      utils::packageVersion("mediation"),
+      ")\n\nQuasi-Bayesian Confidence Intervals\n\n"
     ))
     print(medi_result_dt)
     cat("\nSample Size Used:", x$nobs, "\n\n")
