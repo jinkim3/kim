@@ -11,7 +11,7 @@ cum_percent_plot(vector, output_type = "plot")
 
 \item{output_type}{if \code{output_type = "plot"}, return a cumulative
 percentage plot; if \code{output_type = "dt"}, return a data.table
-with cumulative percentages.}
+with cumulative percentages. By default, \code{output_type = "plot"}}
 }
 \description{
 Plots or tabulates cumulative percentages associated with

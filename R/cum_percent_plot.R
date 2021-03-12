@@ -6,7 +6,7 @@
 #' @param vector a numeric vector
 #' @param output_type if \code{output_type = "plot"}, return a cumulative
 #' percentage plot; if \code{output_type = "dt"}, return a data.table
-#' with cumulative percentages.
+#' with cumulative percentages. By default, \code{output_type = "plot"}
 #' @examples
 #' cum_percent_plot(c(1:100, NA, NA))
 #' cum_percent_plot(mtcars$mpg)

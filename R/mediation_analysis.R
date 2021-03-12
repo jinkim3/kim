@@ -21,15 +21,29 @@
 #' @param iterations number of bootstrap samples. The default is set at 1000,
 #' but consider increasing the number of samples to 5000, 10000, or an
 #' even larger number, if slower handling time is not an issue.
+#' @param output_type if \code{output_type = "summary_dt"},
+#' return the summary data.table; if \code{output_type = "mediate_output"},
+#' return the output from the \code{mediate} function in the
+#' 'mediate' package (default = "summary_dt")
+#' @param sigfigs number of significant digits to round to
+#' @param silent if \code{silent = FALSE}, mediation analysis summary,
+#' estimation method, sample size, and number of simulations will be
+#' printed; if \code{silent = TRUE}, nothing will be printed.
+#' (default = FALSE)
 #' @examples
 #' \donttest{
 #' mediation_analysis(
 #'   data = mtcars, iv_name = "cyl",
 #'   mediator_name = "disp", dv_name = "mpg", iterations = 100
 #' )
+#' mediation_analysis(
+#'   data = iris, iv_name = "Sepal.Length",
+#'   mediator_name = "Sepal.Width", dv_name = "Petal.Length",
+#'   iterations = 100
+#' )
 #' }
-#'
 #' @export
+#' @import data.table
 mediation_analysis <- function(
   data = NULL,
   iv_name = NULL,
@@ -37,7 +51,10 @@ mediation_analysis <- function(
   dv_name = NULL,
   covariates_names = NULL,
   robust_se = TRUE,
-  iterations = 1000) {
+  iterations = 1000,
+  sigfigs = 3,
+  output_type = "summary_dt",
+  silent = FALSE) {
   # check number of variables entered
   if (any(lengths(list(iv_name, mediator_name, dv_name)) > 1)) {
     stop(paste0(
@@ -80,8 +97,8 @@ mediation_analysis <- function(
   )
   # x: full model after mediation analysis
   x <- mediation::mediate(
-    med_model,
-    outcome_model,
+    model.m = med_model,
+    model.y = outcome_model,
     sims = iterations,
     treat = iv_name,
     mediator = mediator_name,
@@ -92,23 +109,34 @@ mediation_analysis <- function(
   smat <- rbind(smat, c(x$z0, x$z0.ci, x$z0.p))
   smat <- rbind(smat, c(x$tau.coef, x$tau.ci, x$tau.p))
   smat <- rbind(smat, c(x$n0, x$n0.ci, x$n0.p))
-  clp <- 100 * x$conf.level
-  rownames(smat) <- c(
-    "Indirect Effect", "Direct Effect", "Total Effect",
-    "Proportion Mediated"
+  # round to significant digits
+  smat <- signif(smat, sigfigs)
+  # convert to data table
+  medi_result_dt <- as.data.table(smat)
+  # add row labels
+  medi_result_dt <- data.table(
+    effect = c("indirect", "direct", "total", "proportion_mediated"),
+    medi_result_dt
   )
-  colnames(smat) <- c(
-    "Estimate", paste0(clp, "% CI Lower"),
-    paste0(clp, "% CI Upper"), "p-value"
-  )
-  # print mediation output
-  cat(paste0(
-    "\nMediation analysis using 'mediation' package ",
-    "(Tingley et al. 2019; v4.5.0)\n\n",
-    "Quasi-Bayesian Confidence Intervals\n\n"
-  ))
-  stats::printCoefmat(smat, digits = 4)
-  cat("\nSample Size Used:", x$nobs, "\n\n")
-  cat("Simulations:", x$sims, "\n")
-  invisible(x)
+  # confidence level
+  conf_lvl <- 100 * x$conf.level
+  # change column names
+  names(medi_result_dt) <- c(
+    "effect", "estimate", paste0("ci_", conf_lvl, c("_ll", "_ul")), "p")
+  # print unless silent
+  if (silent == FALSE) {
+    cat(paste0(
+      "\nMediation analysis using 'mediation' package ",
+      "(Tingley et al. 2019; v4.5.0)\n\n",
+      "Quasi-Bayesian Confidence Intervals\n\n"
+    ))
+    print(medi_result_dt)
+    cat("\nSample Size Used:", x$nobs, "\n\n")
+    cat("Simulations:", x$sims, "\n")
+  }
+  if (output_type == "mediate_output") {
+    invisible(x)
+  } else if (output_type == "summary_dt") {
+    invisible(medi_result_dt)
+  }
 }

@@ -11,7 +11,10 @@ mediation_analysis(
   dv_name = NULL,
   covariates_names = NULL,
   robust_se = TRUE,
-  iterations = 1000
+  iterations = 1000,
+  sigfigs = 3,
+  output_type = "summary_dt",
+  silent = FALSE
 )
 }
 \arguments{
@@ -33,6 +36,18 @@ as \code{TRUE} if quasi-Bayesian approximation is used.}
 \item{iterations}{number of bootstrap samples. The default is set at 1000,
 but consider increasing the number of samples to 5000, 10000, or an
 even larger number, if slower handling time is not an issue.}
+
+\item{sigfigs}{number of significant digits to round to}
+
+\item{output_type}{if \code{output_type = "summary_dt"},
+return the summary data.table; if \code{output_type = "mediate_output"},
+return the output from the \code{mediate} function in the
+'mediate' package (default = "summary_dt")}
+
+\item{silent}{if \code{silent = FALSE}, mediation analysis summary,
+estimation method, sample size, and number of simulations will be
+printed; if \code{silent = TRUE}, nothing will be printed.
+(default = FALSE)}
 }
 \description{
 Conducts a mediation analysis to estimate an independent variable's
@@ -50,6 +65,10 @@ mediation_analysis(
   data = mtcars, iv_name = "cyl",
   mediator_name = "disp", dv_name = "mpg", iterations = 100
 )
+mediation_analysis(
+  data = iris, iv_name = "Sepal.Length",
+  mediator_name = "Sepal.Width", dv_name = "Petal.Length",
+  iterations = 100
+)
 }
-
 }
