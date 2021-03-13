@@ -10,7 +10,8 @@ t_test_pairwise(
   dv_name = NULL,
   sigfigs = 3,
   mann_whitney = TRUE,
-  t_test_stats = FALSE
+  t_test_stats = FALSE,
+  t_test_df_decimals = 1
 )
 }
 \arguments{
@@ -28,6 +29,9 @@ tests will not be performed.}
 
 \item{t_test_stats}{if \code{t_test_stats = TRUE}, t-test statistic
 and degrees of freedom will be included in the output data.table.}
+
+\item{t_test_df_decimals}{number of decimals for the degrees of freedom
+in t-tests (default = 1)}
 }
 \value{
 the output will be a data.table

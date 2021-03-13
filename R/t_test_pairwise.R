@@ -7,6 +7,8 @@
 #' @param iv_name name of the independent variable
 #' @param dv_name name of the dependent variable
 #' @param sigfigs number of significant digits to round to
+#' @param t_test_df_decimals number of decimals for the degrees of freedom
+#' in t-tests (default = 1)
 #' @param mann_whitney if \code{TRUE}, Mann-Whitney test results will be
 #' included in the output data.table. If \code{TRUE}, Mann-Whitney
 #' tests will not be performed.
@@ -25,7 +27,8 @@ t_test_pairwise <- function(
   dv_name = NULL,
   sigfigs = 3,
   mann_whitney = TRUE,
-  t_test_stats = FALSE) {
+  t_test_stats = FALSE,
+  t_test_df_decimals = 1) {
   # bind the vars locally to the function
   iv <- dv <- group_1 <- group_2 <- NULL
   # check number of iv_name and dv_name
@@ -100,7 +103,7 @@ t_test_pairwise <- function(
       group_1_mean = signif(group_1_mean, sigfigs),
       group_2_mean = signif(group_2_mean, sigfigs),
       cohen_d = signif(cohen_d, sigfigs),
-      t_test_df,
+      t_test_df = round(t_test_df, t_test_df_decimals),
       t_test_stat = signif(t_test_stat, sigfigs),
       t_test_p_value = kim::pretty_round_p_value(t_test_p_value),
       bonferroni_signif_for_t_test = bonferroni_signif_for_t_test)
