@@ -142,6 +142,6 @@ mediation_analysis <- function(
   } else if (output_type == "summary_dt") {
     invisible(medi_result_dt)
   } else if (output_type == "indirect_effect_p") {
-    invisible(medi_result_dt[effect == "indirect", p])
+    invisible(medi_result_dt[get("effect") == "indirect", get("p")])
   }
 }
