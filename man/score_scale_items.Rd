@@ -7,8 +7,7 @@
 score_scale_items(
   items = NULL,
   reverse = NULL,
-  mean = TRUE,
-  sum = FALSE,
+  operation = "mean",
   na_summary = TRUE,
   reverse_code_minuend = NULL
 )
@@ -19,12 +18,9 @@ to code normally (as opposed to reverse coding).}
 
 \item{reverse}{list of scale items to reverse code.}
 
-\item{mean}{logical. If \code{mean = TRUE}, mean of the scale items
-will be calculated (default = TRUE).}
-
-\item{sum}{logical. Input for the argument \code{mean} takes precedence.
-If \code{mean = FALSE, sum = TRUE}, sum of the scale items will
-be calculated (default = FALSE).}
+\item{operation}{if \code{operation = "mean"}, mean of the scale items
+will be calculated; if \code{operation = "sum"}, sum of the scale items
+will be calculated (default = "mean").}
 
 \item{na_summary}{logical. If \code{na_summary = TRUE} a summary of
 NA values will be printed; if \code{na_summary = FALSE} the summary
@@ -43,5 +39,7 @@ sum or mean of the items.
 score_scale_items(items = list(1:5, rep(3, 5)),
 reverse = list(rep(5, 5)), reverse_code_minuend = 6)
 score_scale_items(items = list(c(1, 1), c(1, 5)),
-reverse = list(c(5, 3)), reverse_code_minuend = 6)
+reverse = list(c(5, 3)), reverse_code_minuend = 6, na_summary = FALSE)
+score_scale_items(items = list(c(1, 1), c(1, 5)),
+reverse = list(c(5, 1)), reverse_code_minuend = 6, operation = "sum")
 }
