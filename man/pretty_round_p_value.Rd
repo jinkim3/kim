@@ -13,10 +13,15 @@ pretty_round_p_value(
 \arguments{
 \item{p_value_vector}{one number or a numeric vector}
 
-\item{round_digits_after_decimal}{round to nth digit after decimal}
+\item{round_digits_after_decimal}{how many digits after the decimal
+point should the p-value be rounded to?}
 
 \item{include_p_equals}{if \code{TRUE}, output will be a string of
-mathematical expression including "p", e.g., "p < .01"}
+mathematical expression including "p", e.g., "p < .01" (default = FALSE)}
+}
+\value{
+the output will be a character vector with p values, e.g.,
+a vector of strings like "< .001" (or "p < .001").
 }
 \description{
 Pretty round p-value

@@ -5,7 +5,7 @@
 #' @param vector a numeric vector
 #' @param output_type if \code{output_type = "vector"}, return a vector
 #' of descriptive statistics; if \code{output_type = "dt"}, return a
-#' data.table of descriptive statistics
+#' data.table of descriptive statistics (default = "vector")
 #' @param sigfigs number of significant digits to round to (default = 3)
 #' @param ci logical. Should 95% CI be included in the descriptive stats?
 #' (default = TRUE)
@@ -15,7 +15,10 @@
 #' were removed due to missing values. By default, NA count will be printed
 #' only if there are any NA values.
 #' @param print_dt if \code{TRUE}, print the descriptive stats data.table
-#' @return a named numeric vector or a data.table
+#' @return if \code{output_type = "vector"}, the output will be a
+#' named numeric vector of descriptive statistics;
+#' if \code{output_type = "dt"}, the output will be data.table of
+#' descriptive statistics.
 #' @examples
 #' desc_stats(1:100)
 #' desc_stats(1:100, ci = TRUE, pi = TRUE, sigfigs = 2)
@@ -50,7 +53,7 @@ desc_stats <- function(
   median <- stats::median(v_no_na)
   min <- min(v_no_na)
   max <- max(v_no_na)
-  se_of_mean <- kim::se_of_mean(v_no_na, notify_na_count = FALSE)
+  se_of_mean <- se_of_mean(v_no_na, notify_na_count = FALSE)
   if (ci == TRUE) {
     ci_95_ll <- tryCatch(
       as.numeric(stats::t.test(v_no_na)[["conf.int"]][1]),

@@ -14,7 +14,8 @@
 #' tests will not be performed.
 #' @param t_test_stats if \code{t_test_stats = TRUE}, t-test statistic
 #' and degrees of freedom will be included in the output data.table.
-#' @return the output will be a data.table
+#' @return the output will be a data.table showing results of all
+#' pairwise comparisons between levels of the independent variable.
 #' @examples
 #' t_test_pairwise(data = iris, iv_name = "Species", dv_name = "Sepal.Length")
 #' t_test_pairwise(data = iris, iv_name = "Species", dv_name = "Sepal.Length",
@@ -69,7 +70,8 @@ t_test_pairwise <- function(
   cohen_d <- vapply(seq_len(nrow(dt02)), function(i) {
     temp <- dt01[iv %in% dt02[i, ]]
     temp[, iv := factor(iv)]
-    effsize::cohen.d(dv ~ iv, temp)[["estimate"]]},
+    cohen_d_from_cohen_textbook(
+      data = temp, iv_name = "iv", dv_name = "dv")},
     FUN.VALUE = numeric(1L))
   # t stat
   t_test_stat <- vapply(seq_len(nrow(dt02)), function(i) {
@@ -93,7 +95,7 @@ t_test_pairwise <- function(
     group_1_mean = signif(group_1_mean, sigfigs),
     group_2_mean = signif(group_2_mean, sigfigs),
     cohen_d = signif(cohen_d, sigfigs),
-    t_test_p_value = kim::pretty_round_p_value(t_test_p_value),
+    t_test_p_value = pretty_round_p_value(t_test_p_value),
     bonferroni_signif_for_t_test = bonferroni_signif_for_t_test)
   # add t test stats
   if (t_test_stats == TRUE) {
@@ -105,7 +107,7 @@ t_test_pairwise <- function(
       cohen_d = signif(cohen_d, sigfigs),
       t_test_df = round(t_test_df, t_test_df_decimals),
       t_test_stat = signif(t_test_stat, sigfigs),
-      t_test_p_value = kim::pretty_round_p_value(t_test_p_value),
+      t_test_p_value = pretty_round_p_value(t_test_p_value),
       bonferroni_signif_for_t_test = bonferroni_signif_for_t_test)
   }
   # mann whitney
@@ -120,7 +122,7 @@ t_test_pairwise <- function(
       mann_whitney_p_value < .05 / nrow(dt02), "Yes", "No")
     output <- data.table(
       output,
-      mann_whitney_p_value = kim::pretty_round_p_value(
+      mann_whitney_p_value = pretty_round_p_value(
         mann_whitney_p_value),
       bonferroni_signif_for_mann_whitney)
   }

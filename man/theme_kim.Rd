@@ -33,6 +33,12 @@ and the axis line}
 \item{cap_axis_lines}{logical. Should the axis lines be capped at the
 outer tick marks? (default = TRUE)}
 }
+\value{
+a ggplot object; there will be no meaningful output from
+this function. Instead, this function should be used with another
+ggplot object, e.g., \code{
+ggplot(mtcars , aes(x = disp, y = mpg)) + theme_kim()}
+}
 \description{
 A custom ggplot theme
 }

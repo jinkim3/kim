@@ -42,7 +42,7 @@
 #' range of y values
 #' @param cap_axis_lines logical. Should the axis lines be capped at the
 #' outer tick marks? (default = TRUE)
-#' @return a ggplot object
+#' @return the output will be a scatter plot, a ggplot object.
 #' @examples
 #' \donttest{
 #' scatterplot(data = mtcars, x_var_name = "wt", y_var_name = "mpg")
@@ -159,7 +159,7 @@ scatterplot <- function(
   }
   # nice p value
   cor_test_p_value_text <-
-    kim::pretty_round_p_value(cor_test_p_value, include_p_equals = TRUE)
+    pretty_round_p_value(cor_test_p_value, include_p_equals = TRUE)
   # annotate stats
   if (annotate_stats == TRUE) {
     annotation_01 <-
@@ -198,7 +198,7 @@ scatterplot <- function(
   g1 <- g1 + xlab(x_axis_label)
   g1 <- g1 + ylab(y_axis_label)
   # plot theme
-  g1 <- g1 + kim::theme_kim(cap_axis_lines = cap_axis_lines)
+  g1 <- g1 + theme_kim(cap_axis_lines = cap_axis_lines)
   # return the ggplot
   return(g1)
 }

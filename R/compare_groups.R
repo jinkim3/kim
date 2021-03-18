@@ -30,14 +30,14 @@ compare_groups <- function(
   mann_whitney = TRUE,
   t_test_stats = FALSE) {
   # histogram by group
-  output_1 <- kim::histogram_by_group(
+  output_1 <- histogram_by_group(
     data = data, iv_name = iv_name, dv_name = dv_name)
   # descriptive stats by group
-  output_2 <- kim::desc_stats_by_group(
+  output_2 <- desc_stats_by_group(
     data = data, var_for_stats = dv_name, grouping_vars = iv_name,
     sigfigs = sigfigs)
   # pairwise comparison results
-  output_3 <- kim::t_test_pairwise(
+  output_3 <- t_test_pairwise(
     data = data, iv_name = iv_name, dv_name = dv_name,
     sigfigs = sigfigs,
     mann_whitney = mann_whitney,

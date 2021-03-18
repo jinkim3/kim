@@ -34,7 +34,8 @@ and degrees of freedom will be included in the output data.table.}
 in t-tests (default = 1)}
 }
 \value{
-the output will be a data.table
+the output will be a data.table showing results of all
+pairwise comparisons between levels of the independent variable.
 }
 \description{
 Conducts a t-test for every possible pairwise comparison

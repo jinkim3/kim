@@ -14,7 +14,9 @@
 #' (minimum = 0, maximum = 1, default = 0.15)
 #' @param draw_baseline logical. Should the baseline and the trailing
 #' lines to either side of the histogram be drawn? (default = FALSE)
-#' @return a ggplot object
+#' @return the output will be a set of vertically arranged histograms
+#' (a ggplot object), i.e., one histogram for each level of the
+#' independent variable.
 #' @examples
 #' histogram_by_group(data = mtcars, iv_name = "cyl", dv_name = "mpg")
 #' histogram_by_group(
@@ -25,7 +27,7 @@
 #' histogram_by_group(
 #' data = iris, iv_name = "Species", dv_name = "Sepal.Length")
 #' @export
-#' @import data.table ggplot2 ggridges
+#' @import data.table ggplot2
 histogram_by_group <- function(
   data = NULL,
   iv_name = NULL,

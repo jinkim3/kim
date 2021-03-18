@@ -45,7 +45,7 @@ were removed due to missing values. By default, NA count will be printed
 only if there are any NA values.}
 }
 \value{
-a ggplot object
+the output will be a histogram, a ggplot object.
 }
 \description{
 Create a histogram

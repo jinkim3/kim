@@ -20,7 +20,8 @@ the name of the column by which to order the data.table}
 the values in the column by which to order the data.table.}
 }
 \value{
-a data.table object whose rows will be ordered as specified
+the output will be a data.table object whose rows will
+be ordered as specified.
 }
 \description{
 Order rows in a data.table in a specific order

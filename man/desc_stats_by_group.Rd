@@ -25,7 +25,8 @@ statistics will be calculated}
 \item{cols_to_round}{names of columns whose values will be rounded}
 }
 \value{
-a data.frame
+the output will be a data.table showing descriptive statistics
+of the variable for each of the groups formed by the grouping variables.
 }
 \description{
 Returns descriptive statistics by group

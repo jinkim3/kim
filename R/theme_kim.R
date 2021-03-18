@@ -13,6 +13,10 @@
 #' and the axis line
 #' @param cap_axis_lines logical. Should the axis lines be capped at the
 #' outer tick marks? (default = TRUE)
+#' @return a ggplot object; there will be no meaningful output from
+#' this function. Instead, this function should be used with another
+#' ggplot object, e.g., \code{
+#' ggplot(mtcars , aes(x = disp, y = mpg)) + theme_kim()}
 #' @examples
 #' \donttest{
 #' prep(ggplot2)
@@ -20,7 +24,6 @@
 #' }
 #' @export
 #' @importFrom ggplot2 theme
-#' @importFrom lemon coord_capped_cart
 theme_kim <- function(
   legend_position = "none",
   base_size = 20,

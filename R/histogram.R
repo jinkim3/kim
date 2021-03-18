@@ -18,7 +18,7 @@
 #' @param notify_na_count if \code{TRUE}, notify how many observations
 #' were removed due to missing values. By default, NA count will be printed
 #' only if there are any NA values.
-#' @return a ggplot object
+#' @return the output will be a histogram, a ggplot object.
 #' @examples
 #' histogram(1:100)
 #' histogram(c(1:100, NA))
@@ -103,6 +103,6 @@ histogram <- function(
   } else {
     g1 <- g1 + ylab("Count")
   }
-  g1 <- g1 + kim::theme_kim(y_axis_title_vjust = y_axis_title_vjust)
+  g1 <- g1 + theme_kim(y_axis_title_vjust = y_axis_title_vjust)
   return(g1)
 }

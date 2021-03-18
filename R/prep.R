@@ -18,7 +18,8 @@
 #' @param silent_load_pkgs a character vector indicating names of
 #' packages to load silently (i.e., suppress messages that get printed
 #' when loading the packaged). By default, \code{silent_load_pkgs = NULL}
-#'
+#' @return there will be no output from this function. Rather, packages
+#' given as inputs to the function will be installed, loaded, and attached.
 #' @examples
 #' \donttest{
 #' prep(data.table)

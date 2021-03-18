@@ -47,6 +47,6 @@ merge_data_table_list <- function(
 ) {
   # recursively apply the merge_data_tables function
   output <- Reduce(function(x, y) {
-    kim::merge_data_tables(x, y, id = id, silent = silent)}, dt_list)
+    merge_data_tables(x, y, id = id, silent = silent)}, dt_list)
   return(output)
 }

@@ -32,6 +32,13 @@
 #' estimation method, sample size, and number of simulations will be
 #' printed; if \code{silent = TRUE}, nothing will be printed.
 #' (default = FALSE)
+#' @return if \code{output_type = "summary_dt"}, which is the default,
+#' the output will be a data.table showing a summary of mediation
+#' analysis results; if \code{output_type = "mediate_output"},
+#' the output will be the output from the \code{mediate} function
+#' in the 'mediate' package; if \code{output_type = "indirect_effect_p"},
+#' the output will be the p-value associated with the indirect effect
+#' estimated in the mediation model (a numeric vector of length one).
 #' @examples
 #' \donttest{
 #' mediation_analysis(

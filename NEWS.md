@@ -1,5 +1,5 @@
-# kim 0.2.134
-* Fixed bugs, and added new function(s) including score_scale_items.
+# kim 0.2.136
+* Fixed bugs and updated function documentations.
 
 # kim 0.2.133
 * Fixed bugs, and added new function(s) including id_across_datasets.

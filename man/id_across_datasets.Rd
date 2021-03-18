@@ -27,13 +27,16 @@ ending ID values in each data set will not be printed.
 If \code{silent = FALSE}, a summary of starting and
 ending ID values in each data set will be printed. (default = FALSE)}
 }
+\value{
+the output will be a list of data.table objects.
+}
 \description{
 Create an ID column in each of the data sets. The ID values will
 span across the data sets.
 }
 \examples{
 # running the examples below requires importing the data.table package.
-kim::prep(data.table)
+prep(data.table)
 id_across_datasets(
 dt_list = list(setDT(copy(mtcars)), setDT(copy(iris))))
 id_across_datasets(

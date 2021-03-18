@@ -8,7 +8,8 @@
 #' @param grouping_vars name(s) of grouping variables
 #' @param sigfigs number of significant digits to round to
 #' @param cols_to_round names of columns whose values will be rounded
-#' @return a data.frame
+#' @return the output will be a data.table showing descriptive statistics
+#' of the variable for each of the groups formed by the grouping variables.
 #' @examples
 #' desc_stats_by_group(data = mtcars, var_for_stats = "mpg",
 #' grouping_vars = c("vs", "am"))
@@ -28,7 +29,7 @@ desc_stats_by_group <- function(
     median = as.numeric(stats::median(get(var_for_stats), na.rm = TRUE)),
     min = as.numeric(min(get(var_for_stats), na.rm = TRUE)),
     max = as.numeric(max(get(var_for_stats), na.rm = TRUE)),
-    se = as.numeric(kim::se_of_mean(get(var_for_stats), na.rm = TRUE)),
+    se = as.numeric(se_of_mean(get(var_for_stats), na.rm = TRUE)),
     ci_95_ll = tryCatch(
       as.numeric(stats::t.test(get(var_for_stats))[["conf.int"]][1]),
       warning = function(w) NA_real_, error = function(e) NA_real_),

@@ -35,7 +35,9 @@ remove the group in the set of histograms.}
 lines to either side of the histogram be drawn? (default = FALSE)}
 }
 \value{
-a ggplot object
+the output will be a set of vertically arranged histograms
+(a ggplot object), i.e., one histogram for each level of the
+independent variable.
 }
 \description{
 Creates histograms by group to compare distributions

@@ -31,6 +31,10 @@ package(s) were successfully loaded and attached will be printed
 packages to load silently (i.e., suppress messages that get printed
 when loading the packaged). By default, \code{silent_load_pkgs = NULL}}
 }
+\value{
+there will be no output from this function. Rather, packages
+given as inputs to the function will be installed, loaded, and attached.
+}
 \description{
 Installs, loads, and attaches package(s). If package(s) are not
 installed, installs them prior to loading and attaching.

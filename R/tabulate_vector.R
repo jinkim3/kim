@@ -20,7 +20,11 @@
 #' (alternative to \code{sigfigs})
 #' @param output_type if \code{output_type = "df"}, return a data.frame.
 #' By default, \code{output_type = "dt"}, which will return a data.table.
-#' @return a data.table or data.frame
+#' @return if \code{output_type = "dt"}, which is the default, the output
+#' will be a data.table showing the count and proportion (percent) of each
+#' element in the given vector; if \code{output_type = "df"}, the output will
+#' be a data.frame showing the count and proportion (percent) of each value
+#' in the given vector.
 #' @examples
 #' tabulate_vector(c("a", "b", "b", "c", "c", "c", NA))
 #' tabulate_vector(c("a", "b", "b", "c", "c", "c", NA),

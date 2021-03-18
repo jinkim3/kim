@@ -21,6 +21,10 @@ multiple_regression(
 \item{round_digits_after_decimal}{round to nth digit after decimal
 (alternative to \code{sigfigs})}
 }
+\value{
+the output will be a data.table showing multiple regression
+results.
+}
 \description{
 Summarize multiple regression results in a data.table
 }

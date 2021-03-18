@@ -2,9 +2,11 @@
 #'
 #' @param p_value_vector one number or a numeric vector
 #' @param include_p_equals if \code{TRUE}, output will be a string of
-#' mathematical expression including "p", e.g., "p < .01"
-#' @param round_digits_after_decimal
-#' round to nth digit after decimal
+#' mathematical expression including "p", e.g., "p < .01" (default = FALSE)
+#' @param round_digits_after_decimal how many digits after the decimal
+#' point should the p-value be rounded to?
+#' @return the output will be a character vector with p values, e.g.,
+#' a vector of strings like "< .001" (or "p < .001").
 #' @examples
 #' pretty_round_p_value(
 #'   p_value_vector = 0.049,

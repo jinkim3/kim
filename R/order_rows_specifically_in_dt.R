@@ -7,7 +7,8 @@
 #' the name of the column by which to order the data.table
 #' @param specific_order a vector indicating a specific order of
 #' the values in the column by which to order the data.table.
-#' @return a data.table object whose rows will be ordered as specified
+#' @return the output will be a data.table object whose rows will
+#' be ordered as specified.
 #' @examples
 #' order_rows_specifically_in_dt(mtcars, "carb", c(3, 2, 1, 4, 8, 6))
 #' @import data.table

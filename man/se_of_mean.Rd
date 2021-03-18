@@ -15,6 +15,10 @@ se_of_mean(vector, na.rm = TRUE, notify_na_count = NULL)
 were removed due to missing values. By default, NA count will be printed
 only if there are any NA values.}
 }
+\value{
+the output will be a numeric vector of length one,
+which will be the standard error of the mean for the given numeric vector.
+}
 \description{
 Standard error of the mean
 }

@@ -19,7 +19,7 @@ desc_stats(
 
 \item{output_type}{if \code{output_type = "vector"}, return a vector
 of descriptive statistics; if \code{output_type = "dt"}, return a
-data.table of descriptive statistics}
+data.table of descriptive statistics (default = "vector")}
 
 \item{sigfigs}{number of significant digits to round to (default = 3)}
 
@@ -36,7 +36,10 @@ only if there are any NA values.}
 \item{print_dt}{if \code{TRUE}, print the descriptive stats data.table}
 }
 \value{
-a named numeric vector or a data.table
+if \code{output_type = "vector"}, the output will be a
+named numeric vector of descriptive statistics;
+if \code{output_type = "dt"}, the output will be data.table of
+descriptive statistics.
 }
 \description{
 Returns descriptive statistics for a numeric vector.

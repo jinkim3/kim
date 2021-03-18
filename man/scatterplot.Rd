@@ -83,7 +83,7 @@ range of y values}
 outer tick marks? (default = TRUE)}
 }
 \value{
-a ggplot object
+the output will be a scatter plot, a ggplot object.
 }
 \description{
 Creates a scatter plot and calculates a correlation between two variables

@@ -23,9 +23,14 @@ cohen_d_from_cohen_textbook(
 
 \item{dv_name}{name of the dependent variable}
 }
+\value{
+the output will be a Cohen's d value (a numeric vector
+of length one)
+}
 \description{
 Calculates Cohen's d as described in Jacob Cohen's textbook (1988),
 Statistical Power Analysis for the Behavioral Sciences, 2nd Edition
+Cohen, J. (1988) \url{doi:10.4324/9780203771587}
 }
 \examples{
 cohen_d_from_cohen_textbook(1:10, 3:12)
