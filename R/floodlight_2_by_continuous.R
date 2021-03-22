@@ -48,6 +48,9 @@
 #' @param legend_title title of the legend. By default, it will be set
 #' as input for \code{iv_name}. If \code{legend_title = FALSE}, it will
 #' be removed.
+#' @param round_decimals_int_p_value To how many digits after the
+#' decimal point should the p value for the interaction term be
+#' rounded? (default = 3)
 #' @examples
 #' floodlight_2_by_continuous(
 #' data = mtcars,
@@ -77,7 +80,8 @@ floodlight_2_by_continuous <- function(
   nonsig_region_alpha = 0.08,
   x_axis_title = NULL,
   y_axis_title = NULL,
-  legend_title = NULL
+  legend_title = NULL,
+  round_decimals_int_p_value = 3
 ) {
   # bind the vars locally to the function
   dv <- iv_binary <- iv_factor <- mod <- NULL
@@ -171,7 +175,8 @@ floodlight_2_by_continuous <- function(
     lm_summary <- summary(stats::lm(dv ~ iv_binary * mod, data = dt_2))
     interaction_p_value <- kim::pretty_round_p_value(
       lm_summary[["coefficients"]]["iv_binary:mod", "Pr(>|t|)"],
-      include_p_equals = TRUE)
+      include_p_equals = TRUE,
+      round_digits_after_decimal = round_decimals_int_p_value)
     interaction_p_value_text <- paste0(
       "Interaction ", interaction_p_value)
     # label jn points

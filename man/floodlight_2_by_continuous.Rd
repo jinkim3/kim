@@ -25,7 +25,8 @@ floodlight_2_by_continuous(
   nonsig_region_alpha = 0.08,
   x_axis_title = NULL,
   y_axis_title = NULL,
-  legend_title = NULL
+  legend_title = NULL,
+  round_decimals_int_p_value = 3
 )
 }
 \arguments{
@@ -95,6 +96,10 @@ be removed.}
 \item{legend_title}{title of the legend. By default, it will be set
 as input for \code{iv_name}. If \code{legend_title = FALSE}, it will
 be removed.}
+
+\item{round_decimals_int_p_value}{To how many digits after the
+decimal point should the p value for the interaction term be
+rounded? (default = 3)}
 }
 \description{
 Conduct a floodlight analysis for 2 x Continuous design
