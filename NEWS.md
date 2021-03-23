@@ -1,4 +1,4 @@
-# kim 0.2.137
+# kim 0.2.146
 * Fixed bugs and updated function documentations.
 
 # kim 0.2.133
