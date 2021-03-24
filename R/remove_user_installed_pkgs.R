@@ -5,10 +5,10 @@
 #' of packages to keep. The default,
 #' \code{type_of_pkg_to_keep = c("base", "recommended")}, keeps all
 #' base and recommended packages that come with R when R is installed.
-#' @param remove_kim logical. If \code{remove_kim = TRUE}, Package 'kim'
+#' @param keep_kim logical. If \code{keep_kim = FALSE}, Package 'kim'
 #' will be removed along with all other user-installed packages.
-#' If \code{remove_kim = FALSE}, Package 'kim' will not be removed.
-#' By default, \code{remove_kim = FALSE}
+#' If \code{keep_kim = TRUE}, Package 'kim' will not be removed.
+#' By default, \code{keep_kim = FALSE}
 #' @examples
 #' \dontrun{
 #' remove_user_installed_pkgs()
@@ -74,7 +74,20 @@ remove_user_installed_pkgs <- function(
           length(pkg_to_remove),
           " packages. Are you sure?"))
       if (user_reply_2 == 1) {
-        do.call(remove.packages, as.list(pkg_to_remove))
+        # path of the packages to remove
+        path_of_pkg_to_remove <- subset(
+          pkg_df, Package %in% pkg_to_remove)[["LibPath"]]
+        # if there is only one unique path
+        if (length(unique(path_of_pkg_to_remove)) == 1) {
+          utils::remove.packages(
+            pkgs = pkg_to_remove,
+            lib = unique(path_of_pkg_to_remove))
+        } else {
+          for (i in seq_along(pkg_to_remove)) {
+            utils::remove.packages(
+              pkg_to_remove[i], path_of_pkg_to_remove[i])
+          }
+        }
       } else {
         message("No package(s) were removed.")
       }
