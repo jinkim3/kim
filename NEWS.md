@@ -1,5 +1,6 @@
-# kim 0.2.146
-* Fixed bugs and updated function documentations.
+# kim 0.2.147
+* Fixed bugs, updated function documentations, and added new function(s) 
+including remove_user_installed_pkgs.
 
 # kim 0.2.133
 * Fixed bugs, and added new function(s) including id_across_datasets.
