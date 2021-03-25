@@ -1,4 +1,4 @@
-# kim 0.2.152
+# kim 0.2.153
 * Fixed bugs, updated function documentations, and added new function(s) 
 including remove_user_installed_pkgs.
 
