@@ -14,7 +14,6 @@
 #' )
 #' pretty_round_p_value(c(0.0015, 0.0014), include_p_equals = TRUE)
 #' @export
-#' @importFrom stats model.frame pf
 pretty_round_p_value <- function(
   p_value_vector = NULL,
   round_digits_after_decimal = 3,

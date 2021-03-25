@@ -37,7 +37,6 @@
 #' dt2 = data.frame(a = 1:2, b = 3:4),
 #' dt3 = data.frame(a = 1:2, b = 3:4, c = 5:6)))
 #' @import data.table
-#' @importFrom utils head
 #' @export
 compare_datasets <- function(
   dataset_1 = NULL,
@@ -119,7 +118,7 @@ compare_datasets <- function(
   names(check_colnames_result) <- paste0("data set: ", dataset_name)
   # check which pairs of data sets have different column names
   same_colnames <- vapply(
-    head(seq_len(ncol(colnames_by_dt)), -1), function(i) {
+    utils::head(seq_len(ncol(colnames_by_dt)), -1), function(i) {
       identical(
         colnames_by_dt[[names(colnames_by_dt)[i]]],
         colnames_by_dt[[names(colnames_by_dt)[i + 1]]])
@@ -164,7 +163,7 @@ compare_datasets <- function(
       dt[[i]]
     })
     # check whether any pair among the set of ith columns is not identical
-    for (j in head(seq_len(length(individual_cols)), -1)) {
+    for (j in utils::head(seq_len(length(individual_cols)), -1)) {
       ind_col_identical <- identical(
         individual_cols[[j]], individual_cols[[j + 1]])
       if (ind_col_identical == FALSE) {
@@ -209,7 +208,7 @@ compare_datasets <- function(
     }
   }
   # check whether data sets are identical
-  for (i in head(seq_len(length(dt_list)), -1)) {
+  for (i in utils::head(seq_len(length(dt_list)), -1)) {
     dataset_identical <- identical(
       dt_list[[i]], dt_list[[i + 1]])
     if (dataset_identical == FALSE) {
