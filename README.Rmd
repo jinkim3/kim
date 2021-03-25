@@ -41,8 +41,8 @@ You can also install the development version from
 [kim on GitHub](https://github.com/jinkim3/kim) with:
 
 ``` r
-install.packages("devtools")
-devtools::install_github("jinkim3/kim")
+install.packages("remotes")
+remotes::install_github("jinkim3/kim")
 ```
 
 If you run into errors while using the package, try updating 

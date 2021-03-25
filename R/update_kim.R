@@ -25,7 +25,6 @@
 #' }
 #'
 #' @export
-#' @import devtools
 update_kim <- function(
   source = "github",
   force = FALSE,
@@ -36,18 +35,7 @@ update_kim <- function(
   }
   # if source is github
   if (source == "github") {
-    # discourage updating
-    # message(paste0(
-    #   "\nIf you see below a long list of recommended packages to update,\n",
-    #   "try updating none of them ",
-    #   '(i.e., Type "3" in the console for "3: None")\n\n',
-    #   "However, if you run into errors later using the package 'kim',\n",
-    #   'try updating the relevant packages then.\n'
-    # ))
-    # not sure if the line of code below is necessary
-    # kim::prep("devtools", silent_if_successful = TRUE)
-    devtools::install_github(
-      "jinkim3/kim", force = force, upgrade = upgrade)
+    remotes::install_github("jinkim3/kim")
   }
   kim::prep("kim", silent_if_successful = TRUE)
 }
