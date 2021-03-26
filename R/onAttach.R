@@ -1,72 +1,65 @@
-# message to print when loading the package
+# display the current version
 .onAttach <- function(libname, pkgname) {
-  # get current version
-  installed_pkg_version <- tryCatch(
-    as.character(utils::packageVersion("kim")), error = function(e) NA)
+  # notify the option to update? (5 possible cases)
+  # 1. error in getting the current package version -> yes
+  # 2. error in getting the github package version -> yes
+  # 3. current package version < github package version -> yes
+  # 4. current package version > github package version -> no
+  # 5. current package version == github package version -> no
+  # in short, notify the option to update unless the version numbers match
+
+  # get version of the currently installed package
+  current_pkg_version <- tryCatch(
+    as.character(utils::packageVersion("kim")),
+    error = function(e) "unknown")
   # github url
-  url <- "https://raw.githubusercontent.com/jinkim3/kim/master/DESCRIPTION"
+  github_url <- paste0(
+    "https://raw.githubusercontent.com/jinkim3/",
+    "kim/master/DESCRIPTION")
   # get github description or handle errors
   github_pkg_desc <- tryCatch(
-    readLines(url),
-    warning = function(w) {"no_result"},
-    error = function(e) {"no_result"})
-  update_suggestion <- paste0(
-    "This may not be the most recent version of the package available",
-    " on github. If you run into errors using the package, please",
-    " consider updating the package to the most recent version on",
-    " github by running 'update_kim()'"
-  )
-  if (identical(github_pkg_desc, "no_result")) {
-    if (is.na(installed_pkg_version)) {
-      startup_message <- paste0(
-        "Attached package: kim (version unknown). ", update_suggestion)
-    } else {
-      startup_message <- paste0(
-        "Attached package: kim ", installed_pkg_version,
-        ". ", update_suggestion)
-    }
+    readLines(github_url),
+    warning = function(w) {"github_desc_read_fail"},
+    error = function(e) {"github_desc_read_fail"})
+  # get the version number of github version
+  if (identical(github_pkg_desc, "github_desc_read_fail")) {
+    github_pkg_version <- "unknown"
   } else {
-    # get the version number of github version
     github_pkg_version <- gsub(
-      ".*ersion: ", "", github_pkg_desc[grep("ersion", github_pkg_desc)])
-    # compare versions
-    compare_version_result <- tryCatch(
-      utils::compareVersion(installed_pkg_version, github_pkg_version),
-      warning = function(w) {NA},
-      error = function(e) {NA})
-    # message to print
-    if (is.na(compare_version_result)) {
-      if (is.na(installed_pkg_version)) {
-        startup_message <- paste0(
-          "Attached package: kim (version unknown). ", update_suggestion)
-      } else {
-        startup_message <- paste0(
-          "Attached package: kim ", installed_pkg_version,
-          ". ", update_suggestion)
-      }
-    } else if (compare_version_result == -1) {
-      startup_message <- paste0(
-        "A more recent version of the package 'kim' is available ",
-        "on github.\n",
-        "Currently installed version: ", installed_pkg_version, "\n",
-        "Newer version on github:     ", github_pkg_version, "\n",
-        "If you run into errors using the package, please",
-        " consider updating the package to the most recent version on",
-        " github by running 'update_kim()'")
-    } else if (compare_version_result == 0) {
-      startup_message <- paste0(
-        "Attached package: kim ", installed_pkg_version, " (same ",
-        "version as the most recent version available on github.)")
-    } else if (compare_version_result == 1) {
-      startup_message <- paste0(
-        "You are running a newer, but possibly unstable version of ",
-        "the package 'kim'.\n\n",
-        "Currently installed version: ", installed_pkg_version, "\n",
-        "Older version on github:     ", github_pkg_version, "\n\n",
-        "If you run into errors using the package, please",
-        " consider downgrading the package to the older version on",
-        " github by running 'update_kim()'")
-    }
+      ".*ersion: ", "", github_pkg_desc[
+        grep("ersion", github_pkg_desc)])
+  }
+  # compare versions
+  compare_version_result <- tryCatch(
+    utils::compareVersion(
+      current_pkg_version, github_pkg_version),
+    warning = function(w) {999}, # 999 indicates no need for update
+    error = function(e) {999})
+  # skip update for case 5
+  if (current_pkg_version != "unknown" &
+      github_pkg_version != "unknown" &
+      compare_version_result == 0) {
+    startup_message <- paste0(
+      "Package attached: kim v", current_pkg_version,
+      " (same as the most recent version available through GitHub).")
+  } else if (
+    # skip update for case 4
+    current_pkg_version != "unknown" &
+    github_pkg_version != "unknown" &
+    compare_version_result > 0) {
+    startup_message <- paste0(
+      "Package attached: kim v", current_pkg_version,
+      " (probably the most recent version available through GitHub).")
+  } else {
+    # simply notify of the OPTION to update the package
+    # this is simply a notification of the option to update,
+    # rather than a recommendation to update
+    startup_message <- paste0(
+      "Package attached: kim v", current_pkg_version,
+      "Most recent version available on GitHub: v", github_pkg_version,
+      "\n\nYou have an option to update the package ",
+      "with the command `update_kim()`.",
+      "If you do so, make sure to restart R.\n\n")
   }
   packageStartupMessage(startup_message)
 }

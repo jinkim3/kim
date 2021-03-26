@@ -2,7 +2,7 @@
 #'
 #' Calculates Cohen's d as described in Jacob Cohen's textbook (1988),
 #' Statistical Power Analysis for the Behavioral Sciences, 2nd Edition
-#' Cohen, J. (1988) <doi:10.4324/9780203771587>
+#' Cohen, J. (1988) \doi{10.4324/9780203771587}
 #'
 #' @param sample_1 a vector of values in the first of two samples
 #' @param sample_2 a vector of values in the second of two samples
