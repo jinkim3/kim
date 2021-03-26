@@ -1,6 +1,7 @@
-# kim 0.2.153
+# kim 0.2.155
 * Fixed bugs, updated function documentations, and added new function(s) 
 including remove_user_installed_pkgs.
+* Deleted "LazyData: true" from DESCRIPTION
 
 # kim 0.2.133
 * Fixed bugs, and added new function(s) including id_across_datasets.

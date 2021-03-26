@@ -1,41 +1,34 @@
-#' Update 'kim'
+#' Update the package 'kim'
 #'
-#' Updates the current package 'kim' by installing the most recent version
+#' Updates the current package 'kim' by installing the
+#' most recent version of the package from GitHub
 #'
-#' @param source location of the most recent version of the package
-#' (default = "github")
-#' @param force logical. If \code{force = TRUE}, forces the installation
-#' even if the package 'kim' from the source has not changed since
-#' last install.
-#' @param upgrade input for \code{upgrade} argument to be passed on to
-#' \code{remotes::install_github}.
-#' The default value is \code{FALSE}.
-#' An input could be \code{TRUE} or \code{FALSE}, but it could also
-#' be one of the following: "default", "ask", "always", or "never".
-#' "default" respects the value of the R_REMOTES_UPGRADE
-#' environment variable if set, and falls back to "ask" if unset.
-#' "ask" prompts the user for which out of date packages to upgrade.
-#' For non-interactive sessions "ask" is equivalent to "always".
-#' TRUE and FALSE are also accepted and correspond
-#' to "always" and "never" respectively.
-#'
+#' @param confirm logical. If \code{confirm = TRUE}, the user will
+#' need to confirm the update. If \code{confirm = FALSE}, the confirmation
+#' step will be skipped. By default, \code{confirm = TRUE}.
+#' @return there will be no output from this function. Rather, executing
+#' this function will update the current 'kim' package by installing
+#' the most recent version of the package from GitHub.
 #' @examples
 #' \dontrun{
-#' update_kim()
+#' if (interactive()) {update_kim()}
 #' }
 #'
 #' @export
 update_kim <- function(
-  source = "github",
-  force = FALSE,
-  upgrade = FALSE) {
-  # unload the package kim
-  while ("package:kim" %in% search()) {
-    detach("package:kim", unload = TRUE, character.only = TRUE)
-  }
-  # if source is github
-  if (source == "github") {
+  confirm = TRUE) {
+  # confirm update
+  user_reply <- utils::menu(
+    c("Yes.", "No."),
+    title = "\nDo you want to try to update the package 'kim'?")
+  if (user_reply == 1) {
+    # unload the package kim
+    while ("package:kim" %in% search()) {
+      unloadNamespace("kim")
+    }
+    # if source is github
     remotes::install_github("jinkim3/kim")
+    # attach the package
+    kim::prep("kim", silent_if_successful = TRUE)
   }
-  kim::prep("kim", silent_if_successful = TRUE)
 }

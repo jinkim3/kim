@@ -19,6 +19,8 @@ remove_user_installed_pkgs <- function(
   type_of_pkg_to_keep = c("base", "recommended"),
   keep_kim = FALSE
 ) {
+  # bind the vars locally to the function
+  Priority <- Package <- NULL
   # get information on installed packages
   pkg_df <- as.data.frame(utils::installed.packages())
   # names of all packages
@@ -58,7 +60,7 @@ remove_user_installed_pkgs <- function(
       "A total of ", length(pkg_to_remove),
       " packages to remove:\n\n",
       paste0(pkg_to_remove, collapse = ", "), "\n"))
-    user_reply_1 <- menu(
+    user_reply_1 <- utils::menu(
       c("Yes, remove all.", "No, do not remove them."),
       title = paste0(
         "Do you really want to remove all of the above ",
@@ -66,7 +68,7 @@ remove_user_installed_pkgs <- function(
         " packages?"))
     # ask the user again to confirm the removal
     if (user_reply_1 == 1) {
-      user_reply_2 <- menu(
+      user_reply_2 <- utils::menu(
         c("Yes, I am sure. Remove all of the above packages.",
           "No, do not remove any package(s)."),
         title = paste0(
