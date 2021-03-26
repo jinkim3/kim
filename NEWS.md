@@ -1,6 +1,6 @@
-# kim 0.2.159
+# kim 0.2.163
 * Fixed bugs, updated function documentations, and added new function(s) 
-including remove_user_installed_pkgs.
+including setwd_to_active_doc.
 * Deleted "LazyData: true" from DESCRIPTION
 * Started removing dependencies on other packages
 

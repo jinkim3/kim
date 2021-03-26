@@ -1,6 +1,6 @@
 Package: kim
 Title: Functions for Behavioral Science Researchers
-Version: 0.2.159
+Version: 0.2.163
 Authors@R: 
     person(given = "Jin",
            family = "Kim",
@@ -11,7 +11,26 @@ Description: Miscellaneous functions to simplify and expedite
     analyses of experimental data. Examples include a function
     that plots sample means of groups in a factorial experimental design,
     a function that conducts robust regressions with bootstrapped samples,
-    and a function that conducts robust two-way analysis of variance.
+    and a function that conducts robust two-way analysis of variance. 
+    Selected References:
+    Canty & Ripley (2021) <https://CRAN.R-project.org/package=boot>.
+    Cohen (1988) <doi:10.4324/9780203771587>.
+    Dinno (2018) <https://CRAN.R-project.org/package=paran>.
+    Dowle et al. (2021) <https://CRAN.R-project.org/package=data.table>.
+    Edwards et al. (2020) <https://CRAN.R-project.org/package=lemon>.
+    Fox et al. (2020) <https://CRAN.R-project.org/package=car>.
+    Hester et al. (2020) <https://CRAN.R-project.org/package=remotes>.
+    Ioannidis (2005) <doi:10.1371/journal.pmed.0020124>
+    Kim (2021) <doi:10.5281/zenodo.4619237>.
+    Kim (2020) <https://CRAN.R-project.org/package=ezr>.
+    Long (2020) <https://CRAN.R-project.org/package=interactions>.
+    Mair & Wilcox (2021) <https://CRAN.R-project.org/package=WRS2>.
+    Pasek et al. (2020) <https://CRAN.R-project.org/package=weights>.
+    Simmons et al. (2011) <doi:10.1177/0956797611417632>.
+    Tingley et al. (2019) <https://CRAN.R-project.org/package=mediation>.
+    Torchiano (2020) <https://CRAN.R-project.org/package=effsize>.
+    Wickham et al. (2020) <https://CRAN.R-project.org/package=ggplot2>.
+    Wilke (2021) <https://CRAN.R-project.org/package=ggridges>.
 License: GPL-3
 URL: https://github.com/jinkim3/kim, https://jinkim.science
 BugReports: https://github.com/jinkim3/kim/issues

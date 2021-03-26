@@ -2,13 +2,14 @@
 #'
 #' Set up R environment by (1) clearing the console; (2) removing all
 #' objects in the global environment; (3) setting the working directory
-#' to the current file; (4) unloading and loading the kim package
+#' to the active document (in RStudio only); (4) unloading and
+#' loading the kim package.
 #'
 #' @param clear_console if \code{TRUE}, clear the console (default = TRUE)
 #' @param clear_global_env if \code{TRUE}, remove all objects in the
 #' global environment (default = TRUE)
-#' @param set_wd_to_current_file if \code{TRUE}, set the working
-#' directory to the current file (default = TRUE)
+#' @param setwd_to_active_doc if \code{TRUE}, set the working
+#' directory to the active document in RStudio (default = TRUE)
 #' @param prep_kim if \code{TRUE}, unload and load the kim package
 #' (default = TRUE)
 #' @examples
@@ -19,7 +20,7 @@
 setup_r_env <- function(
   clear_console = TRUE,
   clear_global_env = TRUE,
-  set_wd_to_current_file = TRUE,
+  setwd_to_active_doc = TRUE,
   prep_kim = TRUE
 ) {
   # clear console
@@ -28,7 +29,7 @@ setup_r_env <- function(
       cat("\014")
       message("The console has been cleared.")
     } else {
-      message("The console-clearing function works on RStudio.")
+      message("The console-clearing function works only in RStudio.")
     }
   }
   # clear objects in the global environment
@@ -36,24 +37,9 @@ setup_r_env <- function(
     rm(list = ls(pos = ".GlobalEnv"), pos = ".GlobalEnv")
     message("All objects in the global environment has been removed.")
   }
-  # set wd to the current file
-  if (set_wd_to_current_file == TRUE) {
-    if (Sys.getenv("RSTUDIO") == 1) {
-      # function to get the active document,
-      # if the user is using tools
-      fn_to_get_active_doc <- get(".rs.api.getActiveDocumentContext",
-                envir = as.environment(match("tools:rstudio", search())))
-      setwd(dirname(fn_to_get_active_doc()$path))
-      message(paste0(
-        "The working directory has been set to the location of the",
-        " current file:\n"))
-      cat(paste0(getwd(), "\n\n"))
-    } else {
-      message(paste0(
-        "The function for setting the working directory requires that",
-        " RStudio is running.\n",
-        "Please manually set the working directory."))
-    }
+  # set wd to the active document
+  if (setwd_to_active_doc == TRUE) {
+    setwd_to_active_doc()
   }
   # unload and load package kim
   if (prep_kim == TRUE) {
@@ -62,9 +48,5 @@ setup_r_env <- function(
       detach("package:kim", unload = TRUE, character.only = TRUE)
     }
     kim::prep("kim", silent_if_successful = TRUE)
-    # message(paste0(
-    #   "Package 'kim' v",
-    #   utils::packageVersion("kim"),
-    #   " has been unloaded and loaded."))
   }
 }

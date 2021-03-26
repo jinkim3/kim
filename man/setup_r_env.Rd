@@ -7,7 +7,7 @@
 setup_r_env(
   clear_console = TRUE,
   clear_global_env = TRUE,
-  set_wd_to_current_file = TRUE,
+  setwd_to_active_doc = TRUE,
   prep_kim = TRUE
 )
 }
@@ -17,8 +17,8 @@ setup_r_env(
 \item{clear_global_env}{if \code{TRUE}, remove all objects in the
 global environment (default = TRUE)}
 
-\item{set_wd_to_current_file}{if \code{TRUE}, set the working
-directory to the current file (default = TRUE)}
+\item{setwd_to_active_doc}{if \code{TRUE}, set the working
+directory to the active document in RStudio (default = TRUE)}
 
 \item{prep_kim}{if \code{TRUE}, unload and load the kim package
 (default = TRUE)}
@@ -26,7 +26,8 @@ directory to the current file (default = TRUE)}
 \description{
 Set up R environment by (1) clearing the console; (2) removing all
 objects in the global environment; (3) setting the working directory
-to the current file; (4) unloading and loading the kim package
+to the active document (in RStudio only); (4) unloading and
+loading the kim package.
 }
 \examples{
 \dontrun{

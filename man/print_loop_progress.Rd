@@ -43,7 +43,7 @@ for (i in seq_len(250)) {
     iteration_end = 250)
 }
 unlist(lapply(seq_len(7), function (i) {
-  Sys.sleep(0.2)
+  Sys.sleep(0.1)
   print_loop_progress(
     iteration_number = i,
     iteration_end = 7)

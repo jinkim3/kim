@@ -54,8 +54,8 @@ Here are some examples of using this package.
 library(kim)
 
 # update the package 'kim', clear the console and environment,
-# set up working directory to location of the current file,
-# and load the default packages ('data.table' and 'ggplot2')
+# set up working directory to location of the active document,
+# and load the two default packages ('data.table' and 'ggplot2')
 start_kim()
 
 # create a scatter plot
