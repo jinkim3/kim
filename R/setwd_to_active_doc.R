@@ -26,7 +26,7 @@ setwd_to_active_doc <- function() {
     if (setwd_result == "success") {
       message(paste0(
         "The working directory has been set as location of the",
-        " active document:\n"))
+        " active document:"))
       cat(paste0(getwd(), "\n"))
     } else {
       message(
