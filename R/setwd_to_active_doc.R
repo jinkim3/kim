@@ -27,11 +27,13 @@ setwd_to_active_doc <- function() {
       message(paste0(
         "The working directory has been set as location of the",
         " active document:\n"))
+      cat(paste0(getwd(), "\n"))
     } else {
-      message(paste0(
-        "Failed to change the working directory. Currently it is\n\n",
-        getwd(), "\n\nPlease try the function ",
-        "`setwd_to_active_doc()` or manually set the working directory."))
+      message(
+        "Failed to change the working directory. Currently, it is\n")
+      cat(getwd())
+      message(paste0("\nPlease try the function `setwd_to_active_doc()`",
+        " or manually set the working directory.\n"))
     }
   } else {
     message(paste0(
