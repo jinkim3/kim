@@ -4,7 +4,7 @@
 \alias{update_kim}
 \title{Update the package 'kim'}
 \usage{
-update_kim(confirm = TRUE)
+update_kim(force = FALSE, confirm = TRUE)
 }
 \arguments{
 \item{confirm}{logical. If \code{confirm = TRUE}, the user will

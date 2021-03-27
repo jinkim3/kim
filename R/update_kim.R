@@ -16,6 +16,7 @@
 #'
 #' @export
 update_kim <- function(
+  force = FALSE,
   confirm = TRUE) {
   # 5 possible cases
   # 1. error in getting the current package version -> yes
@@ -79,12 +80,12 @@ update_kim <- function(
       user_reply <- 1
     }
     # update if user wants the update
-    if (user_reply == 1) {
+    if (user_reply == 1 | force == TRUE) {
       # unload the package kim
       while ("package:kim" %in% search()) {
         unloadNamespace("kim")
       }
-      remotes::install_github("jinkim3/kim")
+      remotes::install_github("jinkim3/kim", force = force)
       # attach the package
       kim::prep("kim", silent_if_successful = TRUE)
     }
