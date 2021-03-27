@@ -29,11 +29,10 @@ setwd_to_active_doc <- function() {
         " active document:\n"))
     } else {
       message(paste0(
-        "The working directory was NOT set to location of the",
-        " active document.\nPlease try the function ",
+        "Failed to change the working directory. Currently it is\n\n",
+        getwd(), "\n\nPlease try the function ",
         "`setwd_to_active_doc()` or manually set the working directory."))
     }
-    cat(paste0(getwd(), "\n\n"))
   } else {
     message(paste0(
       "This function can only be run on RStudio.\n",
