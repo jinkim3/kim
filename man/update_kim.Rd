@@ -7,6 +7,9 @@
 update_kim(force = FALSE, confirm = TRUE)
 }
 \arguments{
+\item{force}{logical. If \code{force = TRUE}, force installing the
+update. If \code{force = FALSE}, do not force installing the update.}
+
 \item{confirm}{logical. If \code{confirm = TRUE}, the user will
 need to confirm the update. If \code{confirm = FALSE}, the confirmation
 step will be skipped. By default, \code{confirm = TRUE}.}
