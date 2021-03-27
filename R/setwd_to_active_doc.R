@@ -16,10 +16,23 @@ setwd_to_active_doc <- function() {
     fn_to_get_active_doc <- get(
       ".rs.api.getActiveDocumentContext",
       envir = as.environment(match("tools:rstudio", search())))
-    setwd(dirname(fn_to_get_active_doc()$path))
-    message(paste0(
-      "The working directory has been set as location of the",
-      " active document:\n"))
+    # try setting working directory
+    setwd_result <- tryCatch(
+      {setwd(dirname(fn_to_get_active_doc()$path))
+        "success"},
+      error = function(e) {"error"},
+      warning = function(w) {"warning"})
+    # if success
+    if (setwd_result == "success") {
+      message(paste0(
+        "The working directory has been set as location of the",
+        " active document:\n"))
+    } else {
+      message(paste0(
+        "The working directory was NOT set to location of the",
+        " active document.\nPlease try the function ",
+        "`setwd_to_active_doc()` or manually set the working directory."))
+    }
     cat(paste0(getwd(), "\n\n"))
   } else {
     message(paste0(

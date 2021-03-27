@@ -58,7 +58,7 @@
       "Package attached: kim v", current_pkg_version,
       "Most recent version available on GitHub: v", github_pkg_version,
       "\n\nYou have an option to update the package ",
-      "with the command `update_kim()`.",
+      "with the function `update_kim()`.",
       "If you do so, make sure to restart R.\n\n")
   }
   packageStartupMessage(startup_message)
