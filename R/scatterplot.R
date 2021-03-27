@@ -124,7 +124,7 @@ scatterplot <- function(
         size = point_label_size)
     }
   } else {
-    g1 <- g1 + geom_point(position = pj)
+    g1 <- g1 + geom_point(position = pj, alpha = alpha)
   }
   # scale points
   if (!is.null(weight_var_name)) {
