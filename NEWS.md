@@ -1,4 +1,4 @@
-# kim 0.2.170
+# kim 0.2.171
 * Fixed bugs, updated function documentations, and added new function(s) 
 including setwd_to_active_doc.
 * Deleted "LazyData: true" from DESCRIPTION

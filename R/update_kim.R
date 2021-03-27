@@ -56,17 +56,17 @@ update_kim <- function(
   if (current_pkg_version != "unknown" &
       github_pkg_version != "unknown" &
       compare_version_result == 0) {
-    update_result_message <- paste0(
+    message(paste0(
       "Current version of 'kim': v", current_pkg_version,
-      " (same as the most recent version available through GitHub).")
+      " (same as the most recent version available through GitHub)."))
   } else if (
     # skip update for case 4
     current_pkg_version != "unknown" &
     github_pkg_version != "unknown" &
     compare_version_result > 0) {
-    update_result_message <- paste0(
+    message(paste0(
       "Current version of 'kim': v", current_pkg_version,
-      " (probably the most recent version available through GitHub).")
+      " (probably the most recent version available through GitHub)."))
   } else {
     # confirm update
     if (confirm == TRUE) {
