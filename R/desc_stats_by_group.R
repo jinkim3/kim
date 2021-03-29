@@ -48,10 +48,8 @@ desc_stats_by_group <- function(
           stats::sd(get(var_for_stats), na.rm = TRUE) *
           stats::qt(0.975, length(get(var_for_stats)) - 1)),
       warning = function(w) NA_real_, error = function(e) NA_real_),
-    skewness = as.numeric(
-      kim::skewness(get(var_for_stats), na.rm = TRUE)),
-    kurtosis = as.numeric(
-      kim::kurtosis(get(var_for_stats), na.rm = TRUE))),
+    skewness = as.numeric(kim::skewness(get(var_for_stats))),
+    kurtosis = as.numeric(kim::kurtosis(get(var_for_stats)))),
     keyby = grouping_vars]
   # round to significant digits
   if (!is.null(sigfigs)) {

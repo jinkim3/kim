@@ -46,7 +46,7 @@ skewness <- function(
   x <- vector[!is.na(vector)]
   # calculate stats
   x_bar <- mean(x)
-  x_median <- median(x)
+  x_median <- stats::median(x)
   s <- stats::sd(x)
   n <- length(x)
   # calculate the adjusted Fisher-Pearson standardized moment coefficient

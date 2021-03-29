@@ -1,8 +1,12 @@
-# kim 0.2.178
+# kim 0.2.180
+* Fixed bugs and added new function(s) including skewness and kurtosis.
+* Continued to remove dependencies on other packages.
+
+# kim 0.2.172
 * Fixed bugs, updated function documentations, and added new function(s) 
-including skewness, kurtosis, and setwd_to_active_doc.
-* Deleted "LazyData: true" from DESCRIPTION
-* Started removing dependencies on other packages
+including setwd_to_active_doc.
+* Deleted “LazyData: true” from DESCRIPTION.
+* Started removing dependencies on other packages.
 
 # kim 0.2.133
 * Fixed bugs, and added new function(s) including id_across_datasets.
