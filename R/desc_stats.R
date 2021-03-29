@@ -72,8 +72,8 @@ desc_stats <- function(
           stats::qt(0.975, length(v_no_na) - 1)),
       warning = function(w) NA_real_, error = function(e) NA_real_)
   }
-  skewness <- moments::skewness(v_no_na)
-  kurtosis <- moments::kurtosis(v_no_na)
+  skewness <- kim::skewness(v_no_na)
+  kurtosis <- kim::kurtosis(v_no_na)
   # stats to report
   stats_to_report <- list(
     n = n,

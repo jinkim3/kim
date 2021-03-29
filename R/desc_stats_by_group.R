@@ -49,9 +49,9 @@ desc_stats_by_group <- function(
           stats::qt(0.975, length(get(var_for_stats)) - 1)),
       warning = function(w) NA_real_, error = function(e) NA_real_),
     skewness = as.numeric(
-      moments::skewness(get(var_for_stats), na.rm = TRUE)),
+      kim::skewness(get(var_for_stats), na.rm = TRUE)),
     kurtosis = as.numeric(
-      moments::kurtosis(get(var_for_stats), na.rm = TRUE))),
+      kim::kurtosis(get(var_for_stats), na.rm = TRUE))),
     keyby = grouping_vars]
   # round to significant digits
   if (!is.null(sigfigs)) {
