@@ -1,4 +1,4 @@
-# kim 0.2.177
+# kim 0.2.178
 * Fixed bugs, updated function documentations, and added new function(s) 
 including skewness, kurtosis, and setwd_to_active_doc.
 * Deleted "LazyData: true" from DESCRIPTION

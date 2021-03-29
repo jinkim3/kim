@@ -1,6 +1,6 @@
 Package: kim
 Title: Functions for Behavioral Science Researchers
-Version: 0.2.177
+Version: 0.2.178
 Authors@R: 
     person(given = "Jin",
            family = "Kim",
@@ -37,6 +37,7 @@ License: GPL-3
 URL: https://github.com/jinkim3/kim, https://jinkim.science
 BugReports: https://github.com/jinkim3/kim/issues
 Imports: 
+    boot,
     car,
     data.table,
     effsize,
