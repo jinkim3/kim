@@ -30,7 +30,7 @@ setwd_to_active_doc <- function() {
       cat(paste0(getwd(), "\n"))
     } else {
       message(
-        "Failed to change the working directory. Currently, it is\n")
+        "Failed to change the working directory. Currently, it is")
       cat(getwd())
       message(paste0("\nPlease try the function `setwd_to_active_doc()`",
         " or manually set the working directory.\n"))
