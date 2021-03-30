@@ -5,8 +5,9 @@
 #' @param update If \code{update = "force"}, force updating the package
 #' 'kim'. If \code{update = TRUE}, compares the currently installed package
 #' 'kim' with the most recent version on GitHub and, if the version on GitHub
-#' is more recent, update the package. If \code{update = FALSE}, skip
-#' updating the package. By default, \code{update = "force"}
+#' is more recent, ask the user to confirm the update. If confirmed,
+#' then update the package. If \code{update = FALSE}, skip updating
+#' the package. By default, \code{update = "force"}
 #' @param setup_r_env logical. If \code{update = TRUE}, runs the function
 #' setup_r_env in the package "kim". Type "?kim::setup_r_env" to learn more.
 #' By default, \code{setup_r_env = TRUE}
@@ -24,7 +25,7 @@
 #' }
 #' @export
 start_kim <- function(
-  update = "force",
+  update = TRUE,
   setup_r_env = TRUE,
   default_packages = c("data.table", "ggplot2"),
   silent_load_pkgs = c("data.table")) {
