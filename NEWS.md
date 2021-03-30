@@ -1,3 +1,7 @@
+# kim 0.2.181
+* Fixed bugs.
+* Continued to remove dependencies on other packages.
+
 # kim 0.2.180
 * Fixed bugs and added new function(s) including skewness and kurtosis.
 * Continued to remove dependencies on other packages.

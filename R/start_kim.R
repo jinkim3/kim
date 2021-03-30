@@ -2,9 +2,11 @@
 #'
 #' Start kim (update kim; attach default packages; set working directory, etc.)
 #'
-#' @param update logical. If \code{update = TRUE}, updates the current
-#' package "kim" by installing the most recent version (probably from Github)
-#' By default, \code{update = TRUE}
+#' @param update If \code{update = "force"}, force updating the package
+#' 'kim'. If \code{update = TRUE}, compares the currently installed package
+#' 'kim' with the most recent version on GitHub and, if the version on GitHub
+#' is more recent, update the package. If \code{update = FALSE}, skip
+#' updating the package. By default, \code{update = "force"}
 #' @param setup_r_env logical. If \code{update = TRUE}, runs the function
 #' setup_r_env in the package "kim". Type "?kim::setup_r_env" to learn more.
 #' By default, \code{setup_r_env = TRUE}
@@ -22,13 +24,15 @@
 #' }
 #' @export
 start_kim <- function(
-  update = TRUE,
+  update = "force",
   setup_r_env = TRUE,
   default_packages = c("data.table", "ggplot2"),
   silent_load_pkgs = c("data.table")) {
   # update the package
-  if (update == TRUE) {
-    kim::update_kim()
+  if (update == "force") {
+    kim::update_kim(force = TRUE)
+  } else if (update == TRUE) {
+    kim::update_kim(force = FALSE)
   }
   # set up r env
   if (setup_r_env == TRUE) {

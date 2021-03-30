@@ -4,11 +4,12 @@
 \alias{update_kim}
 \title{Update the package 'kim'}
 \usage{
-update_kim(force = FALSE, confirm = TRUE)
+update_kim(force = TRUE, confirm = TRUE)
 }
 \arguments{
 \item{force}{logical. If \code{force = TRUE}, force installing the
-update. If \code{force = FALSE}, do not force installing the update.}
+update. If \code{force = FALSE}, do not force installing the update.
+By default, \code{force = TRUE}.}
 
 \item{confirm}{logical. If \code{confirm = TRUE}, the user will
 need to confirm the update. If \code{confirm = FALSE}, the confirmation
