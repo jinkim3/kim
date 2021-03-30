@@ -56,7 +56,7 @@
     # rather than a recommendation to update
     startup_message <- paste0(
       "Package attached: kim v", current_pkg_version,
-      "Most recent version available on GitHub: v", github_pkg_version,
+      "; Most recent version available on GitHub: v", github_pkg_version,
       "\n\nYou have an option to update the package ",
       "with the function `update_kim()`.",
       "If you do so, make sure to restart R.\n\n")
