@@ -9,7 +9,7 @@ start_kim(
   upgrade_other_pkg = FALSE,
   setup_r_env = TRUE,
   default_packages = c("data.table", "ggplot2"),
-  silent_load_pkgs = c("data.table")
+  silent_load_pkgs = c("data.table", "ggplot2")
 )
 }
 \arguments{
@@ -39,7 +39,8 @@ By default, \code{default_packages = c("data.table", "ggplot2")}}
 
 \item{silent_load_pkgs}{a character vector indicating names of
 packages to load silently (i.e., suppress messages that get printed
-when loading the packaged). By default, \code{silent_load_pkgs = NULL}}
+when loading the packages).
+By default, \code{silent_load_pkgs = c("data.table", "ggplot2")}}
 }
 \description{
 Start kim (update kim; attach default packages; set working directory, etc.)
