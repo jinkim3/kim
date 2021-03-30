@@ -1,4 +1,4 @@
-# kim 0.2.187
+# kim 0.2.188
 * Fixed bugs.
 * Continued to remove dependencies on other packages.
 
