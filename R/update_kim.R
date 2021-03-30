@@ -6,6 +6,15 @@
 #' @param force logical. If \code{force = TRUE}, force installing the
 #' update. If \code{force = FALSE}, do not force installing the update.
 #' By default, \code{force = TRUE}.
+#' @param upgrade_other_pkg input for the \code{upgrade} argument to
+#' be passed on to \code{remotes::install_github}.
+#' One of "default", "ask", "always", "never", TRUE, or FALSE.
+#' "default" respects the value of the R_REMOTES_UPGRADE environment
+#' variable if set, and falls back to "ask" if unset.
+#' "ask" prompts the user for which out of date packages to upgrade.
+#' For non-interactive sessions "ask" is equivalent to "always".
+#' TRUE and FALSE correspond to "always" and "never" respectively.
+#' By default, \code{upgrade_other_pkg = FALSE}.
 #' @param confirm logical. If \code{confirm = TRUE}, the user will
 #' need to confirm the update. If \code{confirm = FALSE}, the confirmation
 #' step will be skipped. By default, \code{confirm = TRUE}.
@@ -20,6 +29,7 @@
 #' @export
 update_kim <- function(
   force = TRUE,
+  upgrade_other_pkg = FALSE,
   confirm = TRUE) {
   # 6 possible cases
   # 1. error in getting the current package version -> yes
@@ -36,7 +46,8 @@ update_kim <- function(
     while ("package:kim" %in% search()) {
       unloadNamespace("kim")
     }
-    remotes::install_github("jinkim3/kim", force = force)
+    remotes::install_github(
+      "jinkim3/kim", force = force, upgrade = upgrade_other_pkg)
     # attach the package
     kim::prep("kim", silent_if_successful = TRUE)
   } else {
@@ -99,7 +110,8 @@ update_kim <- function(
         while ("package:kim" %in% search()) {
           unloadNamespace("kim")
         }
-        remotes::install_github("jinkim3/kim", force = force)
+        remotes::install_github(
+          "jinkim3/kim", force = force, upgrade = upgrade_other_pkg)
         # attach the package
         kim::prep("kim", silent_if_successful = TRUE)
       }
