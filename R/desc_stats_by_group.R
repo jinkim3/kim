@@ -22,7 +22,7 @@ desc_stats_by_group <- function(
   sigfigs = NULL,
   cols_to_round = NULL) {
   dt1 <- setDT(copy(data))
-  dt2 <- dt1[!is.na(var_for_stats), list(
+  dt2 <- dt1[!is.na(get(var_for_stats)), list(
     n = length(get(var_for_stats)),
     mean = as.numeric(mean(get(var_for_stats), na.rm = TRUE)),
     sd = as.numeric(stats::sd(get(var_for_stats), na.rm = TRUE)),
