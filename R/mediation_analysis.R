@@ -81,12 +81,19 @@ mediation_analysis <- function(
       "slow running time.\n"
     ))
   }
+  # omit na values
+  dt <- data.table::setDT(data.table::copy(data))[
+    !is.na(get(iv_name)) & !is.na(get(mediator_name)) &
+      !is.na(get(dv_name))
+  ]
+  # build formulas
   med_model_formula <- stats::as.formula(paste0(
     mediator_name, " ~ ", iv_name
   ))
   outcome_model_formula <- stats::as.formula(paste0(
     dv_name, " ~ ", mediator_name, " + ", iv_name
   ))
+  # add covariates
   if (!is.null(covariates_names)) {
     med_model_formula <- paste0(
       mediator_name, " ~ ", iv_name, " + ",
@@ -99,10 +106,10 @@ mediation_analysis <- function(
   }
   med_model <- stats::lm(
     formula = med_model_formula,
-    data = data
+    data = dt
   )
   outcome_model <- stats::lm(
-    formula = outcome_model_formula, data = data
+    formula = outcome_model_formula, data = dt
   )
   # x: full model after mediation analysis
   x <- mediation::mediate(
