@@ -39,7 +39,7 @@ cohen_d_from_cohen_textbook <- function(
       s2 <- subset(
         data, get(iv_name) == sort(unique(data[[iv_name]]))[2]
       )[[dv_name]]
-      s1 <- s1[!is.na(s2)]
+      s1 <- s1[!is.na(s1)]
       s2 <- s2[!is.na(s2)]
     }
   }
