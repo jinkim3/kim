@@ -23,13 +23,13 @@ multiple_regression <- function(
   estimate <- reg_results[, "Estimate"]
   se <- reg_results[, "Std. Error"]
   t_stat <- reg_results[, "t value"]
-  p_value <- pretty_round_p_value(reg_results[, "Pr(>|t|)"])
+  p_value <- kim::pretty_round_p_value(reg_results[, "Pr(>|t|)"])
   r_squared <- model_summary[["r.squared"]]
   adj_r_squared <- model_summary[["adj.r.squared"]]
   df_model <- model_summary[["fstatistic"]][["numdf"]]
   df_residual <- model_summary[["fstatistic"]][["dendf"]]
   f_stat <- model_summary[["fstatistic"]][["value"]]
-  model_p_value <- pretty_round_p_value(
+  model_p_value <- kim::pretty_round_p_value(
     stats::pf(f_stat, df_model, df_residual, lower.tail = FALSE),
     include_p_equals = TRUE
   )
