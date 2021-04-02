@@ -24,7 +24,7 @@ change_var_names <- function(
   data = NULL,
   old_var_names = NULL,
   new_var_names = NULL,
-  skip_absent = TRUE,
+  skip_absent = FALSE,
   print_summary = TRUE,
   output_type = "dt") {
   # check lengths of old and new names
