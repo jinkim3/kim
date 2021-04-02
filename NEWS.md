@@ -1,4 +1,4 @@
-# kim 0.2.189
+# kim 0.2.190
 * Fixed bugs and added new function(s) including change_var_names.
 
 # kim 0.2.188

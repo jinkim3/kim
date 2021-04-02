@@ -6,6 +6,8 @@
 #' @param old_var_names a vector of old variable names
 #' (i.e., variable names to change)
 #' @param new_var_names a vector of new variable names
+#' @param skip_absent If \code{skip_absent = TRUE}, old variable names
+#' that do not exist in the data set will be skipped (default = TRUE).
 #' @param print_summary If \code{print_summary = TRUE}, a summary of
 #' old and new variable names will printed. (default = TRUE)
 #' @param output_type type of the output. If \code{output_type = "dt"},
@@ -22,6 +24,7 @@ change_var_names <- function(
   data = NULL,
   old_var_names = NULL,
   new_var_names = NULL,
+  skip_absent = TRUE,
   print_summary = TRUE,
   output_type = "dt") {
   # check lengths of old and new names
@@ -32,7 +35,9 @@ change_var_names <- function(
   # convert to data.table
   dt <- data.table::setDT(data.table::copy(data))
   # set names
-  dt <- data.table::setnames(dt, old = old_var_names, new = new_var_names)
+  dt <- data.table::setnames(
+    dt, old = old_var_names, new = new_var_names,
+    skip_absent = skip_absent)
   # print the summary table
   if (print_summary == TRUE) {
     summary_dt <- data.table(

@@ -8,6 +8,7 @@ change_var_names(
   data = NULL,
   old_var_names = NULL,
   new_var_names = NULL,
+  skip_absent = TRUE,
   print_summary = TRUE,
   output_type = "dt"
 )
@@ -19,6 +20,9 @@ change_var_names(
 (i.e., variable names to change)}
 
 \item{new_var_names}{a vector of new variable names}
+
+\item{skip_absent}{If \code{skip_absent = TRUE}, old variable names
+that do not exist in the data set will be skipped (default = TRUE).}
 
 \item{print_summary}{If \code{print_summary = TRUE}, a summary of
 old and new variable names will printed. (default = TRUE)}
