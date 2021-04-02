@@ -1,3 +1,6 @@
+# kim 0.2.189
+* Fixed bugs and added new function(s) including change_var_names.
+
 # kim 0.2.188
 * Fixed bugs.
 * Continued to remove dependencies on other packages.

@@ -2,6 +2,7 @@
 
 export(barplot_for_counts)
 export(capitalize)
+export(change_var_names)
 export(chi_square_test_pairwise)
 export(clean_data_from_qualtrics)
 export(coefficent_of_variation)
