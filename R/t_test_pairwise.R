@@ -21,7 +21,7 @@
 #' @examples
 #' t_test_pairwise(data = iris, iv_name = "Species", dv_name = "Sepal.Length")
 #' t_test_pairwise(data = iris, iv_name = "Species",
-#' dv_name = "Sepal.Length", sd = TRUE)
+#' dv_name = "Sepal.Length", t_test_stats = TRUE, sd = TRUE)
 #' t_test_pairwise(data = iris, iv_name = "Species", dv_name = "Sepal.Length",
 #' mann_whitney = FALSE)
 #' @export
