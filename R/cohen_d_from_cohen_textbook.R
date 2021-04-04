@@ -43,9 +43,9 @@ cohen_d_from_cohen_textbook <- function(
       s2 <- s2[!is.na(s2)]
     }
   }
-  output <- (mean(s1) - mean(s2)) / sqrt(
-    (sum((s1 - mean(s1))^2) + sum((s2 - mean(s2))^2)) /
-      (length(s1) + length(s2) - 2)
+  output <- (mean(s2) - mean(s1)) / sqrt(
+    (sum((s2 - mean(s2))^2) + sum((s1 - mean(s1))^2)) /
+      (length(s2) + length(s1) - 2)
   )
   return(output)
 }
