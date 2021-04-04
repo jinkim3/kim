@@ -41,11 +41,11 @@ wilcoxon_rank_sum_test <- function(
   # group means
   group_1_median <-
     vapply(dt02[["group_1"]], function(i) {
-      stats::median(dt01[iv == i]$dv, na.rm = T)},
+      stats::median(dt01[iv == i]$dv, na.rm = TRUE)},
       FUN.VALUE = numeric(1L))
   group_2_median <-
     vapply(dt02[["group_2"]], function(i) {
-      stats::median(dt01[iv == i]$dv, na.rm = T)},
+      stats::median(dt01[iv == i]$dv, na.rm = TRUE)},
       FUN.VALUE = numeric(1L))
   # wilcoxon test results
   wilcoxon_results <- lapply(seq_len(nrow(dt02)), function(i) {

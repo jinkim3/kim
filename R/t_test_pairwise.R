@@ -14,10 +14,14 @@
 #' tests will not be performed.
 #' @param t_test_stats if \code{t_test_stats = TRUE}, t-test statistic
 #' and degrees of freedom will be included in the output data.table.
+#' @param sd if \code{sd = TRUE}, standard deviations will be
+#' included in the output data.table.
 #' @return the output will be a data.table showing results of all
 #' pairwise comparisons between levels of the independent variable.
 #' @examples
 #' t_test_pairwise(data = iris, iv_name = "Species", dv_name = "Sepal.Length")
+#' t_test_pairwise(data = iris, iv_name = "Species",
+#' dv_name = "Sepal.Length", sd = TRUE)
 #' t_test_pairwise(data = iris, iv_name = "Species", dv_name = "Sepal.Length",
 #' mann_whitney = FALSE)
 #' @export
@@ -29,7 +33,8 @@ t_test_pairwise <- function(
   sigfigs = 3,
   mann_whitney = TRUE,
   t_test_stats = FALSE,
-  t_test_df_decimals = 1) {
+  t_test_df_decimals = 1,
+  sd = FALSE) {
   # bind the vars locally to the function
   iv <- dv <- group_1 <- group_2 <- NULL
   # check number of iv_name and dv_name
@@ -60,12 +65,23 @@ t_test_pairwise <- function(
   # group means
   group_1_mean <-
     vapply(dt02[["group_1"]], function(i) {
-      mean(dt01[iv == i]$dv, na.rm = T)},
+      mean(dt01[iv == i]$dv, na.rm = TRUE)},
       FUN.VALUE = numeric(1L))
   group_2_mean <-
     vapply(dt02[["group_2"]], function(i) {
-      mean(dt01[iv == i]$dv, na.rm = T)},
+      mean(dt01[iv == i]$dv, na.rm = TRUE)},
            FUN.VALUE = numeric(1L))
+  # sd
+  if (sd == TRUE) {
+    group_1_sd <-
+      vapply(dt02[["group_1"]], function(i) {
+        sd(dt01[iv == i]$dv, na.rm = TRUE)},
+        FUN.VALUE = numeric(1L))
+    group_2_sd <-
+      vapply(dt02[["group_2"]], function(i) {
+        sd(dt01[iv == i]$dv, na.rm = TRUE)},
+        FUN.VALUE = numeric(1L))
+  }
   # cohen d
   cohen_d <- vapply(seq_len(nrow(dt02)), function(i) {
     temp <- dt01[iv %in% dt02[i, ]]
@@ -93,23 +109,29 @@ t_test_pairwise <- function(
     dt02,
     group_sizes_dt,
     group_1_mean = signif(group_1_mean, sigfigs),
-    group_2_mean = signif(group_2_mean, sigfigs),
-    cohen_d = signif(cohen_d, sigfigs),
-    t_test_p_value = kim::pretty_round_p_value(t_test_p_value),
-    bonferroni_signif_for_t_test = bonferroni_signif_for_t_test)
+    group_2_mean = signif(group_2_mean, sigfigs))
+  # add sd
+  if (sd == TRUE) {
+    output <- data.table(
+      output,
+      group_1_sd = signif(group_1_sd, sigfigs),
+      group_2_sd = signif(group_2_sd, sigfigs))
+  }
   # add t test stats
   if (t_test_stats == TRUE) {
     output <- data.table(
-      dt02,
-      group_sizes_dt,
-      group_1_mean = signif(group_1_mean, sigfigs),
-      group_2_mean = signif(group_2_mean, sigfigs),
-      cohen_d = signif(cohen_d, sigfigs),
+      output,
       t_test_df = round(t_test_df, t_test_df_decimals),
       t_test_stat = signif(t_test_stat, sigfigs),
       t_test_p_value = kim::pretty_round_p_value(t_test_p_value),
       bonferroni_signif_for_t_test = bonferroni_signif_for_t_test)
   }
+  # add the rest
+  output <- data.table(
+    output,
+    cohen_d = signif(cohen_d, sigfigs),
+    t_test_p_value = kim::pretty_round_p_value(t_test_p_value),
+    bonferroni_signif_for_t_test = bonferroni_signif_for_t_test)
   # mann whitney
   if (mann_whitney == TRUE) {
     mann_whitney_p_value <- vapply(seq_len(nrow(dt02)), function(i) {

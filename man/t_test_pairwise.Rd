@@ -11,7 +11,8 @@ t_test_pairwise(
   sigfigs = 3,
   mann_whitney = TRUE,
   t_test_stats = FALSE,
-  t_test_df_decimals = 1
+  t_test_df_decimals = 1,
+  sd = FALSE
 )
 }
 \arguments{
@@ -32,6 +33,9 @@ and degrees of freedom will be included in the output data.table.}
 
 \item{t_test_df_decimals}{number of decimals for the degrees of freedom
 in t-tests (default = 1)}
+
+\item{sd}{if \code{sd = TRUE}, standard deviations will be
+included in the output data.table.}
 }
 \value{
 the output will be a data.table showing results of all
