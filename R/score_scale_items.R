@@ -52,7 +52,7 @@ score_scale_items <- function(
         na_summary_1_name <- NULL
       }
     } else {
-      na_summary_1 <- NULL
+      na_summary_1_name <- NULL
     }
     # report na values in reverse coded items
     if (!is.null(reverse)) {
@@ -66,7 +66,7 @@ score_scale_items <- function(
         na_summary_2_name <- NULL
       }
     } else {
-      na_summary_2 <- NULL
+      na_summary_2_name <- NULL
     }
     # na summary table
     na_summary_final <- data.table(
