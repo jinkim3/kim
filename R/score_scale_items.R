@@ -34,9 +34,10 @@ score_scale_items <- function(
   # deal with argument inputs
   if (!is.null(reverse)) {
     if (is.null(reverse_code_minuend)) {
-      stop(paste0("Please enter the minuend for reverse coding.\n",
-      "For example, if you are reverse coding items on a 7-point ",
-      'scale,\nenter "reverse_code_minuend = 8" into the function.'))
+      stop(paste0(
+        "Please enter the minuend for reverse coding.\n",
+        "For example, if you are reverse coding items on a 7-point ",
+        'scale,\nenter "reverse_code_minuend = 8" into the function.'))
     }
   }
   # print a summary of na values
