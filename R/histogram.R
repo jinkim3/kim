@@ -15,6 +15,8 @@
 #' @param y_axis_title_vjust position of the y axis title (default = 0.85).
 #' @param x_axis_title title for x axis (default = "Value")
 #' @param y_axis_title title for y axis (default = "Count")
+#' @param cap_axis_lines logical. Should the axis lines be capped at the
+#' outer tick marks? (default = FALSE)
 #' @param notify_na_count if \code{TRUE}, notify how many observations
 #' were removed due to missing values. By default, NA count will be printed
 #' only if there are any NA values.
@@ -39,6 +41,7 @@ histogram <- function(
   y_axis_title_vjust = 0.85,
   x_axis_title = NULL,
   y_axis_title = NULL,
+  cap_axis_lines = FALSE,
   notify_na_count = NULL) {
   # bind the vars locally to the function
   value <- bins <- NULL
@@ -103,6 +106,8 @@ histogram <- function(
   } else {
     g1 <- g1 + ylab("Count")
   }
-  g1 <- g1 + theme_kim(y_axis_title_vjust = y_axis_title_vjust)
+  g1 <- g1 + theme_kim(
+    y_axis_title_vjust = y_axis_title_vjust,
+    cap_axis_lines = cap_axis_lines)
   return(g1)
 }
