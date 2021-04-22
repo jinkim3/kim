@@ -1,3 +1,6 @@
+# kim 0.2.205
+* Fixed bugs and added new function(s) including su.
+
 # kim 0.2.204
 * Fixed bugs and added new function(s) including change_var_names, 
 check_req_pkg, skewness, and kurtosis.
