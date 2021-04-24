@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 ```
-# kim
+# kim: R Functions for Behavioral Scientists
 
 <!-- badges: start -->
 [![CRAN checks](https://cranchecks.info/badges/summary/kim)](https://cran.r-project.org/web/checks/check_results_kim.html)
@@ -59,6 +59,9 @@ Here are some examples of using this package.
 
 ```{r example, eval = FALSE}
 library(kim)
+
+# (Optional) install all dependencies for all functions in Package 'kim'
+install_all_dependencies()
 
 # update the package 'kim', clear the console and environment,
 # set up working directory to location of the active document,

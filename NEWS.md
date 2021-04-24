@@ -1,7 +1,10 @@
-# kim 0.3.9
-* Removed dependencies on other packages. Instead of forcing the 
-installation of dependencies, ask users to install individual packages 
-if the functions called require them.
+# kim 0.3.11
+* Removed dependencies on most packages. In previous versions of 
+Package 'kim', all dependencies (packages) required to run all functions
+in Package 'kim' were installed when Package 'kim' was installed for the 
+first time. In contrast, with Version 0.3.11, Package 'kim' will now ask 
+users to install dependencies themselves if the functions they are using 
+require such dependencies.
 * Fixed bugs and added new function(s) including install_all_dependencies.
 
 # kim 0.2.207

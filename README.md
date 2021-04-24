@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# kim
+# kim: R Functions for Behavioral Scientists
 
 <!-- badges: start -->
 
@@ -52,6 +52,9 @@ Here are some examples of using this package.
 
 ``` r
 library(kim)
+
+# (Optional) install all dependencies for all functions in Package 'kim'
+install_all_dependencies()
 
 # update the package 'kim', clear the console and environment,
 # set up working directory to location of the active document,
