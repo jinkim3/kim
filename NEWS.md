@@ -1,6 +1,8 @@
-# kim 0.3.12
-* Edited the package title and removed dependencies to correct the 
-new error from CRAN check (r-devel-windows-x86_64-gcc10-UCRT).
+# kim 0.3.13
+* In response to CRAN Team's review, the package title was edited.
+* In response to a new error message from CRAN check 
+(r-devel-windows-x86_64-gcc10-UCRT), most dependencies were removed.
+
 
 # kim 0.3.11
 * Removed dependencies on most packages. In previous versions of 

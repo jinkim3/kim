@@ -1,6 +1,6 @@
 Package: kim
-Title: Functions for Behavioral Scientists
-Version: 0.3.12
+Title: Behavioral Scientists' Analysis Toolkit
+Version: 0.3.13
 Authors@R: 
     person(given = "Jin",
            family = "Kim",
