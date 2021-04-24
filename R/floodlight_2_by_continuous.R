@@ -1,6 +1,11 @@
 #' Floodlight 2 by Continuous
 #'
-#' Conduct a floodlight analysis for 2 x Continuous design
+#' Conduct a floodlight analysis for 2 x Continuous design.
+#'
+#' The following package(s) must be installed prior to running this function:
+#' Package 'interactions' v1.1.1 (or possibly a higher version) by
+#' Jacob A. Long (2019),
+#' <https://cran.r-project.org/package=interactions>
 #'
 #' @param data a data object (a data frame or a data.table)
 #' @param iv_name name of the binary independent variable
@@ -58,7 +63,7 @@
 #' dv_name = "mpg",
 #' mod_name = "qsec")
 #' @export
-#' @import data.table ggplot2
+#' @import data.table
 floodlight_2_by_continuous <- function(
   data = NULL,
   iv_name = NULL,
@@ -83,12 +88,29 @@ floodlight_2_by_continuous <- function(
   legend_title = NULL,
   round_decimals_int_p_value = 3
 ) {
+  # check if Package 'ggplot2' is installed
+  if (!"ggplot2" %in% rownames(utils::installed.packages())) {
+    message(paste0(
+      "This function requires the installation of Package 'ggplot2'.",
+      "\nTo install Package 'ggplot2', type ",
+      "'kim::prep(ggplot2)'",
+      "\n\nAlternatively, to install all packages (dependencies) required ",
+      "for all\nfunctions in Package 'kim', type ",
+      "'kim::install_all_dependencies()'"))
+    return()
+  } else {
+    # proceed if Package 'ggplot2' is already installed
+    kim::prep("ggplot2")
+  }
   # check if Package 'interactions' is installed
   if (!"interactions" %in% rownames(utils::installed.packages())) {
     message(paste0(
-      "To conduct a floodlight analysis, Package 'interactions' must ",
+      "To conduct floodlight analysis, Package 'interactions' must ",
       "be installed.\nTo install Package 'interactions', type ",
-      "'kim::prep(interactions)'"))
+      "'kim::prep(interactions)'",
+      "\n\nAlternatively, to install all packages (dependencies) required ",
+      "for all\nfunctions in Package 'kim', type ",
+      "'kim::install_all_dependencies()'"))
     return()
   } else {
     # proceed if Package 'interactions' is already installed

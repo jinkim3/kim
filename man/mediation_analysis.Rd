@@ -66,9 +66,12 @@ indirect effect on dependent variable through a mediator variable.
 The current version of the package only supports a simple mediation
 model consisting of one independent variable, one mediator variable,
 and one dependent variable.
-This function requires installing Package 'mediation' v4.5.0,
-Tingley et al. (2019), and uses the source code from a function in
-the package. \url{https://cran.r-project.org/package=mediation}
+}
+\details{
+This function requires installing Package 'mediation' v4.5.0
+(or possibly a higher version) by Tingley et al. (2019),
+and uses the source code from a function in the package.
+\url{https://cran.r-project.org/package=mediation}
 }
 \examples{
 \donttest{

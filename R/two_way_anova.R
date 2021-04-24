@@ -1,5 +1,18 @@
 #' Two-way ANOVA
 #'
+#' Conduct a two-way analysis of variance (ANOVA).
+#'
+#' The following package(s) must be installed prior to running this function:
+#' Package 'car' v3.0.9 (or possibly a higher version) by
+#' Fox et al. (2020),
+#' <https://cran.r-project.org/package=car>
+#'
+#' If robust ANOVA is to be conducted, the following package(s)
+#' must be installed prior to running the function:
+#' Package 'WRS2' v1.1-1 (or possibly a higher version) by
+#' Mair & Wilcox (2021),
+#' <https://cran.r-project.org/package=WRS2>
+#'
 #' @param data a data object (a data frame or a data.table)
 #' @param dv_name name of the dependent variable
 #' @param iv_1_name name of the first independent variable
@@ -45,8 +58,7 @@
 #'   iv_2_name = "am", iterations = 100
 #' )
 #' @export
-#' @import ggplot2 data.table
-#' @importFrom car Anova leveneTest
+#' @import data.table
 two_way_anova <- function(
   data = NULL,
   dv_name = NULL,
@@ -66,6 +78,57 @@ two_way_anova <- function(
   position_dodge = 0.13,
   legend_position = "right",
   output = NULL) {
+  # check if Package 'ggplot2' is installed
+  if (!"ggplot2" %in% rownames(utils::installed.packages())) {
+    message(paste0(
+      "This function requires the installation of Package 'ggplot2'.",
+      "\nTo install Package 'ggplot2', type ",
+      "'kim::prep(ggplot2)'",
+      "\n\nAlternatively, to install all packages (dependencies) required ",
+      "for all\nfunctions in Package 'kim', type ",
+      "'kim::install_all_dependencies()'"))
+    return()
+  } else {
+    # proceed if Package 'ggplot2' is already installed
+    kim::prep("ggplot2")
+  }
+  # check if Package 'car' is installed
+  if (!"car" %in% rownames(utils::installed.packages())) {
+    message(paste0(
+      "To conduct a two-way ANOVA, Package 'car' must ",
+      "be installed.\nTo install Package 'car', type ",
+      "'kim::prep(car)'",
+      "\n\nAlternatively, to install all packages (dependencies) required ",
+      "for all\nfunctions in Package 'kim', type ",
+      "'kim::install_all_dependencies()'"))
+    return()
+  } else {
+    # proceed if Package 'car' is already installed
+    levene_test_fn_from_car <- utils::getFromNamespace(
+      "leveneTest", "car")
+    anova_fn_from_car <- utils::getFromNamespace(
+      "Anova", "car")
+  }
+  # If robust == TRUE, check whether Package 'WRS2' is installed
+  if (robust == TRUE) {
+    # check if Package 'WRS2' is installed
+    if (!"WRS2" %in% rownames(utils::installed.packages())) {
+      message(paste0(
+        "To conduct floodlight analysis, Package 'WRS2' must ",
+        "be installed.\nTo install Package 'WRS2', type ",
+        "'kim::prep(WRS2)'",
+        "\n\nAlternatively, to install all packages (dependencies) required ",
+        "for all\nfunctions in Package 'kim', type ",
+        "'kim::install_all_dependencies()'"))
+      return()
+    } else {
+      # proceed if Package 'WRS2' is already installed
+      pbad2way_fn_from_wrs2 <- utils::getFromNamespace(
+        "pbad2way", "WRS2")
+      mcp2a_fn_from_wrs2 <- utils::getFromNamespace(
+        "mcp2a", "WRS2")
+    }
+  }
   # bind the vars locally to the function
   p <- NULL
   # default output
@@ -134,7 +197,7 @@ two_way_anova <- function(
   formula_1 <- stats::as.formula(
     paste0(dv_name, " ~ ", iv_1_name, " * ", iv_2_name)
   )
-  levene_test_result <- car::leveneTest(
+  levene_test_result <- levene_test_fn_from_car(
     y = formula_1, data = dt2
   )
   levene_test_p_value <- levene_test_result[["Pr(>F)"]][1]
@@ -149,7 +212,7 @@ two_way_anova <- function(
   }
   # anova instead of regression
   model_1 <- stats::aov(formula = formula_1, data = dt2)
-  anova_table <- car::Anova(model_1, type = 3)
+  anova_table <- anova_fn_from_car(model_1, type = 3)
   source <- row.names(anova_table)
   setDT(anova_table)
   anova_table <- data.table(source, anova_table)
@@ -168,9 +231,9 @@ two_way_anova <- function(
   if (robust == TRUE) {
     # robust anova
     robust_anova_results <-
-      WRS2::pbad2way(formula_1,
-                     data = dt2, est = "mom",
-                     nboot = iterations
+      pbad2way_fn_from_wrs2(formula_1,
+                            data = dt2, est = "mom",
+                            nboot = iterations
       )
     if (output == "robust_anova_results") {
       return(robust_anova_results)
@@ -178,9 +241,9 @@ two_way_anova <- function(
     message("\nRobust ANOVA Results:")
     print(robust_anova_results)
     robust_anova_post_hoc_results <-
-      WRS2::mcp2a(formula_1,
-                  data = dt2, est = "mom",
-                  nboot = iterations
+      mcp2a_fn_from_wrs2(formula_1,
+                         data = dt2, est = "mom",
+                         nboot = iterations
       )
     message("\nRobust ANOVA Post Hoc Test Results:")
     print(robust_anova_post_hoc_results)

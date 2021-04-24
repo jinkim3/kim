@@ -1,6 +1,12 @@
 #' Scatterplot
 #'
-#' Creates a scatter plot and calculates a correlation between two variables
+#' Creates a scatter plot and calculates a correlation between two variables.
+#'
+#' If a weighted correlation is to be calculated, the following package(s)
+#' must be installed prior to running the function:
+#' Package 'weights' v1.0 (or possibly a higher version) by
+#' John Pasek (2018),
+#' <https://cran.r-project.org/package=weights>
 #'
 #' @param data a data object (a data frame or a data.table)
 #' @param x_var_name name of the variable that will go on the x axis
@@ -58,7 +64,7 @@
 #' )
 #' }
 #' @export
-#' @import data.table ggplot2
+#' @import data.table
 scatterplot <- function(
   data = NULL,
   x_var_name = NULL,
@@ -77,6 +83,37 @@ scatterplot <- function(
   jitter_x_percent = 0,
   jitter_y_percent = 0,
   cap_axis_lines = FALSE) {
+  # check if Package 'ggplot2' is installed
+  if (!"ggplot2" %in% rownames(utils::installed.packages())) {
+    message(paste0(
+      "This function requires the installation of Package 'ggplot2'.",
+      "\nTo install Package 'ggplot2', type ",
+      "'kim::prep(ggplot2)'",
+      "\n\nAlternatively, to install all packages (dependencies) required ",
+      "for all\nfunctions in Package 'kim', type ",
+      "'kim::install_all_dependencies()'"))
+    return()
+  } else {
+    # proceed if Package 'ggplot2' is already installed
+    kim::prep("ggplot2")
+  }
+  # weighted correlation
+  if (!is.null(weight_var_name)) {
+    # check if weights package is installed
+    if (!"weights" %in% rownames(utils::installed.packages())) {
+      message(paste0(
+        "To calculate weighted correlation(s), Package 'weights' must ",
+        "be installed.\nTo install Package 'weights', type ",
+        "'kim::prep(weights)'",
+        "\n\nAlternatively, to install all packages (dependencies) required ",
+        "for all\nfunctions in Package 'kim', type ",
+        "'kim::install_all_dependencies()'"))
+      return()
+    } else {
+      # proceed if weights package is already installed
+      wtd_cor_function <- utils::getFromNamespace("wtd.cor", "weights")
+    }
+  }
   # create a temporary dataset
   dt01 <- data.table(x = data[[x_var_name]], y = data[[y_var_name]])
   # add the point label or weight column
@@ -148,20 +185,9 @@ scatterplot <- function(
   weighted_r_text <- ""
   # weighted correlation
   if (!is.null(weight_var_name)) {
-    # check if weights package is installed
-    if (!"weights" %in% rownames(utils::installed.packages())) {
-      message(paste0(
-        "To calculate weighted correlation(s), Package 'weights' must ",
-        "be installed.\nTo install Package 'weights', type ",
-        "'kim::prep(weights)'"))
-      return()
-    } else {
-      # proceed if weights package is already installed
-      wtd_cor_function <- utils::getFromNamespace("wtd.cor", "weights")
-      cor_test <- wtd_cor_function(
-        x = dt02$x, y = dt02$y,
-        weight = dt02$weight)
-    }
+    cor_test <- wtd_cor_function(
+      x = dt02$x, y = dt02$y,
+      weight = dt02$weight)
     cor_test_r <- cor_test[1, "correlation"]
     cor_test_p_value <- cor_test[1, "p.value"]
     weighted_r_text <- "weighted"

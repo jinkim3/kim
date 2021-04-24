@@ -27,7 +27,13 @@ but consider increasing the number of samples to 5000, 10000, or an
 even larger number, if slower handling time is not an issue.}
 }
 \description{
-Estimate coefficients in a multiple regression model by bootstrapping
+Estimate coefficients in a multiple regression model by bootstrapping.
+}
+\details{
+The following package(s) must be installed prior to running this function:
+Package 'boot' v1.3-26 (or possibly a higher version) by
+Canty & Ripley (2021),
+\url{https://cran.r-project.org/package=boot}
 }
 \examples{
 robust_regression(

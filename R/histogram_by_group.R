@@ -1,6 +1,11 @@
 #' Histogram by group
 #'
-#' Creates histograms by group to compare distributions
+#' Creates histograms by group to compare distributions.
+#'
+#' The following package(s) must be installed prior to running this function:
+#' Package 'ggridges' v0.5.3 (or possibly a higher version) by
+#' Claus O. Wilke (2021),
+#' <https://cran.r-project.org/package=ggridges>
 #'
 #' @param data a data object (a data frame or a data.table)
 #' @param iv_name name of the independent variable
@@ -27,7 +32,7 @@
 #' histogram_by_group(
 #' data = iris, iv_name = "Species", dv_name = "Sepal.Length")
 #' @export
-#' @import data.table ggplot2
+#' @import data.table
 histogram_by_group <- function(
   data = NULL,
   iv_name = NULL,
@@ -36,6 +41,35 @@ histogram_by_group <- function(
   number_of_bins = 40,
   space_between_histograms = 0.15,
   draw_baseline = FALSE) {
+  # check if Package 'ggplot2' is installed
+  if (!"ggplot2" %in% rownames(utils::installed.packages())) {
+    message(paste0(
+      "This function requires the installation of Package 'ggplot2'.",
+      "\nTo install Package 'ggplot2', type ",
+      "'kim::prep(ggplot2)'",
+      "\n\nAlternatively, to install all packages (dependencies) required ",
+      "for all\nfunctions in Package 'kim', type ",
+      "'kim::install_all_dependencies()'"))
+    return()
+  } else {
+    # proceed if Package 'ggplot2' is already installed
+    kim::prep("ggplot2")
+  }
+  # check if Package 'ggridges' is installed
+  if (!"ggridges" %in% rownames(utils::installed.packages())) {
+    message(paste0(
+      "To create histograms by group, Package 'ggridges' must ",
+      "be installed.\nTo install Package 'ggridges', type ",
+      "'kim::prep(ggridges)'",
+      "\n\nAlternatively, to install all packages (dependencies) required ",
+      "for all\nfunctions in Package 'kim', type ",
+      "'kim::install_all_dependencies()'"))
+    return()
+  } else {
+    # proceed if Package 'ggridges' is already installed
+    ridges2_fn_from_ggridges <- utils::getFromNamespace(
+      "geom_density_ridges2", "ggridges")
+  }
   # create the dataset
   dt01 <- stats::na.omit(
     data.table::setDT(
@@ -90,7 +124,7 @@ histogram_by_group <- function(
       stat(stats::density), fill = get("iv")
     )
   ) +
-    ggridges::geom_density_ridges2(
+    ridges2_fn_from_ggridges(
       stat = "binline", bins = number_of_bins,
       scale = (1 - space_between_histograms),
       draw_baseline = draw_baseline

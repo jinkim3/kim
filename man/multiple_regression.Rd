@@ -2,7 +2,7 @@
 % Please edit documentation in R/multiple_regression.R
 \name{multiple_regression}
 \alias{multiple_regression}
-\title{Summarize multiple regression results in a data.table}
+\title{Multiple regression}
 \usage{
 multiple_regression(
   data = NULL,
@@ -26,7 +26,15 @@ the output will be a data.table showing multiple regression
 results.
 }
 \description{
-Summarize multiple regression results in a data.table
+Conduct multiple regression analysis and summarize the results
+in a data.table.
+}
+\details{
+To include standardized beta(s) in the regression results table,
+the following package(s) must be installed prior to running the function:
+Package 'lm.beta' v1.5-1 (or possibly a higher version) by
+Stefan Behrendt (2014),
+\url{https://cran.r-project.org/package=lm.beta}
 }
 \examples{
 multiple_regression(data = mtcars, formula = mpg ~ gear * cyl)

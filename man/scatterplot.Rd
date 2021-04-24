@@ -86,7 +86,14 @@ outer tick marks? (default = TRUE)}
 the output will be a scatter plot, a ggplot object.
 }
 \description{
-Creates a scatter plot and calculates a correlation between two variables
+Creates a scatter plot and calculates a correlation between two variables.
+}
+\details{
+If a weighted correlation is to be calculated, the following package(s)
+must be installed prior to running the function:
+Package 'weights' v1.0 (or possibly a higher version) by
+John Pasek (2018),
+\url{https://cran.r-project.org/package=weights}
 }
 \examples{
 \donttest{

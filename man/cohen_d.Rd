@@ -28,8 +28,14 @@ cohen_d(
 (default = 0.95)}
 }
 \description{
-Calculates Cohen's d using the 'effsize' package v0.8.1 by
-Torchiano (2020) \url{https://github.com/mtorchiano/effsize/}
+Calculates Cohen's d and its confidence interval.
+}
+\details{
+To construct confidence interval around Cohen's d with this function,
+the following package(s) must be installed prior to running this function:
+Package 'effsize' v0.8.1 (or possibly a higher version) by
+Marco Torchiano (2020),
+\url{https://cran.r-project.org/package=effsize}
 }
 \examples{
 cohen_d(1:10, 3:12)

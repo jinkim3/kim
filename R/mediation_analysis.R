@@ -5,9 +5,11 @@
 #' The current version of the package only supports a simple mediation
 #' model consisting of one independent variable, one mediator variable,
 #' and one dependent variable.
-#' This function requires installing Package 'mediation' v4.5.0,
-#' Tingley et al. (2019), and uses the source code from a function in
-#' the package. <https://cran.r-project.org/package=mediation>
+#'
+#' This function requires installing Package 'mediation' v4.5.0
+#' (or possibly a higher version) by Tingley et al. (2019),
+#' and uses the source code from a function in the package.
+#' <https://cran.r-project.org/package=mediation>
 #'
 #' @param data a data object (a data frame or a data.table)
 #' @param iv_name name of the independent variable
@@ -69,7 +71,10 @@ mediation_analysis <- function(
     message(paste0(
       "To conduct a mediation analysis, Package 'mediation' must ",
       "be installed.\nTo install Package 'mediation', type ",
-      "'kim::prep(mediation)'"))
+      "'kim::prep(mediation)'",
+      "\n\nAlternatively, to install all packages (dependencies) required ",
+      "for all\nfunctions in Package 'kim', type ",
+      "'kim::install_all_dependencies()'"))
     return()
   } else {
     # proceed if Package 'mediation' is already installed

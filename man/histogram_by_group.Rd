@@ -40,7 +40,13 @@ the output will be a set of vertically arranged histograms
 independent variable.
 }
 \description{
-Creates histograms by group to compare distributions
+Creates histograms by group to compare distributions.
+}
+\details{
+The following package(s) must be installed prior to running this function:
+Package 'ggridges' v0.5.3 (or possibly a higher version) by
+Claus O. Wilke (2021),
+\url{https://cran.r-project.org/package=ggridges}
 }
 \examples{
 histogram_by_group(data = mtcars, iv_name = "cyl", dv_name = "mpg")

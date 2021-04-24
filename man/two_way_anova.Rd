@@ -86,7 +86,19 @@ be horizontally offset from each other so as not to overlap?
 by default, the output will be \code{"anova_table"}
 }
 \description{
-Two-way ANOVA
+Conduct a two-way analysis of variance (ANOVA).
+}
+\details{
+The following package(s) must be installed prior to running this function:
+Package 'car' v3.0.9 (or possibly a higher version) by
+Fox et al. (2020),
+\url{https://cran.r-project.org/package=car}
+
+If robust ANOVA is to be conducted, the following package(s)
+must be installed prior to running the function:
+Package 'WRS2' v1.1-1 (or possibly a higher version) by
+Mair & Wilcox (2021),
+\url{https://cran.r-project.org/package=WRS2}
 }
 \examples{
 two_way_anova(

@@ -55,7 +55,7 @@
 #' histogram_w_outlier_bins(vector = 1:10, bin_cutoffs = seq(0, 10, 2.5))
 #' histogram_w_outlier_bins(vector = 1:5, bin_cutoffs = seq(0, 10, 2.5))
 #' histogram_w_outlier_bins(vector = 1:15, bin_cutoffs = c(5.52, 10.5))
-#' @import data.table ggplot2
+#' @import data.table
 #' @export
 histogram_w_outlier_bins <- function(
   vector = NULL,
@@ -79,6 +79,20 @@ histogram_w_outlier_bins <- function(
   median = TRUE,
   median_position = 15,
   error_bar_size = 3) {
+  # check if Package 'ggplot2' is installed
+  if (!"ggplot2" %in% rownames(utils::installed.packages())) {
+    message(paste0(
+      "This function requires the installation of Package 'ggplot2'.",
+      "\nTo install Package 'ggplot2', type ",
+      "'kim::prep(ggplot2)'",
+      "\n\nAlternatively, to install all packages (dependencies) required ",
+      "for all\nfunctions in Package 'kim', type ",
+      "'kim::install_all_dependencies()'"))
+    return()
+  } else {
+    # proceed if Package 'ggplot2' is already installed
+    kim::prep("ggplot2")
+  }
   # deal with NA values
   v_no_na <- vector[!is.na(vector)]
   na_count <- length(vector) - length(v_no_na)

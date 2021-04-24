@@ -1,6 +1,11 @@
 #' Robust regression (bootstrapped regression)
 #'
-#' Estimate coefficients in a multiple regression model by bootstrapping
+#' Estimate coefficients in a multiple regression model by bootstrapping.
+#'
+#' The following package(s) must be installed prior to running this function:
+#' Package 'boot' v1.3-26 (or possibly a higher version) by
+#' Canty & Ripley (2021),
+#' <https://cran.r-project.org/package=boot>
 #'
 #' @param data a data object (a data frame or a data.table)
 #' @param formula a formula object for the regression equation
@@ -21,6 +26,23 @@ robust_regression <- function(
   data = NULL, formula = NULL, sigfigs = NULL,
   round_digits_after_decimal = NULL,
   iterations = 1000) {
+  # check if Package 'boot' is installed
+  if (!"boot" %in% rownames(utils::installed.packages())) {
+    message(paste0(
+      "To conduct robust regression, Package 'boot' must ",
+      "be installed.\nTo install Package 'boot', type ",
+      "'kim::prep(boot)'",
+      "\n\nAlternatively, to install all packages (dependencies) required ",
+      "for all\nfunctions in Package 'kim', type ",
+      "'kim::install_all_dependencies()'"))
+    return()
+  } else {
+    # proceed if Package 'boot' is already installed
+    boot_fn_from_boot <- utils::getFromNamespace(
+      "boot", "boot")
+    boot_ci_fn_from_boot <- utils::getFromNamespace(
+      "boot.ci", "boot")
+  }
   # print lm first
   lm_table <- kim::multiple_regression(
     data = data, formula = formula, sigfigs = sigfigs,
@@ -37,7 +59,7 @@ robust_regression <- function(
   # print progress
   message("Getting bootstrap confidence intervals...")
   # bootstrapping with 2000+ replications
-  boot_results <- boot::boot(
+  boot_results <- boot_fn_from_boot(
     data = data,
     statistic = bs,
     R = iterations, formula = formula, parallel = "snow"
@@ -45,7 +67,7 @@ robust_regression <- function(
   # formula
   terms <- names(boot_results[["t0"]])
   ci_95 <- lapply(seq_along(terms), function(i) {
-    temp_1 <- boot::boot.ci(boot_results, type = "bca", index = i)
+    temp_1 <- boot_ci_fn_from_boot(boot_results, type = "bca", index = i)
     return(utils::tail(temp_1[["bca"]][1, ], 2))
   })
   if (!is.null(sigfigs) & !is.null(round_digits_after_decimal)) {

@@ -17,7 +17,6 @@
 #' colnames_ending_with_p <- regex_match("p$", names(mtcars))
 #' }
 #' @export
-#' @import ggplot2
 regex_match <- function(
   regex = NULL, vector = NULL,
   mute_report = FALSE, perl = FALSE) {

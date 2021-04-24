@@ -1,7 +1,8 @@
-# kim 0.3.5
-* Removed dependencies on other packages. Instead of installing these
-previous dependencies, ask users to install the packages separately 
-if the called functions require them.
+# kim 0.3.9
+* Removed dependencies on other packages. Instead of forcing the 
+installation of dependencies, ask users to install individual packages 
+if the functions called require them.
+* Fixed bugs and added new function(s) including install_all_dependencies.
 
 # kim 0.2.207
 * Fixed bugs and added new function(s) including su and round_flexibly.

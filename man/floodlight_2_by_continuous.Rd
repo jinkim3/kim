@@ -102,7 +102,13 @@ decimal point should the p value for the interaction term be
 rounded? (default = 3)}
 }
 \description{
-Conduct a floodlight analysis for 2 x Continuous design
+Conduct a floodlight analysis for 2 x Continuous design.
+}
+\details{
+The following package(s) must be installed prior to running this function:
+Package 'interactions' v1.1.1 (or possibly a higher version) by
+Jacob A. Long (2019),
+\url{https://cran.r-project.org/package=interactions}
 }
 \examples{
 floodlight_2_by_continuous(

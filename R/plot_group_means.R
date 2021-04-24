@@ -46,7 +46,6 @@
 #'   error_bar = "pi", error_bar_range = 0.99
 #' )
 #' @export
-#' @import ggplot2
 plot_group_means <- function(
   data = NULL,
   dv_name = NULL,
@@ -62,6 +61,20 @@ plot_group_means <- function(
   position_dodge = 0.13,
   legend_position = "right",
   y_axis_title_vjust = 0.85) {
+  # check if Package 'ggplot2' is installed
+  if (!"ggplot2" %in% rownames(utils::installed.packages())) {
+    message(paste0(
+      "This function requires the installation of Package 'ggplot2'.",
+      "\nTo install Package 'ggplot2', type ",
+      "'kim::prep(ggplot2)'",
+      "\n\nAlternatively, to install all packages (dependencies) required ",
+      "for all\nfunctions in Package 'kim', type ",
+      "'kim::install_all_dependencies()'"))
+    return()
+  } else {
+    # proceed if Package 'ggplot2' is already installed
+    kim::prep("ggplot2")
+  }
   # convert to data table
   dt1 <- data.table::setDT(
     data.table::copy(data))[, c(dv_name, iv_name), with = FALSE]

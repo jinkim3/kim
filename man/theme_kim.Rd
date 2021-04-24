@@ -11,7 +11,7 @@ theme_kim(
   axis_title_font_size = 24,
   y_axis_title_vjust = 0.85,
   axis_title_margin_size = 24,
-  cap_axis_lines = TRUE
+  cap_axis_lines = FALSE
 )
 }
 \arguments{
@@ -31,7 +31,7 @@ will be positioned at 85\% of the way up from the bottom of the plot.}
 and the axis line}
 
 \item{cap_axis_lines}{logical. Should the axis lines be capped at the
-outer tick marks? (default = TRUE)}
+outer tick marks? (default = FALSE)}
 }
 \value{
 a ggplot object; there will be no meaningful output from
@@ -41,6 +41,13 @@ ggplot(mtcars , aes(x = disp, y = mpg)) + theme_kim()}
 }
 \description{
 A custom ggplot theme
+}
+\details{
+If a axis lines are to be capped at the ends, the following package(s)
+must be installed prior to running the function:
+Package 'lemon' v0.4.4 (or possibly a higher version) by
+Edwards et al. (2020),
+\url{https://cran.r-project.org/package=lemon}
 }
 \examples{
 \donttest{
