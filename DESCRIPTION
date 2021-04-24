@@ -1,6 +1,6 @@
 Package: kim
-Title: Functions for Behavioral Science Researchers
-Version: 0.2.205
+Title: Functions for Behavioral Scientists
+Version: 0.3.5
 Authors@R: 
     person(given = "Jin",
            family = "Kim",
@@ -40,16 +40,11 @@ Imports:
     boot,
     car,
     data.table,
-    effsize,
     ggplot2,
     ggridges,
-    interactions,
     lemon,
     lm.beta,
-    mediation,
-    paran,
     remotes,
-    weights,
     WRS2
 Suggests:
     moments

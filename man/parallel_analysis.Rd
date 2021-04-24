@@ -25,8 +25,9 @@ this value will be set as 30 * number of variables.}
 \description{
 Conducts a parallel analysis to determine how many factors
 to retain in a factor analysis.
-Uses the 'paran' package v1.5.2 by
-Dinno (2018) \url{https://cran.r-project.org/package=paran}
+Running this function requires a separate installation of
+Package 'paran' v1.5.2 (or possibly a higher version) by Dinno (2018)
+\url{https://cran.r-project.org/package=paran}
 }
 \examples{
 parallel_analysis(

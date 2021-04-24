@@ -1,5 +1,10 @@
-# kim 0.2.205
-* Fixed bugs and added new function(s) including su.
+# kim 0.3.5
+* Removed dependencies on other packages. Instead of installing these
+previous dependencies, ask users to install the packages separately 
+if the called functions require them.
+
+# kim 0.2.207
+* Fixed bugs and added new function(s) including su and round_flexibly.
 
 # kim 0.2.204
 * Fixed bugs and added new function(s) including change_var_names, 

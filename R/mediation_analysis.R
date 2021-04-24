@@ -5,9 +5,9 @@
 #' The current version of the package only supports a simple mediation
 #' model consisting of one independent variable, one mediator variable,
 #' and one dependent variable.
-#' Uses the source code from 'mediation' package v4.5.0,
-#' Tingley et al. (2019)
-#' <https://cran.r-project.org/package=mediation>
+#' This function requires installing Package 'mediation' v4.5.0,
+#' Tingley et al. (2019), and uses the source code from a function in
+#' the package. <https://cran.r-project.org/package=mediation>
 #'
 #' @param data a data object (a data frame or a data.table)
 #' @param iv_name name of the independent variable
@@ -64,6 +64,18 @@ mediation_analysis <- function(
   sigfigs = 3,
   output_type = "summary_dt",
   silent = FALSE) {
+  # check if Package 'mediation' is installed
+  if (!"mediation" %in% rownames(utils::installed.packages())) {
+    message(paste0(
+      "To conduct a mediation analysis, Package 'mediation' must ",
+      "be installed.\nTo install Package 'mediation', type ",
+      "'kim::prep(mediation)'"))
+    return()
+  } else {
+    # proceed if Package 'mediation' is already installed
+    mediate_fn_from_mediation <- utils::getFromNamespace(
+      "mediate", "mediation")
+  }
   # check number of variables entered
   if (any(lengths(list(iv_name, mediator_name, dv_name)) > 1)) {
     stop(paste0(
@@ -112,7 +124,7 @@ mediation_analysis <- function(
     formula = outcome_model_formula, data = dt
   )
   # x: full model after mediation analysis
-  x <- mediation::mediate(
+  x <- mediate_fn_from_mediation(
     model.m = med_model,
     model.y = outcome_model,
     sims = iterations,

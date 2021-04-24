@@ -18,6 +18,22 @@ cohen_d <- function(
   sample_1 = NULL, sample_2 = NULL,
   data = NULL, iv_name = NULL, dv_name = NULL,
   ci_range = 0.95) {
+  # check if Package 'effsize' is installed
+  if (!"effsize" %in% rownames(utils::installed.packages())) {
+    message(paste0(
+      "To calculate the confidence interval of Cohen's d, ",
+      "Package 'effsize' must ",
+      "be installed.\nTo install Package 'effsize', type ",
+      "'kim::prep(effsize)'\n"))
+    output <- kim::cohen_d_from_cohen_textbook(
+      sample_1 = sample_1, sample_2 = sample_2,
+      data = data, iv_name = iv_name, dv_name = dv_name)
+    return(output)
+  }
+  # proceed if Package 'effsize' is already installed
+  cohen_d_fn_from_effsize <- utils::getFromNamespace(
+      "cohen.d", "effsize")
+  # check arguments
   if (!is.null(sample_1) & !is.null(sample_2)) {
     if (is.numeric(sample_1) & is.numeric(sample_2)) {
       df <- data.frame(
@@ -51,5 +67,7 @@ cohen_d <- function(
   }
   # convert iv to factor
   df$iv <- factor(df$iv)
-  effsize::cohen.d(formula = dv ~ iv, data = df, conf.level = ci_range)
+  output <- cohen_d_fn_from_effsize(
+    formula = dv ~ iv, data = df, conf.level = ci_range)
+  return(output)
 }

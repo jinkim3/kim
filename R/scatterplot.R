@@ -148,11 +148,20 @@ scatterplot <- function(
   weighted_r_text <- ""
   # weighted correlation
   if (!is.null(weight_var_name)) {
-    cor_test <-
-      weights::wtd.cor(
+    # check if weights package is installed
+    if (!"weights" %in% rownames(utils::installed.packages())) {
+      message(paste0(
+        "To calculate weighted correlation(s), Package 'weights' must ",
+        "be installed.\nTo install Package 'weights', type ",
+        "'kim::prep(weights)'"))
+      return()
+    } else {
+      # proceed if weights package is already installed
+      wtd_cor_function <- utils::getFromNamespace("wtd.cor", "weights")
+      cor_test <- wtd_cor_function(
         x = dt02$x, y = dt02$y,
-        weight = dt02$weight
-      )
+        weight = dt02$weight)
+    }
     cor_test_r <- cor_test[1, "correlation"]
     cor_test_p_value <- cor_test[1, "p.value"]
     weighted_r_text <- "weighted"
