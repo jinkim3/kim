@@ -1,3 +1,7 @@
+# kim 0.3.12
+* Edited the package title and removed dependencies to correct the 
+new error from CRAN check (r-devel-windows-x86_64-gcc10-UCRT).
+
 # kim 0.3.11
 * Removed dependencies on most packages. In previous versions of 
 Package 'kim', all dependencies (packages) required to run all functions
