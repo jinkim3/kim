@@ -12,7 +12,7 @@ knitr::opts_chunk$set(
   out.width = "100%"
 )
 ```
-# kim: R Functions for Behavioral Scientists
+# kim: Behavioral Scientists' Analysis Toolkit
 
 <!-- badges: start -->
 [![CRAN checks](https://cranchecks.info/badges/summary/kim)](https://cran.r-project.org/web/checks/check_results_kim.html)

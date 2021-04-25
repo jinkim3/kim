@@ -49,7 +49,7 @@ theme_kim <- function(
     return()
   } else {
     # proceed if Package 'ggplot2' is already installed
-    kim::prep("ggplot2")
+    kim::prep("ggplot2", silent_if_successful = TRUE)
   }
   # If cap_axis_lines == TRUE, check whether Package 'lemon' is installed
   if (cap_axis_lines == TRUE) {

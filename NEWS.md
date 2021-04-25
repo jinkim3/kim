@@ -1,3 +1,6 @@
+# kim 0.3.14
+* Fixed minor bugs.
+
 # kim 0.3.13
 * In response to CRAN Team's review, the package title was edited.
 * In response to a new error message from CRAN check 
