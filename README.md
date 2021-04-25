@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# kim: R Functions for Behavioral Scientists
+# kim: Behavioral Scientists’ Analysis Toolkit
 
 <!-- badges: start -->
 

@@ -25,7 +25,7 @@ cum_percent_plot <- function(vector, output_type = "plot") {
     return()
   } else {
     # proceed if Package 'ggplot2' is already installed
-    kim::prep("ggplot2")
+    kim::prep("ggplot2", silent_if_successful = TRUE)
   }
   # omit na
   v_no_na <- stats::na.omit(vector)

@@ -48,7 +48,7 @@ ggsave_quick <- function(
     return()
   } else {
     # proceed if Package 'ggplot2' is already installed
-    kim::prep("ggplot2")
+    kim::prep("ggplot2", silent_if_successful = TRUE)
   }
   # set default values
   if (is.null(name) & is.null(timestamp)) {

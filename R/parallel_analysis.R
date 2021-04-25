@@ -40,7 +40,7 @@ parallel_analysis <- function(
     return()
   } else {
     # proceed if Package 'ggplot2' is already installed
-    kim::prep("ggplot2")
+    kim::prep("ggplot2", silent_if_successful = TRUE)
   }
   # check if Package 'paran' is installed
   if (!"paran" %in% rownames(utils::installed.packages())) {

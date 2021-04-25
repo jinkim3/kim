@@ -1,4 +1,4 @@
-# kim 0.3.14
+# kim 0.3.15
 * Fixed minor bugs.
 
 # kim 0.3.13

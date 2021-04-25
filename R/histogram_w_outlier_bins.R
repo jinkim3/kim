@@ -91,7 +91,7 @@ histogram_w_outlier_bins <- function(
     return()
   } else {
     # proceed if Package 'ggplot2' is already installed
-    kim::prep("ggplot2")
+    kim::prep("ggplot2", silent_if_successful = TRUE)
   }
   # deal with NA values
   v_no_na <- vector[!is.na(vector)]

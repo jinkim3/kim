@@ -73,7 +73,7 @@ plot_group_means <- function(
     return()
   } else {
     # proceed if Package 'ggplot2' is already installed
-    kim::prep("ggplot2")
+    kim::prep("ggplot2", silent_if_successful = TRUE)
   }
   # convert to data table
   dt1 <- data.table::setDT(

@@ -53,7 +53,7 @@ histogram_by_group <- function(
     return()
   } else {
     # proceed if Package 'ggplot2' is already installed
-    kim::prep("ggplot2")
+    kim::prep("ggplot2", silent_if_successful = TRUE)
   }
   # check if Package 'ggridges' is installed
   if (!"ggridges" %in% rownames(utils::installed.packages())) {

@@ -54,7 +54,7 @@ histogram <- function(
     return()
   } else {
     # proceed if Package 'ggplot2' is already installed
-    kim::prep("ggplot2")
+    kim::prep("ggplot2", silent_if_successful = TRUE)
   }
   # bind the vars locally to the function
   value <- bins <- NULL

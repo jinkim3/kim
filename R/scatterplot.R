@@ -95,7 +95,7 @@ scatterplot <- function(
     return()
   } else {
     # proceed if Package 'ggplot2' is already installed
-    kim::prep("ggplot2")
+    kim::prep("ggplot2", silent_if_successful = TRUE)
   }
   # weighted correlation
   if (!is.null(weight_var_name)) {

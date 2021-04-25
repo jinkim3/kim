@@ -25,7 +25,7 @@ barplot_for_counts <- function(data = NULL, x, y) {
     return()
   } else {
     # proceed if Package 'ggplot2' is already installed
-    kim::prep("ggplot2")
+    kim::prep("ggplot2", silent_if_successful = TRUE)
   }
   # set data to be a data.table
   data <- data.table::setDT(copy(data))
