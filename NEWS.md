@@ -1,5 +1,6 @@
-# kim 0.3.15
-* Fixed minor bugs.
+# kim 0.3.16
+* Fixed minor bugs. Updated function(s) including clean_data_from_qualtrics,
+su, and find_duplicates.
 
 # kim 0.3.13
 * In response to CRAN Team's review, the package title was edited.

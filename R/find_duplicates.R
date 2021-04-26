@@ -6,7 +6,7 @@
 #' @param na.rm logical. If \code{na.rm = TRUE}, NA values in the vector
 #' will be removed before searching for duplicates.
 #' If \code{na.rm = FALSE}, NA values will be included in the search
-#' as potentially duplicated values.
+#' as potentially duplicated values. By default, \code{na.rm = TRUE}.
 #' @param output type of output. If \code{output = "summary"}, the function's
 #' output will be a data.table summarizing duplicated values and
 #' their counts. If \code{output = "duplicated_values"}, the function's

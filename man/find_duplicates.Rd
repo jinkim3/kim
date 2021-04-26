@@ -12,7 +12,7 @@ find_duplicates(vector = NULL, na.rm = TRUE, sigfigs = 2, output = "summary")
 \item{na.rm}{logical. If \code{na.rm = TRUE}, NA values in the vector
 will be removed before searching for duplicates.
 If \code{na.rm = FALSE}, NA values will be included in the search
-as potentially duplicated values.}
+as potentially duplicated values. By default, \code{na.rm = TRUE}.}
 
 \item{sigfigs}{number of significant digits to round to in
 the percent column of the summary (default = 2)}
