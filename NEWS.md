@@ -1,4 +1,4 @@
-# kim 0.3.16
+# kim 0.3.18
 * Fixed minor bugs. Updated function(s) including clean_data_from_qualtrics,
 su, and find_duplicates.
 

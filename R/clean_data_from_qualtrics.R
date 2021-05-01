@@ -52,8 +52,8 @@ clean_data_from_qualtrics <- function(
   dt <- setDT(copy(data))
   # change id
   change_id <- 0
-  # check if the data is of "older qualtrics data format 1"
-  older_qualt_data_format_1 <- tryCatch(all(
+  # determine which format the qualtrics data are in
+  if (tryCatch(all(
     ifelse(identical(names(dt)[1:4], paste0("V", 1:4)), TRUE, FALSE),
     ifelse(identical(dt[1:2, get("V1")], c("V1", "ResponseID")),
            TRUE, FALSE),
@@ -64,12 +64,29 @@ clean_data_from_qualtrics <- function(
     ifelse(identical(dt[1:2, get("V4")], c("V4", "ExternalDataReference")),
            TRUE, FALSE)),
     error = function(e) FALSE,
-    warning = function(w) FALSE)
-  if (older_qualt_data_format_1 == TRUE) {
+    warning = function(w) FALSE) == TRUE) {
+    # if the data pass the test above, then it is in format 1
+    qualt_data_format <- 1
+  } else if (tryCatch(all(
+    ifelse(identical(names(dt)[1:4], paste0("V", 1:4)), TRUE, FALSE),
+    ifelse(dt[["V1"]][1] == "ResponseID", TRUE, FALSE),
+    ifelse(dt[["V2"]][1] == "ResponseSet", TRUE, FALSE),
+    ifelse(dt[["V3"]][1] == "Name", TRUE, FALSE),
+    ifelse(dt[["V4"]][1] == "ExternalDataReference", TRUE, FALSE)),
+    error = function(e) FALSE,
+    warning = function(w) FALSE) == TRUE) {
+    # if the data pass the test above, then it is in format 2
+    qualt_data_format <- 2
+  } else {
+    # if the data pass the test above, then it is in format 3
+    qualt_data_format <- 3
+  }
+  # cleaning procedure for data in format 1
+  if (qualt_data_format == 1) {
     # report
     message(paste0(
-      "\nCleaning a data set that is in an older Qualtrics format",
-      " (that of around April 2016)...\n"))
+      "Cleaning a data set that is in an older Qualtrics format",
+      " (that of around April 2016)..."))
     # row 2 to col names
     dt_length <- length(dt)
     col_names_qualt_data_format_1 <- c(
@@ -90,7 +107,7 @@ clean_data_from_qualtrics <- function(
       change_id <- change_id + 1
       # report
       message(paste0(
-        "\nFollowing changes were made to the data set:\n\n",
+        "Following changes were made to the data set.\n",
         change_id,
         ". Column names were changed as follows:\n"))
       # summarize column name changes
@@ -128,7 +145,74 @@ clean_data_from_qualtrics <- function(
     }
     # return
     invisible(dt)
-  } else {
+  }
+  # cleaning procedure for data in format 2
+  if (qualt_data_format == 2) {
+    # report
+    message(paste0(
+      "Cleaning a data set that is in an older Qualtrics format",
+      " (that of around July 7, 2016)..."))
+    # row 1 to col names
+    dt_length <- length(dt)
+    col_names_qualt_data_format_2 <- c(
+      "ResponseID", "ResponseSet", "Name", "ExternalDataReference",
+      "EmailAddress", "IPAddress", "Status", "StartDate", "EndDate",
+      "Finished", "LocationLatitude", "LocationLongitude")
+    if (identical(
+      as.character(dt[1, ])[c(1:10, (dt_length - 3):(dt_length - 2))],
+      col_names_qualt_data_format_2)) {
+      new_colnm_qualt_data_format_2 <- paste0("qualt_", c(
+        "response_id", "response_set", "name", "external_data_ref",
+        "email_address", "ip_address", "status", "start_date",
+        "end_date", "finished", "location_latitude",
+        "location_longitude"))
+      names(dt)[c(1:10, (dt_length - 3):(dt_length - 2))] <-
+        new_colnm_qualt_data_format_2
+      # update change id
+      change_id <- change_id + 1
+      # report
+      message(paste0(
+        "Following changes were made to the data set.\n",
+        change_id,
+        ". Column names were changed as follows:\n"))
+      # summarize column name changes
+      col_name_change_summary <- data.table(
+        col_number = 1:12,
+        old_col_name = col_names_qualt_data_format_2,
+        new_col_name = new_colnm_qualt_data_format_2)
+      print(col_name_change_summary)
+    }
+    # delete the last two columns
+    names_of_last_2_cols <- utils::tail(names(dt), 2)
+    if (identical(utils::tail(as.character(dt[1, ]), 2), c(
+      "LocationAccuracy", "NA"))) {
+      # columns removed
+      cols_removed <- c()
+      # delete the penultimate column only if it contains no real info
+      if (identical(unique(dt[[names(dt)[(dt_length - 1)]]]),
+                    c("LocationAccuracy", "-1"))) {
+        dt[[names(dt)[(dt_length - 1)]]] <- NULL
+        cols_removed <- c(cols_removed, "LocationAccuracy")
+      }
+      # delete the last column only if it contains no info
+      if (identical(unique(dt[[length(dt)]]), NA)) {
+        dt[[length(dt)]] <- NULL
+        cols_removed <- c(cols_removed, names_of_last_2_cols[2])
+      }
+      # update change id
+      change_id <- change_id + 1
+      # report
+      message(paste0(
+        "\n",
+        change_id,
+        ". The following column(s) containing no real information ",
+        "were removed: ", paste0(cols_removed, collapse = ", ")))
+    }
+    # return
+    invisible(dt)
+  }
+  # cleaning procedure for data in format 3
+  if (qualt_data_format == 3) {
     # qualtrics format as of dec 25 2020
     # functions skipped
     functions_skipped <- c()
@@ -174,7 +258,7 @@ clean_data_from_qualtrics <- function(
       change_id <- change_id + 1
       # report
       message(paste0(
-        "\nFollowing changes were made to the data set:\n\n",
+        "Following changes were made to the data set.\n\n",
         change_id,
         ". Column names were changed as follows:\n"))
       # summarize column name changes
@@ -208,10 +292,11 @@ clean_data_from_qualtrics <- function(
     number_of_all_cols <- length(dt)
     number_of_char_cols_before <- sum(
       vapply(dt, class, FUN.VALUE = character(1L)) == "character")
-    dt[] <- rapply(
-      dt, utils::type.convert, classes = "character",
-      how = "replace", as.is = TRUE,
-      numerals = type_convert_numerals_arg)
+    for (col in names(dt)) {
+      set(dt, j = col, value = utils::type.convert(
+        dt[[col]], classes = "character", how = "replace",
+        as.is = TRUE, numerals = type_convert_numerals_arg))
+    }
     number_of_char_cols_after <- sum(
       vapply(dt, class, FUN.VALUE = character(1L)) == "character")
     number_of_converted_cols <-
@@ -235,7 +320,7 @@ clean_data_from_qualtrics <- function(
     if (number_of_page_submit_cols > 0) {
       # remove page submit (response time) data
       if (page_submit_cols == "rm") {
-        dt <- dt[, (grep("_Page Submit$", names(dt))) := NULL]
+        dt <- dt[, (grep("_Page Submit$", names(dt))) := NULL][]
         # update change id
         change_id <- change_id + 1
         # report
@@ -253,16 +338,25 @@ clean_data_from_qualtrics <- function(
         number_of_remaining_cols <- length(dt)
         number_of_page_submit_cols <- length(grep(
           "_Page Submit$", names(dt)))
+        # take a snapshot of the current column names
+        col_name_dt <- data.table(
+          old_col_name = names(dt),
+          new_col_name = make.unique(names(dt))
+        )
+        # temporarily change column names
+        names(dt) <- col_name_dt[["new_col_name"]]
         # move columns
-        setcolorder(
-          dt,
-          names(dt)[grep(
-            "_Page Submit$",
-            names(dt), invert = TRUE)])
+        setcolorder(dt, names(dt)[grep(
+          "_Page Submit$|_Page Submit\\.\\d+$", names(dt), invert = TRUE)])
+        # change column names back to the old names
+        setnames(dt, old = col_name_dt[["new_col_name"]],
+                 new = col_name_dt[["old_col_name"]])
         # change names to snake case
-        names(dt)[grep("_Page Submit$", names(dt))] <-
-          gsub("_Page Submit$", "_page_submit",
-               names(dt)[grep("_Page Submit$", names(dt))])
+        names(dt)[grep(
+          "_Page Submit$|_Page Submit\\.\\d+$", names(dt))] <-
+          gsub("_Page Submit", "_page_submit",
+               names(dt)[grep(
+                 "_Page Submit$|_Page Submit\\.\\d+$", names(dt))])
         # update change id
         change_id <- change_id + 1
         # report
