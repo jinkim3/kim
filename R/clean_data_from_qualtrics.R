@@ -83,6 +83,7 @@ clean_data_from_qualtrics <- function(
   }
   # cleaning procedure for data in format 1
   if (qualt_data_format == 1) {
+    print("1 only")
     # report
     message(paste0(
       "Cleaning a data set that is in an older Qualtrics format",
@@ -143,11 +144,33 @@ clean_data_from_qualtrics <- function(
         ". The following column(s) containing no real information ",
         "were removed: ", paste0(cols_removed, collapse = ", ")))
     }
-    # return
-    invisible(dt)
+    # delete the first x rows that are probably column headers
+    if ("qualt_response_id" %in% names(dt) &
+        "qualt_response_set" %in% names(dt)) {
+      if (any(grepl("^ResponseID$", dt[["qualt_response_id"]][1:2])) &
+          any(grepl("^ResponseSet$", dt[["qualt_response_set"]][1:2]))) {
+        # how many rows at the beginning are column headers?
+        num_col_header_rows <- which(
+          dt[["qualt_response_id"]] == "ResponseID")
+        # delete the first x rows
+        dt <- dt[-(seq_len(num_col_header_rows)), ]
+        # update change id
+        change_id <- change_id + 1
+        # report
+        message(paste0(
+          "\n",
+          change_id,
+          ". The first ", num_col_header_rows,
+          " rows that look like column headers",
+          " were deleted.\n"))
+      }
+    }
+    # resulting data set
+    output <- dt
   }
   # cleaning procedure for data in format 2
   if (qualt_data_format == 2) {
+    print("2 only")
     # report
     message(paste0(
       "Cleaning a data set that is in an older Qualtrics format",
@@ -208,8 +231,29 @@ clean_data_from_qualtrics <- function(
         ". The following column(s) containing no real information ",
         "were removed: ", paste0(cols_removed, collapse = ", ")))
     }
-    # return
-    invisible(dt)
+    # delete the first x rows that are probably column headers
+    if ("qualt_response_id" %in% names(dt) &
+        "qualt_response_set" %in% names(dt)) {
+      if (any(grepl("^ResponseID$", dt[["qualt_response_id"]][1:2])) &
+          any(grepl("^ResponseSet$", dt[["qualt_response_set"]][1:2]))) {
+        # how many rows at the beginning are column headers?
+        num_col_header_rows <- which(
+          dt[["qualt_response_id"]] == "ResponseID")
+        # delete the first x rows
+        dt <- dt[-(seq_len(num_col_header_rows)), ]
+        # update change id
+        change_id <- change_id + 1
+        # report
+        message(paste0(
+          "\n",
+          change_id,
+          ". The first ", num_col_header_rows,
+          " rows that look like column headers",
+          " were deleted.\n"))
+      }
+    }
+    # resulting data set
+    output <- dt
   }
   # cleaning procedure for data in format 3
   if (qualt_data_format == 3) {
@@ -522,7 +566,9 @@ clean_data_from_qualtrics <- function(
     if (change_id == 0) {
       message("No change was made to the data set.\n")
     }
-    # output data set
-    invisible(dt)
+    # resulting data set
+    output <- dt
   }
+  # return
+  invisible(output)
 }
