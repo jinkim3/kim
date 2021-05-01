@@ -83,7 +83,6 @@ clean_data_from_qualtrics <- function(
   }
   # cleaning procedure for data in format 1
   if (qualt_data_format == 1) {
-    print("1 only")
     # report
     message(paste0(
       "Cleaning a data set that is in an older Qualtrics format",
@@ -170,7 +169,6 @@ clean_data_from_qualtrics <- function(
   }
   # cleaning procedure for data in format 2
   if (qualt_data_format == 2) {
-    print("2 only")
     # report
     message(paste0(
       "Cleaning a data set that is in an older Qualtrics format",
