@@ -7,7 +7,7 @@
 clean_data_from_qualtrics(
   data = NULL,
   remove_survey_preview_data = TRUE,
-  remove_test_respose_data = TRUE,
+  remove_test_response_data = TRUE,
   default_cols_by_qualtrics = NULL,
   default_cols_by_qualtrics_new = NULL,
   warn_accuracy_loss = FALSE,
@@ -21,7 +21,7 @@ clean_data_from_qualtrics(
 \item{remove_survey_preview_data}{logical. Whether to remove data
 from survey preview (default = TRUE)}
 
-\item{remove_test_respose_data}{logical. Whether to remove data
+\item{remove_test_response_data}{logical. Whether to remove data
 from test response (default = TRUE)}
 
 \item{default_cols_by_qualtrics}{names of columns that Qualtrics

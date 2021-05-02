@@ -11,7 +11,7 @@ scatterplot(
   point_label_var_name = NULL,
   weight_var_name = NULL,
   alpha = 1,
-  annotate_stats = FALSE,
+  annotate_stats = TRUE,
   annotate_y_pos = 5,
   line_of_fit_type = "lm",
   ci_for_line_of_fit = FALSE,
@@ -42,7 +42,7 @@ the line of fit}
 1 = completely opaque)}
 
 \item{annotate_stats}{if \code{TRUE}, the correlation and p-value will
-be annotated at the top of the plot}
+be annotated at the top of the plot (default = TRUE)}
 
 \item{annotate_y_pos}{position of the annotated stats, expressed
 as a percentage of the range of y values by which the annotated

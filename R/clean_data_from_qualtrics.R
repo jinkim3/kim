@@ -5,7 +5,7 @@
 #' @param data a data object (a data frame or a data.table)
 #' @param remove_survey_preview_data logical. Whether to remove data
 #' from survey preview (default = TRUE)
-#' @param remove_test_respose_data logical. Whether to remove data
+#' @param remove_test_response_data logical. Whether to remove data
 #' from test response (default = TRUE)
 #' @param default_cols_by_qualtrics names of columns that Qualtrics
 #' includes in the data set by default (e.g., "StartDate", "Finished").
@@ -39,7 +39,7 @@
 clean_data_from_qualtrics <- function(
   data = NULL,
   remove_survey_preview_data = TRUE,
-  remove_test_respose_data = TRUE,
+  remove_test_response_data = TRUE,
   default_cols_by_qualtrics = NULL,
   default_cols_by_qualtrics_new = NULL,
   warn_accuracy_loss = FALSE,
@@ -543,7 +543,7 @@ clean_data_from_qualtrics <- function(
       }
     }
     # remove test response data
-    if (remove_test_respose_data == TRUE) {
+    if (remove_test_response_data == TRUE) {
       # current number of rows
       number_of_remaining_rows <- nrow(dt)
       # remove data from test response
