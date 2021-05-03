@@ -9,6 +9,7 @@ chi_square_test_pairwise(
   iv_name = NULL,
   dv_name = NULL,
   focal_dv_value = NULL,
+  percent_and_total = FALSE,
   percentages_only = NULL,
   counts_only = NULL,
   sigfigs = 3,
@@ -28,6 +29,10 @@ whose frequencies will be calculated (i.e., the value of the
 dependent variable that will be considered a "success" or
 a result of interest)}
 
+\item{percent_and_total}{logical. If \code{percent_and_total = TRUE},
+tabulate percentages of the focal DV value and a total count of
+the two values in DV. By default \code{percent_and_total = FALSE}}
+
 \item{percentages_only}{tabulate percentages of the focal DV value only}
 
 \item{counts_only}{tabulate counts of the focal DV value only}
@@ -46,4 +51,11 @@ with Bonferroni correction
 chi_square_test_pairwise(data = mtcars, iv_name = "vs", dv_name = "am")
 chi_square_test_pairwise(data = mtcars, iv_name = "vs", dv_name = "am",
 percentages_only = TRUE)
+# using 3 mtcars data sets combined
+chi_square_test_pairwise(
+data = rbind(mtcars, rbind(mtcars, mtcars)),
+iv_name = "cyl", dv_name = "am")
+chi_square_test_pairwise(
+data = rbind(mtcars, rbind(mtcars, mtcars)),
+iv_name = "cyl", dv_name = "am", percent_and_total = TRUE)
 }
