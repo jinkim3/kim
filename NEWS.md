@@ -1,6 +1,8 @@
-# kim 0.3.25
-* Fixed minor bugs. Updated function(s) including clean_data_from_qualtrics,
+# kim 0.3.26
+* Added function(s) including outlier.
+* Updated function(s) including clean_data_from_qualtrics,
 su, find_duplicates, scatterplot, chi_square_test_pairwise.
+* Fixed minor bugs
 
 # kim 0.3.13
 * In response to CRAN Team's review, the package title was edited.
