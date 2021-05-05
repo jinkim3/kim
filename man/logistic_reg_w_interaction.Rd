@@ -8,7 +8,12 @@ logistic_reg_w_interaction(
   data = NULL,
   dv_name = NULL,
   iv_1_name = NULL,
-  iv_2_name = NULL
+  iv_2_name = NULL,
+  dv_ordered_levels = NULL,
+  iv_1_ordered_levels = NULL,
+  iv_2_ordered_levels = NULL,
+  one_line_summary_only = FALSE,
+  p_value_interaction_only = FALSE
 )
 }
 \arguments{
@@ -19,9 +24,34 @@ logistic_reg_w_interaction(
 \item{iv_1_name}{name of the first independent variable}
 
 \item{iv_2_name}{name of the second independent variable}
+
+\item{dv_ordered_levels}{a vector with the ordered levels of the
+dependent variable, the first and second elements of which will be
+coded as 0 and 1, respectively, to run logistic regression.
+E.g., \code{dv_ordered_levels = c("fail", "pass")}}
+
+\item{iv_1_ordered_levels}{(only if the first independent variable
+is a binary variable) a vector with the ordered levels of the first
+independent variable, the first and second elements of which will be
+coded as 0 and 1, respectively, to run logistic regression.
+E.g., \code{iv_1_ordered_levels = c("control", "treatment")}}
+
+\item{iv_2_ordered_levels}{(only if the second independent variable
+is a binary variable) a vector with the ordered levels of the first
+independent variable, the first and second elements of which will be
+coded as 0 and 1, respectively, to run logistic regression.
+E.g., \code{iv_2_ordered_levels = c("male", "female")}}
+
+\item{one_line_summary_only}{logical. Should the output simply be a
+printout of a one-line summary on the interaction term? (default = FALSE)}
+
+\item{p_value_interaction_only}{logical. Should the output simply be a
+p-value of the interaction term in the logistic regression model?
+(default = FALSE)}
 }
 \value{
-the output will be a data.table object (summary).
+the output will be a summary of logistic regression results,
+unless set otherwise by arguments to the function.
 }
 \description{
 Conduct logistic regression for a model with an interaction between
