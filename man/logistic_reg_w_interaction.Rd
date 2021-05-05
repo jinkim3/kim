@@ -9,11 +9,14 @@ logistic_reg_w_interaction(
   dv_name = NULL,
   iv_1_name = NULL,
   iv_2_name = NULL,
+  round_p = 3,
+  round_chi_sq = 2,
   dv_ordered_levels = NULL,
   iv_1_ordered_levels = NULL,
   iv_2_ordered_levels = NULL,
   one_line_summary_only = FALSE,
-  p_value_interaction_only = FALSE
+  p_value_interaction_only = FALSE,
+  return_dt_w_binary = FALSE
 )
 }
 \arguments{
@@ -24,6 +27,12 @@ logistic_reg_w_interaction(
 \item{iv_1_name}{name of the first independent variable}
 
 \item{iv_2_name}{name of the second independent variable}
+
+\item{round_p}{number of decimal places to which to round
+p-values (default = 3)}
+
+\item{round_chi_sq}{number of decimal places to which to round
+chi square statistics (default = 2)}
 
 \item{dv_ordered_levels}{a vector with the ordered levels of the
 dependent variable, the first and second elements of which will be
@@ -48,6 +57,10 @@ printout of a one-line summary on the interaction term? (default = FALSE)}
 \item{p_value_interaction_only}{logical. Should the output simply be a
 p-value of the interaction term in the logistic regression model?
 (default = FALSE)}
+
+\item{return_dt_w_binary}{logical. If \code{return_dt_w_binary = TRUE},
+the function will return a data.table with binary variables coded
+as 0 or 1 (default = FALSE)}
 }
 \value{
 the output will be a summary of logistic regression results,

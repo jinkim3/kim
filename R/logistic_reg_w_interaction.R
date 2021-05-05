@@ -7,6 +7,10 @@
 #' @param dv_name name of the dependent variable (must be a binary variable)
 #' @param iv_1_name name of the first independent variable
 #' @param iv_2_name name of the second independent variable
+#' @param round_p number of decimal places to which to round
+#' p-values (default = 3)
+#' @param round_chi_sq number of decimal places to which to round
+#' chi square statistics (default = 2)
 #' @param dv_ordered_levels a vector with the ordered levels of the
 #' dependent variable, the first and second elements of which will be
 #' coded as 0 and 1, respectively, to run logistic regression.
@@ -26,6 +30,9 @@
 #' @param p_value_interaction_only logical. Should the output simply be a
 #' p-value of the interaction term in the logistic regression model?
 #' (default = FALSE)
+#' @param return_dt_w_binary logical. If \code{return_dt_w_binary = TRUE},
+#' the function will return a data.table with binary variables coded
+#' as 0 or 1 (default = FALSE)
 #' @return the output will be a summary of logistic regression results,
 #' unless set otherwise by arguments to the function.
 #' @examples
@@ -39,11 +46,14 @@ logistic_reg_w_interaction <- function(
   dv_name = NULL,
   iv_1_name = NULL,
   iv_2_name = NULL,
+  round_p = 3,
+  round_chi_sq = 2,
   dv_ordered_levels = NULL,
   iv_1_ordered_levels = NULL,
   iv_2_ordered_levels = NULL,
   one_line_summary_only = FALSE,
-  p_value_interaction_only = FALSE) {
+  p_value_interaction_only = FALSE,
+  return_dt_w_binary = FALSE) {
   # copy data
   dt <- data.table::setDT(data.table::copy(data))
   # get unique values in dv
@@ -113,6 +123,10 @@ logistic_reg_w_interaction <- function(
       print(data.table::data.table(old = iv_2_ordered_levels, new = 0:1))
     }
   }
+  # return the current data table with the binary variables recoded
+  if (return_dt_w_binary == TRUE) {
+    return(dt)
+  }
   # model 1
   logistic_reg_model_1_formula <-
     as.formula(paste0(
@@ -143,20 +157,22 @@ logistic_reg_w_interaction <- function(
   if (one_line_summary_only == FALSE &
       p_value_interaction_only == FALSE) {
     message(paste0(
-      "chi-square (df = ", chidf, ")", " = ", round(model_chi, 2)))
+      "chi-square (df = ", chidf, ")", " = ",
+      round(model_chi, round_chi_sq)))
     message(paste0(
-      "chi-square p-value = ", kim::pretty_round_p_value(chisq_p, 3)))
+      "chi-square p-value = ", kim::pretty_round_p_value(
+        chisq_p, round_p)))
   }
   # result about the interaction term
   if (p_value_interaction_only == FALSE) {
     if (chisq_p >= .05) {
       message(paste0(
         "The interaction term did not singificantly improve the model fit, ",
-        "p = ", kim::pretty_round_p_value(chisq_p, 3), "."))
+        "p = ", kim::pretty_round_p_value(chisq_p, round_p), "."))
     } else {
       message(paste0(
         "The interaction term singificantly improved the model fit, ",
-        "p = ", kim::pretty_round_p_value(chisq_p, 3), "."))
+        "p = ", kim::pretty_round_p_value(chisq_p, round_p), "."))
     }
   } else if (p_value_interaction_only == TRUE) {
     return(chisq_p)
