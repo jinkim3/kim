@@ -89,9 +89,6 @@ histogram_w_outlier_bins <- function(
       "for all\nfunctions in Package 'kim', type ",
       "'kim::install_all_dependencies()'"))
     return()
-  } else {
-    # proceed if Package 'ggplot2' is already installed
-    kim::prep("ggplot2", silent_if_successful = TRUE)
   }
   # deal with NA values
   v_no_na <- vector[!is.na(vector)]
@@ -142,7 +139,7 @@ histogram_w_outlier_bins <- function(
   # get proportion of each bin
   proportion <- count / sum(count)
   # create a data table
-  dt <- data.table(
+  dt <- data.table::data.table(
     bin_number, bin_start, bin_end, count, proportion)
   # plot frequency or proportion? set a default
   if (plot_frequency == TRUE) {
@@ -151,7 +148,7 @@ histogram_w_outlier_bins <- function(
       "Plotting frequencies instead of proportions because ",
       "plot_frequency = TRUE"))
   }
-  y <- fcase(
+  y <- data.table::fcase(
     plot_proportion == TRUE, "proportion",
     plot_frequency == TRUE, "frequency")
   # fill colors for bins
@@ -163,8 +160,9 @@ histogram_w_outlier_bins <- function(
     fill_colors[n_bins] <- outlier_bin_fill_color
   }
   # plot
-  g1 <- ggplot(data = dt, aes(x = bin_number, y = get(y)))
-  g1 <- g1 + geom_bar(
+  g1 <- ggplot2::ggplot(
+    data = dt, ggplot2::aes(x = bin_number, y = get(y)))
+  g1 <- g1 + ggplot2::geom_bar(
     stat = "identity",
     color = border_color,
     fill = fill_colors,
@@ -174,17 +172,17 @@ histogram_w_outlier_bins <- function(
   # label axes
   if (!is.null(x_axis_title)) {
     if (x_axis_title == FALSE) {
-      g1 <- g1 + theme(axis.title.x = element_blank())
+      g1 <- g1 + ggplot2::theme(axis.title.x = element_blank())
     } else {
-      g1 <- g1 + xlab(x_axis_title)
+      g1 <- g1 + ggplot2::xlab(x_axis_title)
     }
   } else {
-    g1 <- g1 + xlab("Value")
+    g1 <- g1 + ggplot2::xlab("Value")
   }
   if (!is.null(y_axis_title)) {
-    g1 <- g1 + ylab(y_axis_title)
+    g1 <- g1 + ggplot2::ylab(y_axis_title)
   } else {
-    g1 <- g1 + ylab(kim::capitalize(y))
+    g1 <- g1 + ggplot2::ylab(kim::capitalize(y))
   }
   # adjust x axis tick marks
   if (!is.null(x_tick_marks) & is.null(x_tick_mark_labels)) {
@@ -197,13 +195,13 @@ histogram_w_outlier_bins <- function(
   if (is.null(x_tick_mark_labels)) {
     x_tick_mark_labels <- bin_cutoffs
   }
-  g1 <- g1 + scale_x_continuous(
+  g1 <- g1 + ggplot2::scale_x_continuous(
     breaks = x_tick_marks,
     labels = x_tick_mark_labels
   )
   # update y tick marks
   if (!is.null(y_tick_marks)) {
-    g1 <- g1 + scale_y_continuous(
+    g1 <- g1 + ggplot2::scale_y_continuous(
       limits = c(
         min(y_tick_marks, na.rm = TRUE),
         max(y_tick_marks, na.rm = TRUE)),
@@ -235,8 +233,8 @@ histogram_w_outlier_bins <- function(
     position = kim::rel_pos_of_value_in_vector(ci_95_ul, bin_cutoffs))
   # mark 95% ci
   if (ci == TRUE) {
-    g1 <- g1 + geom_errorbarh(
-      aes(
+    g1 <- g1 + ggplot2::geom_errorbarh(
+      ggplot2::aes(
         xmin = ci_95_ll_x_coordinate,
         xmax = ci_95_ul_x_coordinate,
         y = 0),
@@ -246,16 +244,16 @@ histogram_w_outlier_bins <- function(
   }
   # mark mean
   if (mean == TRUE) {
-    g1 <- g1 + geom_point(
+    g1 <- g1 + ggplot2::geom_point(
       data = data.frame(mean_x_coordinate),
-      aes(x = mean_x_coordinate, y = 0),
+      ggplot2::aes(x = mean_x_coordinate, y = 0),
       size = 5, color = "black")
   }
   # mark median
   if (median == TRUE) {
-    g1 <- g1 + geom_text(
+    g1 <- g1 + ggplot2::geom_text(
       data = data.frame(median_x_coordinate),
-      aes(x = median_x_coordinate,
+      ggplot2::aes(x = median_x_coordinate,
           y = (max(dt[, get(y)]) - 0) * median_position / 100,
           label = "Mdn\nX"),
       fontface = "bold", hjust = 0.5, vjust = 0.5,

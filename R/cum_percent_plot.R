@@ -23,9 +23,6 @@ cum_percent_plot <- function(vector, output_type = "plot") {
       "for all\nfunctions in Package 'kim', type ",
       "'kim::install_all_dependencies()'"))
     return()
-  } else {
-    # proceed if Package 'ggplot2' is already installed
-    kim::prep("ggplot2", silent_if_successful = TRUE)
   }
   # omit na
   v_no_na <- stats::na.omit(vector)
@@ -41,21 +38,23 @@ cum_percent_plot <- function(vector, output_type = "plot") {
     return(output)
   }
   # plot
-  g1 <- ggplot(data = dt, aes(x = dt$value, y = dt$cum_percent))
-  g1 <- g1 + theme_classic(base_size = 16) %+replace%
-    theme(
-      plot.title = element_text(hjust = 0.5),
-      axis.text = element_text(
+  g1 <- ggplot2::ggplot(
+    data = dt, ggplot2::aes(x = dt$value, y = dt$cum_percent))
+  g1 <- g1 + ggplot2::theme_classic(base_size = 16) +
+    ggplot2::theme(
+      plot.title = ggplot2::element_text(hjust = 0.5),
+      axis.text = ggplot2::element_text(
         face = "bold", color = "black", size = 12, hjust = 0.5),
-      axis.text.y = element_text(hjust = 0.5),
-      axis.title.x = element_text(margin = margin(t = 12)),
-      axis.title.y = element_text(vjust = 0.95, margin = margin(r = 12)),
+      axis.text.y = ggplot2::element_text(hjust = 0.5),
+      axis.title.x = ggplot2::element_text(
+        margin = ggplot2::margin(t = 12)),
+      axis.title.y = ggplot2::element_text(
+        vjust = 0.95, margin = ggplot2::margin(r = 12)),
       legend.position = "none")
-  g1 <- g1 + geom_line() + geom_point()
-  g1 <- g1 + scale_y_continuous(
+  g1 <- g1 + ggplot2::geom_line() + ggplot2::geom_point()
+  g1 <- g1 + ggplot2::scale_y_continuous(
     breaks = seq(0, 100, 20))
-  g1 <- g1 + xlab("Value")
-  g1 <- g1 + ylab("Cumulative\nPercentage")
-  print(g1)
+  g1 <- g1 + ggplot2::xlab("Value")
+  g1 <- g1 + ggplot2::ylab("Cumulative\nPercentage")
   return(g1)
 }

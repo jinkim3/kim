@@ -41,8 +41,10 @@ histogram_by_group <- function(
   number_of_bins = 40,
   space_between_histograms = 0.15,
   draw_baseline = FALSE) {
+  # installed packages
+  installed_pkgs <- rownames(utils::installed.packages())
   # check if Package 'ggplot2' is installed
-  if (!"ggplot2" %in% rownames(utils::installed.packages())) {
+  if (!"ggplot2" %in% installed_pkgs) {
     message(paste0(
       "This function requires the installation of Package 'ggplot2'.",
       "\nTo install Package 'ggplot2', type ",
@@ -51,12 +53,9 @@ histogram_by_group <- function(
       "for all\nfunctions in Package 'kim', type ",
       "'kim::install_all_dependencies()'"))
     return()
-  } else {
-    # proceed if Package 'ggplot2' is already installed
-    kim::prep("ggplot2", silent_if_successful = TRUE)
   }
   # check if Package 'ggridges' is installed
-  if (!"ggridges" %in% rownames(utils::installed.packages())) {
+  if (!"ggridges" %in% installed_pkgs) {
     message(paste0(
       "To create histograms by group, Package 'ggridges' must ",
       "be installed.\nTo install Package 'ggridges', type ",
@@ -117,59 +116,56 @@ histogram_by_group <- function(
   FUN.VALUE = character(1L)
   )
   # begin plotting
-  g1 <- ggplot(
+  g1 <- ggplot2::ggplot(
     data = dt01,
-    aes(
+    ggplot2::aes(
       x = get("dv"), y = get("iv"),
-      stat(stats::density), fill = get("iv")
-    )
-  ) +
+      stat(stats::density), fill = get("iv"))) +
     ridges2_fn_from_ggridges(
       stat = "binline", bins = number_of_bins,
       scale = (1 - space_between_histograms),
-      draw_baseline = draw_baseline
-    )
-  g1 <- g1 + scale_y_discrete(
+      draw_baseline = draw_baseline)
+  g1 <- g1 + ggplot2::scale_y_discrete(
     limits = reversed_order,
     breaks = reversed_order,
     labels = y_tick_mark_labels
   )
-  g1 <- g1 + scale_x_continuous(expand = c(0, 0))
-  g1 <- g1 + theme_classic(base_size = 16) %+replace%
-    theme(
-      plot.title = element_text(hjust = 0.5),
-      axis.text = element_text(
+  g1 <- g1 + ggplot2::scale_x_continuous(expand = c(0, 0))
+  g1 <- g1 + ggplot2::theme_classic(base_size = 16) +
+    ggplot2::theme(
+      plot.title = ggplot2::element_text(hjust = 0.5),
+      axis.text = ggplot2::element_text(
         face = "bold", color = "black", size = 12, hjust = 0.5
       ),
-      axis.text.y = element_text(hjust = 0.5),
-      axis.title.x = element_text(margin = margin(t = 12)),
-      axis.title.y = element_text(
+      axis.text.y = ggplot2::element_text(hjust = 0.5),
+      axis.title.x = ggplot2::element_text(
+        margin = ggplot2::margin(t = 12)),
+      axis.title.y = ggplot2::element_text(
         vjust = 0.95,
-        margin = margin(r = 12)
+        margin = ggplot2::margin(r = 12)
       ),
       legend.position = "none"
     )
-  g1 <- g1 + coord_cartesian(clip = "off")
-  g1 <- g1 + xlab(dv_name)
-  g1 <- g1 + ylab(iv_name)
-  g1 <- g1 + geom_point(
-    data = stats_by_iv, aes(
+  g1 <- g1 + ggplot2::coord_cartesian(clip = "off")
+  g1 <- g1 + ggplot2::xlab(dv_name)
+  g1 <- g1 + ggplot2::ylab(iv_name)
+  g1 <- g1 + ggplot2::geom_point(
+    data = stats_by_iv, ggplot2::aes(
       x = stats_by_iv$mean, y = stats_by_iv$iv
     ), size = 4
   )
-  g1 <- g1 + geom_errorbarh(
+  g1 <- g1 + ggplot2::geom_errorbarh(
     data = stats_by_iv,
-    aes(
+    ggplot2::aes(
       xmin = stats_by_iv$mean - stats_by_iv$se_of_mean,
       xmax = stats_by_iv$mean + stats_by_iv$se_of_mean,
-      y = stats_by_iv$iv
-    ),
+      y = stats_by_iv$iv),
     size = 2, height = 0.2, inherit.aes = FALSE
   )
   # medians
-  g1 <- g1 + geom_text(
+  g1 <- g1 + ggplot2::geom_text(
     data = stats_by_iv,
-    aes(
+    ggplot2::aes(
       x = stats_by_iv$median, y = stats_by_iv$iv, label = "Mdn\nX",
       fontface = 2
     ), vjust = -0.5

@@ -71,9 +71,6 @@ plot_group_means <- function(
       "for all\nfunctions in Package 'kim', type ",
       "'kim::install_all_dependencies()'"))
     return()
-  } else {
-    # proceed if Package 'ggplot2' is already installed
-    kim::prep("ggplot2", silent_if_successful = TRUE)
   }
   # convert to data table
   dt1 <- data.table::setDT(
@@ -101,14 +98,14 @@ plot_group_means <- function(
   }
   # ggplot base
   if (length(iv_name) == 1) {
-    g1 <- ggplot(data = dt2, aes(
+    g1 <- ggplot2::ggplot(data = dt2, ggplot2::aes(
       y = mean,
       x = get(iv_name),
       group = 1
     )) # connect the dots
   }
   if (length(iv_name) == 2) {
-    g1 <- ggplot(data = dt2, aes(
+    g1 <- ggplot2::ggplot(data = dt2, ggplot2::aes(
       y = mean,
       x = get(iv_name[1]),
       color = get(iv_name[2]),
@@ -117,18 +114,18 @@ plot_group_means <- function(
   }
   # The errorbars will overlap,
   # so use position_dodge to move them horizontally
-  pd <- position_dodge(width = position_dodge)
+  pd <- ggplot2::position_dodge(width = position_dodge)
   # points and lines
   if (lines_connecting_means == TRUE) {
-    g1 <- g1 + geom_line(size = line_size, position = pd)
+    g1 <- g1 + ggplot2::geom_line(size = line_size, position = pd)
   }
-  g1 <- g1 + geom_point(size = dot_size, position = pd)
+  g1 <- g1 + ggplot2::geom_point(size = dot_size, position = pd)
   if (length(iv_name) == 2) {
-    g1 <- g1 + labs(color = iv_name[2])
+    g1 <- g1 + ggplot2::labs(color = iv_name[2])
   }
   # build further
   if (error_bar == "ci") {
-    g1 <- g1 + geom_errorbar(aes(
+    g1 <- g1 + ggplot2::geom_errorbar(ggplot2::aes(
       ymin = dt2$ci_95_ll, ymax = dt2$ci_95_ul),
     width = error_bar_tip_width,
     size = error_bar_thickness,
@@ -137,7 +134,7 @@ plot_group_means <- function(
       error_bar_range * 100, "% confidence intervals")
   }
   if (error_bar == "se") {
-    g1 <- g1 + geom_errorbar(aes(
+    g1 <- g1 + ggplot2::geom_errorbar(ggplot2::aes(
       ymin = dt2$mean - dt2$se,
       ymax = dt2$mean + dt2$se),
     width = error_bar_tip_width,
@@ -146,7 +143,7 @@ plot_group_means <- function(
     error_bar_desc_text <- "one standard error (+/- 1 SE)"
   }
   if (error_bar == "pi") {
-    g1 <- g1 + geom_errorbar(aes(
+    g1 <- g1 + ggplot2::geom_errorbar(ggplot2::aes(
       ymin = dt2$pi_95_ll, ymax = dt2$pi_95_ul),
     width = error_bar_tip_width,
     size = error_bar_thickness,
@@ -160,15 +157,12 @@ plot_group_means <- function(
       )
     }
   }
-  g1 <- g1 + xlab(iv_name[1])
-  g1 <- g1 + ylab(dv_name)
-  g1 <- g1 + labs(
-    caption = paste0(
-      "\nError bars indicate ", error_bar_desc_text, " around the mean."
-    )
-  )
+  g1 <- g1 + ggplot2::xlab(iv_name[1])
+  g1 <- g1 + ggplot2::ylab(dv_name)
+  g1 <- g1 + ggplot2::labs(caption = paste0(
+    "\nError bars indicate ", error_bar_desc_text, " around the mean."))
   # plot theme
-  g1 <- g1 + theme_kim(
+  g1 <- g1 + kim::theme_kim(
     y_axis_title_vjust = y_axis_title_vjust,
     legend_position = legend_position)
   return(g1)

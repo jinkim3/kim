@@ -23,8 +23,10 @@ multiple_regression <- function(
   formula = NULL,
   sigfigs = NULL,
   round_digits_after_decimal = NULL) {
+  # installed packages
+  installed_pkgs <- rownames(utils::installed.packages())
   # check if Package 'lm.beta' is installed
-  if (!"lm.beta" %in% rownames(utils::installed.packages())) {
+  if (!"lm.beta" %in% installed_pkgs) {
     message(paste0(
       "To include standardized betas, Package 'lm.beta' must ",
       "be installed.\nTo install Package 'lm.beta', type ",
@@ -58,7 +60,7 @@ multiple_regression <- function(
   )
   n <- nrow(stats::model.frame(model))
   # calculate standardized betas if lm.beta package is already installed
-  if ("lm.beta" %in% rownames(utils::installed.packages())) {
+  if ("lm.beta" %in% installed_pkgs) {
     std_beta <- lm_beta_fn_from_lm_beta(model)[[
       "standardized.coefficients"]]
   } else {

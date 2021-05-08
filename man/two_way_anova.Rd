@@ -103,6 +103,5 @@ Mair & Wilcox (2021),
 \examples{
 two_way_anova(
   data = mtcars, dv_name = "mpg", iv_1_name = "vs",
-  iv_2_name = "am", iterations = 100
-)
+  iv_2_name = "am", iterations = 100)
 }

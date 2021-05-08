@@ -83,8 +83,10 @@ scatterplot <- function(
   jitter_x_percent = 0,
   jitter_y_percent = 0,
   cap_axis_lines = FALSE) {
+  # installed packages
+  installed_pkgs <- rownames(utils::installed.packages())
   # check if Package 'ggplot2' is installed
-  if (!"ggplot2" %in% rownames(utils::installed.packages())) {
+  if (!"ggplot2" %in% installed_pkgs) {
     message(paste0(
       "This function requires the installation of Package 'ggplot2'.",
       "\nTo install Package 'ggplot2', type ",
@@ -93,14 +95,11 @@ scatterplot <- function(
       "for all\nfunctions in Package 'kim', type ",
       "'kim::install_all_dependencies()'"))
     return()
-  } else {
-    # proceed if Package 'ggplot2' is already installed
-    kim::prep("ggplot2", silent_if_successful = TRUE)
   }
   # weighted correlation
   if (!is.null(weight_var_name)) {
     # check if weights package is installed
-    if (!"weights" %in% rownames(utils::installed.packages())) {
+    if (!"weights" %in% installed_pkgs) {
       message(paste0(
         "To calculate weighted correlation(s), Package 'weights' must ",
         "be installed.\nTo install Package 'weights', type ",
@@ -118,62 +117,60 @@ scatterplot <- function(
   dt01 <- data.table(x = data[[x_var_name]], y = data[[y_var_name]])
   # add the point label or weight column
   if (!is.null(point_label_var_name)) {
-    dt01 <- data.table(
-      dt01,
-      point_labels = data[[point_label_var_name]]
-    )
+    set(dt01, j = "point_labels", value = data[[point_label_var_name]])
   }
   if (!is.null(weight_var_name)) {
-    dt01 <- data.table(dt01, weight = data[[weight_var_name]])
+    set(dt01, j = "weight", value = data[[weight_var_name]])
   } else {
     # set weight as 1 if no weight_var_name is given
-    dt01 <- data.table(dt01, weight = 1)
+    set(dt01, j = "weight", value = 1)
   }
   # remove na values
+  num_of_na_rows <- sum(!stats::complete.cases(dt01))
   dt02 <- stats::na.omit(dt01)
-  if (nrow(dt02) < nrow(dt01)) {
+  if (num_of_na_rows > 0) {
     message(paste0(
-      nrow(dt01) - nrow(dt02),
-      " rows were removed because of missing values."
-    ))
+      num_of_na_rows,
+      " rows were removed because of missing values."))
   }
   # ranges for x and y
   x_range <- max(dt02$x) - min(dt02$x)
   y_range <- max(dt02$y) - min(dt02$y)
   # start ggplot
-  g1 <- ggplot(data = dt02, aes(x = dt02$x, y = dt02$y))
+  g1 <- ggplot2::ggplot(data = dt02, ggplot2::aes(x = dt02$x, y = dt02$y))
   # add jitter
-  pj <- position_jitter(
+  pj <- ggplot2::position_jitter(
     width = jitter_x_percent / 100 * x_range,
     height = jitter_y_percent / 100 * y_range
   )
   # add point labels or dots
   if (!is.null(point_label_var_name)) {
-    g1 <- g1 + aes(label = dt02$point_labels)
+    g1 <- g1 + ggplot2::aes(label = dt02$point_labels)
     if (is.null(point_label_size)) {
-      g1 <- g1 + geom_text(
-        aes(label = dt02$point_labels, fontface = "bold"),
+      g1 <- g1 + ggplot2::geom_text(
+        ggplot2::aes(label = dt02$point_labels, fontface = "bold"),
         position = pj)
     } else {
-      g1 <- g1 + geom_text(
-        aes(label = dt02$point_labels, fontface = "bold"),
+      g1 <- g1 + ggplot2::geom_text(
+        ggplot2::aes(label = dt02$point_labels, fontface = "bold"),
         position = pj,
         size = point_label_size)
     }
   } else {
-    g1 <- g1 + geom_point(position = pj, alpha = alpha)
+    g1 <- g1 + ggplot2::geom_point(position = pj, alpha = alpha)
   }
   # scale points
   if (!is.null(weight_var_name)) {
-    g1 <- g1 + aes(size = dt02$weight)
-    g1 <- g1 + scale_size(
+    g1 <- g1 + ggplot2::aes(size = dt02$weight)
+    g1 <- g1 + ggplot2::scale_size(
       range = point_size_range, guide = FALSE)
   }
   # weighted least squares line
   if (line_of_fit_type %in% c("lm", "loess")) {
-    g1 <- g1 + geom_smooth(
+    g1 <- g1 + ggplot2::geom_smooth(
       formula = y ~ x,
-      method = line_of_fit_type, mapping = aes(weight = dt02$weight),
+      method = line_of_fit_type,
+      mapping = ggplot2::aes(weight = dt02$weight),
       se = ci_for_line_of_fit
     )
   }
@@ -193,8 +190,8 @@ scatterplot <- function(
     weighted_r_text <- "weighted"
   }
   # nice p value
-  cor_test_p_value_text <-
-    pretty_round_p_value(cor_test_p_value, include_p_equals = TRUE)
+  cor_test_p_value_text <- kim::pretty_round_p_value(
+    cor_test_p_value, include_p_equals = TRUE)
   # annotate stats
   if (annotate_stats == TRUE) {
     annotation_01 <-
@@ -212,10 +209,9 @@ scatterplot <- function(
           t06 = weighted_r_text
         )
       )))
-    g1 <- g1 + geom_text(
-      aes(
-        x = min(dt02$x) + x_range / 2,
-        y = max(dt02$y) + y_range * annotate_y_pos / 100),
+    g1 <- g1 + ggplot2::geom_text(ggplot2::aes(
+      x = min(dt02$x) + x_range / 2,
+      y = max(dt02$y) + y_range * annotate_y_pos / 100),
       color = "green4",
       label = annotation_01, parse = TRUE,
       hjust = 0.5, vjust = 0.5,
@@ -230,10 +226,10 @@ scatterplot <- function(
   if (is.null(y_axis_label)) {
     y_axis_label <- y_var_name
   }
-  g1 <- g1 + xlab(x_axis_label)
-  g1 <- g1 + ylab(y_axis_label)
+  g1 <- g1 + ggplot2::xlab(x_axis_label)
+  g1 <- g1 + ggplot2::ylab(y_axis_label)
   # plot theme
-  g1 <- g1 + theme_kim(cap_axis_lines = cap_axis_lines)
+  g1 <- g1 + kim::theme_kim(cap_axis_lines = cap_axis_lines)
   # return the ggplot
   return(g1)
 }

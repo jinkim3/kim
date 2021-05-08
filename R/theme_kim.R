@@ -37,8 +37,10 @@ theme_kim <- function(
   y_axis_title_vjust = 0.85,
   axis_title_margin_size = 24,
   cap_axis_lines = FALSE) {
+  # installed packages
+  installed_pkgs <- rownames(utils::installed.packages())
   # check if Package 'ggplot2' is installed
-  if (!"ggplot2" %in% rownames(utils::installed.packages())) {
+  if (!"ggplot2" %in% installed_pkgs) {
     message(paste0(
       "This function requires the installation of Package 'ggplot2'.",
       "\nTo install Package 'ggplot2', type ",
@@ -47,13 +49,10 @@ theme_kim <- function(
       "for all\nfunctions in Package 'kim', type ",
       "'kim::install_all_dependencies()'"))
     return()
-  } else {
-    # proceed if Package 'ggplot2' is already installed
-    kim::prep("ggplot2", silent_if_successful = TRUE)
   }
   # If cap_axis_lines == TRUE, check whether Package 'lemon' is installed
   if (cap_axis_lines == TRUE) {
-    if (!"lemon" %in% rownames(utils::installed.packages())) {
+    if (!"lemon" %in% installed_pkgs) {
       message(paste0(
         "To cap axis lines at the end(s), Package 'lemon' must ",
         "be installed.\nTo install Package 'lemon', type ",
@@ -70,21 +69,21 @@ theme_kim <- function(
   }
   # create a theme based theme_classic
   theme_object <-
-    ggplot2::theme_classic(base_size = base_size) %+replace% ggplot2::theme(
-      plot.title = element_text(hjust = 0.5),
+    ggplot2::theme_classic(base_size = base_size) + ggplot2::theme(
+      plot.title = ggplot2::element_text(hjust = 0.5),
       legend.position = legend_position,
-      axis.title.x = element_text(margin = margin(
+      axis.title.x = ggplot2::element_text(margin = ggplot2::margin(
         t = axis_title_margin_size)),
-      axis.title.y = element_text(
+      axis.title.y = ggplot2::element_text(
         angle = 0, vjust = y_axis_title_vjust,
-        margin = margin(r = axis_title_margin_size)),
-      axis.title = element_text(
+        margin = ggplot2::margin(r = axis_title_margin_size)),
+      axis.title = ggplot2::element_text(
         face = "bold", color = "black", size = axis_title_font_size),
-      axis.text = element_text(
+      axis.text = ggplot2::element_text(
         face = "bold", color= "black", size = axis_tick_font_size),
-      legend.title = element_text(
+      legend.title = ggplot2::element_text(
         face = "bold", color = "black", size = axis_title_font_size),
-      legend.text = element_text(
+      legend.text = ggplot2::element_text(
         face = "bold", color= "black", size = axis_tick_font_size)
     )
   # output so far
@@ -95,7 +94,8 @@ theme_kim <- function(
     # refer to README in the package 'lemon'
     theme_object <- theme_object +
       ggplot2::theme(
-        panel.border = element_blank(), axis.line = element_line())
+        panel.border = ggplot2::element_blank(),
+        axis.line = ggplot2::element_line())
     output <- list(
       theme_object,
       coord_cap_fn_from_lemon(left = "both", bottom = "both"))

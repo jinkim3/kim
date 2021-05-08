@@ -52,9 +52,6 @@ histogram <- function(
       "for all\nfunctions in Package 'kim', type ",
       "'kim::install_all_dependencies()'"))
     return()
-  } else {
-    # proceed if Package 'ggplot2' is already installed
-    kim::prep("ggplot2", silent_if_successful = TRUE)
   }
   # bind the vars locally to the function
   value <- bins <- NULL
@@ -74,7 +71,7 @@ histogram <- function(
   # create a data.frame
   data <- data.frame(value = v_no_na)
   # plot it
-  g1 <- ggplot(data = data, aes(x = value))
+  g1 <- ggplot2::ggplot(data = data, ggplot2::aes(x = value))
   if (!is.null(x_tick_marks)) {
     if (length(unique(diff(x_tick_marks))) > 1) {
       warning(paste0(
@@ -84,25 +81,25 @@ histogram <- function(
     message(paste0(
       "Manually setting tick marks will ignore the argument for ",
       "number of bins."))
-    g1 <- g1 + geom_histogram(
+    g1 <- g1 + ggplot2::geom_histogram(
       breaks = x_tick_marks,
       fill = fill_color,
       color = border_color)
     # adjust x axis tick marks
-    g1 <- g1 + scale_x_continuous(
+    g1 <- g1 + ggplot2::scale_x_continuous(
       limits = c(
         min(x_tick_marks, na.rm = TRUE),
         max(x_tick_marks, na.rm = TRUE)),
       breaks = x_tick_marks)
   } else {
-    g1 <- g1 + geom_histogram(
+    g1 <- g1 + ggplot2::geom_histogram(
       bins = number_of_bins,
       fill = fill_color,
       color = border_color)
   }
   # update y tick marks
   if (!is.null(y_tick_marks)) {
-    g1 <- g1 + scale_y_continuous(
+    g1 <- g1 + ggplot2::scale_y_continuous(
       limits = c(
         min(y_tick_marks, na.rm = TRUE),
         max(y_tick_marks, na.rm = TRUE)),
@@ -110,16 +107,16 @@ histogram <- function(
   }
   # label axes
   if (!is.null(x_axis_title)) {
-    g1 <- g1 + xlab(x_axis_title)
+    g1 <- g1 + ggplot2::xlab(x_axis_title)
   } else {
-    g1 <- g1 + xlab("Value")
+    g1 <- g1 + ggplot2::xlab("Value")
   }
   if (!is.null(y_axis_title)) {
-    g1 <- g1 + ylab(y_axis_title)
+    g1 <- g1 + ggplot2::ylab(y_axis_title)
   } else {
-    g1 <- g1 + ylab("Count")
+    g1 <- g1 + ggplot2::ylab("Count")
   }
-  g1 <- g1 + theme_kim(
+  g1 <- g1 + kim::theme_kim(
     y_axis_title_vjust = y_axis_title_vjust,
     cap_axis_lines = cap_axis_lines)
   return(g1)

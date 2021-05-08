@@ -129,18 +129,18 @@ logistic_reg_w_interaction <- function(
   }
   # model 1
   logistic_reg_model_1_formula <-
-    as.formula(paste0(
+    stats::as.formula(paste0(
       dv_name, " ~ ", iv_1_name, " + ", iv_2_name))
   logistic_reg_model_1 <-
     stats::glm(
-      logistic_reg_model_1_formula, data = dt, family = binomial())
+      logistic_reg_model_1_formula, data = dt, family = stats::binomial())
   # model 2
   logistic_reg_model_2_formula <-
-    as.formula(paste0(
+    stats::as.formula(paste0(
       dv_name, " ~ ", iv_1_name, " * ", iv_2_name))
   logistic_reg_model_2 <-
     stats::glm(
-      logistic_reg_model_2_formula, data = dt, family = binomial())
+      logistic_reg_model_2_formula, data = dt, family = stats::binomial())
   # print
   if (one_line_summary_only == FALSE &
       p_value_interaction_only == FALSE) {
@@ -167,11 +167,11 @@ logistic_reg_w_interaction <- function(
   if (p_value_interaction_only == FALSE) {
     if (chisq_p >= .05) {
       message(paste0(
-        "The interaction term did not singificantly improve the model fit, ",
+        "The interaction term did not significantly improve the model fit, ",
         "p = ", kim::pretty_round_p_value(chisq_p, round_p), "."))
     } else {
       message(paste0(
-        "The interaction term singificantly improved the model fit, ",
+        "The interaction term significantly improved the model fit, ",
         "p = ", kim::pretty_round_p_value(chisq_p, round_p), "."))
     }
   } else if (p_value_interaction_only == TRUE) {

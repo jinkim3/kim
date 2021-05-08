@@ -34,8 +34,7 @@ Alexis Dinno (2018),
 }
 \examples{
 parallel_analysis(
-  data = mtcars, names_of_vars = c("disp", "hp", "drat")
-)
+  data = mtcars, names_of_vars = c("disp", "hp", "drat"))
 # parallel_analysis(
 # data = mtcars, names_of_vars = c("carb", "vs", "gear", "am"))
 }
