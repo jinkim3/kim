@@ -42,8 +42,10 @@ round_flexibly <- function(
   if (!is.numeric(x)) {
     stop(message("The input for 'x' is not a numeric vector."))
   }
+  # deal with na
+  non_na_values <- x[which(!is.na(x))]
   # first round to significant digits
-  nums_sigfig_rounded <- signif(x, sigfigs)
+  nums_sigfig_rounded <- signif(non_na_values, sigfigs)
   # count the digits in the first part of the scientific
   # notation of individual numbers
   num_digits_in_sci_notn_pt_1 <- nchar(
@@ -59,6 +61,9 @@ round_flexibly <- function(
   highest_resolution <- min(
     preci_lvl_from_sci_notn_pt_2 - (num_digits_in_sci_notn_pt_1 - 1))
   # round regularly to the digit place with the highest level of precision
-  nums_flexibly_rounded <- round(x, digits = - highest_resolution)
-  return(nums_flexibly_rounded)
+  nums_flexibly_rounded <- round(
+    non_na_values, digits = - highest_resolution)
+  # replace the non na values with the rounded numbers
+  x[which(!is.na(x))] <- nums_flexibly_rounded
+  return(x)
 }

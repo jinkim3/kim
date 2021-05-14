@@ -162,8 +162,8 @@ two_way_anova <- function(
       as.numeric(stats::median(get(dv_name))), sigfigs),
     sd = kim::round_flexibly(stats::sd(get(dv_name)), sigfigs),
     se = kim::round_flexibly(kim::se_of_mean(get(dv_name)), sigfigs),
-    min = min(get(dv_name)),
-    max = max(get(dv_name))
+    min = kim::round_flexibly(min(get(dv_name)), sigfigs),
+    max = kim::round_flexibly(max(get(dv_name)), sigfigs)
   ), keyby = c(iv_1_name, iv_2_name)]
   if (output == "group_stats") {
     return(group_stats)
@@ -214,6 +214,7 @@ two_way_anova <- function(
   data.table::setDT(anova_table)
   anova_table <- data.table::data.table(source, anova_table)
   names(anova_table) <- c("source", "type_3_sum_sq", "df", "f", "p")
+  # round
   cols_to_round <- c("type_3_sum_sq", "f")
   for (j in cols_to_round) {
     data.table::set(

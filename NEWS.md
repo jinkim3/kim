@@ -1,4 +1,4 @@
-# kim 0.3.39
+# kim 0.3.40
 * Added function(s) including outlier, logistic_reg_w_interaction,
 pm, combine_data_across_cols.
 * Updated function(s) including clean_data_from_qualtrics,
