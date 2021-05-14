@@ -143,7 +143,7 @@ mediation_analysis <- function(
   smat <- rbind(smat, c(x$tau.coef, x$tau.ci, x$tau.p))
   smat <- rbind(smat, c(x$n0, x$n0.ci, x$n0.p))
   # round to significant digits
-  smat <- signif(smat, sigfigs)
+  smat <- kim::round_flexibly(smat, sigfigs)
   # convert to data table
   medi_result_dt <- as.data.table(smat)
   # add row labels

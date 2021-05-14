@@ -164,7 +164,7 @@ tabulate_vector <- function(
   }
   # round percentages
   if (is.numeric(sigfigs)) {
-    dt_1[["percent"]] <- signif(dt_1[["percent"]], sigfigs)
+    dt_1[["percent"]] <- kim::round_flexibly(dt_1[["percent"]], sigfigs)
     if (is.numeric(round_digits_after_decimal)) {
       message(paste0(
         "Only the sigfigs argument was used.\n",

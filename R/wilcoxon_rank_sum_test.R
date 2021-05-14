@@ -80,6 +80,6 @@ wilcoxon_rank_sum_test <- function(
   # round values
   output[, wilcoxon_rank_sum_p_value :=
            kim::pretty_round_p_value(wilcoxon_rank_sum_p_value)]
-  output[, effect_size_r := signif(effect_size_r, sigfigs)]
+  output[, effect_size_r := kim::round_flexibly(effect_size_r, sigfigs)]
   return(output)
 }

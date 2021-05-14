@@ -112,7 +112,7 @@ desc_stats <- function(
     if (j %in% names(dt)) {
       data.table::set(
         dt, j = j,
-        value = signif(dt[[j]], sigfigs))
+        value = kim::round_flexibly(dt[[j]], sigfigs))
     }
   }
   # print the data table

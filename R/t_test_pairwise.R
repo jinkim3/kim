@@ -108,28 +108,28 @@ t_test_pairwise <- function(
   output <- data.table(
     dt02,
     group_sizes_dt,
-    group_1_mean = signif(group_1_mean, sigfigs),
-    group_2_mean = signif(group_2_mean, sigfigs))
+    group_1_mean = kim::round_flexibly(group_1_mean, sigfigs),
+    group_2_mean = kim::round_flexibly(group_2_mean, sigfigs))
   # add sd
   if (sd == TRUE) {
     output <- data.table(
       output,
-      group_1_sd = signif(group_1_sd, sigfigs),
-      group_2_sd = signif(group_2_sd, sigfigs))
+      group_1_sd = kim::round_flexibly(group_1_sd, sigfigs),
+      group_2_sd = kim::round_flexibly(group_2_sd, sigfigs))
   }
   # add t test stats
   if (t_test_stats == TRUE) {
     output <- data.table(
       output,
       t_test_df = round(t_test_df, t_test_df_decimals),
-      t_test_stat = signif(t_test_stat, sigfigs),
+      t_test_stat = kim::round_flexibly(t_test_stat, sigfigs),
       t_test_p_value = kim::pretty_round_p_value(t_test_p_value),
       bonferroni_signif_for_t_test = bonferroni_signif_for_t_test)
   }
   # add the rest
   output <- data.table(
     output,
-    cohen_d = signif(cohen_d, sigfigs),
+    cohen_d = kim::round_flexibly(cohen_d, sigfigs),
     t_test_p_value = kim::pretty_round_p_value(t_test_p_value),
     bonferroni_signif_for_t_test = bonferroni_signif_for_t_test)
   # mann whitney

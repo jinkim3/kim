@@ -1,9 +1,9 @@
-# kim 0.3.37
+# kim 0.3.39
 * Added function(s) including outlier, logistic_reg_w_interaction,
 pm, combine_data_across_cols.
 * Updated function(s) including clean_data_from_qualtrics,
-su, find_duplicates, scatterplot, chi_square_test_pairwise, and
-prep.
+su, find_duplicates, scatterplot, chi_square_test_pairwise, 
+two_way_anova, and prep.
 * Fixed minor bugs
 
 # kim 0.3.13

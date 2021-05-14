@@ -56,7 +56,8 @@ find_duplicates <- function(
     value = c(as.character(dt1[count > 1, value]),
               "..non_duplicated_values"),
     count = c(dt1[count > 1, count], non_dup_total_count))
-  summary_dt[, percent := signif(count / total_count * 100, sigfigs)]
+  summary_dt[, percent := kim::round_flexibly(
+    count / total_count * 100, sigfigs)]
   # print summary
   print(summary_dt)
   cat("\n")

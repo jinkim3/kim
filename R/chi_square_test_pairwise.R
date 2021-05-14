@@ -137,14 +137,14 @@ chi_square_test_pairwise <- function(
       lapply(values_of_dv, function(j) {
         vapply(dt02$g1, function(i) {
           nrow(dt01[iv == i & dv == j])}, FUN.VALUE = numeric(1L))}))
-    percentages_1 <- signif(data.table::setDT(
+    percentages_1 <- kim::round_flexibly(data.table::setDT(
       lapply(seq_along(counts_1), function(i) {
         counts_1[[i]] / rowSums(counts_1) * 100})), sigfigs)
     counts_2 <- data.table::setDT(
       lapply(values_of_dv, function(j) {
         vapply(dt02$g2, function(i) {
           nrow(dt01[iv == i & dv == j])}, FUN.VALUE = numeric(1L))}))
-    percentages_2 <- signif(data.table::setDT(
+    percentages_2 <- kim::round_flexibly(data.table::setDT(
       lapply(seq_along(counts_2), function(i) {
         counts_2[[i]] / rowSums(counts_2) * 100})), sigfigs)
     # set names
@@ -214,7 +214,7 @@ chi_square_test_pairwise <- function(
     output <- data.table::data.table(
       dt02, section_2,
       chi_sq_test_df,
-      chi_sq_test_stat = signif(chi_sq_test_stat, sigfigs),
+      chi_sq_test_stat = kim::round_flexibly(chi_sq_test_stat, sigfigs),
       chi_sq_p_value = kim::pretty_round_p_value(chi_sq_p_value),
       bonferroni_sig)
   }

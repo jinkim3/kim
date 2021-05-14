@@ -157,10 +157,11 @@ two_way_anova <- function(
   # stats by iv
   group_stats <- dt2[, list(
     n = .N,
-    mean = signif(mean(get(dv_name)), sigfigs),
-    median = as.numeric(stats::median(get(dv_name))),
-    sd = signif(stats::sd(get(dv_name)), sigfigs),
-    se = signif(kim::se_of_mean(get(dv_name)), sigfigs),
+    mean = kim::round_flexibly(mean(get(dv_name)), sigfigs),
+    median = kim::round_flexibly(
+      as.numeric(stats::median(get(dv_name))), sigfigs),
+    sd = kim::round_flexibly(stats::sd(get(dv_name)), sigfigs),
+    se = kim::round_flexibly(kim::se_of_mean(get(dv_name)), sigfigs),
     min = min(get(dv_name)),
     max = max(get(dv_name))
   ), keyby = c(iv_1_name, iv_2_name)]
@@ -216,7 +217,8 @@ two_way_anova <- function(
   cols_to_round <- c("type_3_sum_sq", "f")
   for (j in cols_to_round) {
     data.table::set(
-      anova_table, j = j, value = signif(anova_table[[j]], sigfigs))
+      anova_table, j = j, value = kim::round_flexibly(
+        anova_table[[j]], sigfigs))
   }
   anova_table[, p := kim::pretty_round_p_value(p)]
   message("\nANOVA Results:")

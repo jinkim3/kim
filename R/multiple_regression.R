@@ -77,13 +77,13 @@ multiple_regression <- function(
     sigfigs <- 3
   }
   if (!is.null(sigfigs)) {
-    estimate <- signif(estimate, sigfigs)
-    se <- signif(se, sigfigs)
-    std_beta <- signif(std_beta, sigfigs)
-    t_stat <- signif(t_stat, sigfigs)
-    r_squared <- signif(r_squared, sigfigs)
-    adj_r_squared <- signif(adj_r_squared, sigfigs)
-    f_stat <- signif(f_stat, sigfigs)
+    estimate <- kim::round_flexibly(estimate, sigfigs)
+    se <- kim::round_flexibly(se, sigfigs)
+    std_beta <- kim::round_flexibly(std_beta, sigfigs)
+    t_stat <- kim::round_flexibly(t_stat, sigfigs)
+    r_squared <- kim::round_flexibly(r_squared, sigfigs)
+    adj_r_squared <- kim::round_flexibly(adj_r_squared, sigfigs)
+    f_stat <- kim::round_flexibly(f_stat, sigfigs)
   }
   if (!is.null(round_digits_after_decimal)) {
     estimate <- round(estimate, round_digits_after_decimal)
