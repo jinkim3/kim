@@ -8,7 +8,8 @@ multiple_regression(
   data = NULL,
   formula = NULL,
   sigfigs = NULL,
-  round_digits_after_decimal = NULL
+  round_digits_after_decimal = NULL,
+  pretty_round_p_value = TRUE
 )
 }
 \arguments{

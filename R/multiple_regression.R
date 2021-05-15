@@ -23,7 +23,8 @@ multiple_regression <- function(
   data = NULL,
   formula = NULL,
   sigfigs = NULL,
-  round_digits_after_decimal = NULL) {
+  round_digits_after_decimal = NULL,
+  pretty_round_p_value = TRUE) {
   # installed packages
   installed_pkgs <- rownames(utils::installed.packages())
   # check if Package 'lm.beta' is installed
@@ -49,16 +50,14 @@ multiple_regression <- function(
   estimate <- reg_results[, "Estimate"]
   se <- reg_results[, "Std. Error"]
   t_stat <- reg_results[, "t value"]
-  p_value <- kim::pretty_round_p_value(reg_results[, "Pr(>|t|)"])
+  p_value <- reg_results[, "Pr(>|t|)"]
   r_squared <- model_summary[["r.squared"]]
   adj_r_squared <- model_summary[["adj.r.squared"]]
   df_model <- model_summary[["fstatistic"]][["numdf"]]
   df_residual <- model_summary[["fstatistic"]][["dendf"]]
   f_stat <- model_summary[["fstatistic"]][["value"]]
-  model_p_value <- kim::pretty_round_p_value(
-    stats::pf(f_stat, df_model, df_residual, lower.tail = FALSE),
-    include_p_equals = TRUE
-  )
+  model_p_value <- stats::pf(
+    f_stat, df_model, df_residual, lower.tail = FALSE)
   n <- nrow(stats::model.frame(model))
   # calculate standardized betas if lm.beta package is already installed
   if ("lm.beta" %in% installed_pkgs) {
@@ -82,32 +81,41 @@ multiple_regression <- function(
     se <- kim::round_flexibly(se, sigfigs)
     std_beta <- kim::round_flexibly(std_beta, sigfigs)
     t_stat <- kim::round_flexibly(t_stat, sigfigs)
+    p_value <- kim::round_flexibly(p_value, sigfigs)
     r_squared <- kim::round_flexibly(r_squared, sigfigs)
     adj_r_squared <- kim::round_flexibly(adj_r_squared, sigfigs)
     f_stat <- kim::round_flexibly(f_stat, sigfigs)
+    model_p_value <- kim::round_flexibly(model_p_value, sigfigs)
   }
   if (!is.null(round_digits_after_decimal)) {
     estimate <- round(estimate, round_digits_after_decimal)
     se <- round(se, round_digits_after_decimal)
     std_beta <- round(std_beta, round_digits_after_decimal)
     t_stat <- round(t_stat, round_digits_after_decimal)
+    p_value <- round(p_value, round_digits_after_decimal)
     r_squared <- round(r_squared, round_digits_after_decimal)
     adj_r_squared <- round(
-      adj_r_squared, round_digits_after_decimal
-    )
+      adj_r_squared, round_digits_after_decimal)
     f_stat <- round(f_stat, round_digits_after_decimal)
+    model_p_value <- round(model_p_value, round_digits_after_decimal)
   }
   t1 <- data.table::data.table(
-    variable, estimate, se, std_beta, t_stat, p_value
-  )
+    variable, estimate, se, std_beta, t_stat, p_value)
   # add an empty row
   t2 <- rbind(t1, as.list(rep("", ncol(t1))))
+  # pretty round model_p_value
+  if (pretty_round_p_value == TRUE) {
+    model_p_value_text <- kim::pretty_round_p_value(
+      model_p_value, include_p_equals = TRUE)
+  } else {
+    model_p_value_text <- paste0("p = ", model_p_value)
+  }
   # add model stats
   variable_2 <- c(
     paste0("R-squared: ", r_squared),
     paste0("Adj. R-squared: ", adj_r_squared),
     paste0("F(", df_model, ", ", df_residual, ") = ", f_stat),
-    paste0("Model ", model_p_value),
+    paste0("Model ", model_p_value_text),
     paste0("N = ", n),
     paste0("DV: ", all.vars(formula[[2]]))
   )
