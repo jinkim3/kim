@@ -16,7 +16,8 @@
 #' (alternative to \code{sigfigs})
 #' @return the output will be a data.table showing multiple regression
 #' results.
-#' @examples multiple_regression(data = mtcars, formula = mpg ~ gear * cyl)
+#' @examples
+#' multiple_regression(data = mtcars, formula = mpg ~ gear * cyl)
 #' @export
 multiple_regression <- function(
   data = NULL,

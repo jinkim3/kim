@@ -112,7 +112,7 @@ round_flexibly <- function(
   }
   # check if the input is a numeric vector
   if (is.numeric(x)) {
-    x <- rounded_object
+    x <- unlist(rounded_object)
   }
   return(x)
 }
