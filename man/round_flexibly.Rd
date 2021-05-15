@@ -21,8 +21,8 @@ from the 'signif()' function in base R.
 Round numbers to a flexible number of significant digits.
 "Flexible" rounding refers to rounding all numbers to the highest
 level of precision seen among numbers that would have resulted
-from the 'signif()' function in base R. The examples of this function
-demonstrate flexible rounding.
+from the 'signif()' function in base R. The usage examples of
+this function demonstrate flexible rounding (see below).
 }
 \examples{
 # Example 1
@@ -47,4 +47,14 @@ signif(c(0.12345, 1234, 0.12, 1.23, .01), 3)
 # all numbers, all other numbers will also be rounded to 3 decimal places.
 round_flexibly(
 c(0.12345, 1234, 0.12, 1.23, .01))
+
+# Example 3
+# If the input is a character vector, the original input will be returned.
+round_flexibly(c("a", "b", "c"))
+
+# Example 4
+# If the input is a list (e.g., a data.frame) that contains at least
+# one numeric vector, the numeric vector element(s) will be rounded
+# flexibly.
+round_flexibly(data.frame(a = c(1.2345, 123.45), b = c("a", "b")))
 }

@@ -21,7 +21,7 @@ desc_stats_by_group <- function(
   grouping_vars = NULL,
   sigfigs = NULL,
   cols_to_round = NULL) {
-  dt1 <- setDT(copy(data))
+  dt1 <- data.table::setDT(data.table::copy(data))
   dt2 <- dt1[!is.na(get(var_for_stats)), list(
     n = length(get(var_for_stats)),
     mean = as.numeric(mean(get(var_for_stats), na.rm = TRUE)),

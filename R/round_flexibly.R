@@ -3,8 +3,8 @@
 #' Round numbers to a flexible number of significant digits.
 #' "Flexible" rounding refers to rounding all numbers to the highest
 #' level of precision seen among numbers that would have resulted
-#' from the 'signif()' function in base R. The examples of this function
-#' demonstrate flexible rounding.
+#' from the 'signif()' function in base R. The usage examples of
+#' this function demonstrate flexible rounding (see below).
 #'
 #' @param x a numeric vector
 #' @param sigfigs number of significant digits to flexibly round to.
@@ -35,35 +35,84 @@
 #' # all numbers, all other numbers will also be rounded to 3 decimal places.
 #' round_flexibly(
 #' c(0.12345, 1234, 0.12, 1.23, .01))
+#'
+#' # Example 3
+#' # If the input is a character vector, the original input will be returned.
+#' round_flexibly(c("a", "b", "c"))
+#'
+#' # Example 4
+#' # If the input is a list (e.g., a data.frame) that contains at least
+#' # one numeric vector, the numeric vector element(s) will be rounded
+#' # flexibly.
+#' round_flexibly(data.frame(a = c(1.2345, 123.45), b = c("a", "b")))
 #' @export
 round_flexibly <- function(
   x = NULL, sigfigs = 3) {
-  # check if numeric
-  if (!is.numeric(x)) {
-    stop(message("The input for 'x' is not a numeric vector."))
+  # for testing the function
+  # x <- c(0.12345, 1234, 0.12, 1.23, .01)
+  # x <- data.table(a = letters[1:4], b = letters[2:5])
+  # x <- data.table(a = letters[1:4], b = letters[2:5], c = 1:4, d = 5:8)
+  # x <- data.frame(a = letters[1:4], b = letters[2:5])
+  # x <- list(a = letters[1:4], b = letters[2:5])
+
+  # convert [the object to round flexibly] into a list
+  # check if the input is a list containing numeric vectors
+  if (is.list(x)) {
+    # numeric elements only
+    object_to_round <- Filter(function(x) is.numeric(x), x)
   }
-  # deal with na
-  non_na_values <- x[which(!is.na(x))]
-  # first round to significant digits
-  nums_sigfig_rounded <- signif(non_na_values, sigfigs)
-  # count the digits in the first part of the scientific
-  # notation of individual numbers
-  num_digits_in_sci_notn_pt_1 <- nchar(
-    gsub("\\.", "", vapply(nums_sigfig_rounded, function(j) {
-      gsub("(^.*)e.*$", "\\1", format(j, scientific = TRUE))
-    }, character(1L))))
-  # extract the precision level from the second part of the
-  # scientific notation
-  preci_lvl_from_sci_notn_pt_2 <- as.numeric(
-    gsub("^.*e(.*$)", "\\1", format(
-      nums_sigfig_rounded, scientific = TRUE)))
-  # what is the highest resolution (or precision) among the numbers?
-  highest_resolution <- min(
-    preci_lvl_from_sci_notn_pt_2 - (num_digits_in_sci_notn_pt_1 - 1))
-  # round regularly to the digit place with the highest level of precision
-  nums_flexibly_rounded <- round(
-    non_na_values, digits = - highest_resolution)
-  # replace the non na values with the rounded numbers
-  x[which(!is.na(x))] <- nums_flexibly_rounded
+  # check if the input is a numeric vector
+  if (is.numeric(x)) {
+    object_to_round <- list(x)
+  }
+  # if the input is neither a list nor a numeric vector
+  if (is.list(x) == FALSE & is.numeric(x) == FALSE) {
+    object_to_round <- NULL
+  }
+  # tell the user there is nothing to round
+  if (length(object_to_round) == 0) {
+    kim::pm(
+      "The input 'x' is not, or does not seem to contain, any numeric ",
+      "vector that could be rounded flexibly.")
+    return(x)
+  }
+  # round flexibly each element in the list, object_to_round
+  rounded_object <- lapply(object_to_round, function(y) {
+    # deal with na
+    non_na_values <- y[which(!is.na(y))]
+    # first round to significant digits
+    nums_sigfig_rounded <- signif(non_na_values, sigfigs)
+    # count the digits in the first part of the scientific
+    # notation of individual numbers
+    num_digits_in_sci_notn_pt_1 <- nchar(
+      gsub("\\.", "", vapply(nums_sigfig_rounded, function(j) {
+        gsub("(^.*)e.*$", "\\1", format(j, scientific = TRUE))
+      }, character(1L))))
+    # extract the precision level from the second part of the
+    # scientific notation
+    preci_lvl_from_sci_notn_pt_2 <- as.numeric(
+      gsub("^.*e(.*$)", "\\1", format(
+        nums_sigfig_rounded, scientific = TRUE)))
+    # what is the highest resolution (or precision) among the numbers?
+    highest_resolution <- min(
+      preci_lvl_from_sci_notn_pt_2 - (num_digits_in_sci_notn_pt_1 - 1))
+    # round regularly to the digit place with the highest level of precision
+    nums_flexibly_rounded <- round(
+      non_na_values, digits = - highest_resolution)
+    # replace the non na values with the rounded numbers
+    y[which(!is.na(y))] <- nums_flexibly_rounded
+    return(y)
+  })
+  # check if the input is a list containing numeric vectors
+  if (is.list(x)) {
+    indices_of_elem_to_replace <- which(unlist(lapply(x, is.numeric)))
+    for (i in seq_along(indices_of_elem_to_replace)) {
+      x[[indices_of_elem_to_replace[i]]] <- rounded_object[[i]]
+    }
+  }
+  # check if the input is a numeric vector
+  if (is.numeric(x)) {
+    x <- rounded_object
+  }
   return(x)
 }
