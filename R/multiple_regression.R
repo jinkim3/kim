@@ -17,6 +17,9 @@
 #' @param pretty_round_p_value logical. Should the p-values be rounded
 #' in a pretty format (i.e., lower threshold: "<.001").
 #' By default, \code{pretty_round_p_value = TRUE}.
+#' @param return_table_upper_half logical. Should only the upper part
+#' of the table be returned?
+#' By default, \code{return_table_upper_half = FALSE}.
 #' @return the output will be a data.table showing multiple regression
 #' results.
 #' @examples
@@ -27,7 +30,8 @@ multiple_regression <- function(
   formula = NULL,
   sigfigs = NULL,
   round_digits_after_decimal = NULL,
-  pretty_round_p_value = TRUE) {
+  pretty_round_p_value = TRUE,
+  return_table_upper_half = FALSE) {
   # installed packages
   installed_pkgs <- rownames(utils::installed.packages())
   # check if Package 'lm.beta' is installed
@@ -102,8 +106,13 @@ multiple_regression <- function(
     f_stat <- round(f_stat, round_digits_after_decimal)
     model_p_value <- round(model_p_value, round_digits_after_decimal)
   }
+  # upper part of the regression table
   t1 <- data.table::data.table(
     variable, estimate, se, std_beta, t_stat, p_value)
+  # return only the upper part of the regression table
+  if (return_table_upper_half == TRUE) {
+    return(t1)
+  }
   # add an empty row
   t2 <- rbind(t1, as.list(rep("", ncol(t1))))
   # pretty round model_p_value
