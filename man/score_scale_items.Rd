@@ -5,18 +5,18 @@
 \title{Score scale items}
 \usage{
 score_scale_items(
-  items = NULL,
-  reverse = NULL,
+  item_list = NULL,
+  reverse_item_list = NULL,
   operation = "mean",
   na_summary = TRUE,
   reverse_code_minuend = NULL
 )
 }
 \arguments{
-\item{items}{list of scale items (i.e., list of vectors of ratings)
+\item{item_list}{a list of scale items (i.e., list of vectors of ratings)
 to code normally (as opposed to reverse coding).}
 
-\item{reverse}{list of scale items to reverse code.}
+\item{reverse_item_list}{a list of scale items to reverse code.}
 
 \item{operation}{if \code{operation = "mean"}, mean of the scale items
 will be calculated; if \code{operation = "sum"}, sum of the scale items
@@ -36,10 +36,12 @@ Score items in a scale (e.g., Likert scale items) by computing the
 sum or mean of the items.
 }
 \examples{
-score_scale_items(items = list(1:5, rep(3, 5)),
-reverse = list(rep(5, 5)), reverse_code_minuend = 6)
-score_scale_items(items = list(c(1, 1), c(1, 5)),
-reverse = list(c(5, 3)), reverse_code_minuend = 6, na_summary = FALSE)
-score_scale_items(items = list(c(1, 1), c(1, 5)),
-reverse = list(c(5, 1)), reverse_code_minuend = 6, operation = "sum")
+score_scale_items(item_list = list(1:5, rep(3, 5)),
+reverse_item_list = list(rep(5, 5)), reverse_code_minuend = 6)
+score_scale_items(item_list = list(c(1, 1), c(1, 5)),
+reverse_item_list = list(c(5, 3)),
+reverse_code_minuend = 6, na_summary = FALSE)
+score_scale_items(item_list = list(c(1, 1), c(1, 5)),
+reverse_item_list = list(c(5, 1)),
+reverse_code_minuend = 6, operation = "sum")
 }
