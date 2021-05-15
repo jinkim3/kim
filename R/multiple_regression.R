@@ -14,6 +14,9 @@
 #' @param sigfigs number of significant digits to round to
 #' @param round_digits_after_decimal round to nth digit after decimal
 #' (alternative to \code{sigfigs})
+#' @param pretty_round_p_value logical. Should the p-values be rounded
+#' in a pretty format (i.e., lower threshold: "<.001").
+#' By default, \code{pretty_round_p_value = TRUE}.
 #' @return the output will be a data.table showing multiple regression
 #' results.
 #' @examples
@@ -105,6 +108,7 @@ multiple_regression <- function(
   t2 <- rbind(t1, as.list(rep("", ncol(t1))))
   # pretty round model_p_value
   if (pretty_round_p_value == TRUE) {
+    t1[, p_value := pretty_round_p_value(p_value)]
     model_p_value_text <- kim::pretty_round_p_value(
       model_p_value, include_p_equals = TRUE)
   } else {

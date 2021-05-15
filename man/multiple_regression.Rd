@@ -21,6 +21,10 @@ multiple_regression(
 
 \item{round_digits_after_decimal}{round to nth digit after decimal
 (alternative to \code{sigfigs})}
+
+\item{pretty_round_p_value}{logical. Should the p-values be rounded
+in a pretty format (i.e., lower threshold: "<.001").
+By default, \code{pretty_round_p_value = TRUE}.}
 }
 \value{
 the output will be a data.table showing multiple regression
