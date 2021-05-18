@@ -44,4 +44,5 @@ reverse_code_minuend = 6, na_summary = FALSE)
 score_scale_items(item_list = list(c(1, 1), c(1, 5)),
 reverse_item_list = list(c(5, 1)),
 reverse_code_minuend = 6, operation = "sum")
+score_scale_items(item_list = list(1:5, rep(3, 5)))
 }
