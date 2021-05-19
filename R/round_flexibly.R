@@ -45,6 +45,12 @@
 #' # one numeric vector, the numeric vector element(s) will be rounded
 #' # flexibly.
 #' round_flexibly(data.frame(a = c(1.2345, 123.45), b = c("a", "b")))
+#'
+#' # Example 5
+#' # If the input is a matrix, all numbers will be rounded flexibly
+#' round_flexibly(matrix(
+#' c(1.23, 2.345, 3.4567, 4.56789), ncol = 2), sigfigs = 3)
+#'
 #' @export
 round_flexibly <- function(
   x = NULL, sigfigs = 3) {
@@ -54,6 +60,7 @@ round_flexibly <- function(
   # x <- data.table(a = letters[1:4], b = letters[2:5], c = 1:4, d = 5:8)
   # x <- data.frame(a = letters[1:4], b = letters[2:5])
   # x <- list(a = letters[1:4], b = letters[2:5])
+  # x <- matrix(c(1.23, 2.345, 3.4567, 4.56789), nrow = 2)
 
   # convert [the object to round flexibly] into a list
   # check if the input is a list containing numeric vectors
@@ -63,7 +70,12 @@ round_flexibly <- function(
   }
   # check if the input is a numeric vector
   if (is.numeric(x)) {
-    object_to_round <- list(x)
+    # if the input is a matrix, temporarily convert it to a data frame
+    if (is.matrix(x)) {
+      object_to_round <- as.data.frame(x)
+    } else {
+      object_to_round <- list(x)
+    }
   }
   # if the input is neither a list nor a numeric vector
   if (is.list(x) == FALSE & is.numeric(x) == FALSE) {
@@ -112,7 +124,12 @@ round_flexibly <- function(
   }
   # check if the input is a numeric vector
   if (is.numeric(x)) {
-    x <- unlist(rounded_object)
+    # if the input is a matrix, convert it back to a matrix
+    if (is.matrix(x)) {
+      x <- as.matrix(as.data.frame(rounded_object))
+    } else {
+      x <- unlist(rounded_object)
+    }
   }
   return(x)
 }

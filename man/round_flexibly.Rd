@@ -57,4 +57,10 @@ round_flexibly(c("a", "b", "c"))
 # one numeric vector, the numeric vector element(s) will be rounded
 # flexibly.
 round_flexibly(data.frame(a = c(1.2345, 123.45), b = c("a", "b")))
+
+# Example 5
+# If the input is a matrix, all numbers will be rounded flexibly
+round_flexibly(matrix(
+c(1.23, 2.345, 3.4567, 4.56789), ncol = 2), sigfigs = 3)
+
 }
