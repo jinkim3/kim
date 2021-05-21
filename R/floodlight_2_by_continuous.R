@@ -116,6 +116,16 @@ floodlight_2_by_continuous <- function(
     jn_fn_from_interactions <- utils::getFromNamespace(
       "johnson_neyman", "interactions")
   }
+  # check whether all arguments had required inputs
+  if (is.null(iv_name)) {
+    stop("Please enter a variable name for the input 'iv_name'")
+  }
+  if (is.null(dv_name)) {
+    stop("Please enter a variable name for the input 'dv_name'")
+  }
+  if (is.null(mod_name)) {
+    stop("Please enter a variable name for the input 'mod_name'")
+  }
   # bind the vars locally to the function
   dv <- iv_binary <- iv_factor <- mod <- NULL
   # convert to data.table
