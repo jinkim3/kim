@@ -247,7 +247,8 @@ floodlight_2_by_continuous <- function(
   g1 <- g1 + kim::theme_kim(legend_position = legend_position)
   # allow labeling outside the plot area
   suppressMessages(g1 <- g1 + ggplot2::coord_cartesian(clip = "off"))
-  g1 <- g1 + ggplot2::theme(plot.margin = unit(c(60, 7, 7, 7), "pt"))
+  g1 <- g1 + ggplot2::theme(
+    plot.margin = ggplot2::unit(c(60, 7, 7, 7), "pt"))
   # if only one type is entered for jn line
   if (length(jn_line_types) == 1) {
     jn_line_types <- rep(jn_line_types, sum(is.finite(jn_line_pos)))
