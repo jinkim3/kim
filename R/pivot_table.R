@@ -25,6 +25,10 @@
 #' pivot_table(
 #'   data = mtcars, col_names = "am", row_names = c("cyl", "vs"),
 #'   function_as_character = "sum(mpg < 17)")
+#' pivot_table(
+#'   data = mtcars, col_names = "am", row_names = c("cyl", "vs"),
+#'   function_as_character =
+#'   "round(sum(mpg < 17) / sum(!is.na(mpg)) * 100, 0)")
 #' @export
 #' @import data.table
 pivot_table <- function(
@@ -35,10 +39,6 @@ pivot_table <- function(
   sigfigs = 3,
   output = "dt",
   remove_col_names = TRUE) {
-  # testing the function
-  # data = read_csv()
-  # row_names <- c("score", "answer", "color")
-  # col_names <- c("group", "sex", "car")
   # copy data
   dt <- data.table::setDT(data.table::copy(data))
   # check whether the variables are in the data set

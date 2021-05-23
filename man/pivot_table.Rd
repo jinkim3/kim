@@ -50,4 +50,8 @@ pivot_table(
 pivot_table(
   data = mtcars, col_names = "am", row_names = c("cyl", "vs"),
   function_as_character = "sum(mpg < 17)")
+pivot_table(
+  data = mtcars, col_names = "am", row_names = c("cyl", "vs"),
+  function_as_character =
+  "round(sum(mpg < 17) / sum(!is.na(mpg)) * 100, 0)")
 }
