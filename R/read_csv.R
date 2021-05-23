@@ -21,9 +21,16 @@ read_csv <- function(
   name = NULL,
   head = FALSE,
   ...) {
-  # check the name argument
+  # check the name argument; open a dialog if none is given
   if (is.null(name)) {
-    stop('Please enter a name of the csv file (e.g., name = "filename").')
+    message("Please select the file.")
+    file_path <- file.choose()
+    dt <- data.table::fread(input = file_path, ...)
+    if (head == TRUE) {
+      message("First five (or fewer) rows of the data:")
+      print(utils::head(dt, n = 5L))
+    }
+    return(dt)
   }
   # print the working directory
   message(paste0("\nCurrent working directory:\n", getwd(), "\n"))
