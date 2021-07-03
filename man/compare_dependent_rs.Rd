@@ -14,7 +14,7 @@ compare_dependent_rs(
   round_p = 3,
   round_t = 2,
   print_summary = TRUE,
-  output_type = NULL
+  return_dt = FALSE
 )
 }
 \arguments{
@@ -44,8 +44,9 @@ t-statistic (default = 2)}
 \item{print_summary}{logical. Should the summary be printed?
 (default = TRUE)}
 
-\item{output_type}{type of the output. If \code{output_type = "dt"},
-the function's output will be a data.table (default = NULL)}
+\item{return_dt}{logical. Should the function return a summary table
+as an output, as opposed to returning the output through the
+"invisible" function? (default = FALSE)}
 }
 \value{
 the output will be a summary of the test comparing two dependent
