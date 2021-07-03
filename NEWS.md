@@ -1,6 +1,7 @@
-# kim 0.3.61
+# kim 0.3.65
 * Added function(s) including pivot_table, outlier, 
-logistic_reg_w_interaction, pm, and combine_data_across_cols.
+logistic_reg_w_interaction, pm, compare_dependent_rs,
+and combine_data_across_cols.
 * Updated function(s) including clean_data_from_qualtrics,
 su, find_duplicates, scatterplot, chi_square_test_pairwise, 
 two_way_anova, and prep.

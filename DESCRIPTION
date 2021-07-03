@@ -1,6 +1,6 @@
 Package: kim
 Title: Behavioral Scientists' Analysis Toolkit
-Version: 0.3.63
+Version: 0.3.65
 Authors@R: 
     person(given = "Jin",
            family = "Kim",
@@ -16,6 +16,7 @@ Description: Miscellaneous functions to simplify and expedite
     in the Selected References.
     Selected References:
     Canty & Ripley (2021) <https://CRAN.R-project.org/package=boot>.
+    Chen & Popovich (2002) <doi:10.4135/9781412983808>.
     Cohen (1988) <doi:10.4324/9780203771587>.
     DeCarlo (1997) <doi:10.1037/1082-989X.2.3.292>.
     Dinno (2018) <https://CRAN.R-project.org/package=paran>.
@@ -31,6 +32,7 @@ Description: Miscellaneous functions to simplify and expedite
     Mair & Wilcox (2021) <https://CRAN.R-project.org/package=WRS2>.
     Pasek et al. (2020) <https://CRAN.R-project.org/package=weights>.
     Simmons et al. (2011) <doi:10.1177/0956797611417632>.
+    Steiger (1980) <doi:/10.1037/0033-2909.87.2.245>
     Tingley et al. (2019) <https://CRAN.R-project.org/package=mediation>.
     Torchiano (2020) <https://CRAN.R-project.org/package=effsize>.
     Wickham et al. (2020) <https://CRAN.R-project.org/package=ggplot2>.
