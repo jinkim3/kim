@@ -27,6 +27,8 @@
 #' t-statistic (default = 2)
 #' @param print_summary logical. Should the summary be printed?
 #' (default = TRUE)
+#' @param output_type type of the output. If \code{output_type = "dt"},
+#' the function's output will be a data.table (default = NULL)
 #' @return the output will be a summary of the test comparing two dependent
 #' correlations
 #' @examples
@@ -43,7 +45,8 @@ compare_dependent_rs <- function(
   round_r = 3,
   round_p = 3,
   round_t = 2,
-  print_summary = TRUE
+  print_summary = TRUE,
+  output_type = NULL
   ) {
   # deal with na values
   dt <- stats::na.omit(data.frame(
