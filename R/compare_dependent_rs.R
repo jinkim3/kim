@@ -135,7 +135,7 @@ compare_dependent_rs <- function(
     test_text,
     "the two correlations, ", r_jk_rounded, " and ",
     r_jh_rounded, ", are ", sig_text,
-    ", t = ", t_diff_rounded, " ", p_diff_rounded)
+    ", t(", df_diff, ") = ", t_diff_rounded, " ", p_diff_rounded)
   # output table
   description <- c(
     paste0("r(", var_1_name, ", ", var_2_name, ")"),
