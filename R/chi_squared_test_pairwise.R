@@ -1,6 +1,6 @@
-#' Chi square test, pairwise
+#' Chi-squared test, pairwise
 #'
-#' Conducts a chi-square test for every possible pairwise comparison
+#' Conducts a chi-squared test for every possible pairwise comparison
 #' with Bonferroni correction
 #'
 #' @param data a data object (a data frame or a data.table)
@@ -18,21 +18,21 @@
 #' @param counts_only tabulate counts of the focal DV value only
 #' @param sigfigs number of significant digits to round to
 #' @param chi_sq_test_stats if \code{chi_sq_test_stats = TRUE},
-#' chi-square test statistic and degrees of freedom will be included
+#' chi-squared test statistic and degrees of freedom will be included
 #' in the pairwise comparison data.table.
 #' @examples
-#' chi_square_test_pairwise(data = mtcars, iv_name = "vs", dv_name = "am")
-#' chi_square_test_pairwise(data = mtcars, iv_name = "vs", dv_name = "am",
+#' chi_squared_test_pairwise(data = mtcars, iv_name = "vs", dv_name = "am")
+#' chi_squared_test_pairwise(data = mtcars, iv_name = "vs", dv_name = "am",
 #' percentages_only = TRUE)
 #' # using 3 mtcars data sets combined
-#' chi_square_test_pairwise(
+#' chi_squared_test_pairwise(
 #' data = rbind(mtcars, rbind(mtcars, mtcars)),
 #' iv_name = "cyl", dv_name = "am")
-#' chi_square_test_pairwise(
+#' chi_squared_test_pairwise(
 #' data = rbind(mtcars, rbind(mtcars, mtcars)),
 #' iv_name = "cyl", dv_name = "am", percent_and_total = TRUE)
 #' @export
-chi_square_test_pairwise <- function(
+chi_squared_test_pairwise <- function(
   data = NULL,
   iv_name = NULL,
   dv_name = NULL,
@@ -182,24 +182,24 @@ chi_square_test_pairwise <- function(
       }
     }
   }
-  # chi square test results
+  # chi-squared test results
   chi_sq_test_results <- lapply(seq_len(nrow(dt02)), function(i) {
     dt03 <- dt01[iv %in% dt02[i, ]]
     stats::chisq.test(
       dt03$iv, dt03$dv, correct = FALSE)
   })
-  # chi square test stats
+  # chi-squared test stats
   if (chi_sq_test_stats == TRUE) {
-    # chi-square test df
+    # chi-squared test df
     chi_sq_test_df <- vapply(seq_len(nrow(dt02)), function(i) {
       chi_sq_test_results[[i]][["parameter"]][["df"]]
     }, FUN.VALUE = numeric(1L))
-    # chi-square test stat
+    # chi-squared test stat
     chi_sq_test_stat <- vapply(seq_len(nrow(dt02)), function(i) {
       chi_sq_test_results[[i]][["statistic"]]
     }, FUN.VALUE = numeric(1L))
   }
-  # chi-square test p values
+  # chi-squared test p values
   chi_sq_p_value <- vapply(seq_len(nrow(dt02)), function(i) {
     chi_sq_test_results[[i]][["p.value"]]
   }, FUN.VALUE = numeric(1L))
@@ -211,7 +211,7 @@ chi_square_test_pairwise <- function(
     dt02, section_2, chi_sq_p_value =
       kim::pretty_round_p_value(chi_sq_p_value),
     bonferroni_sig)
-  # add chi square test stats
+  # add chi-squared test stats
   if (chi_sq_test_stats == TRUE) {
     output <- data.table::data.table(
       dt02, section_2,
