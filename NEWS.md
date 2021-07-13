@@ -1,4 +1,4 @@
-# kim 0.3.68
+# kim 0.3.69
 * Added function(s) including pivot_table, outlier, 
 logistic_reg_w_interaction, pm, compare_dependent_rs,
 and combine_data_across_cols.

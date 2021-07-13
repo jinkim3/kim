@@ -404,7 +404,8 @@ clean_data_from_qualtrics <- function(
         "_Page Submit$|_Page Submit\\.\\d+$", names(dt), invert = TRUE)])
       # change column names back to the old names
       setnames(dt, old = col_name_dt[["new_col_name"]],
-               new = col_name_dt[["old_col_name"]])
+               new = col_name_dt[["old_col_name"]],
+               skip_absent = TRUE)
       # change names to snake case
       names(dt)[grep(
         "_Page Submit$|_Page Submit\\.\\d+$", names(dt))] <-
@@ -510,7 +511,8 @@ clean_data_from_qualtrics <- function(
         old = c("workerId", "assignmentId", "hitId"),
         new = c("cloud_research_worker_id",
                 "cloud_research_assignment_id",
-                "cloud_research_hit_id"))
+                "cloud_research_hit_id"),
+        skip_absetnt = TRUE)
       # update change id
       change_id <- change_id + 1
       # report
