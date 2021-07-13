@@ -512,7 +512,7 @@ clean_data_from_qualtrics <- function(
         new = c("cloud_research_worker_id",
                 "cloud_research_assignment_id",
                 "cloud_research_hit_id"),
-        skip_absetnt = TRUE)
+        skip_absent = TRUE)
       # update change id
       change_id <- change_id + 1
       # report
