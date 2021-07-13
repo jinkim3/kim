@@ -148,7 +148,7 @@ chi_squared_test_pairwise <- function(
     percentages_2 <- data.table::setDT(
       lapply(seq_along(counts_2), function(i) {
         kim::round_flexibly(
-          counts_1[[i]] / rowSums(counts_2) * 100, sigfigs)}))
+          counts_2[[i]] / rowSums(counts_2) * 100, sigfigs)}))
     # set names
     names(counts_1) <- as.character(values_of_dv)
     names(percentages_1) <- as.character(values_of_dv)
