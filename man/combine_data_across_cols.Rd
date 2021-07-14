@@ -16,13 +16,17 @@ which to combine data}
 the output will be a numeric or character vector.
 }
 \description{
-Combine data across columns
+Combine data across columns. If NA is the only value across all focal
+columns for given row(s), NA will be returned for those row(s).
 }
 \examples{
 dt <- data.frame(v1 = c(1, NA), v2 = c(NA, 2))
 dt
 combine_data_across_cols(data = dt, cols = c("v1", "v2"))
-dt <- data.frame(v1 = c(1, 2, NA), v2 = c(4, NA, NA))
+dt <- data.frame(v1 = c(1, 2, NA), v2 = c(NA, 4, 3))
+dt
+combine_data_across_cols(data = dt, cols = c("v1", "v2"))
+dt <- data.frame(v1 = c(1, NA, NA), v2 = c(NA, 2, NA))
 dt
 combine_data_across_cols(data = dt, cols = c("v1", "v2"))
 }
