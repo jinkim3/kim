@@ -125,7 +125,7 @@ merge_data_tables <- function(
     setnames(merged_dt, old = cols_to_replace, duplicated_col_names)
   }
   # restore the original order of rows
-  output <- order_rows_specifically_in_dt(
+  output <- kim::order_rows_specifically_in_dt(
     dt = merged_dt,
     col_to_order_by = id,
     specific_order = id_in_final_dt)
