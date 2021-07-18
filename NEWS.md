@@ -1,4 +1,4 @@
-# kim 0.3.75
+# kim 0.3.76
 * Added function(s) including pivot_table, outlier, 
 logistic_reg_w_interaction, pm, compare_dependent_rs,
 and combine_data_across_cols.
@@ -13,7 +13,6 @@ two_way_anova, combine_data_across_cols, and prep.
 * In response to CRAN Team's review, the package title was edited.
 * In response to a new error message from CRAN check 
 (r-devel-windows-x86_64-gcc10-UCRT), most dependencies were removed.
-
 
 # kim 0.3.11
 * Removed dependencies on most packages. In previous versions of 
