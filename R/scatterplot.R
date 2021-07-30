@@ -35,6 +35,7 @@
 #' confidence interval for the line of fit will be shaded
 #' @param x_axis_label alternative label for the x axis
 #' @param y_axis_label alternative label for the y axis
+#' @param point_size size of the dots on the plot (default = 0.5)
 #' @param point_label_size size for dots' labels on the plot. If no
 #' input is entered for this argument, it will be set as
 #' \code{point_label_size = 5} by default. If the plot is to be
