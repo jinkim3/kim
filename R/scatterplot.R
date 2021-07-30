@@ -78,6 +78,7 @@ scatterplot <- function(
   ci_for_line_of_fit = FALSE,
   x_axis_label = NULL,
   y_axis_label = NULL,
+  point_size = 0.5,
   point_label_size = NULL,
   point_size_range = c(3, 12),
   jitter_x_percent = 0,
@@ -114,16 +115,19 @@ scatterplot <- function(
     }
   }
   # create a temporary dataset
-  dt01 <- data.table(x = data[[x_var_name]], y = data[[y_var_name]])
+  dt01 <- data.table::data.table(
+    x = data[[x_var_name]], y = data[[y_var_name]])
   # add the point label or weight column
   if (!is.null(point_label_var_name)) {
-    set(dt01, j = "point_labels", value = data[[point_label_var_name]])
+    data.table::set(
+      dt01, j = "point_labels", value = data[[point_label_var_name]])
   }
   if (!is.null(weight_var_name)) {
-    set(dt01, j = "weight", value = data[[weight_var_name]])
+    data.table::set(
+      dt01, j = "weight", value = data[[weight_var_name]])
   } else {
     # set weight as 1 if no weight_var_name is given
-    set(dt01, j = "weight", value = 1)
+    data.table::set(dt01, j = "weight", value = 1)
   }
   # remove na values
   num_of_na_rows <- sum(!stats::complete.cases(dt01))
@@ -157,7 +161,8 @@ scatterplot <- function(
         size = point_label_size)
     }
   } else {
-    g1 <- g1 + ggplot2::geom_point(position = pj, alpha = alpha)
+    g1 <- g1 + ggplot2::geom_point(
+      position = pj, alpha = alpha, size = point_size)
   }
   # scale points
   if (!is.null(weight_var_name)) {

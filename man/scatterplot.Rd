@@ -17,6 +17,7 @@ scatterplot(
   ci_for_line_of_fit = FALSE,
   x_axis_label = NULL,
   y_axis_label = NULL,
+  point_size = 0.5,
   point_label_size = NULL,
   point_size_range = c(3, 12),
   jitter_x_percent = 0,
