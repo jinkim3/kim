@@ -35,7 +35,7 @@
 #' confidence interval for the line of fit will be shaded
 #' @param x_axis_label alternative label for the x axis
 #' @param y_axis_label alternative label for the y axis
-#' @param point_size size of the dots on the plot (default = 0.5)
+#' @param point_size size of the dots on the plot (default = 2)
 #' @param point_label_size size for dots' labels on the plot. If no
 #' input is entered for this argument, it will be set as
 #' \code{point_label_size = 5} by default. If the plot is to be
@@ -79,7 +79,7 @@ scatterplot <- function(
   ci_for_line_of_fit = FALSE,
   x_axis_label = NULL,
   y_axis_label = NULL,
-  point_size = 0.5,
+  point_size = 2,
   point_label_size = NULL,
   point_size_range = c(3, 12),
   jitter_x_percent = 0,

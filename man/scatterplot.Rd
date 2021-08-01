@@ -17,7 +17,7 @@ scatterplot(
   ci_for_line_of_fit = FALSE,
   x_axis_label = NULL,
   y_axis_label = NULL,
-  point_size = 0.5,
+  point_size = 2,
   point_label_size = NULL,
   point_size_range = c(3, 12),
   jitter_x_percent = 0,
@@ -65,7 +65,7 @@ confidence interval for the line of fit will be shaded}
 
 \item{y_axis_label}{alternative label for the y axis}
 
-\item{point_size}{size of the dots on the plot (default = 0.5)}
+\item{point_size}{size of the dots on the plot (default = 2)}
 
 \item{point_label_size}{size for dots' labels on the plot. If no
 input is entered for this argument, it will be set as
