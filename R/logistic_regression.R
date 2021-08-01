@@ -54,7 +54,6 @@
 #' formula_1 = am ~ mpg,
 #' formula_2 = am ~ mpg + wt)
 #' @export
-# logistic regression with one interaction term
 logistic_regression <- function(
   data = NULL,
   formula = NULL,

@@ -35,7 +35,6 @@
 #' z_values_keep = TRUE, constant_row_clean = FALSE,
 #' odds_ratio_cols_combine = FALSE)
 #' @export
-# logistic regression with one interaction term
 logistic_regression_table <- function(
   logistic_reg_glm_object = NULL,
   z_values_keep = FALSE,
