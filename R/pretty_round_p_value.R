@@ -22,12 +22,12 @@ pretty_round_p_value <- function(
   round_digits_after_decimal = 3,
   include_p_equals = FALSE) {
   # check if negative values exist
-  if (any(p_value_vector < 0)) {
+  if (any(p_value_vector[!is.na(p_value_vector)] < 0)) {
     stop(paste0("The input for p_value_vector contains a negative ",
     "p-value, which should not possible."))
   }
   # check if p-values are between 0 and 1
-  if (any(p_value_vector > 1)) {
+  if (any(p_value_vector[!is.na(p_value_vector)] > 1)) {
     stop(paste0("The input for p_value_vector contains a p-value ",
                 "greater than 1, which should not possible."))
   }
