@@ -24,12 +24,13 @@ the output will be a character vector with p values, e.g.,
 a vector of strings like "< .001" (or "p < .001").
 }
 \description{
-Pretty round p-value
+Round p-values to the desired number of decimals and remove
+leading 0s before the decimal.
 }
 \examples{
+pretty_round_p_value(0.0495, 3)
 pretty_round_p_value(
   p_value_vector = 0.049,
-  round_digits_after_decimal = 2, include_p_equals = FALSE
-)
-pretty_round_p_value(c(0.0015, 0.0014), include_p_equals = TRUE)
+  round_digits_after_decimal = 2, include_p_equals = FALSE)
+pretty_round_p_value(c(0.0015, 0.0014, 0.0009), include_p_equals = TRUE)
 }
