@@ -32,9 +32,16 @@ replace_values_in_dt <- function(
       'the argument, "old_values".'))
   }
   # check if the old values are all na
-  if (identical(unique(old_values), NA)) {
+  if (all(is.na(unique(old_values)))) {
     count_of_old_values <- sum(is.na(dt))
     if (count_of_old_values > 0) {
+      # check for duplicated columns
+      if (any(duplicated(names(dt)))) {
+        message(
+          "Applying a slower function due to duplicates in column names...")
+        dt[is.na(dt)] <- new_value
+      }
+      # probably a faster process
       for (col in names(dt)) {
         data.table::set(
           dt, i = which(is.na(dt[[col]])), j = col, value = new_value)
@@ -45,6 +52,13 @@ replace_values_in_dt <- function(
   if (length(old_values) == 1) {
     count_of_old_values <- sum(dt == old_values, na.rm = TRUE)
     if (count_of_old_values > 0) {
+      # check for duplicated columns
+      if (any(duplicated(names(dt)))) {
+        message(
+          "Applying a slower function due to duplicates in column names...")
+        dt[dt == old_values] <- new_value
+      }
+      # probably a faster process
       for (col in names(dt)) {
         data.table::set(
           dt, i = which(dt[[col]] == old_values), j = col, value = new_value)
@@ -58,6 +72,13 @@ replace_values_in_dt <- function(
     })
     count_of_old_values <- sum(unlist(count_list))
     if (count_of_old_values > 0) {
+      # check for duplicated columns
+      if (any(duplicated(names(dt)))) {
+        message(
+          "Applying a slower function due to duplicates in column names...")
+        dt[dt %in% old_values] <- new_value
+      }
+      # probably a faster process
       for (col in names(dt)) {
         data.table::set(
           dt, i = which(dt[[col]] %in% old_values), j = col,
