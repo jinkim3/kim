@@ -7,8 +7,10 @@
 #' provided, a default theme will be used.
 #' @param vector a character vector in which to search for regular expression
 #' matches
-#' @param mute_report logical. Should the report on regular expression
-#' matches be printed?
+#' @param silent logical. If \code{silent = FALSE}, a report on regular
+#' expression matches will be printed. If \code{silent = TRUE}, the report
+#' on regular expression matches will not be printed.
+#' By default, \code{silent = FALSE}
 #' @param perl logical. Should Perl-compatible regexps be used?
 #'
 #' @examples
@@ -19,9 +21,9 @@
 #' @export
 regex_match <- function(
   regex = NULL, vector = NULL,
-  mute_report = FALSE, perl = FALSE) {
+  silent = FALSE, perl = FALSE) {
   output <- vector[grepl(regex, vector, perl = perl)]
-  if (mute_report == FALSE) {
+  if (silent == FALSE) {
     message(paste0(
       "A total of ", length(output), " matches were found:"))
     cat(output)

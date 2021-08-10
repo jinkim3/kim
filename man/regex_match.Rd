@@ -4,7 +4,7 @@
 \alias{regex_match}
 \title{Regular expression matches}
 \usage{
-regex_match(regex = NULL, vector = NULL, mute_report = FALSE, perl = FALSE)
+regex_match(regex = NULL, vector = NULL, silent = FALSE, perl = FALSE)
 }
 \arguments{
 \item{regex}{a regular expression
@@ -13,8 +13,10 @@ provided, a default theme will be used.}
 \item{vector}{a character vector in which to search for regular expression
 matches}
 
-\item{mute_report}{logical. Should the report on regular expression
-matches be printed?}
+\item{silent}{logical. If \code{silent = FALSE}, a report on regular
+expression matches will be printed. If \code{silent = TRUE}, the report
+on regular expression matches will not be printed.
+By default, \code{silent = FALSE}}
 
 \item{perl}{logical. Should Perl-compatible regexps be used?}
 }

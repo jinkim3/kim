@@ -28,4 +28,7 @@ Replace values in a data.table
 \examples{
 replace_values_in_dt(data = mtcars, old_values = c(0, 1), new_value = 999)
 replace_values_in_dt(data = mtcars, old_values = 21.0, new_value = 888)
+replace_values_in_dt(
+data = data.table::data.table(a = NA_character_, b = NA_character_),
+old_values = NA, new_value = "")
 }

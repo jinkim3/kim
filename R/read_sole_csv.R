@@ -26,7 +26,7 @@ read_sole_csv <- function(
   csv_file_name_vector <- kim::regex_match(
     regex = ".+\\.csv|CSV$",
     vector = file_name_vector,
-    mute_report = TRUE)
+    silent = TRUE)
   # check if there are more than one csv file
   if (length(csv_file_name_vector) > 1) {
     message(paste0(
