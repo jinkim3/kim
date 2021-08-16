@@ -1,9 +1,9 @@
-# kim 0.3.94
+# kim 0.3.95
 * Added function(s) including pivot_table, outlier, 
 logistic_reg_w_interaction, pm, compare_dependent_rs,
 logistic_regression_table, logistic_regression, replace_values_in_dt,
 pretty_round_r, fisher_z_transform, z_to_r_transform, 
-weighted_z, weighted_mean_r, duplicated_values, tv,
+weighted_z, weighted_mean_r, duplicated_values, tv, remove_from_vector,
 and combine_data_across_cols.
 * Fixed the error in function name(s): 
 chi_square_test_pairwise -> chi_squared_test_pairwise
