@@ -28,6 +28,8 @@
 #' p value (default = 6)
 #' @param jn_point_font_size font size for Johnson-Neyman point labels
 #' (default = 6)
+#' @param plot_margin margin for the plot
+#' By default \code{plot_margin = ggplot2::unit(c(60, 7, 7, 7), "pt")}
 #' @param legend_position position of the legend (default = "right").
 #' If \code{legend_position = "none"}, the legend will be removed.
 #' @param reg_line_types types of the regression lines for the two levels
@@ -82,6 +84,7 @@ floodlight_2_by_continuous <- function(
   dot_size = 4,
   interaction_p_value_font_size = 6,
   jn_point_font_size = 6,
+  plot_margin = ggplot2::unit(c(60, 7, 7, 7), "pt"),
   legend_position = "right",
   reg_line_types = c("solid", "dashed"),
   jn_line_types = c("solid", "solid"),
@@ -254,7 +257,7 @@ floodlight_2_by_continuous <- function(
   # allow labeling outside the plot area
   suppressMessages(g1 <- g1 + ggplot2::coord_cartesian(clip = "off"))
   g1 <- g1 + ggplot2::theme(
-    plot.margin = ggplot2::unit(c(60, 7, 7, 7), "pt"))
+    plot.margin = plot_margin)
   # if only one type is entered for jn line
   if (length(jn_line_types) == 1) {
     jn_line_types <- rep(jn_line_types, sum(is.finite(jn_line_pos)))

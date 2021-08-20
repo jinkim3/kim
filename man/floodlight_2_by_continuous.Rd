@@ -18,6 +18,7 @@ floodlight_2_by_continuous(
   dot_size = 4,
   interaction_p_value_font_size = 6,
   jn_point_font_size = 6,
+  plot_margin = ggplot2::unit(c(60, 7, 7, 7), "pt"),
   legend_position = "right",
   reg_line_types = c("solid", "dashed"),
   jn_line_types = c("solid", "solid"),
@@ -65,6 +66,9 @@ p value (default = 6)}
 
 \item{jn_point_font_size}{font size for Johnson-Neyman point labels
 (default = 6)}
+
+\item{plot_margin}{margin for the plot
+By default \code{plot_margin = ggplot2::unit(c(60, 7, 7, 7), "pt")}}
 
 \item{legend_position}{position of the legend (default = "right").
 If \code{legend_position = "none"}, the legend will be removed.}
