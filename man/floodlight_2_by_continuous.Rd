@@ -16,6 +16,8 @@ floodlight_2_by_continuous(
   jitter_y_percent = 0,
   dot_alpha = 0.5,
   dot_size = 4,
+  interaction_p_value_font_size = 6,
+  jn_point_font_size = 6,
   legend_position = "right",
   reg_line_types = c("solid", "dashed"),
   jn_line_types = c("solid", "solid"),
@@ -57,6 +59,12 @@ range of y values#'}
 1 = completely opaque). By default, \code{dot_alpha = 0.5}}
 
 \item{dot_size}{size of the dots (default = 4)}
+
+\item{interaction_p_value_font_size}{font size for the interaction
+p value (default = 6)}
+
+\item{jn_point_font_size}{font size for Johnson-Neyman point labels
+(default = 6)}
 
 \item{legend_position}{position of the legend (default = "right").
 If \code{legend_position = "none"}, the legend will be removed.}

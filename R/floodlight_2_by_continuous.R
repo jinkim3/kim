@@ -24,6 +24,10 @@
 #' @param dot_alpha opacity of the dots (0 = completely transparent,
 #' 1 = completely opaque). By default, \code{dot_alpha = 0.5}
 #' @param dot_size size of the dots (default = 4)
+#' @param interaction_p_value_font_size font size for the interaction
+#' p value (default = 6)
+#' @param jn_point_font_size font size for Johnson-Neyman point labels
+#' (default = 6)
 #' @param legend_position position of the legend (default = "right").
 #' If \code{legend_position = "none"}, the legend will be removed.
 #' @param reg_line_types types of the regression lines for the two levels
@@ -76,6 +80,8 @@ floodlight_2_by_continuous <- function(
   jitter_y_percent = 0,
   dot_alpha = 0.5,
   dot_size = 4,
+  interaction_p_value_font_size = 6,
+  jn_point_font_size = 6,
   legend_position = "right",
   reg_line_types = c("solid", "dashed"),
   jn_line_types = c("solid", "solid"),
@@ -222,7 +228,7 @@ floodlight_2_by_continuous <- function(
       round_digits_after_decimal = round_decimals_int_p_value)
     interaction_p_value_text <- paste0(
       "Interaction ", interaction_p_value)
-    # label jn points
+    # label interaction p value
     g1 <- g1 + ggplot2::annotate(
       geom = "text",
       x = min(dt_2[, mod]) + x_range * 0.5,
@@ -231,7 +237,7 @@ floodlight_2_by_continuous <- function(
       hjust = 0.5, vjust = -3,
       fontface = "bold",
       color = "black",
-      size = 6)
+      size = interaction_p_value_font_size)
   }
   # positions of the lines marking johnson neyman points
   jn_line_pos <- jn_points
@@ -270,7 +276,7 @@ floodlight_2_by_continuous <- function(
       hjust = 0.5, vjust = -0.5,
       fontface = "bold",
       color = "black",
-      size = 6)
+      size = jn_point_font_size)
   }
   # shade
   sig_inside_vs_outside <- ifelse(
