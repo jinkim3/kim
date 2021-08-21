@@ -27,6 +27,12 @@
 #' maximum y values in the data set are 0 and 100, respectively,
 #' the annotated stats will be placed at 5% of the y range (100 - 0)
 #' above the maximum y value, y = 0.05 * (100 - 0) + 100 = 105.
+#' @param annotated_stats_color color of the annotated stats
+#' (default = "green4").
+#' @param annotated_stats_font_size font size of the annotated stats
+#' (default = 6).
+#' @param annotated_stats_font_face font face of the annotated stats
+#' (default = "bold").
 #' @param line_of_fit_type if \code{line_of_fit_type = "lm"}, a regression
 #' line will be fit; if \code{line_of_fit_type = "loess"}, a local
 #' regression line will be fit; if \code{line_of_fit_type = "none"},
@@ -75,6 +81,9 @@ scatterplot <- function(
   alpha = 1,
   annotate_stats = TRUE,
   annotate_y_pos = 5,
+  annotated_stats_color = "green4",
+  annotated_stats_font_size = 6,
+  annotated_stats_font_face = "bold",
   line_of_fit_type = "lm",
   ci_for_line_of_fit = FALSE,
   x_axis_label = NULL,
@@ -218,11 +227,11 @@ scatterplot <- function(
     g1 <- g1 + ggplot2::geom_text(ggplot2::aes(
       x = min(dt02$x) + x_range / 2,
       y = max(dt02$y) + y_range * annotate_y_pos / 100),
-      color = "green4",
+      color = annotated_stats_color,
       label = annotation_01, parse = TRUE,
       hjust = 0.5, vjust = 0.5,
-      size = 6,
-      fontface = "bold"
+      size = annotated_stats_font_size,
+      fontface = annotated_stats_font_face
     )
   }
   # axis labels

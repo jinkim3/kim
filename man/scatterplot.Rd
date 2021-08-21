@@ -13,6 +13,9 @@ scatterplot(
   alpha = 1,
   annotate_stats = TRUE,
   annotate_y_pos = 5,
+  annotated_stats_color = "green4",
+  annotated_stats_font_size = 6,
+  annotated_stats_font_face = "bold",
   line_of_fit_type = "lm",
   ci_for_line_of_fit = FALSE,
   x_axis_label = NULL,
@@ -52,6 +55,15 @@ stats will be placed above the maximum value of y in the data set
 maximum y values in the data set are 0 and 100, respectively,
 the annotated stats will be placed at 5\% of the y range (100 - 0)
 above the maximum y value, y = 0.05 * (100 - 0) + 100 = 105.}
+
+\item{annotated_stats_color}{color of the annotated stats
+(default = "green4").}
+
+\item{annotated_stats_font_size}{font size of the annotated stats
+(default = 6).}
+
+\item{annotated_stats_font_face}{font face of the annotated stats
+(default = "bold").}
 
 \item{line_of_fit_type}{if \code{line_of_fit_type = "lm"}, a regression
 line will be fit; if \code{line_of_fit_type = "loess"}, a local
