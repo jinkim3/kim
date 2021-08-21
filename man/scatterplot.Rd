@@ -18,6 +18,7 @@ scatterplot(
   annotated_stats_font_face = "bold",
   line_of_fit_type = "lm",
   ci_for_line_of_fit = FALSE,
+  line_of_fit_color = "blue",
   x_axis_label = NULL,
   y_axis_label = NULL,
   point_size = 2,
@@ -72,6 +73,8 @@ no line will be fit}
 
 \item{ci_for_line_of_fit}{if \code{ci_for_line_of_fit = TRUE},
 confidence interval for the line of fit will be shaded}
+
+\item{line_of_fit_color}{color of the line of fit (default = "blue")}
 
 \item{x_axis_label}{alternative label for the x axis}
 
