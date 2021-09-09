@@ -1,4 +1,4 @@
-# kim 0.3.98
+# kim 0.3.99
 * Added function(s) including pivot_table, outlier, 
 logistic_reg_w_interaction, pm, compare_dependent_rs,
 logistic_regression_table, logistic_regression, replace_values_in_dt,
@@ -10,7 +10,7 @@ chi_square_test_pairwise -> chi_squared_test_pairwise
 * Updated function(s) including clean_data_from_qualtrics,
 su, find_duplicates, scatterplot, chi_square_test_pairwise, 
 two_way_anova, pretty_round_p_value, combine_data_across_cols, 
-floodlight_2_by_continuous, and prep.
+floodlight_2_by_continuous, remove_from_vector, and prep.
 * Fixed minor bugs
 
 # kim 0.3.13

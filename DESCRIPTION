@@ -6,7 +6,7 @@ Authors@R:
            role = c("aut", "cre"),
            email = "jin.m.kim@yale.edu",
            comment = c(ORCID = "https://orcid.org/0000-0002-5013-3958"))
-Version: 0.3.98
+Version: 0.3.99
 Description: Miscellaneous functions to simplify and expedite
     analyses of experimental data. Examples include a function
     that plots sample means of groups in a factorial experimental design,

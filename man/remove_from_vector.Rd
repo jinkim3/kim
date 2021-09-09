@@ -24,5 +24,7 @@ Remove certain values from a vector
 }
 \examples{
 remove_from_vector(values = 1, vector = 1:3)
+remove_from_vector(values = NA, vector = c(1:3, NA))
+remove_from_vector(values = c(1, NA), vector = c(1:3, NA))
 remove_from_vector(values = 1:5, vector = 1:10)
 }
