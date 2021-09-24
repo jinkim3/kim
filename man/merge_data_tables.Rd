@@ -43,9 +43,23 @@ a = 3:6,
 b = 5:8,
 c = c("w", "x", "y", "z"))
 data_2 <- data.table::data.table(
-id_col = c(1, 4, 99),
-d = 6:8,
+id_col = c(1, 99, 4),
+e = 6:8,
 b = c("p", "q", "r"),
-e = c(TRUE, FALSE, FALSE))
+d = c(TRUE, FALSE, FALSE))
 merge_data_tables(dt1 = data_1, dt2 = data_2, id = "id_col")
+data_3 <- data.table::data.table(
+id_col = 99,
+a = "abc",
+b = TRUE,
+c = TRUE)
+# Note how the value of TRUE gets converted to 1 when merging in Column 'c'
+merge_data_tables(data_1, data_3, id = "id_col")
+data_4 <- data.table::data.table(
+id_col = c(5, 3),
+a = c("a", NA))
+data_5 <- data.table::data.table(
+id_col = 1,
+a = 2)
+merge_data_tables(data_4, data_5, id = "id_col")
 }

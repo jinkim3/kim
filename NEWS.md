@@ -1,3 +1,7 @@
+# kim 0.4.1
+* Fixed a critical error with the function merge_data_tables and
+merge_data_table_list
+
 # kim 0.3.99
 * Added function(s) including pivot_table, outlier, 
 logistic_reg_w_interaction, pm, compare_dependent_rs,
