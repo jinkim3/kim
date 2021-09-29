@@ -1,4 +1,4 @@
-# kim 0.4.4
+# kim 0.4.5
 * Fixed a critical error with the function merge_data_tables and
 merge_data_table_list
 
