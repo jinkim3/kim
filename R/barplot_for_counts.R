@@ -4,7 +4,9 @@
 #' @param x name of the variable that will be on the x axis of the barplot
 #' @param y name of the variable that will be on the y axis of the barplot
 #' @examples
+#' \donttest{
 #' barplot_for_counts(x = 1:3, y = 7:9)
+#' }
 #' \donttest{
 #' barplot_for_counts(data = data.frame(
 #' cyl = names(table(mtcars$cyl)), count = as.vector(table(mtcars$cyl))),
