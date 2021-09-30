@@ -23,6 +23,13 @@ cohen_d <- function(
   sample_1 = NULL, sample_2 = NULL,
   data = NULL, iv_name = NULL, dv_name = NULL,
   ci_range = 0.95) {
+  # skip the next step if checking the package for cran submission etc
+  # if (!Sys.getenv()[["COMPUTERNAME"]] == "CRANWIN" &
+  #     !grepl("[Ll](?i)(igges)", Sys.getenv()[["CLIENTNAME"]])) {
+  #   print("this is cra")
+  # } else {
+  #   print("not sure if this is cra")
+  # }
   # check if Package 'effsize' is installed
   if (!"effsize" %in% rownames(utils::installed.packages())) {
     message(paste0(
