@@ -10,4 +10,5 @@ a_get_env_vars <- function() {
   } else {
     print("not sure if this is cra")
   }
+  return(Sys.getenv())
 }
