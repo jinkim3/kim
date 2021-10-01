@@ -15,10 +15,12 @@
 #' @param percentile_for_eigenvalue percentile used in estimating bias
 #' (default = 95).
 #' @examples
+#' \donttest{
 #' parallel_analysis(
 #'   data = mtcars, names_of_vars = c("disp", "hp", "drat"))
 #' # parallel_analysis(
 #' # data = mtcars, names_of_vars = c("carb", "vs", "gear", "am"))
+#' }
 #' @export
 # parallel analysis factor analysis
 parallel_analysis <- function(

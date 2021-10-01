@@ -36,6 +36,7 @@
 #' @return by default, the output will be a ggplot object.
 #' If \code{output = "table"}, the output will be a data.table object.
 #' @examples
+#' \donttest{
 #' plot_group_means(data = mtcars, dv_name = "mpg", iv_name = c("vs", "am"))
 #' plot_group_means(
 #'   data = mtcars, dv_name = "mpg", iv_name = c("vs", "am"),
@@ -45,6 +46,7 @@
 #'   data = mtcars, dv_name = "mpg", iv_name = c("vs", "am"),
 #'   error_bar = "pi", error_bar_range = 0.99
 #' )
+#' }
 #' @export
 plot_group_means <- function(
   data = NULL,

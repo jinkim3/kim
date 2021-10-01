@@ -22,6 +22,7 @@
 #' only if there are any NA values.
 #' @return the output will be a histogram, a ggplot object.
 #' @examples
+#' \donttest{
 #' histogram(1:100)
 #' histogram(c(1:100, NA))
 #' histogram(vector = mtcars[["mpg"]])
@@ -29,6 +30,7 @@
 #' histogram(vector = mtcars[["mpg"]], x_tick_marks = seq(10, 36, 2),
 #' y_tick_marks = seq(0, 8, 2), y_axis_title_vjust = 0.5,
 #' y_axis_title = "Freq", x_axis_title = "Values of mpg")
+#' }
 #' @export
 histogram <- function(
   vector = NULL,

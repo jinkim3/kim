@@ -16,6 +16,7 @@
 #' ending ID values in each data set will be printed. (default = FALSE)
 #' @return the output will be a list of data.table objects.
 #' @examples
+#' \donttest{
 #' # running the examples below requires importing the data.table package.
 #' prep(data.table)
 #' id_across_datasets(
@@ -24,6 +25,7 @@
 #' dt_list = list(setDT(copy(mtcars)), setDT(copy(iris)), setDT(copy(women))),
 #' id_col_name = "newly_created_id_col",
 #' id_col_position = "last")
+#' }
 #' @export
 id_across_datasets <- function(
   dt_list = NULL,

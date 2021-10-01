@@ -102,10 +102,12 @@ a ggplot object
 Create a histogram with outlier bins
 }
 \examples{
+\donttest{
 histogram_w_outlier_bins(vector = 1:100, bin_cutoffs = seq(0, 100, 10))
 histogram_w_outlier_bins(vector = 0:89, bin_cutoffs = seq(0, 90, 10),
 x_tick_marks = seq(0.5, 9.5, 3), x_tick_mark_labels = seq(0, 90, 30))
 histogram_w_outlier_bins(vector = 1:10, bin_cutoffs = seq(0, 10, 2.5))
 histogram_w_outlier_bins(vector = 1:5, bin_cutoffs = seq(0, 10, 2.5))
 histogram_w_outlier_bins(vector = 1:15, bin_cutoffs = c(5.52, 10.5))
+}
 }

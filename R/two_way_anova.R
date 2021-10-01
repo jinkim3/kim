@@ -53,9 +53,11 @@
 #' \code{"robust_anova_post_hoc_contrast"}
 #' @return by default, the output will be \code{"anova_table"}
 #' @examples
+#' \donttest{
 #' two_way_anova(
 #'   data = mtcars, dv_name = "mpg", iv_1_name = "vs",
 #'   iv_2_name = "am", iterations = 100)
+#' }
 #' @export
 #' @import data.table
 two_way_anova <- function(

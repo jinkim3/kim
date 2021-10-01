@@ -8,9 +8,11 @@
 #' percentage plot; if \code{output_type = "dt"}, return a data.table
 #' with cumulative percentages. By default, \code{output_type = "plot"}
 #' @examples
+#' \donttest{
 #' cum_percent_plot(c(1:100, NA, NA))
 #' cum_percent_plot(mtcars$mpg)
 #' cum_percent_plot(vector= mtcars$mpg, output_type = "dt")
+#' }
 #' @export
 cum_percent_plot <- function(vector, output_type = "plot") {
   # check if Package 'ggplot2' is installed

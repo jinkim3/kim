@@ -23,7 +23,9 @@
 #' @return the output will be a data.table showing multiple regression
 #' results.
 #' @examples
+#' \donttest{
 #' multiple_regression(data = mtcars, formula = mpg ~ gear * cyl)
+#' }
 #' @export
 multiple_regression <- function(
   data = NULL,

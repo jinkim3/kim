@@ -75,6 +75,7 @@ If \code{output = "table"}, the output will be a data.table object.
 Creates a plot of sample means and error bars by group.
 }
 \examples{
+\donttest{
 plot_group_means(data = mtcars, dv_name = "mpg", iv_name = c("vs", "am"))
 plot_group_means(
   data = mtcars, dv_name = "mpg", iv_name = c("vs", "am"),
@@ -84,4 +85,5 @@ plot_group_means(
   data = mtcars, dv_name = "mpg", iv_name = c("vs", "am"),
   error_bar = "pi", error_bar_range = 0.99
 )
+}
 }

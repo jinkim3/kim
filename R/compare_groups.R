@@ -19,7 +19,9 @@
 #' (histogram by group) (2) a data.table with descriptive statistics by
 #' group; and (3) a data.table with pairwise comparison results
 #' @examples
+#' \donttest{
 #' compare_groups(data = iris, iv_name = "Species", dv_name = "Sepal.Length")
+#' }
 #' @export
 #' @import data.table
 compare_groups <- function(

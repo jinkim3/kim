@@ -17,10 +17,12 @@
 #' but consider increasing the number of samples to 5000, 10000, or an
 #' even larger number, if slower handling time is not an issue.
 #' @examples
+#' \donttest{
 #' robust_regression(
 #'   data = mtcars, formula = mpg ~ cyl * hp,
 #'   iterations = 100
 #' )
+#' }
 #' @export
 robust_regression <- function(
   data = NULL, formula = NULL, sigfigs = NULL,

@@ -101,7 +101,9 @@ Mair & Wilcox (2021),
 \url{https://cran.r-project.org/package=WRS2}
 }
 \examples{
+\donttest{
 two_way_anova(
   data = mtcars, dv_name = "mpg", iv_1_name = "vs",
   iv_2_name = "am", iterations = 100)
+}
 }

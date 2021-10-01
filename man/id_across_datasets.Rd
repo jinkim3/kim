@@ -35,6 +35,7 @@ Create an ID column in each of the data sets. The ID values will
 span across the data sets.
 }
 \examples{
+\donttest{
 # running the examples below requires importing the data.table package.
 prep(data.table)
 id_across_datasets(
@@ -43,4 +44,5 @@ id_across_datasets(
 dt_list = list(setDT(copy(mtcars)), setDT(copy(iris)), setDT(copy(women))),
 id_col_name = "newly_created_id_col",
 id_col_position = "last")
+}
 }

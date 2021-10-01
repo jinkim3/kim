@@ -49,6 +49,7 @@ Claus O. Wilke (2021),
 \url{https://cran.r-project.org/package=ggridges}
 }
 \examples{
+\donttest{
 histogram_by_group(data = mtcars, iv_name = "cyl", dv_name = "mpg")
 histogram_by_group(
   data = mtcars, iv_name = "cyl", dv_name = "mpg",
@@ -57,4 +58,5 @@ histogram_by_group(
 )
 histogram_by_group(
 data = iris, iv_name = "Species", dv_name = "Sepal.Length")
+}
 }

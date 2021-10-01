@@ -7,7 +7,6 @@
   # 4. current package version > github package version -> no
   # 5. current package version == github package version -> no
   # in short, notify the option to update unless the version numbers match
-
   # get version of the currently installed package
   current_pkg_version <- tryCatch(
     as.character(utils::packageVersion("kim")),

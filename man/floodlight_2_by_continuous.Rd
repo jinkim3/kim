@@ -123,9 +123,11 @@ Jacob A. Long (2019),
 \url{https://cran.r-project.org/package=interactions}
 }
 \examples{
+\donttest{
 floodlight_2_by_continuous(
 data = mtcars,
 iv_name = "am",
 dv_name = "mpg",
 mod_name = "qsec")
+}
 }

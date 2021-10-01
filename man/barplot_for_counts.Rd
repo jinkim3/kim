@@ -17,8 +17,10 @@ barplot_for_counts(data = NULL, x, y)
 Barplot for counts
 }
 \examples{
+\donttest{
 barplot_for_counts(x = 1:3, y = 7:9)
 barplot_for_counts(data = data.frame(
 cyl = names(table(mtcars$cyl)), count = as.vector(table(mtcars$cyl))),
 x = "cyl", y = "count")
+}
 }

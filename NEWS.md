@@ -1,6 +1,9 @@
-# kim 0.4.10
+# kim 0.4.21
 * Fixed a critical error with the function merge_data_tables and
 merge_data_table_list
+* Plotting examples are now set to be skipped in the package testing 
+phase (to avoid producing NOTEs that prevent the package from being 
+published on CRAN)
 
 # kim 0.3.99
 * Added function(s) including pivot_table, outlier, 

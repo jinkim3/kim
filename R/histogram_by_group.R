@@ -23,6 +23,7 @@
 #' (a ggplot object), i.e., one histogram for each level of the
 #' independent variable.
 #' @examples
+#' \donttest{
 #' histogram_by_group(data = mtcars, iv_name = "cyl", dv_name = "mpg")
 #' histogram_by_group(
 #'   data = mtcars, iv_name = "cyl", dv_name = "mpg",
@@ -31,6 +32,7 @@
 #' )
 #' histogram_by_group(
 #' data = iris, iv_name = "Species", dv_name = "Sepal.Length")
+#' }
 #' @export
 #' @import data.table
 histogram_by_group <- function(

@@ -47,5 +47,7 @@ Stefan Behrendt (2014),
 \url{https://cran.r-project.org/package=lm.beta}
 }
 \examples{
+\donttest{
 multiple_regression(data = mtcars, formula = mpg ~ gear * cyl)
+}
 }

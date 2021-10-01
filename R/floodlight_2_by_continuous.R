@@ -63,11 +63,13 @@
 #' decimal point should the p value for the interaction term be
 #' rounded? (default = 3)
 #' @examples
+#' \donttest{
 #' floodlight_2_by_continuous(
 #' data = mtcars,
 #' iv_name = "am",
 #' dv_name = "mpg",
 #' mod_name = "qsec")
+#' }
 #' @export
 #' @import data.table
 floodlight_2_by_continuous <- function(
