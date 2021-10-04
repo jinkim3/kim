@@ -23,7 +23,7 @@
 #' these values for the second independent variable
 #' @param sigfigs number of significant digits to which to round
 #' values in anova table (default = 3)
-#' @param robust if \code{TRUE}, conduct a robust ANOAVA in addition.
+#' @param robust if \code{TRUE}, conduct a robust ANOVA in addition.
 #' @param iterations number of bootstrap samples for robust ANOVA.
 #' The default is set at 2000, but consider increasing the number
 #' of samples to 5000, 10000, or an even larger number, if slower
@@ -50,13 +50,17 @@
 #' @param output output type can be one of the following: \code{"anova_table"},
 #' \code{"group_stats"}, \code{"plot"}, \code{"levene_test_result"},
 #' \code{"robust_anova_results"}, \code{"robust_anova_post_hoc_results"},
-#' \code{"robust_anova_post_hoc_contrast"}
+#' \code{"robust_anova_post_hoc_contrast"}, \code{"all"}
 #' @return by default, the output will be \code{"anova_table"}
 #' @examples
 #' \donttest{
 #' two_way_anova(
 #'   data = mtcars, dv_name = "mpg", iv_1_name = "vs",
 #'   iv_2_name = "am", iterations = 100)
+#' anova_results <- two_way_anova(
+#'   data = mtcars, dv_name = "mpg", iv_1_name = "vs",
+#'   iv_2_name = "am", output = "all")
+#' anova_results
 #' }
 #' @export
 #' @import data.table
@@ -78,7 +82,7 @@ two_way_anova <- function(
   error_bar_tip_width = 0.13,
   position_dodge = 0.13,
   legend_position = "right",
-  output = NULL) {
+  output = "anova_table") {
   # installed packages
   installed_pkgs <- rownames(utils::installed.packages())
   # check if Package 'ggplot2' is installed
@@ -131,10 +135,6 @@ two_way_anova <- function(
   }
   # bind the vars locally to the function
   p <- NULL
-  # default output
-  if (is.null(output)) {
-    output <- "anova_table"
-  }
   # convert data to data table
   dt1 <- data.table::setDT(data.table::copy(data))
   dt1 <- dt1[, c(iv_1_name, iv_2_name, dv_name), with = FALSE]
@@ -173,7 +173,7 @@ two_way_anova <- function(
   message(paste0("\nGroup Statistics on ", dv_name, ":"))
   print(group_stats)
   # print or return plot
-  if (plot == TRUE | output == "plot") {
+  if (plot == TRUE | output %in% c("plot", "all")) {
     g1 <- kim::plot_group_means(
       data = dt2,
       dv_name = dv_name,
@@ -194,11 +194,9 @@ two_way_anova <- function(
   data.table::setorderv(dt2, c(iv_1_name, iv_2_name))
   # levene's test
   formula_1 <- stats::as.formula(
-    paste0(dv_name, " ~ ", iv_1_name, " * ", iv_2_name)
-  )
+    paste0(dv_name, " ~ ", iv_1_name, " * ", iv_2_name))
   levene_test_result <- levene_test_fn_from_car(
-    y = formula_1, data = dt2
-  )
+    y = formula_1, data = dt2)
   levene_test_p_value <- levene_test_result[["Pr(>F)"]][1]
   message("\nLevene's Test Results:")
   print(levene_test_result)
@@ -255,5 +253,14 @@ two_way_anova <- function(
   }
   if (output == "robust_anova_post_hoc_contrast") {
     invisible(robust_anova_post_hoc_contrast)
+  }
+  # return all
+  if (output == "all") {
+    output <- list(
+      "group_stats" = group_stats,
+      "levene_test_result" = levene_test_result,
+      "anova_table" = anova_table,
+      "plot" = g1)
+    invisible(output)
   }
 }

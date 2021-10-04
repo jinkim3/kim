@@ -22,7 +22,7 @@ two_way_anova(
   error_bar_tip_width = 0.13,
   position_dodge = 0.13,
   legend_position = "right",
-  output = NULL
+  output = "anova_table"
 )
 }
 \arguments{
@@ -43,7 +43,7 @@ these values for the second independent variable}
 \item{sigfigs}{number of significant digits to which to round
 values in anova table (default = 3)}
 
-\item{robust}{if \code{TRUE}, conduct a robust ANOAVA in addition.}
+\item{robust}{if \code{TRUE}, conduct a robust ANOVA in addition.}
 
 \item{iterations}{number of bootstrap samples for robust ANOVA.
 The default is set at 2000, but consider increasing the number
@@ -80,7 +80,7 @@ be horizontally offset from each other so as not to overlap?
 \item{output}{output type can be one of the following: \code{"anova_table"},
 \code{"group_stats"}, \code{"plot"}, \code{"levene_test_result"},
 \code{"robust_anova_results"}, \code{"robust_anova_post_hoc_results"},
-\code{"robust_anova_post_hoc_contrast"}}
+\code{"robust_anova_post_hoc_contrast"}, \code{"all"}}
 }
 \value{
 by default, the output will be \code{"anova_table"}
@@ -105,5 +105,9 @@ Mair & Wilcox (2021),
 two_way_anova(
   data = mtcars, dv_name = "mpg", iv_1_name = "vs",
   iv_2_name = "am", iterations = 100)
+anova_results <- two_way_anova(
+  data = mtcars, dv_name = "mpg", iv_1_name = "vs",
+  iv_2_name = "am", output = "all")
+anova_results
 }
 }

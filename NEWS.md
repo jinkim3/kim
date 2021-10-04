@@ -1,3 +1,6 @@
+# kim 0.4.22
+* Added function(s) including simple_effects_analysis.
+
 # kim 0.4.21
 * Fixed a critical error with the function merge_data_tables and
 merge_data_table_list

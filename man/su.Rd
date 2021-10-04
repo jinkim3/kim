@@ -10,9 +10,11 @@ su(x = NULL, na.last = TRUE, decreasing = FALSE)
 \item{x}{a vector or a data frame or an array or NULL.}
 
 \item{na.last}{an argument to be passed onto the 'sort' function
-(in base R) for controlling the treatment of NAs.
-If TRUE, missing values in the data are put last; if FALSE, they
-are put first; if NA, they are removed. By default, \code{na.last = TRUE}}
+(in base R) for controlling the treatment of NA values.
+If \code{na.last = TRUE}, NA values in the data are put last;
+if \code{na.last = FALSE}, NA values are put first;
+if \code{na.last = NA}, NA values are removed.
+By default, \code{na.last = TRUE}}
 
 \item{decreasing}{logical. Should the sort be increasing or decreasing?
 An argument to be passed onto the 'sort' function (in base R).
