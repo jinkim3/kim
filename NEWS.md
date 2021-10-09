@@ -1,3 +1,9 @@
+# kim 0.4.23
+* Updated the following functions (and other functions that use them): 
+desc_stats_by_group
+* Fixed bugs or errors in the following functions (and other functions
+that use them): round_flexibly
+
 # kim 0.4.22
 * Added function(s) including simple_effects_analysis.
 

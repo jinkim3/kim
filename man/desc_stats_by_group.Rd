@@ -8,6 +8,7 @@ desc_stats_by_group(
   data = NULL,
   var_for_stats = NULL,
   grouping_vars = NULL,
+  stats = "all",
   sigfigs = NULL,
   cols_to_round = NULL
 )
@@ -34,4 +35,11 @@ Returns descriptive statistics by group
 \examples{
 desc_stats_by_group(data = mtcars, var_for_stats = "mpg",
 grouping_vars = c("vs", "am"))
+desc_stats_by_group(data = mtcars, var_for_stats = "mpg",
+grouping_vars = c("vs", "am"), sigfigs = 3)
+desc_stats_by_group(data = mtcars, var_for_stats = "mpg",
+grouping_vars = c("vs", "am"), stats = "basic", sigfigs = 2)
+desc_stats_by_group(data = mtcars, var_for_stats = "mpg",
+grouping_vars = c("vs", "am"), stats = "basic", sigfigs = 2,
+cols_to_round = "all")
 }

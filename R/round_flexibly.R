@@ -96,10 +96,10 @@ round_flexibly <- function(
     nums_sigfig_rounded <- signif(non_na_values, sigfigs)
     # count the digits in the first part of the scientific
     # notation of individual numbers
-    num_digits_in_sci_notn_pt_1 <- nchar(
-      gsub("\\.", "", vapply(nums_sigfig_rounded, function(j) {
-        gsub("(^.*)e.*$", "\\1", format(j, scientific = TRUE))
-      }, character(1L))))
+    num_digits_in_sci_notn_pt_1 <- vapply(nums_sigfig_rounded, function(j) {
+      nchar(gsub("[^0-9]+", "", gsub(
+        "^(.*)e.*$", "\\1", format(j, scientific = TRUE))))
+    }, numeric(1L))
     # extract the precision level from the second part of the
     # scientific notation
     preci_lvl_from_sci_notn_pt_2 <- as.numeric(
