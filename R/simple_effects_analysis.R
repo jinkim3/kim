@@ -44,12 +44,14 @@ simple_effects_analysis <- function(
   print_contrast_table = "weights_sums_and_products",
   output = NULL
 ) {
+  # bind the vars locally to the function
+  iv1 <- iv2 <- dv <- simple <- NULL
   # convert data to data table
   dt1 <- data.table::setDT(data.table::copy(data))
   dt1 <- dt1[, c(iv_1_name, iv_2_name, dv_name), with = FALSE]
   names(dt1) <- c("iv1", "iv2", "dv")
   # omit na values
-  dt1 <- na.omit(dt1)
+  dt1 <- stats::na.omit(dt1)
   # deal with missing values
   if (is.null(iv_1_levels)) {
     iv_1_levels <- kim::su(dt1[["iv1"]], na.last = NA)
@@ -77,7 +79,7 @@ simple_effects_analysis <- function(
   simple_effect_levels <- paste0(
     rep(iv_1_levels, each = iv_2_num_of_levels), "_",
     rep(iv_2_levels, iv_1_num_of_levels))
-  dt1[, simple := factor(
+  dt1[, "simple" := factor(
     paste0(iv1, "_", iv2), levels = simple_effect_levels)]
   # contrast table
   contrast_table_ncol <- iv_1_num_of_levels * iv_2_num_of_levels
@@ -138,8 +140,8 @@ simple_effects_analysis <- function(
     paste0(iv_2_name, " at ", iv_1_name, " = ", iv_1_levels))
   # check if orthogonal
   contrast_dt_2 <- data.table::copy(contrast_dt)
-  contrast_dt_2[, weight_sum := rowSums(contrast_dt_2)]
-  if (setequal(0, contrast_dt_2[, weight_sum]) == FALSE) {
+  contrast_dt_2[, "weight_sum" := rowSums(contrast_dt_2)]
+  if (setequal(0, contrast_dt_2[["weight_sum"]]) == FALSE) {
     stop(paste0(
       "The sums of contrast weights are not all equal to 0.",
       " The set of contrasts may not be orthogoal."))
@@ -153,7 +155,7 @@ simple_effects_analysis <- function(
       " The set of contrasts may not be orthogoal."))
   }
   contrast_dt_2 <- rbind(contrast_dt_2, group_weights_products)
-  contrast_dt_2[, Contrast := c(
+  contrast_dt_2[, "Contrast" := c(
     contrast_names, "..Product of Group Weights")]
   data.table::setcolorder(contrast_dt_2, "Contrast")
   # print depending on conditions
@@ -165,18 +167,18 @@ simple_effects_analysis <- function(
   # contrasts as a matrix for anova
   contrast_mat <- t(as.matrix(contrast_dt))
   colnames(contrast_mat) <- paste0(": ", contrast_names)
-  contrasts(dt1$simple) <- contrast_mat
+  stats::contrasts(dt1$simple) <- contrast_mat
   # simple effects analysis
-  simple_effects_formula <- as.formula("dv ~ simple")
+  simple_effects_formula <- stats::as.formula("dv ~ simple")
   simple_effects_model <- stats::aov(simple_effects_formula, data = dt1)
   # print the results
-  print(summary.lm(simple_effects_model))
+  print(stats::summary.lm(simple_effects_model))
   # output of the function
   if (is.null(output) == FALSE) {
     if (output == "lm_object") {
       output <- simple_effects_model
     } else if (output == "table") {
-      output <- summary.lm(simple_effects_model)$coefficients
+      output <- stats::summary.lm(simple_effects_model)$coefficients
     } else if (output == "weights_only") {
       output <- contrast_dt
     } else if (output == "weights_sums_and_products") {
@@ -184,7 +186,7 @@ simple_effects_analysis <- function(
     } else if (output == "all") {
       output <- list(
         lm_object = simple_effects_model,
-        table = summary.lm(simple_effects_model)$coefficients,
+        table = stats::summary.lm(simple_effects_model)$coefficients,
         weights_only = contrast_dt,
         weights_sums_and_products = contrast_dt_2)
     }

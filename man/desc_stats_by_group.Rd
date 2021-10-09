@@ -21,6 +21,15 @@ statistics will be calculated}
 
 \item{grouping_vars}{name(s) of grouping variables}
 
+\item{stats}{statistics to calculate. If \code{stats = "basic"},
+group size, mean, standard deviation, median, minimum, and maximum will
+be calculated. If \code{stats = "all"}, in addition to the
+aforementioned statistics, standard error, 95\% confidence and
+prediction intervals, skewness, and kurtosis will also be calculated.
+The \code{stats} argument can also be a character vector with types of
+statistics to calculate. For example, entering
+\code{stats = c("mean", "median")} will calculate mean and median.}
+
 \item{sigfigs}{number of significant digits to round to}
 
 \item{cols_to_round}{names of columns whose values will be rounded}
@@ -41,5 +50,8 @@ desc_stats_by_group(data = mtcars, var_for_stats = "mpg",
 grouping_vars = c("vs", "am"), stats = "basic", sigfigs = 2)
 desc_stats_by_group(data = mtcars, var_for_stats = "mpg",
 grouping_vars = c("vs", "am"), stats = "basic", sigfigs = 2,
+cols_to_round = "all")
+desc_stats_by_group(data = mtcars, var_for_stats = "mpg",
+grouping_vars = c("vs", "am"), stats = c("mean", "median"), sigfigs = 2,
 cols_to_round = "all")
 }

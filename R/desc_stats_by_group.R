@@ -6,6 +6,14 @@
 #' @param var_for_stats name of the variable for which descriptive
 #' statistics will be calculated
 #' @param grouping_vars name(s) of grouping variables
+#' @param stats statistics to calculate. If \code{stats = "basic"},
+#' group size, mean, standard deviation, median, minimum, and maximum will
+#' be calculated. If \code{stats = "all"}, in addition to the
+#' aforementioned statistics, standard error, 95% confidence and
+#' prediction intervals, skewness, and kurtosis will also be calculated.
+#' The \code{stats} argument can also be a character vector with types of
+#' statistics to calculate. For example, entering
+#' \code{stats = c("mean", "median")} will calculate mean and median.
 #' @param sigfigs number of significant digits to round to
 #' @param cols_to_round names of columns whose values will be rounded
 #' @return the output will be a data.table showing descriptive statistics
@@ -20,6 +28,9 @@
 #' desc_stats_by_group(data = mtcars, var_for_stats = "mpg",
 #' grouping_vars = c("vs", "am"), stats = "basic", sigfigs = 2,
 #' cols_to_round = "all")
+#' desc_stats_by_group(data = mtcars, var_for_stats = "mpg",
+#' grouping_vars = c("vs", "am"), stats = c("mean", "median"), sigfigs = 2,
+#' cols_to_round = "all")
 #' @export
 #' @import data.table
 desc_stats_by_group <- function(
@@ -29,6 +40,8 @@ desc_stats_by_group <- function(
   stats = "all",
   sigfigs = NULL,
   cols_to_round = NULL) {
+  # bind the vars locally to the function
+  .temp_col. <- NULL
   # copy data
   dt1 <- data.table::setDT(data.table::copy(data))
   # omit na values
@@ -37,7 +50,7 @@ desc_stats_by_group <- function(
   dt3 <- dt2[, list(.temp_col. = 1),
              keyby = grouping_vars][, .temp_col. := NULL][]
   # which stats to include?
-  if (stats == "all") {
+  if (identical(stats, "all")) {
     dt4 <- dt2[, list(
       n = length(get(var_for_stats)),
       mean = as.numeric(mean(get(var_for_stats), na.rm = TRUE)),
@@ -69,7 +82,7 @@ desc_stats_by_group <- function(
       keyby = grouping_vars]
     # keep only the stats
     dt4 <- dt4[, (seq_along(grouping_vars)) := NULL][]
-  } else if (stats == "basic") {
+  } else if (identical(stats, "basic")) {
     dt4 <- dt2[, list(
       n = length(get(var_for_stats)),
       mean = as.numeric(mean(get(var_for_stats), na.rm = TRUE)),
@@ -81,6 +94,8 @@ desc_stats_by_group <- function(
     # keep only the stats
     dt4 <- dt4[, (seq_along(grouping_vars)) := NULL][]
   } else {
+    # copy dt
+    dt4 <- data.table::copy(dt3)
     if ("n" %in% stats) {
       dt4[, "n" := dt2[, list(
         .temp_col. = length(get(var_for_stats))),
@@ -163,6 +178,8 @@ desc_stats_by_group <- function(
         .temp_col. = as.numeric(kim::kurtosis(get(var_for_stats)))),
         keyby = grouping_vars][, .temp_col.]]
     }
+    # keep only the stats
+    dt4 <- dt4[, (seq_along(grouping_vars)) := NULL][]
   }
   # round to significant digits
   if (!is.null(sigfigs)) {

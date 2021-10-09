@@ -1,4 +1,4 @@
-# kim 0.4.23
+# kim 0.4.25
 * Updated the following functions (and other functions that use them): 
 desc_stats_by_group
 * Fixed bugs or errors in the following functions (and other functions
