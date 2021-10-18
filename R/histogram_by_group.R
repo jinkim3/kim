@@ -184,12 +184,12 @@ histogram_by_group <- function(
   )
   # axis titles
   if (xlab == FALSE) {
-    g1 <- g1 + ggplot2::theme(axis.title.x = ggplot2::element_bank())
+    g1 <- g1 + ggplot2::theme(axis.title.x = ggplot2::element_blank())
   } else if (!is.null(xlab)) {
     g1 <- g1 + ggplot2::xlab(xlab)
   }
   if (ylab == FALSE) {
-    g1 <- g1 + ggplot2::theme(axis.title.y = ggplot2::element_bank())
+    g1 <- g1 + ggplot2::theme(axis.title.y = ggplot2::element_blank())
   } else if (!is.null(ylab)) {
     g1 <- g1 + ggplot2::ylab(ylab)
   }
