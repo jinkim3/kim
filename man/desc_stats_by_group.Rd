@@ -28,7 +28,8 @@ aforementioned statistics, standard error, 95\% confidence and
 prediction intervals, skewness, and kurtosis will also be calculated.
 The \code{stats} argument can also be a character vector with types of
 statistics to calculate. For example, entering
-\code{stats = c("mean", "median")} will calculate mean and median.}
+\code{stats = c("mean", "median")} will calculate mean and median.
+By default, \code{stats = "all"}}
 
 \item{sigfigs}{number of significant digits to round to}
 

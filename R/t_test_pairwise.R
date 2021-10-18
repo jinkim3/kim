@@ -7,13 +7,17 @@
 #' @param iv_name name of the independent variable
 #' @param dv_name name of the dependent variable
 #' @param sigfigs number of significant digits to round to
-#' @param t_test_df_decimals number of decimals for the degrees of freedom
-#' in t-tests (default = 1)
+#' @param cohen_d if \code{cohen_d = TRUE}, Cohen's d statistics will be
+#' included in the output data.table.
+#' @param bonferroni if \code{bonferroni = TRUE}, Bonferroni tests will be
+#' conducted for t-tests or Mann-Whitney tests.
 #' @param mann_whitney if \code{TRUE}, Mann-Whitney test results will be
-#' included in the output data.table. If \code{TRUE}, Mann-Whitney
+#' included in the output data.table. If \code{FALSE}, Mann-Whitney
 #' tests will not be performed.
 #' @param t_test_stats if \code{t_test_stats = TRUE}, t-test statistic
 #' and degrees of freedom will be included in the output data.table.
+#' @param t_test_df_decimals number of decimals for the degrees of freedom
+#' in t-tests (default = 1)
 #' @param sd if \code{sd = TRUE}, standard deviations will be
 #' included in the output data.table.
 #' @return the output will be a data.table showing results of all
@@ -31,6 +35,8 @@ t_test_pairwise <- function(
   iv_name = NULL,
   dv_name = NULL,
   sigfigs = 3,
+  cohen_d = TRUE,
+  bonferroni = TRUE,
   mann_whitney = TRUE,
   t_test_stats = FALSE,
   t_test_df_decimals = 1,
@@ -44,14 +50,15 @@ t_test_pairwise <- function(
       "Please enter only one IV."))
   }
   # remove na
-  dt01 <- setDT(copy(data))[, c(iv_name, dv_name), with = FALSE]
+  dt01 <- data.table::setDT(data.table::copy(
+    data))[, c(iv_name, dv_name), with = FALSE]
   names(dt01) <- c("iv", "dv")
   # convert iv to factor
   dt01[, iv := factor(iv)]
   dt01 <- stats::na.omit(dt01)
   # pairs
   group <- sort(unique(dt01$iv))
-  dt02 <- data.table(t(utils::combn(group, 2)))
+  dt02 <- data.table::data.table(t(utils::combn(group, 2)))
   names(dt02) <- c("group_1", "group_2")
   # group sizes
   group_sizes <- lapply(seq_len(nrow(dt02)), function(i) {
@@ -60,7 +67,7 @@ t_test_pairwise <- function(
     output <- c(group_1_n, group_2_n)
     return(output)
   })
-  group_sizes_dt <- as.data.table(do.call(rbind, group_sizes))
+  group_sizes_dt <- data.table::as.data.table(do.call(rbind, group_sizes))
   names(group_sizes_dt) <- c("group_1_n", "group_2_n")
   # group means
   group_1_mean <-
@@ -83,55 +90,58 @@ t_test_pairwise <- function(
         FUN.VALUE = numeric(1L))
   }
   # cohen d
-  cohen_d <- vapply(seq_len(nrow(dt02)), function(i) {
-    temp <- dt01[iv %in% dt02[i, ]]
-    temp[, iv := factor(iv)]
-    kim::cohen_d_from_cohen_textbook(
-      data = temp, iv_name = "iv", dv_name = "dv")},
-    FUN.VALUE = numeric(1L))
-  # t stat
-  t_test_stat <- vapply(seq_len(nrow(dt02)), function(i) {
-    stats::t.test(dv ~ iv, dt01[iv %in% dt02[i, ]])[["statistic"]]},
-    FUN.VALUE = numeric(1L))
-  # t stat df
-  t_test_df <- vapply(seq_len(nrow(dt02)), function(i) {
-    stats::t.test(dv ~ iv, dt01[iv %in% dt02[i, ]])[["parameter"]][["df"]]},
-    FUN.VALUE = numeric(1L))
+  if (cohen_d == TRUE) {
+    cohen_d_stat <- vapply(seq_len(nrow(dt02)), function(i) {
+      temp <- dt01[iv %in% dt02[i, ]]
+      temp[, iv := factor(iv)]
+      kim::cohen_d_from_cohen_textbook(
+        data = temp, iv_name = "iv", dv_name = "dv")},
+      FUN.VALUE = numeric(1L))
+  }
+  # t stats?
+  if (t_test_stats == TRUE) {
+    # t stat
+    t_test_stat <- vapply(seq_len(nrow(dt02)), function(i) {
+      stats::t.test(dv ~ iv, dt01[iv %in% dt02[i, ]])[["statistic"]]},
+      FUN.VALUE = numeric(1L))
+    # t stat df
+    t_test_df <- vapply(seq_len(nrow(dt02)), function(i) {
+      stats::t.test(
+        dv ~ iv, dt01[iv %in% dt02[i, ]])[["parameter"]][["df"]]},
+      FUN.VALUE = numeric(1L))
+  }
   # t test p values
   t_test_p_value <- vapply(seq_len(nrow(dt02)), function(i) {
     stats::t.test(dv ~ iv, dt01[iv %in% dt02[i, ]])[["p.value"]]},
     FUN.VALUE = numeric(1L))
-  # bonferroni sig
-  bonferroni_signif_for_t_test <- ifelse(
-    t_test_p_value < .05 / nrow(dt02), "Yes", "No")
-  # put everyhing together
-  output <- data.table(
+  # put everything together
+  output <- data.table::data.table(
     dt02,
     group_sizes_dt,
     group_1_mean = kim::round_flexibly(group_1_mean, sigfigs),
     group_2_mean = kim::round_flexibly(group_2_mean, sigfigs))
   # add sd
   if (sd == TRUE) {
-    output <- data.table(
+    output <- data.table::data.table(
       output,
       group_1_sd = kim::round_flexibly(group_1_sd, sigfigs),
       group_2_sd = kim::round_flexibly(group_2_sd, sigfigs))
   }
+  # add cohen d
+  if (cohen_d == TRUE) {
+    output <- data.table::data.table(
+      output,
+      cohen_d = kim::round_flexibly(cohen_d_stat, sigfigs))
+  }
   # add t test stats
   if (t_test_stats == TRUE) {
-    output <- data.table(
+    output <- data.table::data.table(
       output,
       t_test_df = round(t_test_df, t_test_df_decimals),
-      t_test_stat = kim::round_flexibly(t_test_stat, sigfigs),
-      t_test_p_value = kim::pretty_round_p_value(t_test_p_value),
-      bonferroni_signif_for_t_test = bonferroni_signif_for_t_test)
+      t_test_stat = kim::round_flexibly(t_test_stat, sigfigs))
   }
-  # add the rest
-  output <- data.table(
-    output,
-    cohen_d = kim::round_flexibly(cohen_d, sigfigs),
-    t_test_p_value = kim::pretty_round_p_value(t_test_p_value),
-    bonferroni_signif_for_t_test = bonferroni_signif_for_t_test)
+  # t test p values are added by default
+  output[, "t_test_p_value" := kim::pretty_round_p_value(t_test_p_value)][]
   # mann whitney
   if (mann_whitney == TRUE) {
     mann_whitney_p_value <- vapply(seq_len(nrow(dt02)), function(i) {
@@ -139,14 +149,23 @@ t_test_pairwise <- function(
         dv ~ iv, dt01[iv %in% dt02[i, ]],
         paired = FALSE)[["p.value"]]},
       FUN.VALUE = numeric(1L))
-    # bonferroni sig
-    bonferroni_signif_for_mann_whitney <- ifelse(
-      mann_whitney_p_value < .05 / nrow(dt02), "Yes", "No")
-    output <- data.table(
-      output,
-      mann_whitney_p_value = kim::pretty_round_p_value(
-        mann_whitney_p_value),
-      bonferroni_signif_for_mann_whitney)
+    output[, "mann_whitney_p_value" := kim::pretty_round_p_value(
+      mann_whitney_p_value)][]
+  }
+  # if bonferroni
+  if (bonferroni == TRUE) {
+    # bonferroni sig for t test
+    bonferroni_signif_for_t_test <- ifelse(
+      t_test_p_value < .05 / nrow(dt02), "Yes", "No")
+    output[, "bonferroni_signif_for_t_test" :=
+             bonferroni_signif_for_t_test][]
+    # bonferroni sig for mann whitney
+    if (mann_whitney == TRUE) {
+      bonferroni_signif_for_mann_whitney <- ifelse(
+        mann_whitney_p_value < .05 / nrow(dt02), "Yes", "No")
+      output[, "bonferroni_signif_for_mann_whitney" :=
+               bonferroni_signif_for_mann_whitney][]
+    }
   }
   return(output)
 }

@@ -13,7 +13,7 @@ install_all_dependencies <- function() {
   # packages and dependencies to install
   pkgs <- c(
     "boot", "car", "data.table", "effsize", "ggplot2",
-    "ggridges", "interactions", "lemon", "lm.beta",
+    "ggridges", "gridExtra", "interactions", "lemon", "lm.beta",
     "mediation", "moments", "paran", "remotes", "weights",
     "WRS2")
   # prep the packages

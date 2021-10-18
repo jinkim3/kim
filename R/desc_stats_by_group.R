@@ -14,6 +14,7 @@
 #' The \code{stats} argument can also be a character vector with types of
 #' statistics to calculate. For example, entering
 #' \code{stats = c("mean", "median")} will calculate mean and median.
+#' By default, \code{stats = "all"}
 #' @param sigfigs number of significant digits to round to
 #' @param cols_to_round names of columns whose values will be rounded
 #' @return the output will be a data.table showing descriptive statistics

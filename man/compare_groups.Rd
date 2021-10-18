@@ -9,8 +9,20 @@ compare_groups(
   iv_name = NULL,
   dv_name = NULL,
   sigfigs = 3,
+  stats = "basic",
+  cohen_d = TRUE,
+  bonferroni = FALSE,
   mann_whitney = TRUE,
-  t_test_stats = FALSE
+  t_test_stats = FALSE,
+  t_test_df_decimals = 1,
+  save_as_png = FALSE,
+  png_name = NULL,
+  width = 4000,
+  height = 3000,
+  units = "px",
+  res = 300,
+  layout_matrix = NULL,
+  col_names_nicer = TRUE
 )
 }
 \arguments{
@@ -23,18 +35,71 @@ of interest)}
 
 \item{sigfigs}{number of significant digits to round to}
 
-\item{mann_whitney}{if \code{mann_whitney = TRUE}, Mann-Whitney test
-results will be included in the pairwise comparison data.table.
-If \code{mann_whitney = FALSE}, Mann-Whitney tests will not be performed.}
+\item{stats}{statistics to calculate for each group.
+If \code{stats = "basic"},
+group size, mean, standard deviation, median, minimum, and maximum will
+be calculated. If \code{stats = "all"}, in addition to the
+aforementioned statistics, standard error, 95\% confidence and
+prediction intervals, skewness, and kurtosis will also be calculated.
+The \code{stats} argument can also be a character vector with types of
+statistics to calculate. For example, entering
+\code{stats = c("mean", "median")} will calculate mean and median.
+By default, \code{stats = "basic"}}
+
+\item{cohen_d}{if \code{cohen_d = TRUE}, Cohen's d statistics will be
+included in the pairwise comparison data.table.}
+
+\item{bonferroni}{if \code{bonferroni = TRUE}, Bonferroni tests will be
+conducted for t-tests or Mann-Whitney tests.}
+
+\item{mann_whitney}{if \code{TRUE}, Mann-Whitney test results will be
+included in the pairwise comparison data.table.
+If \code{FALSE}, Mann-Whitney tests will not be performed.}
 
 \item{t_test_stats}{if \code{t_test_stats = TRUE}, t-test statistic
-and degrees of freedom will be included in the pairwise
-comparison data.table.}
+and degrees of freedom will be included in the pairwise comparison
+data.table.}
+
+\item{t_test_df_decimals}{number of decimals for the degrees of freedom
+in t-tests (default = 1)}
+
+\item{save_as_png}{if \code{save = "all"} or if \code{save = TRUE},
+the histogram by group, descriptive statistics by group,
+and pairwise comparison results will be saved as a PNG file.}
+
+\item{png_name}{name of the PNG file to be saved. By default, the name
+will be "compare_groups_results_" followed by a timestamp of the
+current time.
+The timestamp will be in the format, jan_01_2021_1300_10_000001,
+where "jan_01_2021" would indicate January 01, 2021;
+1300 would indicate 13:00 (i.e., 1 PM); and 10_000001 would
+indicate 10.000001 seconds after the hour.}
+
+\item{width}{width of the PNG file (default = 4000)}
+
+\item{height}{height of the PNG file (default = 3000)}
+
+\item{units}{the units for the \code{width} and \code{height} arguments.
+Can be \code{"px"} (pixels), \code{"in"} (inches), \code{"cm"},
+or \code{"mm"}. By default, \code{units = "px"}.}
+
+\item{res}{The nominal resolution in ppi which will be recorded
+in the png file, if a positive integer. Used for units
+other than the default. If not specified, taken as 300 ppi
+to set the size of text and line widths.}
+
+\item{layout_matrix}{The layout argument for arranging plots and tables
+using the \code{grid.arrange} function.}
+
+\item{col_names_nicer}{if \code{col_names_nicer = TRUE}, column names
+will be converted from snake_case to an easier-to-eye format.}
 }
 \value{
 the output will be a list of (1) ggplot object
 (histogram by group) (2) a data.table with descriptive statistics by
-group; and (3) a data.table with pairwise comparison results
+group; and (3) a data.table with pairwise comparison results.
+If \code{save_as_png = TRUE}, the plot and tables will be also saved
+on local drive as a PNG file.
 }
 \description{
 Compares groups by (1) creating histogram by group; (2) summarizing
