@@ -17,6 +17,8 @@ compare_groups(
   t_test_df_decimals = 1,
   save_as_png = FALSE,
   png_name = NULL,
+  xlab = NULL,
+  ylab = NULL,
   width = 4000,
   height = 3000,
   units = "px",
@@ -74,6 +76,12 @@ The timestamp will be in the format, jan_01_2021_1300_10_000001,
 where "jan_01_2021" would indicate January 01, 2021;
 1300 would indicate 13:00 (i.e., 1 PM); and 10_000001 would
 indicate 10.000001 seconds after the hour.}
+
+\item{xlab}{title of the x-axis for the histogram by group.
+If \code{xlab = FALSE}, the title will be removed.}
+
+\item{ylab}{title of the y-axis for the histogram by group.
+If \code{ylab = FALSE}, the title will be removed.}
 
 \item{width}{width of the PNG file (default = 4000)}
 

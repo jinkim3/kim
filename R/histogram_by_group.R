@@ -19,6 +19,14 @@
 #' (minimum = 0, maximum = 1, default = 0.15)
 #' @param draw_baseline logical. Should the baseline and the trailing
 #' lines to either side of the histogram be drawn? (default = FALSE)
+#' @param xlab title of the x-axis for the histogram by group.
+#' If \code{xlab = FALSE}, the title will be removed. By default
+#' (i.e., if no input is given), \code{dv_name} will be used as
+#' the title.
+#' @param ylab title of the y-axis for the histogram by group.
+#' If \code{ylab = FALSE}, the title will be removed. By default
+#' (i.e., if no input is given), \code{iv_name} will be used as
+#' the title.
 #' @return the output will be a set of vertically arranged histograms
 #' (a ggplot object), i.e., one histogram for each level of the
 #' independent variable.
@@ -42,7 +50,9 @@ histogram_by_group <- function(
   order_of_groups_top_to_bot = NULL,
   number_of_bins = 40,
   space_between_histograms = 0.15,
-  draw_baseline = FALSE) {
+  draw_baseline = FALSE,
+  xlab = NULL,
+  ylab = NULL) {
   # installed packages
   installed_pkgs <- rownames(utils::installed.packages())
   # check if Package 'ggplot2' is installed
@@ -172,5 +182,16 @@ histogram_by_group <- function(
       fontface = 2
     ), vjust = -0.5
   )
+  # axis titles
+  if (xlab == FALSE) {
+    g1 <- g1 + ggplot2::theme(axis.title.x = element_bank())
+  } else if (!is.null(xlab)) {
+    g1 <- g1 + ggplot2::xlab(xlab)
+  }
+  if (ylab == FALSE) {
+    g1 <- g1 + ggplot2::theme(axis.title.y = element_bank())
+  } else if (!is.null(ylab)) {
+    g1 <- g1 + ggplot2::ylab(ylab)
+  }
   return(g1)
 }

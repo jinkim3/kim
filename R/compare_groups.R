@@ -41,6 +41,10 @@
 #' where "jan_01_2021" would indicate January 01, 2021;
 #' 1300 would indicate 13:00 (i.e., 1 PM); and 10_000001 would
 #' indicate 10.000001 seconds after the hour.
+#' @param xlab title of the x-axis for the histogram by group.
+#' If \code{xlab = FALSE}, the title will be removed.
+#' @param ylab title of the y-axis for the histogram by group.
+#' If \code{ylab = FALSE}, the title will be removed.
 #' @param width width of the PNG file (default = 4000)
 #' @param height height of the PNG file (default = 3000)
 #' @param units the units for the \code{width} and \code{height} arguments.
@@ -78,6 +82,8 @@ compare_groups <- function(
   t_test_df_decimals = 1,
   save_as_png = FALSE,
   png_name = NULL,
+  xlab = NULL,
+  ylab = NULL,
   width = 4000,
   height = 3000,
   units = "px",
@@ -86,7 +92,8 @@ compare_groups <- function(
   col_names_nicer = TRUE) {
   # histogram by group
   output_1 <- kim::histogram_by_group(
-    data = data, iv_name = iv_name, dv_name = dv_name)
+    data = data, iv_name = iv_name, dv_name = dv_name,
+    xlab = xlab, ylab = ylab)
   # descriptive stats by group
   output_2 <- kim::desc_stats_by_group(
     data = data, var_for_stats = dv_name, grouping_vars = iv_name,
