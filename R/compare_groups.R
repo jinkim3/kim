@@ -42,9 +42,13 @@
 #' 1300 would indicate 13:00 (i.e., 1 PM); and 10_000001 would
 #' indicate 10.000001 seconds after the hour.
 #' @param xlab title of the x-axis for the histogram by group.
-#' If \code{xlab = FALSE}, the title will be removed.
+#' If \code{xlab = FALSE}, the title will be removed. By default
+#' (i.e., if no input is given), \code{dv_name} will be used as
+#' the title.
 #' @param ylab title of the y-axis for the histogram by group.
-#' If \code{ylab = FALSE}, the title will be removed.
+#' If \code{ylab = FALSE}, the title will be removed. By default
+#' (i.e., if no input is given), \code{iv_name} will be used as
+#' the title.
 #' @param width width of the PNG file (default = 4000)
 #' @param height height of the PNG file (default = 3000)
 #' @param units the units for the \code{width} and \code{height} arguments.

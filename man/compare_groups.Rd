@@ -78,10 +78,14 @@ where "jan_01_2021" would indicate January 01, 2021;
 indicate 10.000001 seconds after the hour.}
 
 \item{xlab}{title of the x-axis for the histogram by group.
-If \code{xlab = FALSE}, the title will be removed.}
+If \code{xlab = FALSE}, the title will be removed. By default
+(i.e., if no input is given), \code{dv_name} will be used as
+the title.}
 
 \item{ylab}{title of the y-axis for the histogram by group.
-If \code{ylab = FALSE}, the title will be removed.}
+If \code{ylab = FALSE}, the title will be removed. By default
+(i.e., if no input is given), \code{iv_name} will be used as
+the title.}
 
 \item{width}{width of the PNG file (default = 4000)}
 
