@@ -29,6 +29,7 @@ weighted_mean_r <- function(
   r = NULL,
   n = NULL,
   ci = 0.95,
+  sigfigs = 3,
   silent = FALSE) {
   # return r if there is only one r
   if (length(r) == 1) {
@@ -83,7 +84,8 @@ weighted_mean_r <- function(
     signif(overall_r, sigfigs), ", ",
     kim::pretty_round_p_value(p_value, include_p_equals = TRUE), ", ",
     kim::round_flexibly(ci * 100, sigfigs), "% CI = [",
-    paste0(kim::round_flexibly(overall_r_ci_limits, sigfigs), collapse = ", "), "]")
+    paste0(kim::round_flexibly(
+      overall_r_ci_limits, sigfigs), collapse = ", "), "]")
   # output
   output <- c(overall_r, p_value, overall_r_ci_limits)
   names(output) <- c("weighted_mean_r", "p_value", "ci_ll", "ci_ul")
