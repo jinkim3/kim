@@ -4,12 +4,19 @@
 \alias{weighted_mean_r}
 \title{Weighted mean correlation}
 \usage{
-weighted_mean_r(r = NULL, n = NULL)
+weighted_mean_r(r = NULL, n = NULL, ci = 0.95, sigfigs = 3)
 }
 \arguments{
 \item{r}{a (vector of) correlation coefficient(s)}
 
 \item{n}{a (vector of) sample size(s)}
+
+\item{ci}{size of the confidence interval. Input can be any value
+less than 1 and greater than or equal to 0. By default, \code{ci = 0.95}.
+If \code{ci = TRUE}, the default value of 0.95 will be used. If \code{
+ci = FALSE}, no confidence interval will be estimated.}
+
+\item{sigfigs}{number of significant digits to round to (default = 3)}
 }
 \value{
 the output will be a list of  vector of correlation coefficient(s).
@@ -22,4 +29,8 @@ See Field (2001) \doi{10.1037/1082-989X.6.2.161}.
 \examples{
 weighted_mean_r(r = c(0.2, 0.4), n = c(100, 100))
 weighted_mean_r(r = c(0.2, 0.4), n = c(100, 20000))
+# example consistent with using MedCalc
+weighted_mean_r(
+r = c(0.51, 0.48, 0.3, 0.21, 0.6, 0.46, 0.22, 0.25),
+n = c(131, 129, 155, 121, 111, 119, 112, 145))
 }

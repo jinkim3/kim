@@ -1,6 +1,6 @@
-# kim 0.4.29
+# kim 0.4.34
 * Updated the following functions (and other functions that use them): 
-desc_stats_by_group, compare_groups, histogram_by_group
+desc_stats_by_group, compare_groups, histogram_by_group, tv, weighted_mean_r
 * Fixed bugs or errors in the following functions (and other functions
 that use them): round_flexibly
 

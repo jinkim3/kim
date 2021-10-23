@@ -6,7 +6,7 @@
 #'
 #' @param vector a character or numeric vector
 #' @param na.rm if \code{TRUE}, NA values will be removed before calculating
-#' frequencies and proportions.
+#' frequencies and proportions. By default, \code{FALSE}.
 #' @param sort_by_decreasing_count if \code{TRUE}, the output table will
 #' be sorted in the order of decreasing frequency.
 #' @param sort_by_increasing_count if \code{TRUE}, the output table will
@@ -51,7 +51,7 @@
 # tabulate vector frequency table
 tv <- function(
   vector = NULL,
-  na.rm = TRUE,
+  na.rm = FALSE,
   sort_by_decreasing_count = NULL,
   sort_by_increasing_count = NULL,
   sort_by_decreasing_value = NULL,

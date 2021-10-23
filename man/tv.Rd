@@ -6,7 +6,7 @@
 \usage{
 tv(
   vector = NULL,
-  na.rm = TRUE,
+  na.rm = FALSE,
   sort_by_decreasing_count = NULL,
   sort_by_increasing_count = NULL,
   sort_by_decreasing_value = NULL,
@@ -21,7 +21,7 @@ tv(
 \item{vector}{a character or numeric vector}
 
 \item{na.rm}{if \code{TRUE}, NA values will be removed before calculating
-frequencies and proportions.}
+frequencies and proportions. By default, \code{FALSE}.}
 
 \item{sort_by_decreasing_count}{if \code{TRUE}, the output table will
 be sorted in the order of decreasing frequency.}
