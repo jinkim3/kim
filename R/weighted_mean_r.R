@@ -11,6 +11,10 @@
 #' less than 1 and greater than or equal to 0. By default, \code{ci = 0.95}.
 #' If \code{ci = TRUE}, the default value of 0.95 will be used. If \code{
 #' ci = FALSE}, no confidence interval will be estimated.
+#' @param silent logical. If \code{silent = FALSE}, a message regarding
+#' the weighted mean correlation and its p-value and CI will be printed.
+#' If \code{silent = TRUE}, this message will be suppressed. By default,
+#' \code{silent = FALSE}.
 #' @return the output will be a list of  vector of correlation coefficient(s).
 #' @examples
 #' weighted_mean_r(r = c(0.2, 0.4), n = c(100, 100))
@@ -25,7 +29,7 @@ weighted_mean_r <- function(
   r = NULL,
   n = NULL,
   ci = 0.95,
-  sigfigs = 3) {
+  silent = FALSE) {
   # return r if there is only one r
   if (length(r) == 1) {
     kim::pm("The input contains only one value of r. ",
