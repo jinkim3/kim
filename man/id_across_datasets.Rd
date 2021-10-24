@@ -14,7 +14,8 @@ id_across_datasets(
 \arguments{
 \item{dt_list}{a list of data.table objects}
 
-\item{id_col_name}{name of the column that will contain ID values}
+\item{id_col_name}{name of the column that will contain ID values.
+By default, \code{id_col_name = "id"}.}
 
 \item{id_col_position}{position of the newly created ID column.
 If \code{id_col_position = "first"}, the new ID column will

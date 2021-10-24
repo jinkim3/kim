@@ -4,7 +4,8 @@
 #' span across the data sets.
 #'
 #' @param dt_list a list of data.table objects
-#' @param id_col_name name of the column that will contain ID values
+#' @param id_col_name name of the column that will contain ID values.
+#' By default, \code{id_col_name = "id"}.
 #' @param id_col_position position of the newly created ID column.
 #' If \code{id_col_position = "first"}, the new ID column will
 #' be placed as the first column in respective data sets.
@@ -58,7 +59,7 @@ id_across_datasets <- function(
     }
     # give id values in each data set
     ending_id <- starting_id + nrow(dt_list[[i]]) - 1
-    dt_list[[i]][[id_col_name]] <- starting_id:ending_id
+    data.table::set(dt_list[[i]], j = id_col_name, starting_id:ending_id)
     # record starting and ending id values to print out later
     starting_id_values[i] <- starting_id
     ending_id_values[i] <- ending_id
