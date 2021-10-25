@@ -159,8 +159,21 @@ histogram_by_group <- function(
       legend.position = "none"
     )
   g1 <- g1 + ggplot2::coord_cartesian(clip = "off")
-  g1 <- g1 + ggplot2::xlab(dv_name)
-  g1 <- g1 + ggplot2::ylab(iv_name)
+  # axis titles
+  if (is.null(xlab)) {
+    g1 <- g1 + ggplot2::xlab(dv_name)
+  } else if (xlab == FALSE) {
+    g1 <- g1 + ggplot2::theme(axis.title.x = ggplot2::element_blank())
+  } else {
+    g1 <- g1 + ggplot2::xlab(xlab)
+  }
+  if (is.null(ylab)) {
+    g1 <- g1 + ggplot2::ylab(iv_name)
+  } else if (ylab == FALSE) {
+    g1 <- g1 + ggplot2::theme(axis.title.y = ggplot2::element_blank())
+  } else {
+    g1 <- g1 + ggplot2::ylab(ylab)
+  }
   g1 <- g1 + ggplot2::geom_point(
     data = stats_by_iv, ggplot2::aes(
       x = stats_by_iv$mean, y = stats_by_iv$iv
@@ -182,16 +195,5 @@ histogram_by_group <- function(
       fontface = 2
     ), vjust = -0.5
   )
-  # axis titles
-  if (xlab == FALSE) {
-    g1 <- g1 + ggplot2::theme(axis.title.x = ggplot2::element_blank())
-  } else if (!is.null(xlab)) {
-    g1 <- g1 + ggplot2::xlab(xlab)
-  }
-  if (ylab == FALSE) {
-    g1 <- g1 + ggplot2::theme(axis.title.y = ggplot2::element_blank())
-  } else if (!is.null(ylab)) {
-    g1 <- g1 + ggplot2::ylab(ylab)
-  }
   return(g1)
 }
