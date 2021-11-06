@@ -170,7 +170,7 @@ compare_groups <- function(
     }
     # initialize the png
     grDevices::png(paste0(png_name, ".png"),
-        height = height, width = width, units = units, res = res)
+                   height = height, width = width, units = units, res = res)
     # grobs
     grob_1 <- output_1
     grob_2 <- grid::textGrob("Descriptive Statistics: ")
@@ -181,18 +181,63 @@ compare_groups <- function(
     grob_list <- list(grob_1, grob_2, grob_3, grob_4, grob_5)
     # layout matrix
     if (is.null(layout_matrix)) {
-      layout_matrix <- rbind(
-        c(1,1,1,1,1,1,1),
-        c(1,1,1,1,1,1,1),
-        c(1,1,1,1,1,1,1),
-        c(1,1,1,1,1,1,1),
-        c(1,1,1,1,1,1,1),
-        c(1,1,1,1,1,1,1),
-        c(2,3,3,3,3,3,3),
-        c(2,3,3,3,3,3,3),
-        c(4,5,5,5,5,5,5),
-        c(4,5,5,5,5,5,5),
-        c(4,5,5,5,5,5,5))
+      # get number of groups
+      number_of_groups <- nrow(output_2)
+      if (number_of_groups == 2) {
+        layout_matrix <- rbind(
+          c(1,1,1,1,1,1,1),
+          c(1,1,1,1,1,1,1),
+          c(1,1,1,1,1,1,1),
+          c(1,1,1,1,1,1,1),
+          c(1,1,1,1,1,1,1),
+          c(2,3,3,3,3,3,3),
+          c(4,5,5,5,5,5,5))
+      } else if (number_of_groups == 3) {
+        layout_matrix <- rbind(
+          c(1,1,1,1,1,1,1),
+          c(1,1,1,1,1,1,1),
+          c(1,1,1,1,1,1,1),
+          c(1,1,1,1,1,1,1),
+          c(1,1,1,1,1,1,1),
+          c(2,3,3,3,3,3,3),
+          c(4,5,5,5,5,5,5))
+      } else if (number_of_groups == 4) {
+        layout_matrix <- rbind(
+          c(1,1,1,1,1,1,1),
+          c(1,1,1,1,1,1,1),
+          c(1,1,1,1,1,1,1),
+          c(1,1,1,1,1,1,1),
+          c(1,1,1,1,1,1,1),
+          c(1,1,1,1,1,1,1),
+          c(1,1,1,1,1,1,1),
+          c(2,3,3,3,3,3,3),
+          c(2,3,3,3,3,3,3),
+          c(4,5,5,5,5,5,5),
+          c(4,5,5,5,5,5,5))
+      } else if (number_of_groups >= 5) {
+        layout_matrix <- rbind(
+          c(1,1,1,1,1,1,1),
+          c(1,1,1,1,1,1,1),
+          c(1,1,1,1,1,1,1),
+          c(1,1,1,1,1,1,1),
+          c(1,1,1,1,1,1,1),
+          c(1,1,1,1,1,1,1),
+          c(1,1,1,1,1,1,1),
+          c(1,1,1,1,1,1,1),
+          c(1,1,1,1,1,1,1),
+          c(1,1,1,1,1,1,1),
+          c(2,3,3,3,3,3,3),
+          c(2,3,3,3,3,3,3),
+          c(2,3,3,3,3,3,3),
+          c(2,3,3,3,3,3,3),
+          c(4,5,5,5,5,5,5),
+          c(4,5,5,5,5,5,5),
+          c(4,5,5,5,5,5,5),
+          c(4,5,5,5,5,5,5),
+          c(4,5,5,5,5,5,5),
+          c(4,5,5,5,5,5,5),
+          c(4,5,5,5,5,5,5))
+      }
     }
     grid_arrange_from_grid_extra(
       grobs = grob_list, layout_matrix = layout_matrix)
