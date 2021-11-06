@@ -11,6 +11,15 @@
 #' whose frequencies will be calculated (i.e., the value of the
 #' dependent variable that will be considered a "success" or
 #' a result of interest)
+#' @param contingency_table If \code{contingency_table = TRUE} or
+#' if \code{contingency_table = "percentages"}, the percentage of each
+#' binary value within each group will be printed. If
+#' \code{contingency_table = "counts"}, a table of frequencies will be
+#' printed. If \code{contingency_table = FALSE}, no contingency table
+#' will be printed.
+#' @param contingency_table_sigfigs number of significant digits that
+#' the contingency table's percentage values should be rounded to
+#' (default = 2)
 #' @param percent_and_total logical. If \code{percent_and_total = TRUE},
 #' tabulate percentages of the focal DV value and a total count of
 #' the two values in DV. By default \code{percent_and_total = FALSE}
@@ -28,15 +37,22 @@
 #' chi_squared_test_pairwise(
 #' data = rbind(mtcars, rbind(mtcars, mtcars)),
 #' iv_name = "cyl", dv_name = "am")
+#' # include the total counts
 #' chi_squared_test_pairwise(
 #' data = rbind(mtcars, rbind(mtcars, mtcars)),
 #' iv_name = "cyl", dv_name = "am", percent_and_total = TRUE)
+#' # display counts
+#' chi_squared_test_pairwise(
+#' data = rbind(mtcars, rbind(mtcars, mtcars)),
+#' iv_name = "cyl", dv_name = "am", contingency_table = "counts")
 #' @export
 chi_squared_test_pairwise <- function(
   data = NULL,
   iv_name = NULL,
   dv_name = NULL,
   focal_dv_value = NULL,
+  contingency_table = TRUE,
+  contingency_table_sigfigs = 2,
   percent_and_total = FALSE,
   percentages_only = NULL,
   counts_only = NULL,
@@ -58,6 +74,32 @@ chi_squared_test_pairwise <- function(
     stop(paste0(
       "The DV has ", length(values_of_dv), " level(s), rather than the ",
       "expected 2 levels."))
+  }
+  # contingency table
+  if (contingency_table %in% list(TRUE, "percentages")) {
+    contingency_table_df <- kim::round_flexibly(as.data.frame.matrix(
+      prop.table(table(dt01$iv, dt01$dv), margin = 1) * 100),
+      sigfigs = contingency_table_sigfigs)
+    # save row and column names
+    contingency_table_row_names <- row.names(contingency_table_df)
+    contingency_table_col_names <- names(contingency_table_df)
+    # put the percentage signs
+    contingency_table_df <- data.frame(lapply(
+      contingency_table_df, function(x) paste0(x, "%")))
+    # edit row and column names
+    row.names(contingency_table_df) <- contingency_table_row_names
+    names(contingency_table_df) <- contingency_table_col_names
+    # print
+    message("Table of Percentages:")
+  } else if (contingency_table == "counts") {
+    contingency_table_df <- as.data.frame.matrix(table(dt01$iv, dt01$dv))
+    message("Table of Counts:")
+  }
+  # print the contingency table
+  if (contingency_table %in% list(TRUE, "percentages", "counts")) {
+    print(contingency_table_df)
+    cat("\n")
+    message("Pairwise Comparisons:")
   }
   # set default focal dv value to be the latter of the two binary values
   if (is.null(focal_dv_value)) {

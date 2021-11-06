@@ -1,7 +1,7 @@
-# kim 0.4.39
+# kim 0.4.41
 * Updated the following functions (and other functions that use them): 
 desc_stats_by_group, compare_groups, histogram_by_group, tv, weighted_mean_r,
-id_across_datasets.
+id_across_datasets, chi_squared_test_pairwise
 * Fixed bugs or errors in the following functions (and other functions
 that use them): round_flexibly
 

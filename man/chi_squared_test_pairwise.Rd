@@ -9,6 +9,8 @@ chi_squared_test_pairwise(
   iv_name = NULL,
   dv_name = NULL,
   focal_dv_value = NULL,
+  contingency_table = TRUE,
+  contingency_table_sigfigs = 2,
   percent_and_total = FALSE,
   percentages_only = NULL,
   counts_only = NULL,
@@ -28,6 +30,17 @@ chi_squared_test_pairwise(
 whose frequencies will be calculated (i.e., the value of the
 dependent variable that will be considered a "success" or
 a result of interest)}
+
+\item{contingency_table}{If \code{contingency_table = TRUE} or
+if \code{contingency_table = "percentages"}, the percentage of each
+binary value within each group will be printed. If
+\code{contingency_table = "counts"}, a table of frequencies will be
+printed. If \code{contingency_table = FALSE}, no contingency table
+will be printed.}
+
+\item{contingency_table_sigfigs}{number of significant digits that
+the contingency table's percentage values should be rounded to
+(default = 2)}
 
 \item{percent_and_total}{logical. If \code{percent_and_total = TRUE},
 tabulate percentages of the focal DV value and a total count of
@@ -55,7 +68,12 @@ percentages_only = TRUE)
 chi_squared_test_pairwise(
 data = rbind(mtcars, rbind(mtcars, mtcars)),
 iv_name = "cyl", dv_name = "am")
+# include the total counts
 chi_squared_test_pairwise(
 data = rbind(mtcars, rbind(mtcars, mtcars)),
 iv_name = "cyl", dv_name = "am", percent_and_total = TRUE)
+# display counts
+chi_squared_test_pairwise(
+data = rbind(mtcars, rbind(mtcars, mtcars)),
+iv_name = "cyl", dv_name = "am", contingency_table = "counts")
 }
