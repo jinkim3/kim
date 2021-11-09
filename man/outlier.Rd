@@ -4,7 +4,7 @@
 \alias{outlier}
 \title{Outlier}
 \usage{
-outlier(x = NULL, iqr = 1.5, na.rm = TRUE, type = 7)
+outlier(x = NULL, iqr = 1.5, na.rm = TRUE, type = 7, unique_outliers = FALSE)
 }
 \arguments{
 \item{x}{a numeric vector}
@@ -23,6 +23,12 @@ are removed from x before the quantiles are computed.}
 function in the 'stats' package. An integer between 1 and 9 selecting
 one of the nine quantile algorithms detailed below to be used.
 Type '?stats::quantile' for details. By default, \code{type = 7}}
+
+\item{unique_outliers}{logical. If \code{unique_outliers = TRUE},
+the function will return the unique outlier values.
+If \code{unique_outliers = FALSE}, the function will return all
+the outlier values in the vector \code{x}.
+By default, \code{unique_outliers = FALSE}.}
 }
 \value{
 the output will be a numeric vector with outliers removed.

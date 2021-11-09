@@ -11,6 +11,11 @@
 #' @param na.rm logical. \code{na.rm} argument to be passed onto the
 #' 'quantile' function in the 'stats' package. If true, any NA and NaN's
 #' are removed from x before the quantiles are computed.
+#' @param unique_outliers logical. If \code{unique_outliers = TRUE},
+#' the function will return the unique outlier values.
+#' If \code{unique_outliers = FALSE}, the function will return all
+#' the outlier values in the vector \code{x}.
+#' By default, \code{unique_outliers = FALSE}.
 #' @param type \code{type} argument to be passed onto the 'quantile'
 #' function in the 'stats' package. An integer between 1 and 9 selecting
 #' one of the nine quantile algorithms detailed below to be used.
@@ -35,14 +40,18 @@
 #' v1[v1 < cutoff_low | v1 > cutoff_high]
 #' @export
 outlier <- function(
-  x = NULL, iqr = 1.5, na.rm = TRUE, type = 7) {
+  x = NULL, iqr = 1.5, na.rm = TRUE, type = 7, unique_outliers = FALSE) {
   # check if numeric
   if (!is.numeric(x)) {
     stop(message("The input for 'x' is not a numeric vector."))
   }
+  # remove na values
+  if (na.rm == TRUE) {
+    x <- x[!is.na(x)]
+  }
   # quartiles
-  q1 <- stats::quantile(x, 0.25, na.rm = na.rm, type = type)
-  q3 <- stats::quantile(x, 0.75, na.rm = na.rm, type = type)
+  q1 <- stats::quantile(x, 0.25, type = type)
+  q3 <- stats::quantile(x, 0.75, type = type)
   # interquartile range
   interquartile_range <- q3 - q1
   # cutoff points
@@ -50,5 +59,9 @@ outlier <- function(
   cutoff_high <- q3 + iqr * interquartile_range
   # outliers
   outliers <- x[x < cutoff_low | x > cutoff_high]
+  # unique outlier values?
+  if (unique_outliers == TRUE) {
+    outliers <- kim::su(outliers)
+  }
   return(outliers)
 }
