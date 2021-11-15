@@ -21,6 +21,10 @@ pretty_round_p_value <- function(
   p_value_vector = NULL,
   round_digits_after_decimal = 3,
   include_p_equals = FALSE) {
+  # check if numeric
+  if (is.numeric(p_value_vector) == FALSE) {
+    stop(paste0("The input for p_value_vector is not a numeric vector."))
+  }
   # check if negative values exist
   if (any(p_value_vector[!is.na(p_value_vector)] < 0)) {
     stop(paste0("The input for p_value_vector contains a negative ",

@@ -108,6 +108,10 @@ multiple_regression <- function(
     f_stat <- round(f_stat, round_digits_after_decimal)
     model_p_value <- round(model_p_value, round_digits_after_decimal)
   }
+  # pretty round p_value
+  if (pretty_round_p_value == TRUE) {
+    p_value <- kim::pretty_round_p_value(p_value)
+  }
   # upper part of the regression table
   t1 <- data.table::data.table(
     variable, estimate, se, std_beta, t_stat, p_value)
@@ -119,7 +123,6 @@ multiple_regression <- function(
   t2 <- rbind(t1, as.list(rep("", ncol(t1))))
   # pretty round model_p_value
   if (pretty_round_p_value == TRUE) {
-    t1[, p_value := pretty_round_p_value(p_value)]
     model_p_value_text <- kim::pretty_round_p_value(
       model_p_value, include_p_equals = TRUE)
   } else {
