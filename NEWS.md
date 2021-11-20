@@ -1,7 +1,8 @@
-# kim 0.4.43
-* Updated the following functions (and other functions that use them): 
+# kim 0.4.50
+* Added the following function(s): vlookup
+* Updated the following function(s) (and other functions that use them): 
 desc_stats_by_group, compare_groups, histogram_by_group, tv, weighted_mean_r,
-id_across_datasets, chi_squared_test_pairwise
+id_across_datasets, chi_squared_test_pairwise, replace_values_in_dt
 * Fixed bugs or errors in the following functions (and other functions
 that use them): round_flexibly, outlier, multiple_regression, 
 pretty_round_p_value

@@ -7,7 +7,7 @@
 replace_values_in_dt(
   data = NULL,
   old_values = NULL,
-  new_value = NULL,
+  new_values = NULL,
   silent = FALSE
 )
 }
@@ -16,7 +16,8 @@ replace_values_in_dt(
 
 \item{old_values}{a vector of old values that need to be replaced}
 
-\item{new_value}{a new value that will replace the old values}
+\item{new_values}{a new value or a vector of new values that will
+replace the old values}
 
 \item{silent}{If \code{silent = FALSE}, a message will be printed regarding
 how many values were replaced. If \code{silent = TRUE}, no message
@@ -26,9 +27,11 @@ will be printed regarding how many values were replaced. (default = FALSE)}
 Replace values in a data.table
 }
 \examples{
-replace_values_in_dt(data = mtcars, old_values = c(0, 1), new_value = 999)
-replace_values_in_dt(data = mtcars, old_values = 21.0, new_value = 888)
+replace_values_in_dt(data = mtcars, old_values = 21.0, new_values = 888)
+replace_values_in_dt(data = mtcars, old_values = c(0, 1), new_values = 999)
+replace_values_in_dt(
+data = mtcars, old_values = c(0, 1), new_values = 990:991)
 replace_values_in_dt(
 data = data.table::data.table(a = NA_character_, b = NA_character_),
-old_values = NA, new_value = "")
+old_values = NA, new_values = "")
 }
