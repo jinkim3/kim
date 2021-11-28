@@ -1,5 +1,5 @@
-# kim 0.4.50
-* Added the following function(s): vlookup
+# kim 0.4.51
+* Added the following function(s): vlookup, convert_cols_to_numeric
 * Updated the following function(s) (and other functions that use them): 
 desc_stats_by_group, compare_groups, histogram_by_group, tv, weighted_mean_r,
 id_across_datasets, chi_squared_test_pairwise, replace_values_in_dt

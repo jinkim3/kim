@@ -153,7 +153,7 @@ floodlight_2_by_continuous <- function(
       "The independent variable has ", num_of_levels_in_iv,
       " levels.\n",
       "The current version of the function can only handle",
-      "an independent variable with exactly two levels."))
+      " an independent variable with exactly two levels."))
   }
   # set the order of levels in iv
   if (is.null(iv_level_order)) {

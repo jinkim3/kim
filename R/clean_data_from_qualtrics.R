@@ -49,7 +49,7 @@ clean_data_from_qualtrics <- function(
   # bind the vars locally to the function
   qualt_dist_channel <- NULL
   # convert data to data.table
-  dt <- setDT(copy(data))
+  dt <- data.table::setDT(data.table::copy(data))
   # change id
   change_id <- 0
   # determine which format the qualtrics data are in
