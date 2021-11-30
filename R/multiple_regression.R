@@ -174,6 +174,12 @@ multiple_regression <- function(
     paste0("N = ", n),
     paste0("DV: ", all.vars(formula[[2]]))
   )
+  # note the mean centered variables
+  if (!is.null(vars_to_mean_center)) {
+    variable_2 <- c(variable_2, paste0(
+      "Mean-centered variable(s): ", paste0(
+        vars_to_mean_center, collapse = ", ")))
+  }
   t3 <- data.table::data.table(
     variable = variable_2,
     estimate = rep("", length(variable_2)),
