@@ -76,6 +76,11 @@ multiple_regression <- function(
       data.table::set(
         dt, j = col, value = scale(dt[[col]], scale = FALSE))
     }
+    # print a summary of mean centering
+    kim::pm(
+      "The following variable(s) were mean-centered prior to ",
+      "the regression analysis:\n",
+      paste0(vars_to_mean_center, collapse = "\n"))
     # regression model after mean centering
     model <- stats::lm(formula = formula, data = dt)
   } else {
