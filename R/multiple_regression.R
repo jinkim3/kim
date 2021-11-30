@@ -11,6 +11,9 @@
 #'
 #' @param data a data object (a data frame or a data.table)
 #' @param formula a formula object for the regression equation
+#' @param vars_to_mean_center a character vector specifying names
+#' of variables that will be mean-centered before the regression model
+#' is estimated
 #' @param sigfigs number of significant digits to round to
 #' @param round_digits_after_decimal round to nth digit after decimal
 #' (alternative to \code{sigfigs})
@@ -25,11 +28,15 @@
 #' @examples
 #' \donttest{
 #' multiple_regression(data = mtcars, formula = mpg ~ gear * cyl)
+#' multiple_regression(
+#' data = mtcars, formula = mpg ~ gear * cyl,
+#' vars_to_mean_center = "gear")
 #' }
 #' @export
 multiple_regression <- function(
   data = NULL,
   formula = NULL,
+  vars_to_mean_center = NULL,
   sigfigs = NULL,
   round_digits_after_decimal = NULL,
   pretty_round_p_value = TRUE,
@@ -50,8 +57,32 @@ multiple_regression <- function(
     lm_beta_fn_from_lm_beta <- utils::getFromNamespace(
       "lm.beta", "lm.beta")
   }
-  # regression model
-  model <- stats::lm(formula = formula, data = data)
+  # mean center vars
+  if (!is.null(vars_to_mean_center)) {
+    mean_center_vars_missing_in_data <- setdiff(
+      vars_to_mean_center, names(data))
+    if (length(mean_center_vars_missing_in_data) > 0) {
+      stop(paste0(
+        "The following variable(s) for mean-centering ",
+        "do not exist in the data set:\n",
+        paste0(mean_center_vars_missing_in_data, collapse = "\n")))
+    }
+    # copy data
+    dt <- data.table::setDT(data.table::copy(data))
+    # remove rows with na values in the key vars
+    data.table:::na.omit.data.table(dt, cols = all.vars(formula))
+    # mean center vars
+    for (col in vars_to_mean_center) {
+      data.table::set(
+        dt, j = col, value = scale(dt[[col]], scale = FALSE))
+    }
+    # regression model after mean centering
+    model <- stats::lm(formula = formula, data = dt)
+  } else {
+    # regression model without mean centering
+    model <- stats::lm(formula = formula, data = data)
+  }
+  # regression model summary
   model_summary <- summary(model)
   # get the results
   reg_results <- model_summary[["coefficients"]]
@@ -91,8 +122,8 @@ multiple_regression <- function(
     std_beta <- kim::round_flexibly(std_beta, sigfigs)
     t_stat <- kim::round_flexibly(t_stat, sigfigs)
     p_value <- kim::round_flexibly(p_value, sigfigs)
-    r_squared <- kim::round_flexibly(r_squared, sigfigs)
-    adj_r_squared <- kim::round_flexibly(adj_r_squared, sigfigs)
+    r_squared <- kim::pretty_round_r(r_squared, sigfigs)
+    adj_r_squared <- kim::pretty_round_r(adj_r_squared, sigfigs)
     f_stat <- kim::round_flexibly(f_stat, sigfigs)
     model_p_value <- kim::round_flexibly(model_p_value, sigfigs)
   }
@@ -102,8 +133,9 @@ multiple_regression <- function(
     std_beta <- round(std_beta, round_digits_after_decimal)
     t_stat <- round(t_stat, round_digits_after_decimal)
     p_value <- round(p_value, round_digits_after_decimal)
-    r_squared <- round(r_squared, round_digits_after_decimal)
-    adj_r_squared <- round(
+    r_squared <- kim::pretty_round_r(
+      r_squared, round_digits_after_decimal)
+    adj_r_squared <- kim::pretty_round_r(
       adj_r_squared, round_digits_after_decimal)
     f_stat <- round(f_stat, round_digits_after_decimal)
     model_p_value <- round(model_p_value, round_digits_after_decimal)

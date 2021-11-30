@@ -7,6 +7,7 @@
 multiple_regression(
   data = NULL,
   formula = NULL,
+  vars_to_mean_center = NULL,
   sigfigs = NULL,
   round_digits_after_decimal = NULL,
   pretty_round_p_value = TRUE,
@@ -17,6 +18,10 @@ multiple_regression(
 \item{data}{a data object (a data frame or a data.table)}
 
 \item{formula}{a formula object for the regression equation}
+
+\item{vars_to_mean_center}{a character vector specifying names
+of variables that will be mean-centered before the regression model
+is estimated}
 
 \item{sigfigs}{number of significant digits to round to}
 
@@ -49,5 +54,8 @@ Stefan Behrendt (2014),
 \examples{
 \donttest{
 multiple_regression(data = mtcars, formula = mpg ~ gear * cyl)
+multiple_regression(
+data = mtcars, formula = mpg ~ gear * cyl,
+vars_to_mean_center = "gear")
 }
 }
