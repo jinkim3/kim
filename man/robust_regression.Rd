@@ -36,7 +36,7 @@ Canty & Ripley (2021),
 \url{https://cran.r-project.org/package=boot}
 }
 \examples{
-\donttest{
+\dontrun{
 robust_regression(
   data = mtcars, formula = mpg ~ cyl * hp,
   iterations = 100

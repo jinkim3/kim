@@ -80,7 +80,7 @@ multiple_regression <- function(
     # copy data
     dt <- data.table::setDT(data.table::copy(data))
     # remove rows with na values in the key vars
-    dt <- data.table:::na.omit.data.table(dt, cols = all.vars(formula))
+    dt <- stats::na.omit(dt, cols = all.vars(formula))
     # mean center vars
     for (col in vars_to_mean_center) {
       data.table::set(

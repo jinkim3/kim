@@ -21,6 +21,8 @@ vlookup <- function(
   reference_dt = NULL,
   col_name_for_lookup_values = NULL,
   col_name_for_output_values = NULL) {
+  # bind the vars locally to the function
+  output <- NULL
   # convert reference_dt if necessary; throw an error if not possible
   if (data.table::is.data.table(reference_dt) == FALSE) {
     ref <- tryCatch(
@@ -68,7 +70,7 @@ vlookup <- function(
   # lv stands for lookup values
   lv <- data.table::data.table(lv = lookup_values)
   # merge data tables to return desired values
-  lv[ref, output := output, on = .(lv = lv)]
+  lv[ref, output := output, on = list(lv = lv)]
   # output
   return(lv[["output"]])
 }
