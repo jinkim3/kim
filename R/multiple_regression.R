@@ -23,6 +23,13 @@
 #' @param return_table_upper_half logical. Should only the upper part
 #' of the table be returned?
 #' By default, \code{return_table_upper_half = FALSE}.
+#' @param round_r_squared number of digits after the decimal both r-squared
+#' and adjusted r-squared values should be rounded to (default 3)
+#' @param round_f_stat number of digits after the decimal the f statistic
+#' of the regression model should be rounded to (default 2)
+#' @param prettify_reg_table_col_names logical. Should the column names
+#' of the regression table be made pretty (e.g., change "std_beta" to
+#' "Std. Beta")? (Default = \code{TRUE})
 #' @return the output will be a data.table showing multiple regression
 #' results.
 #' @examples
@@ -40,7 +47,10 @@ multiple_regression <- function(
   sigfigs = NULL,
   round_digits_after_decimal = NULL,
   pretty_round_p_value = TRUE,
-  return_table_upper_half = FALSE) {
+  return_table_upper_half = FALSE,
+  round_r_squared = 3,
+  round_f_stat = 2,
+  prettify_reg_table_col_names = TRUE) {
   # installed packages
   installed_pkgs <- rownames(utils::installed.packages())
   # check if Package 'lm.beta' is installed
@@ -92,6 +102,8 @@ multiple_regression <- function(
   # get the results
   reg_results <- model_summary[["coefficients"]]
   variable <- row.names(reg_results)
+  # change intercept to constant
+  if (variable[1] == "(Intercept)") {variable[1] <- "(Constant)"}
   estimate <- reg_results[, "Estimate"]
   se <- reg_results[, "Std. Error"]
   t_stat <- reg_results[, "t value"]
@@ -127,9 +139,6 @@ multiple_regression <- function(
     std_beta <- kim::round_flexibly(std_beta, sigfigs)
     t_stat <- kim::round_flexibly(t_stat, sigfigs)
     p_value <- kim::round_flexibly(p_value, sigfigs)
-    r_squared <- kim::pretty_round_r(r_squared, sigfigs)
-    adj_r_squared <- kim::pretty_round_r(adj_r_squared, sigfigs)
-    f_stat <- kim::round_flexibly(f_stat, sigfigs)
     model_p_value <- kim::round_flexibly(model_p_value, sigfigs)
   }
   if (!is.null(round_digits_after_decimal)) {
@@ -138,13 +147,12 @@ multiple_regression <- function(
     std_beta <- round(std_beta, round_digits_after_decimal)
     t_stat <- round(t_stat, round_digits_after_decimal)
     p_value <- round(p_value, round_digits_after_decimal)
-    r_squared <- kim::pretty_round_r(
-      r_squared, round_digits_after_decimal)
-    adj_r_squared <- kim::pretty_round_r(
-      adj_r_squared, round_digits_after_decimal)
-    f_stat <- round(f_stat, round_digits_after_decimal)
     model_p_value <- round(model_p_value, round_digits_after_decimal)
   }
+  # round figures in the first column of the regression table
+  r_squared <- kim::pretty_round_r(r_squared, round_r_squared)
+  adj_r_squared <- kim::pretty_round_r(adj_r_squared, round_r_squared)
+  f_stat <- round(f_stat, round_f_stat)
   # pretty round p_value
   if (pretty_round_p_value == TRUE) {
     p_value <- kim::pretty_round_p_value(p_value)
@@ -189,5 +197,11 @@ multiple_regression <- function(
     p_value = rep("", length(variable_2))
   )
   t4 <- rbind(t2, t3)
+  # rename columns
+  if (prettify_reg_table_col_names == TRUE) {
+    data.table::setnames(
+      t4, c("variable", "estimate", "se", "std_beta", "t_stat", "p_value"),
+      c("Variable", "B", "SE B", "Std. Beta", "t", "p"))
+  }
   return(t4)
 }
