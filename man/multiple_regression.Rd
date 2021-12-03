@@ -14,7 +14,8 @@ multiple_regression(
   return_table_upper_half = FALSE,
   round_r_squared = 3,
   round_f_stat = 2,
-  prettify_reg_table_col_names = TRUE
+  prettify_reg_table_col_names = TRUE,
+  silent = FALSE
 )
 }
 \arguments{
@@ -48,6 +49,10 @@ of the regression model should be rounded to (default 2)}
 \item{prettify_reg_table_col_names}{logical. Should the column names
 of the regression table be made pretty (e.g., change "std_beta" to
 "Std. Beta")? (Default = \code{TRUE})}
+
+\item{silent}{If \code{silent = FALSE}, a message regarding
+mean-centered variables will be printed. If \code{silent = TRUE},
+this message will be suppressed. By default, \code{silent = FALSE}.}
 }
 \value{
 the output will be a data.table showing multiple regression

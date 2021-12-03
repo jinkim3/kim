@@ -30,6 +30,9 @@
 #' @param prettify_reg_table_col_names logical. Should the column names
 #' of the regression table be made pretty (e.g., change "std_beta" to
 #' "Std. Beta")? (Default = \code{TRUE})
+#' @param silent If \code{silent = FALSE}, a message regarding
+#' mean-centered variables will be printed. If \code{silent = TRUE},
+#' this message will be suppressed. By default, \code{silent = FALSE}.
 #' @return the output will be a data.table showing multiple regression
 #' results.
 #' @examples
@@ -50,7 +53,8 @@ multiple_regression <- function(
   return_table_upper_half = FALSE,
   round_r_squared = 3,
   round_f_stat = 2,
-  prettify_reg_table_col_names = TRUE) {
+  prettify_reg_table_col_names = TRUE,
+  silent = FALSE) {
   # installed packages
   installed_pkgs <- rownames(utils::installed.packages())
   # check if Package 'lm.beta' is installed
@@ -87,10 +91,12 @@ multiple_regression <- function(
         dt, j = col, value = scale(dt[[col]], scale = FALSE))
     }
     # print a summary of mean centering
-    kim::pm(
-      "The following variable(s) were mean-centered prior to ",
-      "the regression analysis:\n",
-      paste0(vars_to_mean_center, collapse = "\n"))
+    if (silent == FALSE) {
+      kim::pm(
+        "The following variable(s) were mean-centered prior to ",
+        "the regression analysis:\n",
+        paste0(vars_to_mean_center, collapse = "\n"))
+    }
     # regression model after mean centering
     model <- stats::lm(formula = formula, data = dt)
   } else {
