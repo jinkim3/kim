@@ -1,5 +1,6 @@
-# kim 0.4.52
-* Added the following function(s): vlookup, convert_cols_to_numeric
+# kim 0.4.59
+* Added the following function(s): vlookup, convert_cols_to_numeric,
+convert_to_excel_formula
 * Updated the following function(s) (and other functions that use them): 
 chi_squared_test_pairwise, compare_groups, desc_stats_by_group, 
 histogram_by_group, id_across_datasets, multiple_regression,
