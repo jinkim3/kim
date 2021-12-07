@@ -21,6 +21,7 @@ spotlight_2_by_continuous(
   error_bar_tip_width = 0.13,
   error_bar_thickness = 1,
   position_dodge = 0.13,
+  simple_effect_text_part_1 = "Simple Effect\\n",
   simple_effect_color = "black",
   simple_effect_font_size = 5,
   interaction_p_value_font_size = 6,
@@ -78,6 +79,10 @@ at the end of error bars (default = 0.13)}
 \item{position_dodge}{by how much should the group means and error bars
 be horizontally offset from each other so as not to overlap?
 (default = 0.13)}
+
+\item{simple_effect_text_part_1}{The first part of the text for
+labeling simple effects.
+By default, \code{simple_effect_text_part_1 = "Simple Effect\n"}}
 
 \item{simple_effect_color}{color for the text indicating p-values
 of simple effects (default = "black").}

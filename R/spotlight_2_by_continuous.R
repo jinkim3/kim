@@ -31,6 +31,9 @@
 #' @param position_dodge by how much should the group means and error bars
 #' be horizontally offset from each other so as not to overlap?
 #' (default = 0.13)
+#' @param simple_effect_text_part_1 The first part of the text for
+#' labeling simple effects.
+#' By default, \code{simple_effect_text_part_1 = "Simple Effect\n"}
 #' @param simple_effect_color color for the text indicating p-values
 #' of simple effects (default = "black").
 #' @param simple_effect_font_size font size of the text indicating
@@ -83,6 +86,7 @@ spotlight_2_by_continuous <- function(
   error_bar_tip_width = 0.13,
   error_bar_thickness = 1,
   position_dodge = 0.13,
+  simple_effect_text_part_1 = "Simple Effect\n",
   simple_effect_color = "black",
   simple_effect_font_size = 5,
   interaction_p_value_font_size = 6,
@@ -260,7 +264,7 @@ spotlight_2_by_continuous <- function(
       x = i + position_dodge * 3,
       y = mean(y_coordinates),
       label = paste0(
-        "Simple Effect\n", kim::pretty_round_p_value(
+        simple_effect_text_part_1, kim::pretty_round_p_value(
           simple_effect_p_values[i], include_p_equals = TRUE)),
       color = simple_effect_color,
       hjust = 0.5,
