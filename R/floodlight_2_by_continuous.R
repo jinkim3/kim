@@ -251,7 +251,7 @@ floodlight_2_by_continuous <- function(
     values = reg_line_types)
   # include interaction p value
   if (interaction_p_include == TRUE) {
-    lm_summary <- summary(stats::lm(dv ~ iv_binary * mod, data = dt))
+    lm_summary <- summary(stats::lm(formula = lm_formula, data = dt))
     interaction_p_value <- kim::pretty_round_p_value(
       lm_summary[["coefficients"]]["iv_binary:mod", "Pr(>|t|)"],
       include_p_equals = TRUE,
@@ -388,7 +388,8 @@ floodlight_2_by_continuous <- function(
   # add a note on covariates if applicable
   if (!is.null(covariate_name)) {
     g1 <- g1 + ggplot2::labs(caption = paste0(
-      "Covariates: ", paste0(covariate_name, collapse = ", ")))
+      "Covariates (Variables Controlled for): ",
+      paste0(covariate_name, collapse = ", ")))
   }
   return(g1)
 }
