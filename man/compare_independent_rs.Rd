@@ -12,6 +12,7 @@ compare_independent_rs(
   one_tailed = FALSE,
   round_p = 3,
   round_z_diff = 2,
+  round_r = 2,
   print_summary = TRUE,
   output_type = NULL
 )
@@ -33,6 +34,9 @@ places to which to round the p-value (default = 3)}
 
 \item{round_z_diff}{(only for displaying purposes) number of
 decimal places to which to round the z-score (default = 2)}
+
+\item{round_r}{(only for displaying purposes) number of
+decimal places to which to round correlation coefficients (default = 2)}
 
 \item{print_summary}{logical. Should the summary be printed?
 (default = TRUE)}

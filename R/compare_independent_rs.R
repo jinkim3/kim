@@ -14,6 +14,8 @@
 #' places to which to round the p-value (default = 3)
 #' @param round_z_diff (only for displaying purposes) number of
 #' decimal places to which to round the z-score (default = 2)
+#' @param round_r (only for displaying purposes) number of
+#' decimal places to which to round correlation coefficients (default = 2)
 #' @param print_summary logical. Should the summary be printed?
 #' (default = TRUE)
 #' @param output_type type of the output. If \code{output_type = "z"},
@@ -40,6 +42,7 @@ compare_independent_rs <- function(
   one_tailed = FALSE,
   round_p = 3,
   round_z_diff = 2,
+  round_r = 2,
   print_summary = TRUE,
   output_type = NULL
   ) {
@@ -61,8 +64,8 @@ compare_independent_rs <- function(
     "not significantly different")
   if (print_summary == TRUE) {
     kim::pm(
-      "The two correlations, ", r1, " and ",
-      r2, ", are ", sig_text,
+      "The two correlations, ", kim::pretty_round_r(r1, round_r),
+      " and ", kim::pretty_round_r(r2, round_r), ", are ", sig_text,
       ", ", ifelse(one_tailed == TRUE, "one-tailed", "two-tailed"),
       " z = ", round(z_diff, round_z_diff), ", ",
       kim::pretty_round_p_value(
