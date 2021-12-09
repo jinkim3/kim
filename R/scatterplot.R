@@ -173,23 +173,36 @@ scatterplot <- function(
   if (!is.null(point_label_var_name)) {
     g1 <- g1 + ggplot2::aes(label = dt02$point_labels)
     if (is.null(point_label_size)) {
-      g1 <- g1 + ggplot2::geom_text(
-        ggplot2::aes(label = dt02$point_labels, fontface = "bold"))
+      # add jitter if necessary
+      if (jitter_x_percent > 0 | jitter_y_percent > 0) {
+        g1 <- g1 + ggplot2::geom_text(
+          ggplot2::aes(label = dt02$point_labels, fontface = "bold"),
+          position = pj)
+      } else {
+        g1 <- g1 + ggplot2::geom_text(
+          ggplot2::aes(label = dt02$point_labels, fontface = "bold"))
+      }
     } else {
-      g1 <- g1 + ggplot2::geom_text(
-        ggplot2::aes(label = dt02$point_labels, fontface = "bold"),
-        size = point_label_size)
-    }
-    # add jitter if necessary
-    if (jitter_x_percent > 0 | jitter_y_percent > 0) {
-      g1 <- g1 + ggplot2::geom_text(position = pj)
+      # add jitter if necessary
+      if (jitter_x_percent > 0 | jitter_y_percent > 0) {
+        g1 <- g1 + ggplot2::geom_text(
+          ggplot2::aes(label = dt02$point_labels, fontface = "bold"),
+          position = pj,
+          size = point_label_size)
+      } else {
+        g1 <- g1 + ggplot2::geom_text(
+          ggplot2::aes(label = dt02$point_labels, fontface = "bold"),
+          size = point_label_size)
+      }
     }
   } else {
-    g1 <- g1 + ggplot2::geom_point(
-      alpha = alpha, size = point_size)
     # add jitter if necessary
     if (jitter_x_percent > 0 | jitter_y_percent > 0) {
-      g1 <- g1 + ggplot2::geom_point(position = pj)
+      g1 <- g1 + ggplot2::geom_point(
+        alpha = alpha, size = point_size, position = pj)
+    } else {
+      g1 <- g1 + ggplot2::geom_point(
+        alpha = alpha, size = point_size)
     }
   }
   # scale points
