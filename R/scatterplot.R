@@ -63,13 +63,11 @@
 #' scatterplot(
 #'   data = mtcars, x_var_name = "wt", y_var_name = "mpg",
 #'   point_label_var_name = "hp", weight_var_name = "drat",
-#'   annotate_stats = TRUE
-#' )
+#'   annotate_stats = TRUE)
 #' scatterplot(
 #'   data = mtcars, x_var_name = "wt", y_var_name = "mpg",
 #'   point_label_var_name = "hp", weight_var_name = "cyl",
-#'   point_label_size = 7, annotate_stats = TRUE
-#' )
+#'   point_label_size = 7, annotate_stats = TRUE)
 #' }
 #' @export
 #' @import data.table
@@ -95,7 +93,8 @@ scatterplot <- function(
   point_size_range = c(3, 12),
   jitter_x_percent = 0,
   jitter_y_percent = 0,
-  cap_axis_lines = FALSE) {
+  cap_axis_lines = FALSE,
+  color_dots_by = NULL) {
   # installed packages
   installed_pkgs <- rownames(utils::installed.packages())
   # check if Package 'ggplot2' is installed
@@ -128,7 +127,13 @@ scatterplot <- function(
   }
   # create a temporary dataset
   dt01 <- data.table::data.table(
-    x = data[[x_var_name]], y = data[[y_var_name]])
+    x = data[[x_var_name]],
+    y = data[[y_var_name]])
+  # add the column for colors
+  if (!is.null(color_dots_by)) {
+    data.table::set(
+      dt01, j = "color", value = data[[color_dots_by]])
+  }
   # add the point label or weight column
   if (!is.null(point_label_var_name)) {
     data.table::set(
@@ -137,44 +142,55 @@ scatterplot <- function(
   if (!is.null(weight_var_name)) {
     data.table::set(
       dt01, j = "weight", value = data[[weight_var_name]])
-  } else {
-    # set weight as 1 if no weight_var_name is given
-    data.table::set(dt01, j = "weight", value = 1)
   }
   # remove na values
   num_of_na_rows <- sum(!stats::complete.cases(dt01))
-  dt02 <- stats::na.omit(dt01)
   if (num_of_na_rows > 0) {
+    dt02 <- stats::na.omit(dt01)
     message(paste0(
       num_of_na_rows,
       " rows were removed because of missing values."))
+  } else {
+    dt02 <- dt01
   }
   # ranges for x and y
   x_range <- max(dt02$x) - min(dt02$x)
   y_range <- max(dt02$y) - min(dt02$y)
   # start ggplot
-  g1 <- ggplot2::ggplot(data = dt02, ggplot2::aes(x = dt02$x, y = dt02$y))
+  g1 <- ggplot2::ggplot(data = dt02, ggplot2::aes(
+    x = x, y = y))
+  # add the color
+  if (!is.null(color_dots_by)) {
+    g1 <- g1 + ggplot2::aes(color = dt02$color)
+  }
   # add jitter
-  pj <- ggplot2::position_jitter(
-    width = jitter_x_percent / 100 * x_range,
-    height = jitter_y_percent / 100 * y_range
-  )
+  if (jitter_x_percent > 0 | jitter_y_percent > 0) {
+    pj <- ggplot2::position_jitter(
+      width = jitter_x_percent / 100 * x_range,
+      height = jitter_y_percent / 100 * y_range)
+  }
   # add point labels or dots
   if (!is.null(point_label_var_name)) {
     g1 <- g1 + ggplot2::aes(label = dt02$point_labels)
     if (is.null(point_label_size)) {
       g1 <- g1 + ggplot2::geom_text(
-        ggplot2::aes(label = dt02$point_labels, fontface = "bold"),
-        position = pj)
+        ggplot2::aes(label = dt02$point_labels, fontface = "bold"))
     } else {
       g1 <- g1 + ggplot2::geom_text(
         ggplot2::aes(label = dt02$point_labels, fontface = "bold"),
-        position = pj,
         size = point_label_size)
+    }
+    # add jitter if necessary
+    if (jitter_x_percent > 0 | jitter_y_percent > 0) {
+      g1 <- g1 + ggplot2::geom_text(position = pj)
     }
   } else {
     g1 <- g1 + ggplot2::geom_point(
-      position = pj, alpha = alpha, size = point_size)
+      alpha = alpha, size = point_size)
+    # add jitter if necessary
+    if (jitter_x_percent > 0 | jitter_y_percent > 0) {
+      g1 <- g1 + ggplot2::geom_point(position = pj)
+    }
   }
   # scale points
   if (!is.null(weight_var_name)) {
@@ -184,21 +200,26 @@ scatterplot <- function(
   }
   # weighted least squares line
   if (line_of_fit_type %in% c("lm", "loess")) {
-    g1 <- g1 + ggplot2::geom_smooth(
-      formula = y ~ x,
-      method = line_of_fit_type,
-      mapping = ggplot2::aes(weight = dt02$weight),
-      color = line_of_fit_color,
-      se = ci_for_line_of_fit
-    )
+    # weighted or not
+    if (!is.null(weight_var_name)) {
+      g1 <- g1 + ggplot2::geom_smooth(
+        formula = y ~ x,
+        method = line_of_fit_type,
+        mapping = ggplot2::aes(weight = dt02$weight),
+        color = line_of_fit_color,
+        se = ci_for_line_of_fit)
+    } else {
+      g1 <- g1 + ggplot2::geom_smooth(
+        formula = y ~ x,
+        method = line_of_fit_type,
+        color = line_of_fit_color,
+        se = ci_for_line_of_fit)
+    }
   }
   # correlation
   cor_test <- stats::cor.test(dt02[["x"]], dt02[["y"]])
   cor_test_df <- cor_test[["parameter"]][["df"]]
-  cor_test_r <- cor_test[["estimate"]]
-  cor_test_p_value <- cor_test[["p.value"]]
-  weighted_r_text <- ""
-  # weighted correlation
+  # weighted or not
   if (!is.null(weight_var_name)) {
     cor_test <- wtd_cor_function(
       x = dt02$x, y = dt02$y,
@@ -206,6 +227,11 @@ scatterplot <- function(
     cor_test_r <- cor_test[1, "correlation"]
     cor_test_p_value <- cor_test[1, "p.value"]
     weighted_r_text <- "weighted"
+  } else {
+    # correlation
+    cor_test_r <- cor_test[["estimate"]]
+    cor_test_p_value <- cor_test[["p.value"]]
+    weighted_r_text <- ""
   }
   # nice p value
   cor_test_p_value_text <- kim::pretty_round_p_value(
@@ -227,15 +253,15 @@ scatterplot <- function(
           t06 = weighted_r_text
         )
       )))
-    g1 <- g1 + ggplot2::geom_text(ggplot2::aes(
+    g1 <- g1 + ggplot2::annotate(
+      geom = "text",
       x = min(dt02$x) + x_range / 2,
-      y = max(dt02$y) + y_range * annotate_y_pos / 100),
+      y = max(dt02$y) + y_range * annotate_y_pos / 100,
       color = annotated_stats_color,
       label = annotation_01, parse = TRUE,
       hjust = 0.5, vjust = 0.5,
       size = annotated_stats_font_size,
-      fontface = annotated_stats_font_face
-    )
+      fontface = annotated_stats_font_face)
   }
   # axis labels
   if (is.null(x_axis_label)) {

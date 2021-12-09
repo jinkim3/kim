@@ -26,7 +26,8 @@ scatterplot(
   point_size_range = c(3, 12),
   jitter_x_percent = 0,
   jitter_y_percent = 0,
-  cap_axis_lines = FALSE
+  cap_axis_lines = FALSE,
+  color_dots_by = NULL
 )
 }
 \arguments{
@@ -119,12 +120,10 @@ scatterplot(data = mtcars, x_var_name = "wt", y_var_name = "mpg")
 scatterplot(
   data = mtcars, x_var_name = "wt", y_var_name = "mpg",
   point_label_var_name = "hp", weight_var_name = "drat",
-  annotate_stats = TRUE
-)
+  annotate_stats = TRUE)
 scatterplot(
   data = mtcars, x_var_name = "wt", y_var_name = "mpg",
   point_label_var_name = "hp", weight_var_name = "cyl",
-  point_label_size = 7, annotate_stats = TRUE
-)
+  point_label_size = 7, annotate_stats = TRUE)
 }
 }

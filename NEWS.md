@@ -1,4 +1,4 @@
-# kim 0.4.60
+# kim 0.4.70
 * Added the following function(s): vlookup, convert_cols_to_numeric,
 convert_to_excel_formula, spotlight_2_by_continuous
 * Updated the following function(s) (and other functions that use them): 
@@ -8,6 +8,8 @@ replace_values_in_dt, tv, weighted_mean_r
 * Fixed bugs or errors in the following functions (and other functions
 that use them): round_flexibly, outlier, multiple_regression, 
 pretty_round_p_value
+* Critical improvement in the following functions (and other functions
+that use them): scatterplot
 
 # kim 0.4.22
 * Added function(s) including simple_effects_analysis.
