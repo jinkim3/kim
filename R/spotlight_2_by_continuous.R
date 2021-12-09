@@ -125,7 +125,9 @@ spotlight_2_by_continuous <- function(
     stop("Please enter a variable name for the input 'mod_name'")
   }
   # bind the vars locally to the function
-  dv <- iv_binary <- iv_factor <- mod <- NULL
+  dv <- iv <- iv_binary <- iv_factor <- mod <- NULL
+  iv_binary_flipped <- mod_minus_mod_low <- mod_minus_mod_mean <- NULL
+  mod_minus_mod_high <- estimated_dv <- NULL
   # convert to data.table
   dt <- data.table::setDT(data.table::copy(data))
   # remove rows with na
@@ -173,7 +175,7 @@ spotlight_2_by_continuous <- function(
   names(dt) <- c("iv", "dv", "mod", "iv_binary", "iv_factor")
   # focal values of the moderator
   mod_mean <- mean(dt[, mod])
-  mod_sd <- sd(dt[, mod])
+  mod_sd <- stats::sd(dt[, mod])
   # add vars for spotlight analysis
   dt[, iv_binary_flipped := fcase(iv_binary == 0, 1, iv_binary == 1, 0)]
   dt[, mod_minus_mod_low := mod - (mod_mean - mod_sd)]
@@ -181,12 +183,12 @@ spotlight_2_by_continuous <- function(
   dt[, mod_minus_mod_high := mod - (mod_mean + mod_sd)]
   # 6 regression models as a list
   reg_models <- list(
-    lm(formula = dv ~ iv_binary * mod_minus_mod_low, dt),
-    lm(formula = dv ~ iv_binary_flipped * mod_minus_mod_low, dt),
-    lm(formula = dv ~ iv_binary * mod_minus_mod_mean, dt),
-    lm(formula = dv ~ iv_binary_flipped * mod_minus_mod_mean, dt),
-    lm(formula = dv ~ iv_binary * mod_minus_mod_high, dt),
-    lm(formula = dv ~ iv_binary_flipped * mod_minus_mod_high, dt))
+    stats::lm(formula = dv ~ iv_binary * mod_minus_mod_low, dt),
+    stats::lm(formula = dv ~ iv_binary_flipped * mod_minus_mod_low, dt),
+    stats::lm(formula = dv ~ iv_binary * mod_minus_mod_mean, dt),
+    stats::lm(formula = dv ~ iv_binary_flipped * mod_minus_mod_mean, dt),
+    stats::lm(formula = dv ~ iv_binary * mod_minus_mod_high, dt),
+    stats::lm(formula = dv ~ iv_binary_flipped * mod_minus_mod_high, dt))
   # p values of the simple effect
   simple_effect_p_values <- vapply(1:3, function(i) {
     summary(reg_models[[(i - 1) * 2 + 1]])[[

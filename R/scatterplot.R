@@ -56,9 +56,11 @@
 #' range of y values
 #' @param cap_axis_lines logical. Should the axis lines be capped at the
 #' outer tick marks? (default = TRUE)
+#' @param color_dots_by name of the variable that will determine
+#' colors of the dots
 #' @return the output will be a scatter plot, a ggplot object.
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' scatterplot(data = mtcars, x_var_name = "wt", y_var_name = "mpg")
 #' scatterplot(
 #'   data = mtcars, x_var_name = "wt", y_var_name = "mpg",
@@ -95,6 +97,8 @@ scatterplot <- function(
   jitter_y_percent = 0,
   cap_axis_lines = FALSE,
   color_dots_by = NULL) {
+  # bind the vars locally to the function
+  x <- y <- NULL
   # installed packages
   installed_pkgs <- rownames(utils::installed.packages())
   # check if Package 'ggplot2' is installed

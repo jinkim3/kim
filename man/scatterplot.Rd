@@ -100,6 +100,9 @@ range of y values}
 
 \item{cap_axis_lines}{logical. Should the axis lines be capped at the
 outer tick marks? (default = TRUE)}
+
+\item{color_dots_by}{name of the variable that will determine
+colors of the dots}
 }
 \value{
 the output will be a scatter plot, a ggplot object.
@@ -115,7 +118,7 @@ John Pasek (2018),
 \url{https://cran.r-project.org/package=weights}
 }
 \examples{
-\donttest{
+\dontrun{
 scatterplot(data = mtcars, x_var_name = "wt", y_var_name = "mpg")
 scatterplot(
   data = mtcars, x_var_name = "wt", y_var_name = "mpg",

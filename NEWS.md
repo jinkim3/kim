@@ -1,6 +1,7 @@
-# kim 0.4.71
+# kim 0.4.73
 * Added the following function(s): vlookup, convert_cols_to_numeric,
-convert_to_excel_formula, spotlight_2_by_continuous
+convert_to_excel_formula, spotlight_2_by_continuous,
+compare_independent_rs
 * Updated the following function(s) (and other functions that use them): 
 chi_squared_test_pairwise, compare_groups, desc_stats_by_group, 
 histogram_by_group, id_across_datasets, multiple_regression,
