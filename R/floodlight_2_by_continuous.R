@@ -11,6 +11,7 @@
 #' @param iv_name name of the binary independent variable
 #' @param dv_name name of the dependent variable
 #' @param mod_name name of the continuous moderator variable
+#' @param covariate_name name of the variables to control for
 #' @param interaction_p_include logical. Should the plot include a
 #' p-value for the interaction term?
 #' @param iv_level_order order of levels in the independent
@@ -69,6 +70,13 @@
 #' iv_name = "am",
 #' dv_name = "mpg",
 #' mod_name = "qsec")
+#' # add covariates
+#' floodlight_2_by_continuous(
+#' data = mtcars,
+#' iv_name = "am",
+#' dv_name = "mpg",
+#' mod_name = "qsec",
+#' covariate_name = c("cyl", "hp", "disp", "wt"))
 #' }
 #' @export
 #' @import data.table
@@ -77,6 +85,7 @@ floodlight_2_by_continuous <- function(
   iv_name = NULL,
   dv_name = NULL,
   mod_name = NULL,
+  covariate_name = NULL,
   interaction_p_include = TRUE,
   iv_level_order = NULL,
   output = "reg_lines_plot",
@@ -138,13 +147,24 @@ floodlight_2_by_continuous <- function(
     stop("Please enter a variable name for the input 'mod_name'")
   }
   # bind the vars locally to the function
-  dv <- iv_binary <- iv_factor <- mod <- NULL
+  dv <- iv <- iv_binary <- iv_factor <- mod <- NULL
   # convert to data.table
-  dt_1 <- data.table::setDT(data.table::copy(data))
+  dt <- data.table::setDT(data.table::copy(data))
   # remove rows with na
-  dt_1 <- stats::na.omit(dt_1[, c(iv_name, dv_name, mod_name), with = F])
+  dt <- stats::na.omit(dt[, setdiff(names(dt), c(
+    iv_name, dv_name, mod_name, covariate_name)) := NULL])
+  # order and rename columns
+  data.table::setcolorder(dt, c(
+    iv_name, dv_name, mod_name, covariate_name))
+  # give temporary names to covariates
+  if (length(covariate_name) > 0) {
+    cov_temp_names <- paste0("cov_", seq_along(covariate_name))
+    names(dt) <- c("iv", "dv", "mod", cov_temp_names)
+  } else {
+    names(dt) <- c("iv", "dv", "mod")
+  }
   # unique values in iv
-  iv_unique_values <- sort(unique(dt_1[, get(iv_name)]))
+  iv_unique_values <- sort(unique(dt[, iv]))
   iv_unique_values_character <- as.character(iv_unique_values)
   # check if iv is binary
   num_of_levels_in_iv <- length(iv_unique_values)
@@ -174,21 +194,26 @@ floodlight_2_by_continuous <- function(
     iv_level_1 <- iv_level_order[1]
     iv_level_2 <- iv_level_order[2]
   }
-  # copy data table
-  dt_2 <- data.table::copy(dt_1)
   # add binary variable
-  dt_2[, iv_binary := data.table::fcase(
-    get(iv_name) == iv_level_1, 0,
-    get(iv_name) == iv_level_2, 1)]
+  dt[, iv_binary := data.table::fcase(
+    iv == iv_level_1, 0,
+    iv == iv_level_2, 1)]
   # add a factor
-  dt_2[, paste0(iv_name, "_factor") := factor(
+  dt[, iv_factor := factor(
     iv_binary,
     levels = 0:1,
     labels = c(as.character(iv_level_1), as.character(iv_level_2)))]
-  names(dt_2) <- c("iv", "dv", "mod", "iv_binary", "iv_factor")
+  # lm formula
+  if (!is.null(covariate_name)) {
+    lm_formula <- as.formula(paste0(
+      "dv ~ iv_binary * mod + ",
+      paste0(cov_temp_names, collapse = " + ")))
+  } else {
+    lm_formula <- dv ~ iv_binary * mod
+  }
   # jn points
   johnson_neyman_result <- jn_fn_from_interactions(
-    stats::lm(dv ~ iv_binary * mod, data = dt_2),
+    stats::lm(formula = lm_formula, data = dt),
     pred = iv_binary,
     modx = mod)
   jn_points <- johnson_neyman_result[["bounds"]]
@@ -203,11 +228,11 @@ floodlight_2_by_continuous <- function(
     return(g1)
   }
   # jitter
-  x_range <- max(dt_2[, mod], na.rm = TRUE) - min(dt_2[, mod], na.rm = TRUE)
-  y_range <- max(dt_2[, dv], na.rm = TRUE) - min(dt_2[, dv], na.rm = TRUE)
+  x_range <- max(dt[, mod], na.rm = TRUE) - min(dt[, mod], na.rm = TRUE)
+  y_range <- max(dt[, dv], na.rm = TRUE) - min(dt[, dv], na.rm = TRUE)
   # plot
   g1 <- ggplot2::ggplot(
-    data = dt_2,
+    data = dt,
     ggplot2::aes(x = mod, y = dv,
         color = iv_factor,
         linetype = iv_factor))
@@ -226,7 +251,7 @@ floodlight_2_by_continuous <- function(
     values = reg_line_types)
   # include interaction p value
   if (interaction_p_include == TRUE) {
-    lm_summary <- summary(stats::lm(dv ~ iv_binary * mod, data = dt_2))
+    lm_summary <- summary(stats::lm(dv ~ iv_binary * mod, data = dt))
     interaction_p_value <- kim::pretty_round_p_value(
       lm_summary[["coefficients"]]["iv_binary:mod", "Pr(>|t|)"],
       include_p_equals = TRUE,
@@ -236,7 +261,7 @@ floodlight_2_by_continuous <- function(
     # label interaction p value
     g1 <- g1 + ggplot2::annotate(
       geom = "text",
-      x = min(dt_2[, mod]) + x_range * 0.5,
+      x = min(dt[, mod]) + x_range * 0.5,
       y = Inf,
       label = interaction_p_value_text,
       hjust = 0.5, vjust = -3,
@@ -246,8 +271,8 @@ floodlight_2_by_continuous <- function(
   }
   # positions of the lines marking johnson neyman points
   jn_line_pos <- jn_points
-  mod_min_observed <- min(dt_2[, mod])
-  mod_max_observed <- max(dt_2[, mod])
+  mod_min_observed <- min(dt[, mod])
+  mod_max_observed <- max(dt[, mod])
   if (jn_line_pos[["Lower"]] < mod_min_observed) {
     jn_line_pos[["Lower"]] <- -Inf
   }
@@ -289,19 +314,19 @@ floodlight_2_by_continuous <- function(
   # if sig area is outside
   if (sig_inside_vs_outside == "outside") {
     # sig area on the left
-    g1 <- g1 + annotate(
+    g1 <- g1 + ggplot2::annotate(
       "rect", xmin = -Inf, xmax = jn_line_pos[["Lower"]],
       ymin = -Inf, ymax = Inf,
       alpha = sig_region_alpha, fill = sig_region_color)
     # nonsig area in the middle
-    g1 <- g1 + annotate(
+    g1 <- g1 + ggplot2::annotate(
       "rect",
       xmin = jn_line_pos[["Lower"]],
       xmax = jn_line_pos[["Higher"]],
       ymin = -Inf, ymax = Inf,
       alpha = nonsig_region_alpha, fill = nonsig_region_color)
     # sig area on the right
-    g1 <- g1 + annotate(
+    g1 <- g1 + ggplot2::annotate(
       "rect", xmin = jn_line_pos[["Higher"]], xmax = Inf,
       ymin = -Inf, ymax = Inf,
       alpha = sig_region_alpha, fill = sig_region_color)
@@ -360,6 +385,10 @@ floodlight_2_by_continuous <- function(
         linetype = legend_title)
     }
   }
-  print(g1)
+  # add a note on covariates if applicable
+  if (!is.null(covariate_name)) {
+    g1 <- g1 + ggplot2::labs(caption = paste0(
+      "Covariates: ", paste0(covariate_name, collapse = ", ")))
+  }
   return(g1)
 }

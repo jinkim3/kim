@@ -9,6 +9,7 @@ floodlight_2_by_continuous(
   iv_name = NULL,
   dv_name = NULL,
   mod_name = NULL,
+  covariate_name = NULL,
   interaction_p_include = TRUE,
   iv_level_order = NULL,
   output = "reg_lines_plot",
@@ -40,6 +41,8 @@ floodlight_2_by_continuous(
 \item{dv_name}{name of the dependent variable}
 
 \item{mod_name}{name of the continuous moderator variable}
+
+\item{covariate_name}{name of the variables to control for}
 
 \item{interaction_p_include}{logical. Should the plot include a
 p-value for the interaction term?}
@@ -129,5 +132,12 @@ data = mtcars,
 iv_name = "am",
 dv_name = "mpg",
 mod_name = "qsec")
+# add covariates
+floodlight_2_by_continuous(
+data = mtcars,
+iv_name = "am",
+dv_name = "mpg",
+mod_name = "qsec",
+covariate_name = c("cyl", "hp", "disp", "wt"))
 }
 }
