@@ -138,6 +138,6 @@ data = mtcars,
 iv_name = "am",
 dv_name = "mpg",
 mod_name = "qsec",
-covariate_name = c("cyl", "hp", "disp", "wt"))
+covariate_name = c("cyl", "hp"))
 }
 }

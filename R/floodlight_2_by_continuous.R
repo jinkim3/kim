@@ -76,7 +76,7 @@
 #' iv_name = "am",
 #' dv_name = "mpg",
 #' mod_name = "qsec",
-#' covariate_name = c("cyl", "hp", "disp", "wt"))
+#' covariate_name = c("cyl", "hp"))
 #' }
 #' @export
 #' @import data.table
@@ -205,7 +205,7 @@ floodlight_2_by_continuous <- function(
     labels = c(as.character(iv_level_1), as.character(iv_level_2)))]
   # lm formula
   if (!is.null(covariate_name)) {
-    lm_formula <- as.formula(paste0(
+    lm_formula <- stats::as.formula(paste0(
       "dv ~ iv_binary * mod + ",
       paste0(cov_temp_names, collapse = " + ")))
   } else {
@@ -234,9 +234,13 @@ floodlight_2_by_continuous <- function(
   g1 <- ggplot2::ggplot(
     data = dt,
     ggplot2::aes(x = mod, y = dv,
-        color = iv_factor,
-        linetype = iv_factor))
-  # plot points
+                 color = iv_factor,
+                 linetype = iv_factor))
+  # plot points but make them transparent if covariates are used
+  if (!is.null(covariate_name)) {
+    dot_alpha <- 0
+    dot_alpha <- 0
+  }
   g1 <- g1 + ggplot2::geom_point(
     size = dot_size,
     alpha = dot_alpha,
@@ -244,11 +248,13 @@ floodlight_2_by_continuous <- function(
       width = x_range * jitter_x_percent / 100,
       height = y_range * jitter_y_percent / 100))
   # plot regression lines
-  g1 <- g1 + ggplot2::geom_smooth(
-    formula = y ~ x,
-    method = "lm", se = F)
-  g1 <- g1 + ggplot2::scale_linetype_manual(
-    values = reg_line_types)
+  if (is.null(covariate_name)) {
+    g1 <- g1 + ggplot2::geom_smooth(
+      formula = y ~ x,
+      method = "lm", se = F)
+    g1 <- g1 + ggplot2::scale_linetype_manual(
+      values = reg_line_types)
+  }
   # include interaction p value
   if (interaction_p_include == TRUE) {
     lm_summary <- summary(stats::lm(formula = lm_formula, data = dt))
@@ -388,7 +394,7 @@ floodlight_2_by_continuous <- function(
   # add a note on covariates if applicable
   if (!is.null(covariate_name)) {
     g1 <- g1 + ggplot2::labs(caption = paste0(
-      "Covariates (Variables Controlled for): ",
+      "Covariates (Variables Controlled for):\n",
       paste0(covariate_name, collapse = ", ")))
   }
   return(g1)

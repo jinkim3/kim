@@ -118,7 +118,7 @@ parallel_analysis <- function(
   g1 <- g1 + ggplot2::geom_text(data = dt5, ggplot2::aes(
     x = component_number, y = eigenvalue, label = eigenvalue_type,
     color = eigenvalue_type, hjust = -0.1, vjust = -0.1),
-    fontface = "bold", size = 4, inherit.aes = F)
+    fontface = "bold", size = 4, inherit.aes = FALSE)
   g1 <- g1 + ggplot2::theme_classic(base_size = 16) +
     ggplot2::theme(
       plot.title = ggplot2::element_text(hjust = 0.5),

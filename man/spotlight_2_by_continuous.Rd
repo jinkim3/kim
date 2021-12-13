@@ -121,6 +121,7 @@ By default \code{plot_margin = ggplot2::unit(c(60, 7, 7, 7), "pt")}}
 }
 \description{
 Conduct a spotlight analysis for a 2 x Continuous design.
+See Spiller et al. (2013) \url{doi:10.1509/jmr.12.0420}.
 }
 \examples{
 \donttest{

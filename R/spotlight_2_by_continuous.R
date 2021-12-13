@@ -1,6 +1,7 @@
 #' Spotlight 2 by Continuous
 #'
 #' Conduct a spotlight analysis for a 2 x Continuous design.
+#' See Spiller et al. (2013) <doi:10.1509/jmr.12.0420>.
 #'
 #' @param data a data object (a data frame or a data.table)
 #' @param iv_name name of the binary independent variable
@@ -177,7 +178,8 @@ spotlight_2_by_continuous <- function(
   mod_mean <- mean(dt[, mod])
   mod_sd <- stats::sd(dt[, mod])
   # add vars for spotlight analysis
-  dt[, iv_binary_flipped := fcase(iv_binary == 0, 1, iv_binary == 1, 0)]
+  dt[, iv_binary_flipped := data.table::fcase(
+    iv_binary == 0, 1, iv_binary == 1, 0)]
   dt[, mod_minus_mod_low := mod - (mod_mean - mod_sd)]
   dt[, mod_minus_mod_mean := mod - mod_mean]
   dt[, mod_minus_mod_high := mod - (mod_mean + mod_sd)]
@@ -200,8 +202,8 @@ spotlight_2_by_continuous <- function(
     coeff_matrix <- summary(reg_models[[i]])[["coefficients"]]
     estimated_dv <- coeff_matrix["(Intercept)", "Estimate"]
     se_of_intercept <- coeff_matrix["(Intercept)", "Std. Error"]
-    dv_minus_1_se <- dv - se_of_intercept
-    dv_plus_1_se <- dv + se_of_intercept
+    dv_minus_1_se <- estimated_dv - se_of_intercept
+    dv_plus_1_se <- estimated_dv + se_of_intercept
     ci_95_ll <- stats::confint(reg_models[[i]])["(Intercept)", 1]
     ci_95_ul <- stats::confint(reg_models[[i]])["(Intercept)", 2]
     output <- c(
