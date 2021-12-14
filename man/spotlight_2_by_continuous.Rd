@@ -9,39 +9,83 @@ spotlight_2_by_continuous(
   iv_name = NULL,
   dv_name = NULL,
   mod_name = NULL,
+  covariate_name = NULL,
+  focal_values = NULL,
   interaction_p_include = TRUE,
   iv_level_order = NULL,
   output_type = "plot",
   colors = c("red", "blue"),
-  lines_connecting_means = TRUE,
-  line_size = 1,
   dot_size = 3,
+  observed_dots = FALSE,
+  reg_lines = FALSE,
+  reg_line_size = 1,
+  lines_connecting_est_dv = TRUE,
+  lines_connecting_est_dv_size = 1,
+  estimated_dv_dot_shape = 15,
+  estimated_dv_dot_size = 6,
   error_bar = "ci",
   error_bar_range = 0.95,
-  error_bar_tip_width = 0.13,
+  error_bar_tip_width = NULL,
+  error_bar_tip_width_percent = 8,
   error_bar_thickness = 1,
-  position_dodge = 0.13,
-  simple_effect_text_part_1 = "Simple Effect\\n",
-  simple_effect_color = "black",
-  simple_effect_font_size = 5,
+  error_bar_offset = NULL,
+  error_bar_offset_percent = 8,
+  simp_eff_bracket_leg_ht = NULL,
+  simp_eff_bracket_leg_ht_perc = 2,
+  simp_eff_bracket_offset = NULL,
+  simp_eff_bracket_offset_perc = 1,
+  simp_eff_bracket_color = "black",
+  simp_eff_bracket_line_size = 1,
+  simp_eff_text_offset = NULL,
+  simp_eff_text_offset_percent = 7,
+  simp_eff_text_hjust = 0.5,
+  simp_eff_text_part_1 = "Simple Effect\\n",
+  simp_eff_text_color = "black",
+  simp_eff_font_size = 5,
+  interaction_p_value_x = NULL,
+  interaction_p_value_y = NULL,
   interaction_p_value_font_size = 6,
+  interaction_p_value_vjust = -1,
+  interaction_p_value_hjust = 0.5,
+  x_axis_breaks = NULL,
+  x_axis_limits = NULL,
+  x_axis_tick_mark_labels = NULL,
+  y_axis_breaks = NULL,
+  y_axis_limits = NULL,
+  x_axis_space_left_perc = 10,
+  x_axis_space_right_perc = 30,
+  y_axis_tick_mark_labels = NULL,
   x_axis_title = NULL,
   y_axis_title = NULL,
   legend_title = NULL,
   legend_position = "right",
   y_axis_title_vjust = 0.85,
   round_decimals_int_p_value = 3,
-  plot_margin = ggplot2::unit(c(60, 7, 7, 7), "pt")
+  jitter_x_percent = 0,
+  jitter_y_percent = 0,
+  dot_alpha = 0.2,
+  reg_line_alpha = 0.5,
+  jn_point_font_size = 6,
+  reg_line_types = c("solid", "dashed"),
+  caption = NULL,
+  plot_margin = ggplot2::unit(c(60, 30, 7, 7), "pt"),
+  silent = FALSE
 )
 }
 \arguments{
 \item{data}{a data object (a data frame or a data.table)}
 
-\item{iv_name}{name of the binary independent variable}
+\item{iv_name}{name of the binary independent variable (IV)}
 
-\item{dv_name}{name of the dependent variable}
+\item{dv_name}{name of the dependent variable (DV)}
 
-\item{mod_name}{name of the continuous moderator variable}
+\item{mod_name}{name of the continuous moderator variable (MOD)}
+
+\item{covariate_name}{name(s) of the variable(s) to control for in
+estimating conditional values of the DV.}
+
+\item{focal_values}{focal values of the moderator variable at which
+to estimate IV's effect on DV.}
 
 \item{interaction_p_include}{logical. Should the plot include a
 p-value for the interaction term?}
@@ -53,15 +97,34 @@ independent variable ordered using R's base function \code{sort}.}
 \item{output_type}{type of output (default = "plot").}
 
 \item{colors}{set colors for the two levels of the independent variable
-(default = \code{colors = c("red", "blue")}).}
+By default, \code{colors = c("red", "blue")}.}
 
-\item{lines_connecting_means}{logical. Should lines connecting means
-within each group be drawn? (default = TRUE)}
+\item{dot_size}{size of the observed_dots (default = 3)}
 
-\item{line_size}{thickness of the lines connecting group means,
-(default = 1)}
+\item{observed_dots}{logical. If \code{observed_dots = TRUE}, the
+observed values of all IV, DV, and MOD combinations will be plotted as
+dots. On top of these dots the spotlight analysis plot will be laid.
+If \code{observed_dots = FALSE}, these dots will not be plotted.
+By default, \code{observed_dots = FALSE}.}
 
-\item{dot_size}{size of the dots indicating group means (default = 3)}
+\item{reg_lines}{logical. If \code{reg_lines = TRUE}, the regression
+lines from regressing DV on MOD at each value of IV will be plotted.
+If \code{reg_lines = FALSE}, these regression lines will not be plotted.
+By default, \code{observed_dots = FALSE}.}
+
+\item{reg_line_size}{thickness of the regression lines (default = 1).}
+
+\item{lines_connecting_est_dv}{logical. Should lines connecting the
+estimated values of DV be drawn? (default = TRUE)}
+
+\item{lines_connecting_est_dv_size}{thickness of the lines connecting the
+estimated values of DV (default = 1).}
+
+\item{estimated_dv_dot_shape}{ggplot value for shape of the dots
+at estimated values of DV (default = 15, a square shape).}
+
+\item{estimated_dv_dot_size}{size of the dots at estimated values of
+DV (default = 6).}
 
 \item{error_bar}{if \code{error_bar = "se"}; error bars will be +/-1
 standard error, if \code{error_bar = "ci"} error bars will be a
@@ -74,24 +137,68 @@ This argument will not apply when \code{error_bar = "se"}}
 \item{error_bar_tip_width}{graphically, width of the segments
 at the end of error bars (default = 0.13)}
 
+\item{error_bar_tip_width_percent}{description not ready}
+
 \item{error_bar_thickness}{thickness of the error bars (default = 1)}
 
-\item{position_dodge}{by how much should the group means and error bars
-be horizontally offset from each other so as not to overlap?
-(default = 0.13)}
+\item{error_bar_offset}{description not ready}
 
-\item{simple_effect_text_part_1}{The first part of the text for
+\item{error_bar_offset_percent}{description not ready}
+
+\item{simp_eff_bracket_leg_ht}{description not ready}
+
+\item{simp_eff_bracket_leg_ht_perc}{description not ready}
+
+\item{simp_eff_bracket_offset}{description not ready}
+
+\item{simp_eff_bracket_offset_perc}{description not ready}
+
+\item{simp_eff_bracket_color}{description not ready}
+
+\item{simp_eff_bracket_line_size}{description not ready}
+
+\item{simp_eff_text_offset}{description not ready}
+
+\item{simp_eff_text_offset_percent}{description not ready}
+
+\item{simp_eff_text_hjust}{description not ready}
+
+\item{simp_eff_text_part_1}{The first part of the text for
 labeling simple effects.
-By default, \code{simple_effect_text_part_1 = "Simple Effect\n"}}
+By default, \code{simp_eff_text_part_1 = "Simple Effect\n"}}
 
-\item{simple_effect_color}{color for the text indicating p-values
+\item{simp_eff_text_color}{color for the text indicating p-values
 of simple effects (default = "black").}
 
-\item{simple_effect_font_size}{font size of the text indicating
+\item{simp_eff_font_size}{font size of the text indicating
 p-values of simple effects (default = 5).}
+
+\item{interaction_p_value_x}{description not ready}
+
+\item{interaction_p_value_y}{description not ready}
 
 \item{interaction_p_value_font_size}{font size for the interaction
 p value (default = 6)}
+
+\item{interaction_p_value_vjust}{description not ready}
+
+\item{interaction_p_value_hjust}{description not ready}
+
+\item{x_axis_breaks}{description not ready}
+
+\item{x_axis_limits}{description not ready}
+
+\item{x_axis_tick_mark_labels}{description not ready}
+
+\item{y_axis_breaks}{description not ready}
+
+\item{y_axis_limits}{description not ready}
+
+\item{x_axis_space_left_perc}{description not ready}
+
+\item{x_axis_space_right_perc}{description not ready}
+
+\item{y_axis_tick_mark_labels}{description not ready}
 
 \item{x_axis_title}{title of the x axis. By default, it will be set
 as input for \code{mod_name}. If \code{x_axis_title = FALSE}, it will
@@ -116,8 +223,31 @@ will be positioned at 85\% of the way up from the bottom of the plot.}
 decimal point should the p value for the interaction term be
 rounded? (default = 3)}
 
+\item{jitter_x_percent}{horizontally jitter dots by a percentage of the
+range of x values}
+
+\item{jitter_y_percent}{vertically jitter dots by a percentage of the
+range of y values}
+
+\item{dot_alpha}{opacity of the dots (0 = completely transparent,
+1 = completely opaque). By default, \code{dot_alpha = 0.2}}
+
+\item{reg_line_alpha}{description not ready}
+
+\item{jn_point_font_size}{description not ready}
+
+\item{reg_line_types}{types of the regression lines for the two levels
+of the independent variable.
+By default, \code{reg_line_types = c("solid", "dashed")}}
+
+\item{caption}{description not ready}
+
 \item{plot_margin}{margin for the plot
-By default \code{plot_margin = ggplot2::unit(c(60, 7, 7, 7), "pt")}}
+By default \code{plot_margin = ggplot2::unit(c(60, 30, 7, 7), "pt")}}
+
+\item{silent}{If \code{silent = FALSE}, (various) messages will be
+printed. If \code{silent = TRUE}, the messages will be suppressed.
+By default, \code{silent = FALSE}.}
 }
 \description{
 Conduct a spotlight analysis for a 2 x Continuous design.
@@ -130,5 +260,45 @@ data = mtcars,
 iv_name = "am",
 dv_name = "mpg",
 mod_name = "qsec")
+# control for variables
+spotlight_2_by_continuous(
+data = mtcars,
+iv_name = "am",
+dv_name = "mpg",
+mod_name = "qsec",
+covariate_name = c("cyl", "hp"))
+# control for variables and adjust simple effect labels
+spotlight_2_by_continuous(
+data = mtcars,
+iv_name = "am",
+dv_name = "mpg",
+mod_name = "qsec",
+covariate_name = c("cyl", "hp"),
+reg_lines = TRUE,
+observed_dots = TRUE,
+error_bar_offset_percent = 3,
+error_bar_tip_width_percent = 3,
+simp_eff_text_offset_percent = 3,
+simp_eff_bracket_leg_ht_perc = 2,
+dot_alpha = 0.2,
+simp_eff_text_part_1 = "")
+# spotlight at specific values
+spotlight_2_by_continuous(
+data = mtcars,
+iv_name = "am",
+dv_name = "mpg",
+mod_name = "qsec",
+covariate_name = c("cyl", "hp"),
+focal_values = seq(15, 22, 1),
+reg_lines = TRUE,
+observed_dots = TRUE,
+dot_alpha = 0.2,
+simp_eff_text_part_1 = "",
+simp_eff_font_size = 4,
+error_bar_offset_percent = 3,
+error_bar_tip_width_percent = 3,
+simp_eff_text_offset_percent = 3,
+simp_eff_bracket_leg_ht_perc = 1,
+x_axis_breaks = seq(15, 22, 1))
 }
 }
