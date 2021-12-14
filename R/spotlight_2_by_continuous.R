@@ -530,7 +530,7 @@ spotlight_2_by_continuous <- function(
     }
     # estimated dvs at focal values
     g1 <- g1 + ggplot2::geom_point(
-      size = estimated_dv_dot_shape,
+      size = estimated_dv_dot_size,
       shape = estimated_dv_dot_shape,
       position = pd)
     # remove the lines through legend
