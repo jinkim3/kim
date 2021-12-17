@@ -19,6 +19,7 @@ floodlight_2_by_continuous(
   dot_size = 4,
   interaction_p_value_font_size = 6,
   jn_point_font_size = 6,
+  jn_point_label_hjust = NULL,
   plot_margin = ggplot2::unit(c(60, 7, 7, 7), "pt"),
   legend_position = "right",
   reg_line_types = c("solid", "dashed"),
@@ -69,6 +70,10 @@ p value (default = 6)}
 
 \item{jn_point_font_size}{font size for Johnson-Neyman point labels
 (default = 6)}
+
+\item{jn_point_label_hjust}{a vector of hjust values for
+Johnson-Neyman point labels. By default, the hjust value will be 0.5 for
+all the points.}
 
 \item{plot_margin}{margin for the plot
 By default \code{plot_margin = ggplot2::unit(c(60, 7, 7, 7), "pt")}}

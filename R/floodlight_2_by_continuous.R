@@ -29,6 +29,9 @@
 #' p value (default = 6)
 #' @param jn_point_font_size font size for Johnson-Neyman point labels
 #' (default = 6)
+#' @param jn_point_label_hjust a vector of hjust values for
+#' Johnson-Neyman point labels. By default, the hjust value will be 0.5 for
+#' all the points.
 #' @param plot_margin margin for the plot
 #' By default \code{plot_margin = ggplot2::unit(c(60, 7, 7, 7), "pt")}
 #' @param legend_position position of the legend (default = "right").
@@ -95,6 +98,7 @@ floodlight_2_by_continuous <- function(
   dot_size = 4,
   interaction_p_value_font_size = 6,
   jn_point_font_size = 6,
+  jn_point_label_hjust = NULL,
   plot_margin = ggplot2::unit(c(60, 7, 7, 7), "pt"),
   legend_position = "right",
   reg_line_types = c("solid", "dashed"),
@@ -304,12 +308,15 @@ floodlight_2_by_continuous <- function(
       linetype = jn_line_types[i],
       size = 1)
     # label jn points
+    if (is.null(jn_point_label_hjust)) {
+      jn_point_label_hjust <- rep(0.5, length(jn_line_pos))
+    }
     g1 <- g1 + ggplot2::annotate(
       geom = "text",
       x = jn_line_pos[i],
       y = Inf,
       label = round(jn_line_pos[i], 2),
-      hjust = 0.5, vjust = -0.5,
+      hjust = jn_point_label_hjust[i], vjust = -0.5,
       fontface = "bold",
       color = "black",
       size = jn_point_font_size)
