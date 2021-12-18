@@ -4,6 +4,8 @@
 #'
 #' @param t_stat the t-statistic associated with the noncentrality parameters
 #' @param df degrees of freedom associated with the noncentrality parameters
+#' @param initial_value initial value of the ncp for optimization
+#' (default = 0). Adjust this value if results look strange.
 #' @param ci range of the confidence interval associated with the
 #' noncentrality parameters (default = 0.95)
 #' @examples
@@ -12,7 +14,7 @@
 #' }
 #' @export
 noncentrality_parameter <- function(
-  t_stat, df, ci = 0.95) {
+  t_stat, df, initial_value = 0, ci = 0.95) {
   # desired area under the noncentral t distribution curve
   desired_p <- c(1 - (1 - ci) / 2, (1 - ci) / 2)
   # function for which to find the minimum
@@ -24,7 +26,7 @@ noncentrality_parameter <- function(
   # optim
   ncp_values <- vapply(seq_along(desired_p), function(i) {
     optim_results <- suppressWarnings(
-      stats::optim(par = 0, fn = ncp_fn, ..t_stat = t_stat,
+      stats::optim(par = initial_value, fn = ncp_fn, ..t_stat = t_stat,
             ..df = df, ..desired_p = desired_p[i]))
     if (optim_results$convergence == 0) {
       return(optim_results$par)

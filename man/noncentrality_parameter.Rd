@@ -4,12 +4,15 @@
 \alias{noncentrality_parameter}
 \title{Find noncentrality parameter}
 \usage{
-noncentrality_parameter(t_stat, df, ci = 0.95)
+noncentrality_parameter(t_stat, df, initial_value = 0, ci = 0.95)
 }
 \arguments{
 \item{t_stat}{the t-statistic associated with the noncentrality parameters}
 
 \item{df}{degrees of freedom associated with the noncentrality parameters}
+
+\item{initial_value}{initial value of the ncp for optimization
+(default = 0). Adjust this value if results look strange.}
 
 \item{ci}{range of the confidence interval associated with the
 noncentrality parameters (default = 0.95)}
