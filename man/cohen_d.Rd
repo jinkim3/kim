@@ -11,7 +11,7 @@ cohen_d(
   iv_name = NULL,
   dv_name = NULL,
   ci_range = 0.95,
-  output_type = "d_and_ci"
+  output_type = "all"
 )
 }
 \arguments{
@@ -28,12 +28,17 @@ cohen_d(
 \item{ci_range}{range of the confidence interval for Cohen's d
 (default = 0.95)}
 
-\item{output_type}{If \code{output_type == "d_and_ci"}, the output will
+\item{output_type}{#' If \code{output_type == "all"} or
+\code{output_type == "d_se_and_ci"}, the output will
+be a vector of Cohen's d, its SE and confidence interval.
+If \code{output_type == "d_and_ci"}, the output will
 be a vector of Cohen's d and its confidence interval.
 If \code{output_type == "d"}, the output will be Cohen's d.
 If \code{output_type == "ci"}, the output will be a vector
 of the confidence interval around Cohen's d.
-By default, \code{output_type == "d_and_ci"}.}
+If \code{output_type == "se"}, the output will be the standard error
+of Cohen's d.
+By default, \code{output_type == "all"}.}
 }
 \description{
 Calculates Cohen's d, its standard error, and confidence interval.
