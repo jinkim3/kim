@@ -11,7 +11,8 @@ cohen_d(
   iv_name = NULL,
   dv_name = NULL,
   ci_range = 0.95,
-  output_type = "all"
+  output_type = "all",
+  initial_value = 0
 )
 }
 \arguments{
@@ -39,6 +40,10 @@ of the confidence interval around Cohen's d.
 If \code{output_type == "se"}, the output will be the standard error
 of Cohen's d.
 By default, \code{output_type == "all"}.}
+
+\item{initial_value}{initial value of the noncentrality parameter for
+optimization (default = 0). Adjust this value if confidence
+interval results look strange.}
 }
 \description{
 Calculates Cohen's d, its standard error, and confidence interval.

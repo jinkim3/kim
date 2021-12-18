@@ -21,6 +21,9 @@
 #' If \code{output_type == "se"}, the output will be the standard error
 #' of Cohen's d.
 #' By default, \code{output_type == "all"}.
+#' @param initial_value initial value of the noncentrality parameter for
+#' optimization (default = 0). Adjust this value if confidence
+#' interval results look strange.
 #' @examples
 #' \donttest{
 #' cohen_d(sample_1 = 1:10, sample_2 = 3:12)
@@ -30,7 +33,8 @@
 cohen_d <- function(
   sample_1 = NULL, sample_2 = NULL,
   data = NULL, iv_name = NULL, dv_name = NULL,
-  ci_range = 0.95, output_type = "all") {
+  ci_range = 0.95, output_type = "all",
+  initial_value = 0) {
   # bind the vars locally to the function
   iv <- dv <- NULL
   # check arguments
@@ -102,7 +106,8 @@ cohen_d <- function(
   ncp_values <- kim::noncentrality_parameter(
     t_stat = t_test_results$statistic,
     df = t_test_results$parameter[["df"]],
-    ci = ci_range)
+    ci = ci_range,
+    initial_value = initial_value)
   # ci of d
   ci <- ncp_values * sqrt(1 / n_1 + 1 / n_2)
   names(ci) <- c(paste0("ci_", paste0(ci_range * 100), "_ll"),
