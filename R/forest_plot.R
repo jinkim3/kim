@@ -145,7 +145,7 @@ forest_plot <- function(
       sprintf("%.2f", round(diamond_x, round_estimates)), " [",
       sprintf("%.2f", round(diamond_ci_ul, round_estimates)), ", ",
       sprintf("%.2f", round(diamond_ci_ll, round_estimates)), "]"))
-  # paramters for plotting
+  # parameters for plotting
   x_values <- unlist(dt1[, c(
     "estimates", "estimate_ci_ll", "estimate_ci_ul"), with = FALSE])
   x_min <- min(x_values, na.rm = TRUE)

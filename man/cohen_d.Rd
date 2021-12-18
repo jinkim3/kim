@@ -2,7 +2,7 @@
 % Please edit documentation in R/cohen_d.R
 \name{cohen_d}
 \alias{cohen_d}
-\title{Cohen's d with confidence interval}
+\title{Cohen's d}
 \usage{
 cohen_d(
   sample_1 = NULL,
@@ -10,7 +10,8 @@ cohen_d(
   data = NULL,
   iv_name = NULL,
   dv_name = NULL,
-  ci_range = 0.95
+  ci_range = 0.95,
+  output_type = "d_and_ci"
 )
 }
 \arguments{
@@ -26,20 +27,21 @@ cohen_d(
 
 \item{ci_range}{range of the confidence interval for Cohen's d
 (default = 0.95)}
+
+\item{output_type}{If \code{output_type == "d_and_ci"}, the output will
+be a vector of Cohen's d and its confidence interval.
+If \code{output_type == "d"}, the output will be Cohen's d.
+If \code{output_type == "ci"}, the output will be a vector
+of the confidence interval around Cohen's d.
+By default, \code{output_type == "d_and_ci"}.}
 }
 \description{
-Calculates Cohen's d and its confidence interval.
-}
-\details{
-To construct confidence interval around Cohen's d with this function,
-the following package(s) must be installed prior to running this function:
-Package 'effsize' v0.8.1 (or possibly a higher version) by
-Marco Torchiano (2020),
-\url{https://cran.r-project.org/package=effsize}
+Calculates Cohen's d, its standard error, and confidence interval.
+See Borenstein et al. (2009, ISBN: 978-0-470-05724-7).
 }
 \examples{
 \donttest{
-cohen_d(1:10, 3:12)
+cohen_d(sample_1 = 1:10, sample_2 = 3:12)
 cohen_d(data = mtcars, iv_name = "vs", dv_name = "mpg", ci_range = 0.99)
 }
 }
