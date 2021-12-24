@@ -10,9 +10,11 @@
 #' @param dv_name name of the dependent variable
 #' @param ci_range range of the confidence interval for Cohen's d
 #' (default = 0.95)
-#' @param output_type #' If \code{output_type == "all"} or
-#'  \code{output_type == "d_se_and_ci"}, the output will
-#' be a vector of Cohen's d, its SE and confidence interval.
+#' @param output_type If \code{output_type == "all"} or
+#' if \code{output_type == "d_var_se_and_ci"}, the output will
+#' be a vector of Cohen's d and its variance, SE, and confidence interval.
+#' If \code{output_type == "d_se_and_ci"}, the output will
+#' be a vector of Cohen's d and its SE and confidence interval.
 #' If \code{output_type == "d_and_ci"}, the output will
 #' be a vector of Cohen's d and its confidence interval.
 #' If \code{output_type == "d"}, the output will be Cohen's d.
@@ -113,7 +115,10 @@ cohen_d <- function(
   names(ci) <- c(paste0("ci_", paste0(ci_range * 100), "_ll"),
                  paste0("ci_", paste0(ci_range * 100), "_ul"))
   # output
-  if (output_type %in% c("all", "d_se_and_ci")) {
+  if (output_type %in% c("all", "d_var_se_and_ci")) {
+    message("Standard error of Cohen's d is approximate.")
+    output <- c(cohen_d = d, v_d = v_d, se_d = se_d, ci)
+  } else if (output_type %in% c("d_se_and_ci")) {
     message("Standard error of Cohen's d is approximate.")
     output <- c(cohen_d = d, se_d = se_d, ci)
   } else if (output_type == "d_and_ci") {

@@ -29,9 +29,11 @@ cohen_d(
 \item{ci_range}{range of the confidence interval for Cohen's d
 (default = 0.95)}
 
-\item{output_type}{#' If \code{output_type == "all"} or
-\code{output_type == "d_se_and_ci"}, the output will
-be a vector of Cohen's d, its SE and confidence interval.
+\item{output_type}{If \code{output_type == "all"} or
+if \code{output_type == "d_var_se_and_ci"}, the output will
+be a vector of Cohen's d and its variance, SE, and confidence interval.
+If \code{output_type == "d_se_and_ci"}, the output will
+be a vector of Cohen's d and its SE and confidence interval.
 If \code{output_type == "d_and_ci"}, the output will
 be a vector of Cohen's d and its confidence interval.
 If \code{output_type == "d"}, the output will be Cohen's d.
