@@ -34,7 +34,8 @@ compare_effect_sizes <- function(
   round_z = 2,
   pretty_round_p_value = TRUE) {
   # bind the vars locally to the function
-  diff <- NULL
+  es_1 <- es_1_var <- es_2 <- es_2_var <- one_tailed_p <- se_diff <-
+    two_tailed_p <- z_diff <- diff <- NULL
   # set up pairs
   es_pairs <- t(utils::combn(effect_sizes, 2))
   esv_pairs <- t(utils::combn(effect_size_variances, 2))
