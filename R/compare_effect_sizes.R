@@ -5,7 +5,8 @@
 #'
 #' @param effect_sizes a vector of estimated effect sizes
 #' @param effect_size_variances a vector of variances of the effect sizes
-#' @param round logical. Should the statistics be rounded? (default = TRUE)
+#' @param round_stats logical. Should the statistics be rounded?
+#' (default = TRUE)
 #' @param round_p number of decimal places to which to round
 #' p-values (default = 3)
 #' @param round_se number of decimal places to which to round the
@@ -27,7 +28,7 @@
 compare_effect_sizes <- function(
   effect_sizes = NULL,
   effect_size_variances = NULL,
-  round = TRUE,
+  round_stats = TRUE,
   round_p = 3,
   round_se = 2,
   round_z = 2,
@@ -50,7 +51,7 @@ compare_effect_sizes <- function(
     q = abs(z_diff), lower.tail = FALSE)]
   dt[, two_tailed_p := one_tailed_p * 2]
   # round
-  if (round == TRUE) {
+  if (round_stats == TRUE) {
     dt[, se_diff := round(se_diff, round_se)]
     dt[, z_diff := round(z_diff, round_z)]
     # pretty round p
@@ -65,5 +66,5 @@ compare_effect_sizes <- function(
     }
   }
   # output
-  return(dt)
+  return(dt[])
 }

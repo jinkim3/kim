@@ -7,7 +7,7 @@
 compare_effect_sizes(
   effect_sizes = NULL,
   effect_size_variances = NULL,
-  round = TRUE,
+  round_stats = TRUE,
   round_p = 3,
   round_se = 2,
   round_z = 2,
@@ -19,7 +19,8 @@ compare_effect_sizes(
 
 \item{effect_size_variances}{a vector of variances of the effect sizes}
 
-\item{round}{logical. Should the statistics be rounded? (default = TRUE)}
+\item{round_stats}{logical. Should the statistics be rounded?
+(default = TRUE)}
 
 \item{round_p}{number of decimal places to which to round
 p-values (default = 3)}
