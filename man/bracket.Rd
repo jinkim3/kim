@@ -13,7 +13,7 @@ bracket(
   horizontal = NULL,
   open = NULL,
   bracket_shape = NULL,
-  thickness = 3,
+  thickness = 2,
   bracket_color = "black",
   label = NULL,
   label_hjust = NULL,
