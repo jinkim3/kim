@@ -103,9 +103,9 @@ cohen_d <- function(
     ((n_1 - 1) * sd_1 ^ 2 + (n_2 - 1) * sd_2 ^ 2) / (n_1 + n_2 - 2))
   # d
   if (direction == "2_minus_1") {
-    d <- (mean_1 - mean_2) / s_within
-  } else if (direction == "1_minus_2") {
     d <- (mean_2 - mean_1) / s_within
+  } else if (direction == "1_minus_2") {
+    d <- (mean_1 - mean_2) / s_within
   }
   # "the variance of d (to a very good approximation)"
   # p.27 of Borenstein et al. (2009)

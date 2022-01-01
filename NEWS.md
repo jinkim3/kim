@@ -1,4 +1,4 @@
-# kim 0.4.113
+# kim 0.4.114
 * Added the following function(s): vlookup, convert_cols_to_numeric,
 convert_to_excel_formula, spotlight_2_by_continuous,
 compare_independent_rs, spotlight_overlaid, forest_plot,
