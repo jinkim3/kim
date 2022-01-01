@@ -10,6 +10,11 @@
 #' @param dv_name name of the dependent variable
 #' @param ci_range range of the confidence interval for Cohen's d
 #' (default = 0.95)
+#' @param direction If \code{direction == "2_minus_1"}, Cohen's d will
+#' reflect the extent to which the mean of IV level 2 is greater than
+#' the mean of IV level 2. If \code{direction == "1_minus_2"}, Cohen's d
+#' will reflect the extent to which the mean of IV level 1 is greater than
+#' the mean of IV level 2. By default, \code{direction == "2_minus_1"}.
 #' @param output_type If \code{output_type == "all"} or
 #' if \code{output_type == "d_var_se_and_ci"}, the output will
 #' be a vector of Cohen's d and its variance, SE, and confidence interval.
@@ -35,6 +40,7 @@
 cohen_d <- function(
   sample_1 = NULL, sample_2 = NULL,
   data = NULL, iv_name = NULL, dv_name = NULL,
+  direction = "2_minus_1",
   ci_range = 0.95, output_type = "all",
   initial_value = 0) {
   # bind the vars locally to the function
@@ -96,7 +102,11 @@ cohen_d <- function(
   s_within <- sqrt(
     ((n_1 - 1) * sd_1 ^ 2 + (n_2 - 1) * sd_2 ^ 2) / (n_1 + n_2 - 2))
   # d
-  d <- (mean_1 - mean_2) / s_within
+  if (direction == "2_minus_1") {
+    d <- (mean_1 - mean_2) / s_within
+  } else if (direction == "1_minus_2") {
+    d <- (mean_2 - mean_1) / s_within
+  }
   # "the variance of d (to a very good approximation)"
   # p.27 of Borenstein et al. (2009)
   v_d <- (n_1 + n_2) / (n_1 * n_2) + d ^ 2 / (2 * (n_1 + n_2))

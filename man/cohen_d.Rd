@@ -10,6 +10,7 @@ cohen_d(
   data = NULL,
   iv_name = NULL,
   dv_name = NULL,
+  direction = "2_minus_1",
   ci_range = 0.95,
   output_type = "all",
   initial_value = 0
@@ -25,6 +26,12 @@ cohen_d(
 \item{iv_name}{name of the independent variable}
 
 \item{dv_name}{name of the dependent variable}
+
+\item{direction}{If \code{direction == "2_minus_1"}, Cohen's d will
+reflect the extent to which the mean of IV level 2 is greater than
+the mean of IV level 2. If \code{direction == "1_minus_2"}, Cohen's d
+will reflect the extent to which the mean of IV level 1 is greater than
+the mean of IV level 2. By default, \code{direction == "2_minus_1"}.}
 
 \item{ci_range}{range of the confidence interval for Cohen's d
 (default = 0.95)}
