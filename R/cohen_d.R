@@ -113,7 +113,11 @@ cohen_d <- function(
   # standard error of d
   se_d <- sqrt(v_d)
   # t test for finding ncp
-  t_test_results <- stats::t.test(formula = dv ~ iv, data = dt)
+  if (direction == "2_minus_1") {
+    t_test_results <- stats::t.test(v2, v1)
+  } else if (direction == "1_minus_2") {
+    t_test_results <- stats::t.test(v1, v2)
+  }
   # find noncentrality parameters
   ncp_values <- kim::noncentrality_parameter(
     t_stat = t_test_results$statistic,
