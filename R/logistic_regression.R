@@ -104,7 +104,7 @@ logistic_regression <- function(
   }
   # valid formulas
   if (num_of_formulas_given == 1) {
-    valid_formula_1 <- stats::as.formula(paste(formula[2], "~ 1"))
+    valid_formula_1 <- stats::as.formula(paste0(formula[2], " ~ 1"))
     valid_formula_2 <- formula
   }
   if (num_of_formulas_given == 2) {
@@ -162,10 +162,18 @@ logistic_regression <- function(
     print(summary_dt_list)
   }
   # compare models
-  model_chi <- logistic_reg_models[[1]]$deviance -
-    logistic_reg_models[[2]]$deviance
-  model_chi_df <- logistic_reg_models[[1]]$df.residual -
-    logistic_reg_models[[2]]$df.residual
+  # calculating chi square df is different for different models
+  if (num_of_formulas_given == 1) {
+    model_chi <- logistic_reg_models[[2]]$null.deviance -
+      logistic_reg_models[[2]]$deviance
+    model_chi_df <- logistic_reg_models[[2]]$df.null -
+      logistic_reg_models[[2]]$df.residual
+  } else {
+    model_chi <- logistic_reg_models[[1]]$deviance -
+      logistic_reg_models[[2]]$deviance
+    model_chi_df <- logistic_reg_models[[1]]$df.residual -
+      logistic_reg_models[[2]]$df.residual
+  }
   model_chi_p <- 1 - stats::pchisq(model_chi, model_chi_df)
   # print model comparison
   if (print_model_comparison == TRUE) {
