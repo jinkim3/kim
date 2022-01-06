@@ -66,6 +66,8 @@
 #' @param round_decimals_int_p_value To how many digits after the
 #' decimal point should the p value for the interaction term be
 #' rounded? (default = 3)
+#' @param round_jn_point_labels To how many digits after the
+#' decimal point should the jn point labels be rounded? (default = 2)
 #' @param line_of_fit_size thickness of the lines of fit (default = 1)
 #' @examples
 #' \donttest{
@@ -112,7 +114,8 @@ floodlight_2_by_continuous <- function(
   y_axis_title = NULL,
   legend_title = NULL,
   round_decimals_int_p_value = 3,
-  line_of_fit_size = 1
+  line_of_fit_size = 1,
+  round_jn_point_labels = 2
 ) {
   # installed packages
   installed_pkgs <- rownames(utils::installed.packages())
@@ -319,7 +322,7 @@ floodlight_2_by_continuous <- function(
       geom = "text",
       x = jn_line_pos[i],
       y = Inf,
-      label = round(jn_line_pos[i], 2),
+      label = round(jn_line_pos[i], round_jn_point_labels),
       hjust = jn_point_label_hjust[i], vjust = -0.5,
       fontface = "bold",
       color = "black",

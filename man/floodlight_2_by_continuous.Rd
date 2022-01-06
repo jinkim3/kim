@@ -32,7 +32,8 @@ floodlight_2_by_continuous(
   y_axis_title = NULL,
   legend_title = NULL,
   round_decimals_int_p_value = 3,
-  line_of_fit_size = 1
+  line_of_fit_size = 1,
+  round_jn_point_labels = 2
 )
 }
 \arguments{
@@ -123,6 +124,9 @@ decimal point should the p value for the interaction term be
 rounded? (default = 3)}
 
 \item{line_of_fit_size}{thickness of the lines of fit (default = 1)}
+
+\item{round_jn_point_labels}{To how many digits after the
+decimal point should the jn point labels be rounded? (default = 2)}
 }
 \description{
 Conduct a floodlight analysis for 2 x Continuous design.
