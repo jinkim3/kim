@@ -31,7 +31,8 @@ floodlight_2_by_continuous(
   x_axis_title = NULL,
   y_axis_title = NULL,
   legend_title = NULL,
-  round_decimals_int_p_value = 3
+  round_decimals_int_p_value = 3,
+  line_of_fit_size = 1
 )
 }
 \arguments{
@@ -120,6 +121,8 @@ be removed.}
 \item{round_decimals_int_p_value}{To how many digits after the
 decimal point should the p value for the interaction term be
 rounded? (default = 3)}
+
+\item{line_of_fit_size}{thickness of the lines of fit (default = 1)}
 }
 \description{
 Conduct a floodlight analysis for 2 x Continuous design.

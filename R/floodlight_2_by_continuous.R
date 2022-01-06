@@ -66,6 +66,7 @@
 #' @param round_decimals_int_p_value To how many digits after the
 #' decimal point should the p value for the interaction term be
 #' rounded? (default = 3)
+#' @param line_of_fit_size thickness of the lines of fit (default = 1)
 #' @examples
 #' \donttest{
 #' floodlight_2_by_continuous(
@@ -110,7 +111,8 @@ floodlight_2_by_continuous <- function(
   x_axis_title = NULL,
   y_axis_title = NULL,
   legend_title = NULL,
-  round_decimals_int_p_value = 3
+  round_decimals_int_p_value = 3,
+  line_of_fit_size = 1
 ) {
   # installed packages
   installed_pkgs <- rownames(utils::installed.packages())
@@ -255,7 +257,9 @@ floodlight_2_by_continuous <- function(
   if (is.null(covariate_name)) {
     g1 <- g1 + ggplot2::geom_smooth(
       formula = y ~ x,
-      method = "lm", se = F)
+      method = "lm",
+      se = FALSE,
+      size = line_of_fit_size)
     g1 <- g1 + ggplot2::scale_linetype_manual(
       values = reg_line_types)
   }
