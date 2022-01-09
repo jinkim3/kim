@@ -45,10 +45,10 @@ compare_independent_rs <- function(
   round_r = 2,
   print_summary = TRUE,
   output_type = NULL
-  ) {
+) {
   # r to z
-  z_from_r1 <- kim::fisher_z_transform(r1)
-  z_from_r2 <- kim::fisher_z_transform(r2)
+  z_from_r1 <- unname(kim::fisher_z_transform(r1))
+  z_from_r2 <- unname(kim::fisher_z_transform(r2))
   # calculate the z score of the differences between the correlations
   z_diff <- (z_from_r1 - z_from_r2) / sqrt(
     1 / (n1 - 3) + 1 / (n2 - 3))
@@ -67,7 +67,9 @@ compare_independent_rs <- function(
       "The two correlations, ", kim::pretty_round_r(r1, round_r),
       " and ", kim::pretty_round_r(r2, round_r), ", are ", sig_text,
       ", ", ifelse(one_tailed == TRUE, "one-tailed", "two-tailed"),
-      " z = ", round(z_diff, round_z_diff), ", ",
+      " z = ", sprintf(
+        paste0("%.", round_z_diff, "f"),
+        round(z_diff, round_z_diff)), ", ",
       kim::pretty_round_p_value(
         p_value, round_p, include_p_equals = TRUE))
   }
