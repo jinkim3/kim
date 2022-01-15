@@ -17,8 +17,10 @@ und <- function(fn, ...) {
   fn <- as.character(al$fn)
   # remove the first two elements as we probably will not need them
   al[1:2] <- NULL
+  # environment for evaluating language
+  focal_environment <- new.env(parent = parent)
   # evaluate languages
-  ae <- lapply(al, eval)
+  ae <- lapply(al, eval, envir = focal_environment)
   # corr text
   if (fn == "corr_text") {
     if (all(c("x", "y") %in% names(ae))) {
