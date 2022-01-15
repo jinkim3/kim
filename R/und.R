@@ -18,7 +18,7 @@ und <- function(fn, ...) {
   # remove the first two elements as we probably will not need them
   al[1:2] <- NULL
   # environment for evaluating language
-  focal_environment <- new.env(parent = parent)
+  focal_environment <- new.env(parent = parent.frame())
   # evaluate languages
   ae <- lapply(al, eval, envir = focal_environment)
   # corr text
