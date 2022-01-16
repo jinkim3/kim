@@ -29,14 +29,15 @@ wilcoxon_rank_sum_test <- function(
       sort(unique(data[[iv_name]]))))
   }
   # remove na
-  dt01 <- setDT(copy(data))[, c(iv_name, dv_name), with = FALSE]
+  dt01 <- data.table::setDT(data.table::copy(data))[
+    , c(iv_name, dv_name), with = FALSE]
   names(dt01) <- c("iv", "dv")
   # convert iv to factor
   dt01[, iv := factor(iv)]
   dt01 <- stats::na.omit(dt01)
   # pairs
   group <- sort(unique(dt01$iv))
-  dt02 <- data.table(t(utils::combn(group, 2)))
+  dt02 <- data.table::data.table(t(utils::combn(group, 2)))
   names(dt02) <- c("group_1", "group_2")
   # group means
   group_1_median <-
@@ -65,14 +66,14 @@ wilcoxon_rank_sum_test <- function(
     names(output) <- c(
       "wilcoxon_rank_sum_p_value", "w_stat", "effect_size_r")
     return(output)})
-  wilcoxon_results_dt <- as.data.table(
+  wilcoxon_results_dt <- data.table::as.data.table(
     do.call(rbind, wilcoxon_results))
   # bonferroni sig
   bonferroni_signif_for_wilcoxon_test <- ifelse(
     wilcoxon_results_dt[, wilcoxon_rank_sum_p_value] < (.05 / nrow(dt02)),
     "Yes", "No")
   # put all the results together as a data table
-  output <- data.table(
+  output <- data.table::data.table(
     dt02,
     group_1_median,
     group_2_median,
@@ -80,6 +81,7 @@ wilcoxon_rank_sum_test <- function(
   # round values
   output[, wilcoxon_rank_sum_p_value :=
            kim::pretty_round_p_value(wilcoxon_rank_sum_p_value)]
-  output[, effect_size_r := kim::round_flexibly(effect_size_r, sigfigs)]
+  output[, effect_size_r :=
+           kim::round_flexibly(effect_size_r, sigfigs)][]
   return(output)
 }
