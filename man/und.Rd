@@ -20,4 +20,8 @@ A collection of miscellaneous functions lacking documentations
 \examples{
 # correlation
 und(corr_text, x = 1:5, y = c(1, 2, 2, 2, 3))
+und(mean_center, 1:10)
+scale(1:10, scale = TRUE)
+v3 <- 1:10
+und(mean_center, v3)
 }
