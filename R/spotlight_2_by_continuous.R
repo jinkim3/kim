@@ -14,6 +14,7 @@
 #' @param iv_level_order order of levels in the independent
 #' variable for legend. By default, it will be set as levels of the
 #' independent variable ordered using R's base function \code{sort}.
+#' @param vars_to_mean_center name(s) of the variable(s) to mean-center.
 #' @param output_type type of output (default = "plot").
 #' @param colors set colors for the two levels of the independent variable
 #' By default, \code{colors = c("red", "blue")}.
@@ -172,6 +173,7 @@ spotlight_2_by_continuous <- function(
   focal_values = NULL,
   interaction_p_include = TRUE,
   iv_level_order = NULL,
+  vars_to_mean_center = NULL,
   output_type = "plot",
   colors = c("red", "blue"),
   dot_size = 3,
@@ -275,6 +277,25 @@ spotlight_2_by_continuous <- function(
   # remove rows with na
   dt <- stats::na.omit(dt)
   n_after_removing_na <- nrow(dt)
+  # mean center variables
+  if (length(vars_to_mean_center) > 0) {
+    missing_vars_for_mean_centering <- setdiff(
+      vars_to_mean_center, names(dt))
+    if (length(missing_vars_for_mean_centering) > 0) {
+      stop(paste0(
+        "The following variables for mean-centering do not",
+        " exist in the data set:", paste0(
+          missing_vars_for_mean_centering, collapse = ", ")))
+    }
+    for (col in vars_to_mean_center) {
+      data.table::set(
+        dt, j = col, value = scale(dt[[col]], scale = FALSE))
+      paste0(
+        "The following variables were mean-centered prior to ",
+        "regression analyses:", paste0(
+          vars_to_mean_center, collapse = ", "))
+    }
+  }
   # print the number of observations removed
   if (silent == FALSE) {
     if (n_after_removing_na < n_original) {
@@ -380,14 +401,6 @@ spotlight_2_by_continuous <- function(
     focal_values_alt <- 1:3
     focal_value_description <- factor(1:3, labels = c(
       "-1 SD", "Mean", "+1 SD"))
-  }
-  # mean center covariates
-  if (length(covariate_name) > 0) {
-    for (j in seq_along(covariate_name)) {
-      data.table::set(
-        dt, j = paste0("cov_", j), value = scale(
-          dt[[paste0("cov_", j)]], scale = FALSE))
-    }
   }
   # conduct spotlight regressions
   spotlight_results <- lapply(seq_along(focal_values), function(i) {
