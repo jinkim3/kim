@@ -53,6 +53,19 @@ und <- function(fn, ...) {
       stop("Please provide arguments for the function `cor.test`")
     }
   }
+  # confirm that only one vector is entered
+  if (length(ae) == 1) {
+    x <- ae[[1]]
+  } else if ("x" %in% names(ae)) {
+    x <- ae[["x"]]
+  } else {
+    stop(paste0(
+      "There must be only one input, or the input must be entered ",
+      "as follows: x = [input]"))
+  }
+  if (is.numeric(x) == FALSE) {
+    stop("Please enter a numeric vector as an input.")
+  }
   # mean center, standardize, z_score
   if (fn == "mean_center") {
     output <- scale(x = x, scale = FALSE)
@@ -70,19 +83,6 @@ und <- function(fn, ...) {
     }
     return(output)
   }
-  # # confirm that only one vector is entered
-  # if (length(ae) == 1) {
-  #   x <- ae[[1]]
-  # } else if ("x" %in% names(ae)) {
-  #   x <- ae[["x"]]
-  # } else {
-  #   stop(paste0(
-  #     "There must be only one input, or the input must be entered ",
-  #     "as follows: x = [input]"))
-  # }
-  # if (is.numeric(x) == FALSE) {
-  #   stop("Please enter a numeric vector as an input.")
-  # }
   # if nothing was returned by this point, the function must have been
   # incorrectly entered
   stop(paste0(
