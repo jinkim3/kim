@@ -290,11 +290,12 @@ spotlight_2_by_continuous <- function(
     for (col in mean_center_vars) {
       data.table::set(
         dt, j = col, value = scale(dt[[col]], scale = FALSE))
-      message(paste0(
-        "The following variables were mean-centered prior to ",
-        "regression analyses:", paste0(
-          mean_center_vars, collapse = ", ")))
     }
+    # report which variables were mean-centered
+    message(paste0(
+      "The following variables were mean-centered prior to ",
+      "regression analyses: ", paste0(
+        mean_center_vars, collapse = ", ")))
   }
   # print the number of observations removed
   if (silent == FALSE) {
