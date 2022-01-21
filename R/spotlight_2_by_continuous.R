@@ -266,9 +266,14 @@ spotlight_2_by_continuous <- function(
   dt <- data.table::setDT(data.table::copy(data))
   # save the beginning n
   n_original <- nrow(dt)
+  # keep only the vars needed
+  cols_to_remove <- setdiff(
+    names(dt), c(iv_name, dv_name, mod_name, covariate_name))
+  if (length(cols_to_remove) > 0) {
+    dt[, (cols_to_remove) := NULL]
+  }
   # remove rows with na
-  dt <- stats::na.omit(dt[, setdiff(names(dt), c(
-    iv_name, dv_name, mod_name, covariate_name)) := NULL])
+  dt <- stats::na.omit(dt)
   n_after_removing_na <- nrow(dt)
   # print the number of observations removed
   if (silent == FALSE) {
