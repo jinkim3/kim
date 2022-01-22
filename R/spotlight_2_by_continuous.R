@@ -357,6 +357,10 @@ spotlight_2_by_continuous <- function(
   # flip iv
   dt[, iv_binary_flipped := data.table::fcase(
     iv_binary == 0, 1, iv_binary == 1, 0)]
+  # output dt
+  if (output_type == "modified_dt") {
+    return(dt)
+  }
   # lm formulas
   lm_formula_1_character <-
     "dv ~ iv_binary * mod_minus_focal_value"
