@@ -13,7 +13,6 @@ spotlight_2_by_continuous(
   focal_values = NULL,
   interaction_p_include = TRUE,
   iv_level_order = NULL,
-  mean_center_vars = NULL,
   output_type = "plot",
   colors = c("red", "blue"),
   dot_size = 3,
@@ -94,8 +93,6 @@ p-value for the interaction term?}
 \item{iv_level_order}{order of levels in the independent
 variable for legend. By default, it will be set as levels of the
 independent variable ordered using R's base function \code{sort}.}
-
-\item{mean_center_vars}{name(s) of the variable(s) to mean-center.}
 
 \item{output_type}{type of output (default = "plot").}
 
