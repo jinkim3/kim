@@ -14,7 +14,6 @@
 #' @param iv_level_order order of levels in the independent
 #' variable for legend. By default, it will be set as levels of the
 #' independent variable ordered using R's base function \code{sort}.
-#' @param mean_center_vars name(s) of the variable(s) to mean-center.
 #' @param output_type type of output (default = "plot").
 #' @param colors set colors for the two levels of the independent variable
 #' By default, \code{colors = c("red", "blue")}.
@@ -173,7 +172,6 @@ spotlight_2_by_continuous <- function(
   focal_values = NULL,
   interaction_p_include = TRUE,
   iv_level_order = NULL,
-  mean_center_vars = NULL,
   output_type = "plot",
   colors = c("red", "blue"),
   dot_size = 3,
@@ -277,26 +275,6 @@ spotlight_2_by_continuous <- function(
   # remove rows with na
   dt <- stats::na.omit(dt)
   n_after_removing_na <- nrow(dt)
-  # mean center variables
-  if (length(mean_center_vars) > 0) {
-    missing_vars_for_mean_centering <- setdiff(
-      mean_center_vars, names(dt))
-    if (length(missing_vars_for_mean_centering) > 0) {
-      stop(paste0(
-        "The following variables for mean-centering do not",
-        " exist in the data set:", paste0(
-          missing_vars_for_mean_centering, collapse = ", ")))
-    }
-    for (col in mean_center_vars) {
-      data.table::set(
-        dt, j = col, value = scale(dt[[col]], scale = FALSE))
-    }
-    # report which variables were mean-centered
-    message(paste0(
-      "The following variables were mean-centered prior to ",
-      "regression analyses: ", paste0(
-        mean_center_vars, collapse = ", ")))
-  }
   # print the number of observations removed
   if (silent == FALSE) {
     if (n_after_removing_na < n_original) {
@@ -406,6 +384,14 @@ spotlight_2_by_continuous <- function(
     focal_values_alt <- 1:3
     focal_value_description <- factor(1:3, labels = c(
       "-1 SD", "Mean", "+1 SD"))
+  }
+  # mean center covariates
+  if (length(covariate_name) > 0) {
+    for (j in seq_along(covariate_name)) {
+      data.table::set(
+        dt, j = paste0("cov_", j), value = scale(
+          dt[[paste0("cov_", j)]], scale = FALSE))
+    }
   }
   # conduct spotlight regressions
   spotlight_results <- lapply(seq_along(focal_values), function(i) {
@@ -535,6 +521,10 @@ spotlight_2_by_continuous <- function(
     names(dt5) <- c(
       "estimated_dv", "error_bar_ll", "error_bar_ul", "mod", "iv")
     dt5[, iv := factor(iv, levels = c(iv_level_1, iv_level_2))]
+    # output dt for plotting
+    if (output_type == "dt_for_plotting") {
+      return(dt5[])
+    }
     # begin plotting
     g1 <- ggplot2::ggplot(data = dt5, mapping = ggplot2::aes(
       x = mod, y = estimated_dv, color = iv, group = iv))
@@ -561,6 +551,10 @@ spotlight_2_by_continuous <- function(
       fill = ggplot2::guide_legend(override.aes = list(linetype = 0)),
       color = ggplot2::guide_legend(override.aes = list(linetype = 0)))
   } else if (overlay == TRUE) {
+    # output dt for plotting
+    if (output_type == "dt_for_plotting") {
+      return(dt2[])
+    }
     # begin plotting
     # ggplot base
     g1 <- ggplot2::ggplot(data = dt, ggplot2::aes(
