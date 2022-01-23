@@ -83,6 +83,13 @@ und <- function(fn, ...) {
     }
     return(output)
   }
+  # mode
+  if (fn == "mode") {
+    xt <- table(x)
+    max_count <- max(xt)
+    modes <- unname(which(xt == max_count))
+    return(modes)
+  }
   # if nothing was returned by this point, the function must have been
   # incorrectly entered
   stop(paste0(
