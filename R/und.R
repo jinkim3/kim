@@ -9,6 +9,7 @@
 #' # correlation
 #' und(corr_text, x = 1:5, y = c(1, 2, 2, 2, 3))
 #' und(mean_center, 1:10)
+#' und(mode, c(3, 3, 3, 1, 2, 2))
 #' scale(1:10, scale = TRUE)
 #' v3 <- 1:10
 #' und(mean_center, v3)
@@ -85,9 +86,12 @@ und <- function(fn, ...) {
   }
   # mode
   if (fn == "mode") {
-    xt <- table(x)
-    max_count <- max(xt)
-    modes <- unname(which(xt == max_count))
+    unique_values <- unique(x)
+    counts <- vapply(unique_values, function(value) {
+      sum(x == value, na.rm = TRUE)
+    }, numeric(1L))
+    max_count <- max(counts, na.rm = TRUE)
+    modes <- unique_values[which(counts == max_count)]
     return(modes)
   }
   # if nothing was returned by this point, the function must have been

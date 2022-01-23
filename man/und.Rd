@@ -21,6 +21,7 @@ A collection of miscellaneous functions lacking documentations
 # correlation
 und(corr_text, x = 1:5, y = c(1, 2, 2, 2, 3))
 und(mean_center, 1:10)
+und(mode, c(3, 3, 3, 1, 2, 2))
 scale(1:10, scale = TRUE)
 v3 <- 1:10
 und(mean_center, v3)
