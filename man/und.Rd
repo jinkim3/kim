@@ -20,9 +20,10 @@ A collection of miscellaneous functions lacking documentations
 \examples{
 # correlation
 und(corr_text, x = 1:5, y = c(1, 2, 2, 2, 3))
+# mean center
 und(mean_center, 1:10)
-und(mode, c(3, 3, 3, 1, 2, 2))
+# compare results with base function
 scale(1:10, scale = TRUE)
-v3 <- 1:10
-und(mean_center, v3)
+# find the modes
+und(mode, c(3, 3, 3, 1, 2, 2))
 }
