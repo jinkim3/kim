@@ -19,6 +19,7 @@ scatterplot(
   line_of_fit_type = "lm",
   ci_for_line_of_fit = FALSE,
   line_of_fit_color = "blue",
+  dot_color = "black",
   x_axis_label = NULL,
   y_axis_label = NULL,
   point_size = 2,
@@ -76,6 +77,8 @@ no line will be fit}
 confidence interval for the line of fit will be shaded}
 
 \item{line_of_fit_color}{color of the line of fit (default = "blue")}
+
+\item{dot_color}{color of the dots (default = "black")}
 
 \item{x_axis_label}{alternative label for the x axis}
 

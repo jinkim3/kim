@@ -40,6 +40,7 @@
 #' @param ci_for_line_of_fit if \code{ci_for_line_of_fit = TRUE},
 #' confidence interval for the line of fit will be shaded
 #' @param line_of_fit_color color of the line of fit (default = "blue")
+#' @param dot_color color of the dots (default = "black")
 #' @param x_axis_label alternative label for the x axis
 #' @param y_axis_label alternative label for the y axis
 #' @param point_size size of the dots on the plot (default = 2)
@@ -88,6 +89,7 @@ scatterplot <- function(
   line_of_fit_type = "lm",
   ci_for_line_of_fit = FALSE,
   line_of_fit_color = "blue",
+  dot_color = "black",
   x_axis_label = NULL,
   y_axis_label = NULL,
   point_size = 2,
@@ -203,10 +205,12 @@ scatterplot <- function(
     # add jitter if necessary
     if (jitter_x_percent > 0 | jitter_y_percent > 0) {
       g1 <- g1 + ggplot2::geom_point(
-        alpha = alpha, size = point_size, position = pj)
+        alpha = alpha, size = point_size, position = pj,
+        color = dot_color)
     } else {
       g1 <- g1 + ggplot2::geom_point(
-        alpha = alpha, size = point_size)
+        alpha = alpha, size = point_size,
+        color = dot_color)
     }
   }
   # scale points

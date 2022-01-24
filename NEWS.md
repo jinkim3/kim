@@ -1,4 +1,4 @@
-# kim 0.4.135
+# kim 0.4.147
 * Highlights: addition of und
 * Added the following function(s): vlookup, convert_cols_to_numeric,
 convert_to_excel_formula, spotlight_2_by_continuous,
@@ -8,7 +8,7 @@ noncentrality_parameter, compare_effect_sizes, bracket, und
 chi_squared_test_pairwise, compare_groups, desc_stats_by_group, 
 histogram_by_group, id_across_datasets, multiple_regression,
 replace_values_in_dt, tv, weighted_mean_r, spotlight_2_by_continuous,
-cohen_d
+cohen_d, scatterplot
 * Fixed bugs or errors in the following functions (and other functions
 that use them): round_flexibly, outlier, multiple_regression, 
 pretty_round_p_value, logistic_regression, spotlight_2_by_continuous
