@@ -1,4 +1,4 @@
-# kim 0.4.148
+# kim 0.4.151
 * Highlights: addition of und
 * Added the following function(s): vlookup, convert_cols_to_numeric,
 convert_to_excel_formula, spotlight_2_by_continuous,

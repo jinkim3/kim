@@ -11,7 +11,7 @@
 #' @param data a data object (a data frame or a data.table)
 #' @param x_var_name name of the variable that will go on the x axis
 #' @param y_var_name name of the variable that will go on the y axis
-#' @param point_label_var_name name of the variable that will be used to
+#' @param dot_label_var_name name of the variable that will be used to
 #' label individual observations
 #' @param weight_var_name name of the variable by which to weight
 #' the individual observations for calculating correlation and plotting
@@ -43,13 +43,13 @@
 #' @param dot_color color of the dots (default = "black")
 #' @param x_axis_label alternative label for the x axis
 #' @param y_axis_label alternative label for the y axis
-#' @param point_size size of the dots on the plot (default = 2)
-#' @param point_label_size size for dots' labels on the plot. If no
+#' @param dot_size size of the dots on the plot (default = 2)
+#' @param dot_label_size size for dots' labels on the plot. If no
 #' input is entered for this argument, it will be set as
-#' \code{point_label_size = 5} by default. If the plot is to be
+#' \code{dot_label_size = 5} by default. If the plot is to be
 #' weighted by some variable, this argument will be ignored, and
-#' dot sizes will be determined by the argument \code{point_size_range}
-#' @param point_size_range minimum and maximum size for dots
+#' dot sizes will be determined by the argument \code{dot_size_range}
+#' @param dot_size_range minimum and maximum size for dots
 #' on the plot when they are weighted
 #' @param jitter_x_percent horizontally jitter dots by a percentage of the
 #' range of x values
@@ -65,12 +65,12 @@
 #' scatterplot(data = mtcars, x_var_name = "wt", y_var_name = "mpg")
 #' scatterplot(
 #'   data = mtcars, x_var_name = "wt", y_var_name = "mpg",
-#'   point_label_var_name = "hp", weight_var_name = "drat",
+#'   dot_label_var_name = "hp", weight_var_name = "drat",
 #'   annotate_stats = TRUE)
 #' scatterplot(
 #'   data = mtcars, x_var_name = "wt", y_var_name = "mpg",
-#'   point_label_var_name = "hp", weight_var_name = "cyl",
-#'   point_label_size = 7, annotate_stats = TRUE)
+#'   dot_label_var_name = "hp", weight_var_name = "cyl",
+#'   dot_label_size = 7, annotate_stats = TRUE)
 #' }
 #' @export
 #' @import data.table
@@ -78,7 +78,7 @@ scatterplot <- function(
   data = NULL,
   x_var_name = NULL,
   y_var_name = NULL,
-  point_label_var_name = NULL,
+  dot_label_var_name = NULL,
   weight_var_name = NULL,
   alpha = 1,
   annotate_stats = TRUE,
@@ -92,9 +92,9 @@ scatterplot <- function(
   dot_color = "black",
   x_axis_label = NULL,
   y_axis_label = NULL,
-  point_size = 2,
-  point_label_size = NULL,
-  point_size_range = c(3, 12),
+  dot_size = 2,
+  dot_label_size = NULL,
+  dot_size_range = c(3, 12),
   jitter_x_percent = 0,
   jitter_y_percent = 0,
   cap_axis_lines = FALSE,
@@ -141,9 +141,9 @@ scatterplot <- function(
       dt01, j = "color", value = data[[color_dots_by]])
   }
   # add the point label or weight column
-  if (!is.null(point_label_var_name)) {
+  if (!is.null(dot_label_var_name)) {
     data.table::set(
-      dt01, j = "point_labels", value = data[[point_label_var_name]])
+      dt01, j = "dot_labels", value = data[[dot_label_var_name]])
   }
   if (!is.null(weight_var_name)) {
     data.table::set(
@@ -176,40 +176,40 @@ scatterplot <- function(
       height = jitter_y_percent / 100 * y_range)
   }
   # add point labels or dots
-  if (!is.null(point_label_var_name)) {
-    g1 <- g1 + ggplot2::aes(label = dt02$point_labels)
-    if (is.null(point_label_size)) {
+  if (!is.null(dot_label_var_name)) {
+    g1 <- g1 + ggplot2::aes(label = dt02$dot_labels)
+    if (is.null(dot_label_size)) {
       # add jitter if necessary
       if (jitter_x_percent > 0 | jitter_y_percent > 0) {
         g1 <- g1 + ggplot2::geom_text(
-          ggplot2::aes(label = dt02$point_labels, fontface = "bold"),
+          ggplot2::aes(label = dt02$dot_labels, fontface = "bold"),
           position = pj)
       } else {
         g1 <- g1 + ggplot2::geom_text(
-          ggplot2::aes(label = dt02$point_labels, fontface = "bold"))
+          ggplot2::aes(label = dt02$dot_labels, fontface = "bold"))
       }
     } else {
       # add jitter if necessary
       if (jitter_x_percent > 0 | jitter_y_percent > 0) {
         g1 <- g1 + ggplot2::geom_text(
-          ggplot2::aes(label = dt02$point_labels, fontface = "bold"),
+          ggplot2::aes(label = dt02$dot_labels, fontface = "bold"),
           position = pj,
-          size = point_label_size)
+          size = dot_label_size)
       } else {
         g1 <- g1 + ggplot2::geom_text(
-          ggplot2::aes(label = dt02$point_labels, fontface = "bold"),
-          size = point_label_size)
+          ggplot2::aes(label = dt02$dot_labels, fontface = "bold"),
+          size = dot_label_size)
       }
     }
   } else {
     # add jitter if necessary
     if (jitter_x_percent > 0 | jitter_y_percent > 0) {
       g1 <- g1 + ggplot2::geom_point(
-        alpha = alpha, size = point_size, position = pj,
+        alpha = alpha, size = dot_size, position = pj,
         color = dot_color)
     } else {
       g1 <- g1 + ggplot2::geom_point(
-        alpha = alpha, size = point_size,
+        alpha = alpha, size = dot_size,
         color = dot_color)
     }
   }
@@ -217,7 +217,7 @@ scatterplot <- function(
   if (!is.null(weight_var_name)) {
     g1 <- g1 + ggplot2::aes(size = dt02$weight)
     g1 <- g1 + ggplot2::scale_size(
-      range = point_size_range, guide = FALSE)
+      range = dot_size_range, guide = FALSE)
   }
   # weighted least squares line
   if (line_of_fit_type %in% c("lm", "loess")) {
