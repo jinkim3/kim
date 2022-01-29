@@ -77,8 +77,9 @@ histogram <- function(
   if (!is.null(x_tick_marks)) {
     if (length(unique(diff(x_tick_marks))) > 1) {
       warning(paste0(
-        "The x tick marks are not equally distanced from one another.\n",
-        "Be careful when comparing the areas of bars.\n"))
+        "The x tick marks may not be equally distanced from one another.\n",
+        "Be careful when comparing the areas of bars.\n",
+        "It is possible that this warning is caused by a glitch in rounding."))
     }
     message(paste0(
       "Manually setting tick marks will ignore the argument for ",
