@@ -26,4 +26,7 @@ und(mean_center, 1:10)
 scale(1:10, scale = TRUE)
 # find the modes
 und(mode, c(3, 3, 3, 1, 2, 2))
+# return values that are not outliers
+und(outlier_rm, c(12:18, 100))
+kim::outlier(c(1:10, 100))
 }

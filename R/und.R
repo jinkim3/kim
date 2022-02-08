@@ -14,16 +14,24 @@
 #' scale(1:10, scale = TRUE)
 #' # find the modes
 #' und(mode, c(3, 3, 3, 1, 2, 2))
+#' # return values that are not outliers
+#' und(outlier_rm, c(12:18, 100))
+#' kim::outlier(c(1:10, 100))
 #' @export
 #' @import data.table
 und <- function(fn, ...) {
   # list of arguments entered
   # al stands for argument list
   al <- as.list(match.call(expand.dots = TRUE))
+  # the code above returns the following list:
+  # [[1]]und, $fn [function name], [[3]] [vector input etc]
   # change function name to a character
   fn <- as.character(al$fn)
+  # the code above returns the function name, e.g., "corr_text"
   # remove the first two elements as we probably will not need them
   al[1:2] <- NULL
+  # the code above returns a list of inputs,
+  # e.g., [[1]]1:10, if the input was 1:10
   # environment for evaluating language
   focal_environment <- new.env(parent = parent.frame())
   # evaluate languages
@@ -54,6 +62,22 @@ und <- function(fn, ...) {
     } else {
       stop("Please provide arguments for the function `cor.test`")
     }
+  }
+  # remove outliers
+  if (fn == "outlier_rm") {
+    # get the vector
+    if ("x" %in% names(ae)) {
+      x <- ae[["x"]]
+    } else {
+      x <- ae[[1]]
+    }
+    # set default values
+    if (!"iqr" %in% names(ae)) {
+      ae$iqr <- 1.5
+    }
+    outliers <- kim::outlier(x, iqr = ae$iqr)
+    non_outlier_values <- x[which(!x %in% outliers)]
+    return(non_outlier_values)
   }
   # confirm that only one vector is entered
   if (length(ae) == 1) {
