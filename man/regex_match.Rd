@@ -10,8 +10,8 @@ regex_match(regex = NULL, vector = NULL, silent = FALSE, perl = FALSE)
 \item{regex}{a regular expression
 provided, a default theme will be used.}
 
-\item{vector}{a character vector in which to search for regular expression
-matches}
+\item{vector}{a character vector in which to search for regular
+expression matches, or a data table whose column names will be searched}
 
 \item{silent}{logical. If \code{silent = FALSE}, a report on regular
 expression matches will be printed. If \code{silent = TRUE}, the report
