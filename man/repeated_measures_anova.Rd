@@ -8,6 +8,7 @@ repeated_measures_anova(
   data = NULL,
   p_col_name = NULL,
   measure_vars = NULL,
+  histograms = TRUE,
   round_w = 2,
   round_epsilon = 2,
   round_df_model = 2,
@@ -23,6 +24,10 @@ repeated_measures_anova(
 
 \item{measure_vars}{names of the columns containing repeated measures
 (within-subjects variables)}
+
+\item{histograms}{logical. If \code{histograms = TRUE}, histograms
+of the repeated measures will be plotted. If \code{histograms = FALSE},
+no histograms will be plotted.}
 
 \item{round_w}{number of decimal places to which to round
 W statistic from Mauchly's test (default = 2)}

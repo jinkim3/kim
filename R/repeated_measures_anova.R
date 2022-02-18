@@ -12,6 +12,9 @@
 #' @param p_col_name name of the column identifying participants
 #' @param measure_vars names of the columns containing repeated measures
 #' (within-subjects variables)
+#' @param histograms logical. If \code{histograms = TRUE}, histograms
+#' of the repeated measures will be plotted. If \code{histograms = FALSE},
+#' no histograms will be plotted.
 #' @param round_w number of decimal places to which to round
 #' W statistic from Mauchly's test (default = 2)
 #' @param round_epsilon number of decimal places to which to round
@@ -34,6 +37,7 @@ repeated_measures_anova <- function(
   data = NULL,
   p_col_name = NULL,
   measure_vars = NULL,
+  histograms = TRUE,
   round_w = 2,
   round_epsilon = 2,
   round_df_model = 2,
@@ -245,10 +249,24 @@ repeated_measures_anova <- function(
   post_hoc_test_results <- stats::pairwise.t.test(
     dt2$value, dt2$within_subjects_vars, paired = TRUE,
     p.adjust.method = "bonferroni")
+  # plot histograms
+  if (histograms == TRUE) {
+    compare_group_results <- kim::compare_groups(
+      dt2, iv_name = "within_subjects_vars",
+      dv_name = "value",
+      bonferroni = FALSE,
+      mann_whitney = FALSE)
+    histogram <- compare_group_results$histogram
+    desc_stats <- compare_group_results$desc_stats
+    print(histogram)
+    print(desc_stats)
+  }
   # output
   output <- anova_results
   output$results_summary <- results_summary
   output$post_hoc_test_results <- post_hoc_test_results
+  output$desc_stats <- desc_stats
+  output$histogram <- histogram
   print(anova_results)
   message(results_summary)
   print(post_hoc_test_results)
