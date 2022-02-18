@@ -248,7 +248,7 @@ repeated_measures_anova <- function(
   # post hoc tests
   post_hoc_test_results <- stats::pairwise.t.test(
     dt2$value, dt2$within_subjects_vars, paired = TRUE,
-    p.adjust.method = "bonferroni")
+    p.adjust.method = "bonferroni")$p.value
   # plot histograms
   if (histograms == TRUE) {
     compare_group_results <- kim::compare_groups(
@@ -259,6 +259,7 @@ repeated_measures_anova <- function(
     histogram <- compare_group_results$histogram
     desc_stats <- compare_group_results$desc_stats
     print(histogram)
+    message("1. Descriptive Statistics")
     print(desc_stats)
   }
   # output
@@ -267,8 +268,11 @@ repeated_measures_anova <- function(
   output$post_hoc_test_results <- post_hoc_test_results
   output$desc_stats <- desc_stats
   output$histogram <- histogram
+  message("\n2. ANOVA and/or Mauchly's Test Results")
   print(anova_results)
   message(results_summary)
+  kim::pm("\n3. p-values from Pairwise Dependent Samples t-tests ",
+          "with Bonferroni correction:")
   print(post_hoc_test_results)
   invisible(output)
 }
