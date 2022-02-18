@@ -216,12 +216,18 @@ repeated_measures_anova <- function(
       results_text, ", ", f_stat_text, ", ",
       p_text, ", ", es_text, ".")
   }
+  # post hoc tests
+  post_hoc_test_results <- stats::pairwise.t.test(
+    dt2$value, dt2$within_subjects_vars, paired = TRUE,
+    p.adjust.method = "bonferroni")
   # output
   if (is.null(output)) {
     output <- anova_results
     output$results_summary <- results_summary
+    output$post_hoc_test_results <- post_hoc_test_results
     print(anova_results)
     message(results_summary)
+    print(post_hoc_test_results)
     invisible(output)
   }
 }
