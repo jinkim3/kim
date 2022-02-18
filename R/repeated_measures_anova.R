@@ -39,8 +39,7 @@ repeated_measures_anova <- function(
   round_df_model = 2,
   round_df_error = 2,
   round_f = 2,
-  round_ges = 2,
-  output = NULL) {
+  round_ges = 2) {
   # installed packages
   installed_pkgs <- rownames(utils::installed.packages())
   # check if Package 'ez' is installed; this package is needed to run
@@ -60,6 +59,32 @@ repeated_measures_anova <- function(
       "ezANOVA", "ez")
   }
   # bind the vars locally to the function
+  # check inputs
+  if (is.null(p_col_name)) {
+    stop(paste0(
+      "Input missing for `p_col_name`\n",
+      "Please enter a name of the column identifying participants."))
+  }
+  if (is.null(measure_vars)) {
+    stop(paste0(
+      "Input missing for `measure_vars`\n",
+      "Please enter names of the columns containing repeated measures",
+      " (within-subjects variables)."))
+  }
+  if (length(measure_vars) < 2) {
+    stop(paste0(
+      "Please enter 2 or more names of the columns containing ",
+      "repeated measures (within-subjects variables)."))
+  }
+  if (!p_col_name %in% names(data)) {
+    stop(paste0(
+      "The column `", p_col_name, "` does not exist in the data set."))
+  }
+  if (length(setdiff(measure_vars, names(data))) > 0)  {
+    stop(paste0(
+      "The following column(s) do not exist in the data set.\n",
+      paste0(setdiff(measure_vars, names(data)), collapse = "\n")))
+  }
   # convert data to data table
   dt1 <- data.table::setDT(data.table::copy(data))
   # convert to long format
@@ -221,13 +246,11 @@ repeated_measures_anova <- function(
     dt2$value, dt2$within_subjects_vars, paired = TRUE,
     p.adjust.method = "bonferroni")
   # output
-  if (is.null(output)) {
-    output <- anova_results
-    output$results_summary <- results_summary
-    output$post_hoc_test_results <- post_hoc_test_results
-    print(anova_results)
-    message(results_summary)
-    print(post_hoc_test_results)
-    invisible(output)
-  }
+  output <- anova_results
+  output$results_summary <- results_summary
+  output$post_hoc_test_results <- post_hoc_test_results
+  print(anova_results)
+  message(results_summary)
+  print(post_hoc_test_results)
+  invisible(output)
 }

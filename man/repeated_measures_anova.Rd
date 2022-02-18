@@ -13,8 +13,7 @@ repeated_measures_anova(
   round_df_model = 2,
   round_df_error = 2,
   round_f = 2,
-  round_ges = 2,
-  output = NULL
+  round_ges = 2
 )
 }
 \arguments{
