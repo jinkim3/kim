@@ -63,6 +63,23 @@ und <- function(fn, ...) {
       stop("Please provide arguments for the function `cor.test`")
     }
   }
+  # round including trailing 0s
+  if (fn == "round_t0") {
+    # get the vector
+    if ("x" %in% names(ae)) {
+      x <- ae[["x"]]
+    } else {
+      x <- ae[[1]]
+    }
+    # set default values
+    if (!"digits" %in% names(ae)) {
+      ae$digits <- 2
+    }
+    output <- sprintf(
+      fmt = paste0("%.", ae$digits, "f"), round(
+        x, ae$digits))
+    return(output)
+  }
   # remove outliers
   if (fn == "outlier_rm") {
     # get the vector

@@ -1,5 +1,5 @@
-# kim 0.4.154
-* Highlights: addition of und
+# kim 0.4.160
+* Highlights: addition of und, repeated_measures_anova
 * Added the following function(s): vlookup, convert_cols_to_numeric,
 convert_to_excel_formula, spotlight_2_by_continuous,
 compare_independent_rs, spotlight_overlaid, forest_plot,
@@ -14,7 +14,8 @@ that use them): round_flexibly, outlier, multiple_regression,
 pretty_round_p_value, logistic_regression, spotlight_2_by_continuous
 * Critical improvement in the following functions (and other functions
 that use them): scatterplot
-* Undocumented functions added (see the function `und`): outlier_rm
+* Undocumented functions added (see the function `und`): outlier_rm,
+round_t0
 
 # kim 0.4.22
 * Added function(s) including simple_effects_analysis.
