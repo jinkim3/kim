@@ -59,10 +59,7 @@ id_across_datasets <- function(
     }
     # give id values in each data set
     ending_id <- starting_id + nrow(dt_list[[i]]) - 1
-    data.table::set(
-      dt_list[[i]],
-      j = id_col_name,
-      value = starting_id:ending_id)
+    dt_list[[i]][, (id_col_name) := starting_id:ending_id]
     # record starting and ending id values to print out later
     starting_id_values[i] <- starting_id
     ending_id_values[i] <- ending_id
