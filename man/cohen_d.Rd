@@ -2,7 +2,8 @@
 % Please edit documentation in R/cohen_d.R
 \name{cohen_d}
 \alias{cohen_d}
-\title{Cohen's d}
+\title{Calculate Cohen's d and its confidence interval using
+the package 'psych'}
 \usage{
 cohen_d(
   sample_1 = NULL,
@@ -10,10 +11,8 @@ cohen_d(
   data = NULL,
   iv_name = NULL,
   dv_name = NULL,
-  direction = "2_minus_1",
   ci_range = 0.95,
-  output_type = "all",
-  initial_value = 0
+  output_type = "all"
 )
 }
 \arguments{
@@ -27,40 +26,28 @@ cohen_d(
 
 \item{dv_name}{name of the dependent variable}
 
-\item{direction}{If \code{direction == "2_minus_1"}, Cohen's d will
-reflect the extent to which the mean of IV level 2 is greater than
-the mean of IV level 2. If \code{direction == "1_minus_2"}, Cohen's d
-will reflect the extent to which the mean of IV level 1 is greater than
-the mean of IV level 2. By default, \code{direction == "2_minus_1"}.}
-
 \item{ci_range}{range of the confidence interval for Cohen's d
 (default = 0.95)}
 
 \item{output_type}{If \code{output_type == "all"} or
-if \code{output_type == "d_var_se_and_ci"}, the output will
-be a vector of Cohen's d and its variance, SE, and confidence interval.
-If \code{output_type == "d_se_and_ci"}, the output will
-be a vector of Cohen's d and its SE and confidence interval.
-If \code{output_type == "d_and_ci"}, the output will
+if \code{output_type == "d_and_ci"}, the output will
 be a vector of Cohen's d and its confidence interval.
 If \code{output_type == "d"}, the output will be Cohen's d.
 If \code{output_type == "ci"}, the output will be a vector
 of the confidence interval around Cohen's d.
-If \code{output_type == "se"}, the output will be the standard error
-of Cohen's d.
 By default, \code{output_type == "all"}.}
-
-\item{initial_value}{initial value of the noncentrality parameter for
-optimization (default = 0). Adjust this value if confidence
-interval results look strange.}
 }
 \description{
-Calculates Cohen's d, its standard error, and confidence interval.
-See Borenstein et al. (2009, ISBN: 978-0-470-05724-7).
+To run this function, the following package(s) must be installed:
+Package 'psych' v2.1.9 (or possibly a higher version) by
+William Revelle (2021),
+\url{https://cran.r-project.org/package=psych}
 }
 \examples{
 \donttest{
 cohen_d(sample_1 = 1:10, sample_2 = 3:12)
 cohen_d(data = mtcars, iv_name = "vs", dv_name = "mpg", ci_range = 0.99)
+sample_dt <- data.table::data.table(iris)[Species != "setosa"]
+cohen_d(data = sample_dt, iv_name = "Species", dv_name = "Petal.Width")
 }
 }

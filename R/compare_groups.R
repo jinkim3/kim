@@ -140,7 +140,7 @@ compare_groups <- function(
       "^mann_whitney_p_value$", "Mann-Whitney p", names(output_3))
   }
   # save as png
-  if (save_as_png == "all" | save_as_png) {
+  if (save_as_png == "all" | save_as_png == TRUE | !is.null(png_name)) {
     # installed packages
     installed_pkgs <- rownames(utils::installed.packages())
     # required packages

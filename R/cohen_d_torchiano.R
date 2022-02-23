@@ -1,9 +1,7 @@
-#' Cohen's d with confidence interval
+#' Calculate Cohen's d and its confidence interval using
+#' the package 'effsize'
 #'
-#' Calculates Cohen's d and its confidence interval.
-#'
-#' To construct confidence interval around Cohen's d with this function,
-#' the following package(s) must be installed prior to running this function:
+#' To run this function, the following package(s) must be installed:
 #' Package 'effsize' v0.8.1 (or possibly a higher version) by
 #' Marco Torchiano (2020),
 #' <https://cran.r-project.org/package=effsize>
@@ -17,15 +15,16 @@
 #' (default = 0.95)
 #' @examples
 #' \donttest{
-#' cohen_d_old(1:10, 3:12)
-#' cohen_d_old(data = mtcars, iv_name = "vs", dv_name = "mpg", ci_range = 0.99)
+#' cohen_d_torchiano(1:10, 3:12)
+#' cohen_d_torchiano(
+#' data = mtcars, iv_name = "vs", dv_name = "mpg", ci_range = 0.99)
 #' }
 #' @export
-cohen_d_old <- function(
+cohen_d_torchiano <- function(
   sample_1 = NULL, sample_2 = NULL,
   data = NULL, iv_name = NULL, dv_name = NULL,
   ci_range = 0.95) {
-  kim::pm("Warning: The function 'cohen_d_old' is deprecated. ",
+  kim::pm("Warning: The function 'cohen_d_torchiano' is deprecated. ",
           "Please use the function 'cohen_d' instead.")
   # check if Package 'effsize' is installed
   if (!"effsize" %in% rownames(utils::installed.packages())) {
