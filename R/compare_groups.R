@@ -139,7 +139,7 @@ compare_groups <- function(
       "^group_2_mean$", "Group 2 Mean", names(output_3))
     names(output_3) <- gsub("^cohen_d$", "Cohen's d", names(output_3))
     names(output_3) <- gsub(
-      "^cohen_d_w_ci$", "Cohen's d and 95% CI", names(output_3))
+      "^cohen_d_w_95_ci$", "Cohen's d and 95% CI", names(output_3))
     names(output_3) <- gsub(
       "^t_test_p_value$", "t-test p", names(output_3))
     names(output_3) <- gsub(
