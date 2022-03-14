@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-# kim 0.4.175
-=======
-# kim 0.4.169
->>>>>>> b9ee3ea1926ee49d57331a1f75ff5e1bad16bba7
+# kim 0.4.177
 * Highlights: addition of und, repeated_measures_anova
 * Added the following function(s): vlookup, convert_cols_to_numeric,
 convert_to_excel_formula, spotlight_2_by_continuous,
