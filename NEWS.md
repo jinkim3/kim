@@ -1,4 +1,4 @@
-# kim 0.4.177
+# kim 0.4.178
 * Highlights: addition of und, repeated_measures_anova
 * Added the following function(s): vlookup, convert_cols_to_numeric,
 convert_to_excel_formula, spotlight_2_by_continuous,
@@ -9,7 +9,7 @@ cohen_d_over_n
 chi_squared_test_pairwise, compare_groups, desc_stats_by_group, 
 histogram_by_group, id_across_datasets, multiple_regression,
 replace_values_in_dt, tv, weighted_mean_r, spotlight_2_by_continuous,
-cohen_d, scatterplot, regex_match
+cohen_d, scatterplot, regex_match, t_test_pairwise
 * Fixed bugs or errors in the following functions (and other functions
 that use them): round_flexibly, outlier, multiple_regression, 
 pretty_round_p_value, logistic_regression, spotlight_2_by_continuous,

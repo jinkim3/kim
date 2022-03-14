@@ -10,6 +10,7 @@ t_test_pairwise(
   dv_name = NULL,
   sigfigs = 3,
   cohen_d = TRUE,
+  cohen_d_w_ci = TRUE,
   bonferroni = TRUE,
   mann_whitney = TRUE,
   t_test_stats = FALSE,
@@ -28,6 +29,9 @@ t_test_pairwise(
 
 \item{cohen_d}{if \code{cohen_d = TRUE}, Cohen's d statistics will be
 included in the output data.table.}
+
+\item{cohen_d_w_ci}{if \code{cohen_d_w_ci = TRUE},
+Cohen's d with 95\% CI will be included in the output data.table.}
 
 \item{bonferroni}{if \code{bonferroni = TRUE}, Bonferroni tests will be
 conducted for t-tests or Mann-Whitney tests.}

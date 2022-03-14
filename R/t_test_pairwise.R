@@ -9,6 +9,8 @@
 #' @param sigfigs number of significant digits to round to
 #' @param cohen_d if \code{cohen_d = TRUE}, Cohen's d statistics will be
 #' included in the output data.table.
+#' @param cohen_d_w_ci if \code{cohen_d_w_ci = TRUE},
+#' Cohen's d with 95% CI will be included in the output data.table.
 #' @param bonferroni if \code{bonferroni = TRUE}, Bonferroni tests will be
 #' conducted for t-tests or Mann-Whitney tests.
 #' @param mann_whitney if \code{TRUE}, Mann-Whitney test results will be
@@ -36,6 +38,7 @@ t_test_pairwise <- function(
   dv_name = NULL,
   sigfigs = 3,
   cohen_d = TRUE,
+  cohen_d_w_ci = TRUE,
   bonferroni = TRUE,
   mann_whitney = TRUE,
   t_test_stats = FALSE,
@@ -98,6 +101,20 @@ t_test_pairwise <- function(
         data = temp, iv_name = "iv", dv_name = "dv")},
       FUN.VALUE = numeric(1L))
   }
+  # cohen d with ci
+  if (cohen_d_w_ci == TRUE) {
+    cohen_d_w_ci <- vapply(seq_len(nrow(dt02)), function(i) {
+      temp <- dt01[iv %in% dt02[i, ]]
+      temp[, iv := factor(iv)]
+      cohen_d_and_ci <- kim::round_flexibly(kim::cohen_d(
+        data = temp, iv_name = "iv", dv_name = "dv"))
+      output <- paste0(
+        cohen_d_and_ci[["cohen_d"]], " [",
+        cohen_d_and_ci[["ci_95_ll"]], ", ",
+        cohen_d_and_ci[["ci_95_ul"]], "]")
+      return(output)
+    }, FUN.VALUE = as.character(1L))
+  }
   # t stats?
   if (t_test_stats == TRUE) {
     # t stat
@@ -132,6 +149,12 @@ t_test_pairwise <- function(
     output <- data.table::data.table(
       output,
       cohen_d = kim::round_flexibly(cohen_d_stat, sigfigs))
+  }
+  # add cohen d w ci
+  if (cohen_d_w_ci == TRUE) {
+    output <- data.table::data.table(
+      output,
+      cohen_d_w_95_ci = cohen_d_w_ci)
   }
   # add t test stats
   if (t_test_stats == TRUE) {
