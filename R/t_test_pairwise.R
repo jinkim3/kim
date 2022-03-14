@@ -103,7 +103,7 @@ t_test_pairwise <- function(
   }
   # cohen d with ci
   if (cohen_d_w_ci == TRUE) {
-    cohen_d_w_ci <- vapply(seq_len(nrow(dt02)), function(i) {
+    cohen_d_w_ci_result <- vapply(seq_len(nrow(dt02)), function(i) {
       temp <- dt01[iv %in% dt02[i, ]]
       temp[, iv := factor(iv)]
       cohen_d_and_ci <- kim::round_flexibly(kim::cohen_d(
@@ -154,7 +154,7 @@ t_test_pairwise <- function(
   if (cohen_d_w_ci == TRUE) {
     output <- data.table::data.table(
       output,
-      cohen_d_w_95_ci = cohen_d_w_ci)
+      cohen_d_w_95_ci = cohen_d_w_ci_result)
   }
   # add t test stats
   if (t_test_stats == TRUE) {
