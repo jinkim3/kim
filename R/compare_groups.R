@@ -21,6 +21,8 @@
 #' By default, \code{stats = "basic"}
 #' @param cohen_d if \code{cohen_d = TRUE}, Cohen's d statistics will be
 #' included in the pairwise comparison data.table.
+#' @param cohen_d_w_ci if \code{cohen_d_w_ci = TRUE},
+#' Cohen's d with 95% CI will be included in the output data.table.
 #' @param bonferroni if \code{bonferroni = TRUE}, Bonferroni tests will be
 #' conducted for t-tests or Mann-Whitney tests.
 #' @param mann_whitney if \code{TRUE}, Mann-Whitney test results will be
@@ -80,6 +82,7 @@ compare_groups <- function(
   sigfigs = 3,
   stats = "basic",
   cohen_d = TRUE,
+  cohen_d_w_ci = TRUE,
   bonferroni = FALSE,
   mann_whitney = TRUE,
   t_test_stats = FALSE,
@@ -107,6 +110,7 @@ compare_groups <- function(
     data = data, iv_name = iv_name, dv_name = dv_name,
     sigfigs = sigfigs,
     cohen_d = cohen_d,
+    cohen_d_w_ci = cohen_d_w_ci,
     bonferroni = bonferroni,
     mann_whitney = mann_whitney,
     t_test_stats = t_test_stats,
@@ -134,6 +138,8 @@ compare_groups <- function(
     names(output_3) <- gsub(
       "^group_2_mean$", "Group 2 Mean", names(output_3))
     names(output_3) <- gsub("^cohen_d$", "Cohen's d", names(output_3))
+    names(output_3) <- gsub(
+      "^cohen_d_w_ci$", "Cohen's d and 95% CI", names(output_3))
     names(output_3) <- gsub(
       "^t_test_p_value$", "t-test p", names(output_3))
     names(output_3) <- gsub(
