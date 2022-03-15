@@ -51,6 +51,10 @@
 #' If \code{ylab = FALSE}, the title will be removed. By default
 #' (i.e., if no input is given), \code{iv_name} will be used as
 #' the title.
+#' @param x_breaks a numeric vector indicating the points at which to
+#' place tick marks on the x axis.
+#' @param x_labels a vector containing labels for the place tick marks
+#' on the x axis.
 #' @param width width of the PNG file (default = 4000)
 #' @param height height of the PNG file (default = 3000)
 #' @param units the units for the \code{width} and \code{height} arguments.
@@ -91,6 +95,8 @@ compare_groups <- function(
   png_name = NULL,
   xlab = NULL,
   ylab = NULL,
+  x_breaks = NULL,
+  x_labels = NULL,
   width = 4000,
   height = 3000,
   units = "px",
@@ -100,7 +106,9 @@ compare_groups <- function(
   # histogram by group
   output_1 <- kim::histogram_by_group(
     data = data, iv_name = iv_name, dv_name = dv_name,
-    xlab = xlab, ylab = ylab)
+    xlab = xlab, ylab = ylab,
+    x_breaks = x_breaks,
+    x_labels = x_labels)
   # descriptive stats by group
   output_2 <- kim::desc_stats_by_group(
     data = data, var_for_stats = dv_name, grouping_vars = iv_name,

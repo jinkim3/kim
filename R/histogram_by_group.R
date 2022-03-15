@@ -27,6 +27,10 @@
 #' If \code{ylab = FALSE}, the title will be removed. By default
 #' (i.e., if no input is given), \code{iv_name} will be used as
 #' the title.
+#' @param x_breaks a numeric vector indicating the points at which to
+#' place tick marks on the x axis.
+#' @param x_labels a vector containing labels for the place tick marks
+#' on the x axis.
 #' @return the output will be a set of vertically arranged histograms
 #' (a ggplot object), i.e., one histogram for each level of the
 #' independent variable.
@@ -52,7 +56,9 @@ histogram_by_group <- function(
   space_between_histograms = 0.15,
   draw_baseline = FALSE,
   xlab = NULL,
-  ylab = NULL) {
+  ylab = NULL,
+  x_breaks = NULL,
+  x_labels = NULL) {
   # installed packages
   installed_pkgs <- rownames(utils::installed.packages())
   # check if Package 'ggplot2' is installed
@@ -143,6 +149,14 @@ histogram_by_group <- function(
     labels = y_tick_mark_labels
   )
   g1 <- g1 + ggplot2::scale_x_continuous(expand = c(0, 0))
+  # adjust tick marks
+  if (!is.null(x_breaks)) {
+    g1 <- g1 + ggplot2::scale_x_continuous(breaks = x_breaks)
+  }
+  # adjust tick mark labels
+  if (!is.null(x_breaks)) {
+    g1 <- g1 + ggplot2::scale_x_continuous(labels = x_labels)
+  }
   g1 <- g1 + ggplot2::theme_classic(base_size = 16) +
     ggplot2::theme(
       plot.title = ggplot2::element_text(hjust = 0.5),
