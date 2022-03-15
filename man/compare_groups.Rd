@@ -123,7 +123,7 @@ descriptive statistics by group; and (3) conducting pairwise
 comparisons (t-tests and Mann-Whitney tests).
 }
 \examples{
-\donttest{
+\dontrun{
 compare_groups(data = iris, iv_name = "Species", dv_name = "Sepal.Length")
 }
 }

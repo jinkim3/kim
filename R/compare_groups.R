@@ -70,7 +70,7 @@
 #' If \code{save_as_png = TRUE}, the plot and tables will be also saved
 #' on local drive as a PNG file.
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' compare_groups(data = iris, iv_name = "Species", dv_name = "Sepal.Length")
 #' }
 #' @export
