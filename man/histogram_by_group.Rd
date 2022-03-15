@@ -14,8 +14,10 @@ histogram_by_group(
   draw_baseline = FALSE,
   xlab = NULL,
   ylab = NULL,
+  x_limits = NULL,
   x_breaks = NULL,
-  x_labels = NULL
+  x_labels = NULL,
+  sigfigs = 3
 )
 }
 \arguments{
@@ -48,11 +50,16 @@ If \code{ylab = FALSE}, the title will be removed. By default
 (i.e., if no input is given), \code{iv_name} will be used as
 the title.}
 
+\item{x_limits}{a numeric vector with values of the endpoints
+of the x axis.}
+
 \item{x_breaks}{a numeric vector indicating the points at which to
 place tick marks on the x axis.}
 
 \item{x_labels}{a vector containing labels for the place tick marks
 on the x axis.}
+
+\item{sigfigs}{number of significant digits to round to (default = 3)}
 }
 \value{
 the output will be a set of vertically arranged histograms
@@ -77,6 +84,7 @@ histogram_by_group(
   space_between_histograms = 0.5
 )
 histogram_by_group(
-data = iris, iv_name = "Species", dv_name = "Sepal.Length")
+data = iris, iv_name = "Species", dv_name = "Sepal.Length", x_breaks = 4:8,
+x_limits = c(4, 8))
 }
 }

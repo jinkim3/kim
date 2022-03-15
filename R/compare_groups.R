@@ -51,6 +51,8 @@
 #' If \code{ylab = FALSE}, the title will be removed. By default
 #' (i.e., if no input is given), \code{iv_name} will be used as
 #' the title.
+#' @param x_limits a numeric vector with values of the endpoints
+#' of the x axis.
 #' @param x_breaks a numeric vector indicating the points at which to
 #' place tick marks on the x axis.
 #' @param x_labels a vector containing labels for the place tick marks
@@ -76,6 +78,8 @@
 #' @examples
 #' \dontrun{
 #' compare_groups(data = iris, iv_name = "Species", dv_name = "Sepal.Length")
+#' compare_groups(data = iris, iv_name = "Species", dv_name = "Sepal.Length",
+#' x_breaks = 4:8)
 #' }
 #' @export
 #' @import data.table
@@ -95,6 +99,7 @@ compare_groups <- function(
   png_name = NULL,
   xlab = NULL,
   ylab = NULL,
+  x_limits = NULL,
   x_breaks = NULL,
   x_labels = NULL,
   width = 4000,
@@ -107,8 +112,10 @@ compare_groups <- function(
   output_1 <- kim::histogram_by_group(
     data = data, iv_name = iv_name, dv_name = dv_name,
     xlab = xlab, ylab = ylab,
+    x_limits = x_limits,
     x_breaks = x_breaks,
-    x_labels = x_labels)
+    x_labels = x_labels,
+    sigfigs = sigfigs)
   # descriptive stats by group
   output_2 <- kim::desc_stats_by_group(
     data = data, var_for_stats = dv_name, grouping_vars = iv_name,

@@ -20,6 +20,7 @@ compare_groups(
   png_name = NULL,
   xlab = NULL,
   ylab = NULL,
+  x_limits = NULL,
   x_breaks = NULL,
   x_labels = NULL,
   width = 4000,
@@ -93,6 +94,9 @@ If \code{ylab = FALSE}, the title will be removed. By default
 (i.e., if no input is given), \code{iv_name} will be used as
 the title.}
 
+\item{x_limits}{a numeric vector with values of the endpoints
+of the x axis.}
+
 \item{x_breaks}{a numeric vector indicating the points at which to
 place tick marks on the x axis.}
 
@@ -133,5 +137,7 @@ comparisons (t-tests and Mann-Whitney tests).
 \examples{
 \dontrun{
 compare_groups(data = iris, iv_name = "Species", dv_name = "Sepal.Length")
+compare_groups(data = iris, iv_name = "Species", dv_name = "Sepal.Length",
+x_breaks = 4:8)
 }
 }
