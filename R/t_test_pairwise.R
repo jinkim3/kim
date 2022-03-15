@@ -25,11 +25,13 @@
 #' @return the output will be a data.table showing results of all
 #' pairwise comparisons between levels of the independent variable.
 #' @examples
+#' \dontrun{
 #' t_test_pairwise(data = iris, iv_name = "Species", dv_name = "Sepal.Length")
 #' t_test_pairwise(data = iris, iv_name = "Species",
 #' dv_name = "Sepal.Length", t_test_stats = TRUE, sd = TRUE)
 #' t_test_pairwise(data = iris, iv_name = "Species", dv_name = "Sepal.Length",
 #' mann_whitney = FALSE)
+#' }
 #' @export
 #' @import data.table
 t_test_pairwise <- function(

@@ -58,9 +58,11 @@ Conducts a t-test for every possible pairwise comparison
 with Bonferroni correction
 }
 \examples{
+\dontrun{
 t_test_pairwise(data = iris, iv_name = "Species", dv_name = "Sepal.Length")
 t_test_pairwise(data = iris, iv_name = "Species",
 dv_name = "Sepal.Length", t_test_stats = TRUE, sd = TRUE)
 t_test_pairwise(data = iris, iv_name = "Species", dv_name = "Sepal.Length",
 mann_whitney = FALSE)
+}
 }

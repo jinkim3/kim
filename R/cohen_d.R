@@ -21,7 +21,7 @@
 #' of the confidence interval around Cohen's d.
 #' By default, \code{output_type == "all"}.
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' cohen_d(sample_1 = 1:10, sample_2 = 3:12)
 #' cohen_d(data = mtcars, iv_name = "vs", dv_name = "mpg", ci_range = 0.99)
 #' sample_dt <- data.table::data.table(iris)[Species != "setosa"]

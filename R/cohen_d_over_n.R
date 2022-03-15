@@ -32,7 +32,7 @@
 #' @return the output will be a list of (1) ggplot object
 #' (histogram by group) and (2) a data.table with Cohen's d by sample size
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' cohen_d_over_n(data = mtcars, iv_name = "am", dv_name = "mpg")
 #' }
 #' @export
@@ -45,11 +45,10 @@ cohen_d_over_n <- function(
   png_name = NULL,
   xlab = NULL,
   ylab = NULL,
-  width = 4000,
-  height = 3000,
-  units = "px",
-  res = 300,
-  col_names_nicer = TRUE) {
+  width = 16,
+  height = 9) {
+  # bind the vars locally to the function
+  n <- ci_95_ll <- ci_95_ul <- NULL
   # dt for plotting
   dt <- data.table::setDT(data.table::copy(data))
   # only iv and dv

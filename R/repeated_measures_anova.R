@@ -63,6 +63,7 @@ repeated_measures_anova <- function(
       "ezANOVA", "ez")
   }
   # bind the vars locally to the function
+  value <- p <- within_subjects_vars <- Effect <- DFn <- DFd <- ges <- NULL
   # check inputs
   if (is.null(p_col_name)) {
     stop(paste0(

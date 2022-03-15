@@ -12,11 +12,8 @@ cohen_d_over_n(
   png_name = NULL,
   xlab = NULL,
   ylab = NULL,
-  width = 4000,
-  height = 3000,
-  units = "px",
-  res = 300,
-  col_names_nicer = TRUE
+  width = 16,
+  height = 9
 )
 }
 \arguments{
@@ -64,7 +61,7 @@ the output will be a list of (1) ggplot object
 Plot Cohen's d as sample size increases.
 }
 \examples{
-\donttest{
+\dontrun{
 cohen_d_over_n(data = mtcars, iv_name = "am", dv_name = "mpg")
 }
 }
