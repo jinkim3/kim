@@ -149,14 +149,19 @@ histogram_by_group <- function(
     labels = y_tick_mark_labels
   )
   g1 <- g1 + ggplot2::scale_x_continuous(expand = c(0, 0))
-  # adjust tick marks
+  # change tick marks and their labels
+  if (!is.null(x_breaks) & !is.null(x_labels)) {
+    g1 <- g1 + ggplot2::scale_x_continuous(
+      breaks = x_breaks, labels = x_labels)
+  }
+  # deal w missing inputs
   if (!is.null(x_breaks)) {
-    g1 <- g1 + ggplot2::scale_x_continuous(breaks = x_breaks)
+    stop("Please also provide an input for `x_breaks`.")
   }
-  # adjust tick mark labels
   if (!is.null(x_labels)) {
-    g1 <- g1 + ggplot2::scale_x_continuous(labels = x_labels)
+    stop("Please also provide an input for `x_labels`.")
   }
+  # return to building the plot
   g1 <- g1 + ggplot2::theme_classic(base_size = 16) +
     ggplot2::theme(
       plot.title = ggplot2::element_text(hjust = 0.5),
