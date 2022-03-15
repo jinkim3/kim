@@ -20,6 +20,8 @@ compare_groups(
   png_name = NULL,
   xlab = NULL,
   ylab = NULL,
+  x_breaks = NULL,
+  x_labels = NULL,
   width = 4000,
   height = 3000,
   units = "px",
@@ -90,6 +92,12 @@ the title.}
 If \code{ylab = FALSE}, the title will be removed. By default
 (i.e., if no input is given), \code{iv_name} will be used as
 the title.}
+
+\item{x_breaks}{a numeric vector indicating the points at which to
+place tick marks on the x axis.}
+
+\item{x_labels}{a vector containing labels for the place tick marks
+on the x axis.}
 
 \item{width}{width of the PNG file (default = 4000)}
 

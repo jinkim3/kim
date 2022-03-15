@@ -154,7 +154,7 @@ histogram_by_group <- function(
     g1 <- g1 + ggplot2::scale_x_continuous(breaks = x_breaks)
   }
   # adjust tick mark labels
-  if (!is.null(x_breaks)) {
+  if (!is.null(x_labels)) {
     g1 <- g1 + ggplot2::scale_x_continuous(labels = x_labels)
   }
   g1 <- g1 + ggplot2::theme_classic(base_size = 16) +

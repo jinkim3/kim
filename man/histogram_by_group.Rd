@@ -13,7 +13,9 @@ histogram_by_group(
   space_between_histograms = 0.15,
   draw_baseline = FALSE,
   xlab = NULL,
-  ylab = NULL
+  ylab = NULL,
+  x_breaks = NULL,
+  x_labels = NULL
 )
 }
 \arguments{
@@ -45,6 +47,12 @@ the title.}
 If \code{ylab = FALSE}, the title will be removed. By default
 (i.e., if no input is given), \code{iv_name} will be used as
 the title.}
+
+\item{x_breaks}{a numeric vector indicating the points at which to
+place tick marks on the x axis.}
+
+\item{x_labels}{a vector containing labels for the place tick marks
+on the x axis.}
 }
 \value{
 the output will be a set of vertically arranged histograms
