@@ -33,6 +33,9 @@ the most recent version of the package from GitHub.
 \description{
 Updates the current package 'kim' by installing the
 most recent version of the package from GitHub
+This function requires installing Package 'remotes' v2.4.2
+(or possibly a higher version) by Csardi et al. (2021),
+\url{https://cran.r-project.org/package=remotes}
 }
 \examples{
 \dontrun{

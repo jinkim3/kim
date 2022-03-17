@@ -251,7 +251,7 @@ By default, \code{silent = FALSE}.}
 }
 \description{
 Conduct a spotlight analysis for a 2 x Continuous design.
-See Spiller et al. (2013) \doi{10.1509/jmr.12.0420}.
+See Spiller et al. (2013) doi:10.1509/jmr.12.0420.
 }
 \examples{
 \donttest{

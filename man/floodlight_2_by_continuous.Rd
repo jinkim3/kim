@@ -134,8 +134,11 @@ Conduct a floodlight analysis for 2 x Continuous design.
 \details{
 The following package(s) must be installed prior to running this function:
 Package 'interactions' v1.1.1 (or possibly a higher version) by
-Jacob A. Long (2019),
+Jacob A. Long (2020),
 \url{https://cran.r-project.org/package=interactions}
+See the following references
+Spiller et al. (2013) doi:10.1509/jmr.12.0420.
+Kim (2021) \doi{10.5281/zenodo.4445388}
 }
 \examples{
 \donttest{

@@ -1,6 +1,9 @@
 #' Start kim
 #'
 #' Start kim (update kim; attach default packages; set working directory, etc.)
+#' This function requires installing Package 'remotes' v2.4.2
+#' (or possibly a higher version) by Csardi et al. (2021),
+#' <https://cran.r-project.org/package=remotes>
 #'
 #' @param update If \code{update = "force"}, force updating the package
 #' 'kim'. If \code{update = TRUE}, compares the currently installed package

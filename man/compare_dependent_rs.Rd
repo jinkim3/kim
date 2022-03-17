@@ -62,7 +62,8 @@ This function tests whether A is related to B differently than to C.
 Put differently, this function tests H0: r(A, B) = r(A, C)
 
 For more information on formulas used in this function, please refer to
-Steiger (1980) and Chen & Popovich (2002)
+Steiger (1980) doi:10.1037/0033-2909.87.2.245
+and Chen & Popovich (2002) doi:10.4135/9781412983808
 }
 \examples{
 compare_dependent_rs(

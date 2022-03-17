@@ -44,6 +44,9 @@ By default, \code{silent_load_pkgs = c("data.table", "ggplot2")}}
 }
 \description{
 Start kim (update kim; attach default packages; set working directory, etc.)
+This function requires installing Package 'remotes' v2.4.2
+(or possibly a higher version) by Csardi et al. (2021),
+\url{https://cran.r-project.org/package=remotes}
 }
 \examples{
 \dontrun{

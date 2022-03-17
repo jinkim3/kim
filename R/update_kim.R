@@ -2,6 +2,9 @@
 #'
 #' Updates the current package 'kim' by installing the
 #' most recent version of the package from GitHub
+#' This function requires installing Package 'remotes' v2.4.2
+#' (or possibly a higher version) by Csardi et al. (2021),
+#' <https://cran.r-project.org/package=remotes>
 #'
 #' @param force logical. If \code{force = TRUE}, force installing the
 #' update. If \code{force = FALSE}, do not force installing the update.
