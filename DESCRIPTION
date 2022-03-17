@@ -1,6 +1,6 @@
 Package: kim
 Title: Behavioral Scientists' Analysis Toolkit
-Version: 0.4.192
+Version: 0.4.193
 Author: Jin Kim [aut, cre]
 Authors@R: 
     person(given = "Jin",
@@ -28,7 +28,7 @@ Suggests:
 Citation:
     Please cite this package as follows (APA style).
     Kim, J. (2022). kim: Behavioral Scientists' Analysis 
-    Toolkit (Version 0.4.190) [R package]. The Comprehensive R 
+    Toolkit (Version 0.4.193) [R package]. The Comprehensive R 
     Archive Network (CRAN). https://cran.r-project.org/package=kim
 References:
     Canty & Ripley (2021) <https://CRAN.R-project.org/package=boot>. 

@@ -26,7 +26,7 @@
   } else {
     github_pkg_version <- gsub(
       ".*ersion: ", "", github_pkg_desc[
-        grep("ersion", github_pkg_desc)])
+        grep("ersion", github_pkg_desc)][1])
   }
   # compare versions
   compare_version_result <- tryCatch(
