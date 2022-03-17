@@ -59,6 +59,8 @@ Michael A Lawrence (2016),
 \url{https://cran.r-project.org/package=ez}
 }
 \examples{
+\dontrun{
 repeated_measures_anova(
   data = mtcars, p_col_name = "cyl", measure_vars = c("wt", "qsec"))
+}
 }
