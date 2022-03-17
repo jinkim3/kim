@@ -137,31 +137,31 @@ This argument will not apply when \code{error_bar = "se"}}
 \item{error_bar_tip_width}{graphically, width of the segments
 at the end of error bars (default = 0.13)}
 
-\item{error_bar_tip_width_percent}{description not ready}
+\item{error_bar_tip_width_percent}{(default)}
 
 \item{error_bar_thickness}{thickness of the error bars (default = 1)}
 
-\item{error_bar_offset}{description not ready}
+\item{error_bar_offset}{(default)}
 
-\item{error_bar_offset_percent}{description not ready}
+\item{error_bar_offset_percent}{(default)}
 
-\item{simp_eff_bracket_leg_ht}{description not ready}
+\item{simp_eff_bracket_leg_ht}{(default)}
 
-\item{simp_eff_bracket_leg_ht_perc}{description not ready}
+\item{simp_eff_bracket_leg_ht_perc}{(default)}
 
-\item{simp_eff_bracket_offset}{description not ready}
+\item{simp_eff_bracket_offset}{(default)}
 
-\item{simp_eff_bracket_offset_perc}{description not ready}
+\item{simp_eff_bracket_offset_perc}{(default)}
 
-\item{simp_eff_bracket_color}{description not ready}
+\item{simp_eff_bracket_color}{(default)}
 
-\item{simp_eff_bracket_line_size}{description not ready}
+\item{simp_eff_bracket_line_size}{(default)}
 
-\item{simp_eff_text_offset}{description not ready}
+\item{simp_eff_text_offset}{(default)}
 
-\item{simp_eff_text_offset_percent}{description not ready}
+\item{simp_eff_text_offset_percent}{(default)}
 
-\item{simp_eff_text_hjust}{description not ready}
+\item{simp_eff_text_hjust}{(default)}
 
 \item{simp_eff_text_part_1}{The first part of the text for
 labeling simple effects.
@@ -173,32 +173,32 @@ of simple effects (default = "black").}
 \item{simp_eff_font_size}{font size of the text indicating
 p-values of simple effects (default = 5).}
 
-\item{interaction_p_value_x}{description not ready}
+\item{interaction_p_value_x}{(default)}
 
-\item{interaction_p_value_y}{description not ready}
+\item{interaction_p_value_y}{(default)}
 
 \item{interaction_p_value_font_size}{font size for the interaction
 p value (default = 6)}
 
-\item{interaction_p_value_vjust}{description not ready}
+\item{interaction_p_value_vjust}{(default)}
 
-\item{interaction_p_value_hjust}{description not ready}
+\item{interaction_p_value_hjust}{(default)}
 
-\item{x_axis_breaks}{description not ready}
+\item{x_axis_breaks}{(default)}
 
-\item{x_axis_limits}{description not ready}
+\item{x_axis_limits}{(default)}
 
-\item{x_axis_tick_mark_labels}{description not ready}
+\item{x_axis_tick_mark_labels}{(default)}
 
-\item{y_axis_breaks}{description not ready}
+\item{y_axis_breaks}{(default)}
 
-\item{y_axis_limits}{description not ready}
+\item{y_axis_limits}{(default)}
 
-\item{x_axis_space_left_perc}{description not ready}
+\item{x_axis_space_left_perc}{(default)}
 
-\item{x_axis_space_right_perc}{description not ready}
+\item{x_axis_space_right_perc}{(default)}
 
-\item{y_axis_tick_mark_labels}{description not ready}
+\item{y_axis_tick_mark_labels}{(default)}
 
 \item{x_axis_title}{title of the x axis. By default, it will be set
 as input for \code{mod_name}. If \code{x_axis_title = FALSE}, it will
@@ -232,15 +232,15 @@ range of y values}
 \item{dot_alpha}{opacity of the dots (0 = completely transparent,
 1 = completely opaque). By default, \code{dot_alpha = 0.2}}
 
-\item{reg_line_alpha}{description not ready}
+\item{reg_line_alpha}{(default)}
 
-\item{jn_point_font_size}{description not ready}
+\item{jn_point_font_size}{(default)}
 
 \item{reg_line_types}{types of the regression lines for the two levels
 of the independent variable.
 By default, \code{reg_line_types = c("solid", "dashed")}}
 
-\item{caption}{description not ready}
+\item{caption}{(default)}
 
 \item{plot_margin}{margin for the plot
 By default \code{plot_margin = ggplot2::unit(c(60, 30, 7, 7), "pt")}}
@@ -251,7 +251,7 @@ By default, \code{silent = FALSE}.}
 }
 \description{
 Conduct a spotlight analysis for a 2 x Continuous design.
-See Spiller et al. (2013) \url{doi:10.1509/jmr.12.0420}.
+See Spiller et al. (2013) \doi{10.1509/jmr.12.0420}.
 }
 \examples{
 \donttest{

@@ -1,7 +1,7 @@
 #' Spotlight 2 by Continuous
 #'
 #' Conduct a spotlight analysis for a 2 x Continuous design.
-#' See Spiller et al. (2013) <doi:10.1509/jmr.12.0420>.
+#' See Spiller et al. (2013) \doi{10.1509/jmr.12.0420}.
 #'
 #' @param data a data object (a data frame or a data.table)
 #' @param iv_name name of the binary independent variable (IV)
@@ -45,18 +45,18 @@
 #' @param error_bar_tip_width graphically, width of the segments
 #' at the end of error bars (default = 0.13)
 #' @param error_bar_thickness thickness of the error bars (default = 1)
-#' @param error_bar_tip_width_percent description not ready
-#' @param error_bar_offset description not ready
-#' @param error_bar_offset_percent description not ready
-#' @param simp_eff_bracket_leg_ht description not ready
-#' @param simp_eff_bracket_leg_ht_perc description not ready
-#' @param simp_eff_bracket_offset description not ready
-#' @param simp_eff_bracket_offset_perc description not ready
-#' @param simp_eff_bracket_color description not ready
-#' @param simp_eff_bracket_line_size description not ready
-#' @param simp_eff_text_offset description not ready
-#' @param simp_eff_text_offset_percent description not ready
-#' @param simp_eff_text_hjust description not ready
+#' @param error_bar_tip_width_percent (default)
+#' @param error_bar_offset (default)
+#' @param error_bar_offset_percent (default)
+#' @param simp_eff_bracket_leg_ht (default)
+#' @param simp_eff_bracket_leg_ht_perc (default)
+#' @param simp_eff_bracket_offset (default)
+#' @param simp_eff_bracket_offset_perc (default)
+#' @param simp_eff_bracket_color (default)
+#' @param simp_eff_bracket_line_size (default)
+#' @param simp_eff_text_offset (default)
+#' @param simp_eff_text_offset_percent (default)
+#' @param simp_eff_text_hjust (default)
 #' @param simp_eff_text_part_1 The first part of the text for
 #' labeling simple effects.
 #' By default, \code{simp_eff_text_part_1 = "Simple Effect\n"}
@@ -66,20 +66,20 @@
 #' p-values of simple effects (default = 5).
 #' @param interaction_p_include logical. Should the plot include a
 #' p-value for the interaction term?
-#' @param interaction_p_value_x description not ready
-#' @param interaction_p_value_y description not ready
+#' @param interaction_p_value_x (default)
+#' @param interaction_p_value_y (default)
 #' @param interaction_p_value_font_size font size for the interaction
 #' p value (default = 6)
-#' @param interaction_p_value_vjust description not ready
-#' @param interaction_p_value_hjust description not ready
-#' @param x_axis_breaks description not ready
-#' @param x_axis_limits description not ready
-#' @param x_axis_tick_mark_labels description not ready
-#' @param y_axis_breaks description not ready
-#' @param y_axis_limits description not ready
-#' @param x_axis_space_left_perc description not ready
-#' @param x_axis_space_right_perc description not ready
-#' @param y_axis_tick_mark_labels description not ready
+#' @param interaction_p_value_vjust (default)
+#' @param interaction_p_value_hjust (default)
+#' @param x_axis_breaks (default)
+#' @param x_axis_limits (default)
+#' @param x_axis_tick_mark_labels (default)
+#' @param y_axis_breaks (default)
+#' @param y_axis_limits (default)
+#' @param x_axis_space_left_perc (default)
+#' @param x_axis_space_right_perc (default)
+#' @param y_axis_tick_mark_labels (default)
 #' @param x_axis_title title of the x axis. By default, it will be set
 #' as input for \code{mod_name}. If \code{x_axis_title = FALSE}, it will
 #' be removed.
@@ -103,12 +103,12 @@
 #' range of y values
 #' @param dot_alpha opacity of the dots (0 = completely transparent,
 #' 1 = completely opaque). By default, \code{dot_alpha = 0.2}
-#' @param reg_line_alpha description not ready
-#' @param jn_point_font_size description not ready
+#' @param reg_line_alpha (default)
+#' @param jn_point_font_size (default)
 #' @param reg_line_types types of the regression lines for the two levels
 #' of the independent variable.
 #' By default, \code{reg_line_types = c("solid", "dashed")}
-#' @param caption description not ready
+#' @param caption (default)
 #' @param plot_margin margin for the plot
 #' By default \code{plot_margin = ggplot2::unit(c(60, 30, 7, 7), "pt")}
 #' @param silent If \code{silent = FALSE}, (various) messages will be
