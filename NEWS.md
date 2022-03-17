@@ -1,4 +1,4 @@
-# kim 0.5.1
+# kim 0.5.2
 * Highlights: addition of und, repeated_measures_anova
 * Added the following function(s): vlookup, convert_cols_to_numeric,
 convert_to_excel_formula, spotlight_2_by_continuous,
