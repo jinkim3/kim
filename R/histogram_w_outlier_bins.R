@@ -220,21 +220,36 @@ histogram_w_outlier_bins <- function(
   median_x_coordinate <- kim::rel_value_of_pos_in_vector(
     vector = actual_bin_cutoffs,
     position = kim::rel_pos_of_value_in_vector(median(v_no_na), bin_cutoffs))
-  # get the x coordinate for lower and upper limits of 95% ci
-  ci_95_ll <- tryCatch(
-    as.numeric(stats::t.test(v_no_na)[["conf.int"]][1]),
-    warning = function(w) NA_real_, error = function(e) NA_real_)
-  ci_95_ul <- tryCatch(
-    as.numeric(stats::t.test(v_no_na)[["conf.int"]][2]),
-    warning = function(w) NA_real_, error = function(e) NA_real_)
-  ci_95_ll_x_coordinate <- kim::rel_value_of_pos_in_vector(
-    vector = actual_bin_cutoffs,
-    position = kim::rel_pos_of_value_in_vector(ci_95_ll, bin_cutoffs))
-  ci_95_ul_x_coordinate <- kim::rel_value_of_pos_in_vector(
-    vector = actual_bin_cutoffs,
-    position = kim::rel_pos_of_value_in_vector(ci_95_ul, bin_cutoffs))
   # mark 95% ci
   if (ci == TRUE) {
+    # get the x coordinate for lower and upper limits of 95% ci
+    ci_95_ll <- tryCatch(
+      as.numeric(stats::t.test(v_no_na)[["conf.int"]][1]),
+      warning = function(w) NA_real_, error = function(e) NA_real_)
+    ci_95_ul <- tryCatch(
+      as.numeric(stats::t.test(v_no_na)[["conf.int"]][2]),
+      warning = function(w) NA_real_, error = function(e) NA_real_)
+    ci_95_ll_x_coordinate <- tryCatch(
+      kim::rel_value_of_pos_in_vector(
+        vector = actual_bin_cutoffs,
+        position = kim::rel_pos_of_value_in_vector(ci_95_ll, bin_cutoffs)),
+      warning = function(w) {
+        message("A warning was triggered while calculating 95% CI.")
+      },
+      error = function(e) {
+        stop("An error occurred while calculating 95% CI.")
+      })
+    ci_95_ul_x_coordinate <- tryCatch(
+      kim::rel_value_of_pos_in_vector(
+        vector = actual_bin_cutoffs,
+        position = kim::rel_pos_of_value_in_vector(ci_95_ul, bin_cutoffs)),
+      warning = function(w) {
+        message("A warning was triggered while calculating 95% CI.")
+      },
+      error = function(e) {
+        stop("An error occurred while calculating 95% CI.")
+      })
+    # back to plotting
     g1 <- g1 + ggplot2::geom_errorbarh(
       ggplot2::aes(
         xmin = ci_95_ll_x_coordinate,
@@ -256,8 +271,8 @@ histogram_w_outlier_bins <- function(
     g1 <- g1 + ggplot2::geom_text(
       data = data.frame(median_x_coordinate),
       ggplot2::aes(x = median_x_coordinate,
-          y = (max(dt[, get(y)]) - 0) * median_position / 100,
-          label = "Mdn\nX"),
+                   y = (max(dt[, get(y)]) - 0) * median_position / 100,
+                   label = "Mdn\nX"),
       fontface = "bold", hjust = 0.5, vjust = 0.5,
       size = 7, color = "black")
   }

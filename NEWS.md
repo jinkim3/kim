@@ -1,3 +1,13 @@
+# kim 0.5.4
+* Highlights:
+* Added the following function(s): 
+* Updated the following function(s) (and other functions that use them): 
+* Fixed bugs or errors in the following functions (and other functions
+that use them): histogram_w_outlier_bins
+* Critical improvement in the following functions (and other functions
+that use them): 
+* Undocumented functions added (see the function `und`): 
+
 # kim 0.5.3
 * Highlights: addition of und, repeated_measures_anova
 * Added the following function(s): vlookup, convert_cols_to_numeric,
