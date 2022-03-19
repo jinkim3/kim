@@ -94,9 +94,19 @@ repeated_measures_anova <- function(
   }
   # convert data to data table
   dt1 <- data.table::setDT(data.table::copy(data))
+  # keep only the necessary columns
+  dt1_2 <- dt1[, c(p_col_name, measure_vars), with = FALSE]
+  # remove rows w na values
+  num_of_na_rows <- sum(!stats::complete.cases(dt1_2))
+  if (num_of_na_rows > 0) {
+    dt1_3 <- stats::na.omit(dt1_2)
+    message(paste0(
+      num_of_na_rows,
+      " rows were removed because of missing values."))
+  }
   # convert to long format
   dt2 <- data.table::melt(
-    dt1, id.vars = p_col_name, measure.vars = measure_vars)
+    dt1_3, id.vars = p_col_name, measure.vars = measure_vars)
   # change column names
   names(dt2) <- c("p", "within_subjects_vars", "value")
   # below, suppress the warning "converting x to factor for anova"

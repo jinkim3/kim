@@ -1,9 +1,9 @@
-# kim 0.5.4
+# kim 0.5.5
 * Highlights:
 * Added the following function(s): 
 * Updated the following function(s) (and other functions that use them): 
 * Fixed bugs or errors in the following functions (and other functions
-that use them): histogram_w_outlier_bins
+that use them): repeated_measures_anova
 * Critical improvement in the following functions (and other functions
 that use them): 
 * Undocumented functions added (see the function `und`): 
