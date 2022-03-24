@@ -43,6 +43,7 @@ forest_plot(
   estimate_label_size = 6,
   estimate_label_fontface = "plain",
   x_axis_tick_marks = NULL,
+  x_axis_tick_mark_label_size = 6,
   legend_position = "none",
   plot_margin = NULL
 )
@@ -123,6 +124,8 @@ forest_plot(
 \item{estimate_label_fontface}{default = "plain"}
 
 \item{x_axis_tick_marks}{default = NULL}
+
+\item{x_axis_tick_mark_label_size}{default = 6}
 
 \item{legend_position}{default = "none"}
 
