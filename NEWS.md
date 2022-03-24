@@ -1,7 +1,8 @@
-# kim 0.5.5
+# kim 0.5.6
 * Highlights:
 * Added the following function(s): 
 * Updated the following function(s) (and other functions that use them): 
+forest_plot
 * Fixed bugs or errors in the following functions (and other functions
 that use them): repeated_measures_anova
 * Critical improvement in the following functions (and other functions

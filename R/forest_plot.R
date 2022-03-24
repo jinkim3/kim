@@ -40,6 +40,7 @@
 #' @param estimate_label_size default = 6
 #' @param estimate_label_fontface default = "plain"
 #' @param x_axis_tick_marks default = NULL
+#' @param x_axis_tick_mark_label_size default = 6
 #' @param legend_position default = "none"
 #' @param plot_margin default = NULL
 #' @examples
@@ -96,6 +97,7 @@ forest_plot <- function(
   estimate_label_size = 6,
   estimate_label_fontface = "plain",
   x_axis_tick_marks = NULL,
+  x_axis_tick_mark_label_size = 6,
   legend_position = "none",
   plot_margin = NULL
 ) {
@@ -306,7 +308,8 @@ forest_plot <- function(
         y = tick_mark_bottom_tip_y,
         label = x_axis_tick_marks[i],
         vjust = 2,
-        size = 6, fontface = "plain")
+        size = x_axis_tick_mark_label_size,
+        fontface = "plain")
     }
   }
   # plot margins
