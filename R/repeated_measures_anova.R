@@ -103,6 +103,8 @@ repeated_measures_anova <- function(
     message(paste0(
       num_of_na_rows,
       " rows were removed because of missing values."))
+  } else {
+    dt1_3 <- dt1_2
   }
   # convert to long format
   dt2 <- data.table::melt(
