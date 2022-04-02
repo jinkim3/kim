@@ -1,10 +1,10 @@
-# kim 0.5.7
+# kim 0.5.8
 * Highlights:
 * Added the following function(s): 
 * Updated the following function(s) (and other functions that use them): 
 forest_plot
 * Fixed bugs or errors in the following functions (and other functions
-that use them): repeated_measures_anova
+that use them): repeated_measures_anova, mann_whitney
 * Critical improvement in the following functions (and other functions
 that use them): 
 * Undocumented functions added (see the function `und`): 

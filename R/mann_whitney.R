@@ -19,7 +19,7 @@ mann_whitney <- function(
   dv_name = NULL,
   sigfigs = 3) {
   # bind the vars locally to the function
-  iv <- dv <- wilcoxon_rank_sum_p_value <- effect_size_r <- NULL
+  iv <- dv <- wilcoxon_rank_sum_p_value <- effect_size_r_abs_value <- NULL
   # get number of levels in iv
   number_of_lvls_in_iv <- length(unique(data[[iv_name]]))
   if (number_of_lvls_in_iv < 2) {
@@ -58,11 +58,11 @@ mann_whitney <- function(
     # effect size
     z_for_effect_size_r <- stats::qnorm(wilcoxon_rank_sum_p_value / 2)
     n_for_pairwise_comparison <- nrow(dt01[iv %in% dt02[i, ]])
-    effect_size_r <- z_for_effect_size_r /
-      sqrt(n_for_pairwise_comparison)
-    output <- c(wilcoxon_rank_sum_p_value, w_stat, effect_size_r)
+    effect_size_r_abs_value <- abs(z_for_effect_size_r /
+      sqrt(n_for_pairwise_comparison))
+    output <- c(wilcoxon_rank_sum_p_value, w_stat, effect_size_r_abs_value)
     names(output) <- c(
-      "wilcoxon_rank_sum_p_value", "w_stat", "effect_size_r")
+      "wilcoxon_rank_sum_p_value", "w_stat", "effect_size_r_abs_value")
     return(output)})
   wilcoxon_results_dt <- as.data.table(
     do.call(rbind, wilcoxon_results))
@@ -79,6 +79,7 @@ mann_whitney <- function(
   # round values
   output[, wilcoxon_rank_sum_p_value :=
            kim::pretty_round_p_value(wilcoxon_rank_sum_p_value)][]
-  output[, effect_size_r := kim::round_flexibly(effect_size_r, sigfigs)][]
+  output[, effect_size_r_abs_value := kim::round_flexibly(
+    effect_size_r_abs_value, sigfigs)][]
   return(output)
 }
