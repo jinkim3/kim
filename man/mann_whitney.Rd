@@ -4,7 +4,13 @@
 \alias{mann_whitney}
 \title{Mann-Whitney U Test (Also called Wilcoxon Rank-Sum Test)}
 \usage{
-mann_whitney(data = NULL, iv_name = NULL, dv_name = NULL, sigfigs = 3)
+mann_whitney(
+  data = NULL,
+  iv_name = NULL,
+  dv_name = NULL,
+  iv_level_order = NULL,
+  sigfigs = 3
+)
 }
 \arguments{
 \item{data}{a data object (a data frame or a data.table)}
@@ -13,6 +19,10 @@ mann_whitney(data = NULL, iv_name = NULL, dv_name = NULL, sigfigs = 3)
 
 \item{dv_name}{name of the dependent variable (measure variable
 of interest)}
+
+\item{iv_level_order}{order of levels in the independent
+variable. By default, it will be set as levels of the
+independent variable ordered using R's base function \code{sort}.}
 
 \item{sigfigs}{number of significant digits to round to}
 }

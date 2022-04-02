@@ -1,4 +1,4 @@
-# kim 0.5.8
+# kim 0.5.9
 * Highlights:
 * Added the following function(s): 
 * Updated the following function(s) (and other functions that use them): 

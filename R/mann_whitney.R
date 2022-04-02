@@ -6,6 +6,9 @@
 #' @param iv_name name of the independent variable (grouping variable)
 #' @param dv_name name of the dependent variable (measure variable
 #' of interest)
+#' @param iv_level_order order of levels in the independent
+#' variable. By default, it will be set as levels of the
+#' independent variable ordered using R's base function \code{sort}.
 #' @param sigfigs number of significant digits to round to
 #' @return the output will be a data.table object with all pairwise
 #' Mann-Whitney test results
@@ -17,6 +20,7 @@ mann_whitney <- function(
   data = NULL,
   iv_name = NULL,
   dv_name = NULL,
+  iv_level_order = NULL,
   sigfigs = 3) {
   # bind the vars locally to the function
   iv <- dv <- wilcoxon_rank_sum_p_value <- effect_size_r_abs_value <- NULL
@@ -25,16 +29,44 @@ mann_whitney <- function(
   if (number_of_lvls_in_iv < 2) {
     stop(paste0(
       "There are fewer than 2 levels in the IV: ",
-      sort(unique(data[[iv_name]]))))
+      paste0(sort(unique(data[[iv_name]])), collapse = ", ")))
   }
-  # remove na
-  dt01 <- setDT(copy(data))[, c(iv_name, dv_name), with = FALSE]
+  # create a new dt
+  dt01 <- data.table::setDT(
+    data.table::copy(data))[, c(iv_name, dv_name), with = FALSE]
   names(dt01) <- c("iv", "dv")
-  # convert iv to factor
-  dt01[, iv := factor(iv)]
+  # remove na
   dt01 <- stats::na.omit(dt01)
-  # pairs
-  group <- sort(unique(dt01$iv))
+  # set the order of levels in iv
+  if (is.null(iv_level_order)) {
+    group <- sort(unique(dt01$iv))
+  } else {
+    # if iv is a factor
+    if (is.factor(dt01$iv)) {
+      if (setequal(kim::su(levels(dt01$iv)), iv_level_order) == FALSE) {
+        stop(paste0(
+          "The levels of independent variables do not match:\n",
+          "Input for `iv_level_order`: ",
+          paste0(iv_level_order, collapse = ", "),
+          "\nLevels of IV in the data set: ",
+          paste0(kim::su(levels(dt01$iv)), collapse = ", ")))
+      }
+      dt01[, iv := factor(iv, levels = iv_level_order)]
+      group <- iv_level_order
+    } else {
+      # if iv is not a factor
+      if (setequal(kim::su(dt01$iv), iv_level_order) == FALSE) {
+        stop(paste0(
+          "The levels of independent variables do not match:\n",
+          "Input for `iv_level_order`: ",
+          paste0(iv_level_order, collapse = ", "),
+          "\nLevels of IV in the data set: ",
+          paste0(kim::su(levels(dt01$iv)), collapse = ", ")))
+      }
+      group <- iv_level_order
+    }
+  }
+  # possible pairwise combinations of iv levels
   dt02 <- data.table(t(utils::combn(group, 2)))
   names(dt02) <- c("group_1", "group_2")
   # group means
@@ -58,9 +90,11 @@ mann_whitney <- function(
     # effect size
     z_for_effect_size_r <- stats::qnorm(wilcoxon_rank_sum_p_value / 2)
     n_for_pairwise_comparison <- nrow(dt01[iv %in% dt02[i, ]])
-    effect_size_r_abs_value <- abs(z_for_effect_size_r /
-      sqrt(n_for_pairwise_comparison))
-    output <- c(wilcoxon_rank_sum_p_value, w_stat, effect_size_r_abs_value)
+    effect_size_r_abs_value <- abs(
+      z_for_effect_size_r /
+        sqrt(n_for_pairwise_comparison))
+    output <- c(
+      wilcoxon_rank_sum_p_value, w_stat, effect_size_r_abs_value)
     names(output) <- c(
       "wilcoxon_rank_sum_p_value", "w_stat", "effect_size_r_abs_value")
     return(output)})
