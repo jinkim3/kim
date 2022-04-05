@@ -22,6 +22,8 @@
 #' in t-tests (default = 1)
 #' @param sd if \code{sd = TRUE}, standard deviations will be
 #' included in the output data.table.
+#' @param round_p number of decimal places to which to round
+#' p-values (default = 3)
 #' @return the output will be a data.table showing results of all
 #' pairwise comparisons between levels of the independent variable.
 #' @examples
@@ -45,7 +47,8 @@ t_test_pairwise <- function(
   mann_whitney = TRUE,
   t_test_stats = FALSE,
   t_test_df_decimals = 1,
-  sd = FALSE) {
+  sd = FALSE,
+  round_p = 3) {
   # bind the vars locally to the function
   iv <- dv <- group_1 <- group_2 <- NULL
   # check number of iv_name and dv_name
@@ -166,7 +169,9 @@ t_test_pairwise <- function(
       t_test_stat = kim::round_flexibly(t_test_stat, sigfigs))
   }
   # t test p values are added by default
-  output[, "t_test_p_value" := kim::pretty_round_p_value(t_test_p_value)][]
+  output[, "t_test_p_value" := kim::pretty_round_p_value(
+    p_value_vector = t_test_p_value,
+    round_digits_after_decimal = round_p)][]
   # mann whitney
   if (mann_whitney == TRUE) {
     mann_whitney_p_value <- vapply(seq_len(nrow(dt02)), function(i) {
@@ -175,7 +180,8 @@ t_test_pairwise <- function(
         paired = FALSE)[["p.value"]]},
       FUN.VALUE = numeric(1L))
     output[, "mann_whitney_p_value" := kim::pretty_round_p_value(
-      mann_whitney_p_value)][]
+      p_value_vector = mann_whitney_p_value,
+      round_digits_after_decimal = round_p)][]
   }
   # if bonferroni
   if (bonferroni == TRUE) {

@@ -15,7 +15,8 @@ t_test_pairwise(
   mann_whitney = TRUE,
   t_test_stats = FALSE,
   t_test_df_decimals = 1,
-  sd = FALSE
+  sd = FALSE,
+  round_p = 3
 )
 }
 \arguments{
@@ -48,6 +49,9 @@ in t-tests (default = 1)}
 
 \item{sd}{if \code{sd = TRUE}, standard deviations will be
 included in the output data.table.}
+
+\item{round_p}{number of decimal places to which to round
+p-values (default = 3)}
 }
 \value{
 the output will be a data.table showing results of all

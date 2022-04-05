@@ -121,6 +121,9 @@ using the \code{grid.arrange} function.}
 
 \item{col_names_nicer}{if \code{col_names_nicer = TRUE}, column names
 will be converted from snake_case to an easier-to-eye format.}
+
+\item{round_p}{number of decimal places to which to round
+p-values (default = 3)}
 }
 \value{
 the output will be a list of (1) ggplot object

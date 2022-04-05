@@ -33,6 +33,8 @@
 #' data.table.
 #' @param t_test_df_decimals number of decimals for the degrees of freedom
 #' in t-tests (default = 1)
+#' @param round_p number of decimal places to which to round
+#' p-values (default = 3)
 #' @param save_as_png if \code{save = "all"} or if \code{save = TRUE},
 #' the histogram by group, descriptive statistics by group,
 #' and pairwise comparison results will be saved as a PNG file.
@@ -129,7 +131,8 @@ compare_groups <- function(
     bonferroni = bonferroni,
     mann_whitney = mann_whitney,
     t_test_stats = t_test_stats,
-    t_test_df_decimals = t_test_df_decimals)
+    t_test_df_decimals = t_test_df_decimals,
+    round_p = 3)
   # print outputs
   output_1
   output_2

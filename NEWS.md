@@ -1,8 +1,8 @@
-# kim 0.5.9
+# kim 0.5.10
 * Highlights:
 * Added the following function(s): 
 * Updated the following function(s) (and other functions that use them): 
-forest_plot
+forest_plot, t_test_pairwise, compare_groups
 * Fixed bugs or errors in the following functions (and other functions
 that use them): repeated_measures_anova, mann_whitney
 * Critical improvement in the following functions (and other functions
