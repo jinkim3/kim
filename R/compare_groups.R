@@ -97,6 +97,7 @@ compare_groups <- function(
   mann_whitney = TRUE,
   t_test_stats = FALSE,
   t_test_df_decimals = 1,
+  round_p = 3,
   save_as_png = FALSE,
   png_name = NULL,
   xlab = NULL,
