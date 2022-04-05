@@ -133,7 +133,7 @@ compare_groups <- function(
     mann_whitney = mann_whitney,
     t_test_stats = t_test_stats,
     t_test_df_decimals = t_test_df_decimals,
-    round_p = 3)
+    round_p = round_p)
   # print outputs
   output_1
   output_2
