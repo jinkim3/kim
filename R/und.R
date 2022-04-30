@@ -148,7 +148,7 @@ und <- function(fn, ...) {
     cat(paste0(c(
       rep("_", position_of_difference - 1),
       "^",
-      " (Position ", i, ")"), collapse = ""))
+      " (Position ", i, ")\n"), collapse = ""))
     output <- list("position_of_difference" = i)
     return(output)
   }
