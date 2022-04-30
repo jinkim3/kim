@@ -106,6 +106,53 @@ und <- function(fn, ...) {
       "There must be only one input, or the input must be entered ",
       "as follows: x = [input]"))
   }
+  # compare strings
+  if (fn == "compare_strings") {
+    # check whether the vector is character
+    if (is.character(x) == FALSE) {
+      stop("The input must be a character vector.")
+    }
+    # check whether the vector has a length greater than 1
+    if (length(x) <= 1) {
+      stop("The input vector must have more than one element.")
+    }
+    # check whether elements are identical
+    identical_to_element_1 <- vapply(2:length(x), function(i) {
+      identical(x[1], x[i])
+    }, logical(1L))
+    if (all(identical_to_element_1) == TRUE) {
+      message("All elements of the input vector are identical.")
+      return("all identical")
+    }
+    # print if lengths are all 80 or less
+    string_lengths <- vapply(seq_along(x), function(i) {
+      nchar(x[i])
+    }, numeric(1L))
+    if (all(string_lengths <= 80) == TRUE) {
+      cat(x, sep = "\n")
+    }
+    # find the position where the elements differ
+    for (i in seq_len(max(string_lengths))) {
+      character_at_one_position <- vapply(seq_along(x), function(j) {
+        substr(x[j], i, i)
+      }, character(1L))
+      identical_to_character_1 <- vapply(2:length(
+        character_at_one_position), function(k) {
+          identical(character_at_one_position[1], character_at_one_position[k])
+        }, logical(1L))
+      if (any(identical_to_character_1 == FALSE)) {
+        position_of_difference <- i
+        break
+      }
+    }
+    cat(paste0(c(
+      rep("_", position_of_difference - 1),
+      "^",
+      " (Position ", i, ")"), collapse = ""))
+    output <- list("position_of_difference" = i)
+    return(output)
+  }
+  # starting from the line below, the input x must be a numeric vector
   if (is.numeric(x) == FALSE) {
     stop("Please enter a numeric vector as an input.")
   }

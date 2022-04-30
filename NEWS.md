@@ -1,4 +1,4 @@
-# kim 0.5.10
+# kim 0.5.12
 * Highlights:
 * Added the following function(s): 
 * Updated the following function(s) (and other functions that use them): 
@@ -8,6 +8,7 @@ that use them): repeated_measures_anova, mann_whitney
 * Critical improvement in the following functions (and other functions
 that use them): 
 * Undocumented functions added (see the function `und`): 
+compare_strings
 
 # kim 0.5.3
 * Highlights: addition of und, repeated_measures_anova
