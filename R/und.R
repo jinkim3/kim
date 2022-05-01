@@ -112,10 +112,6 @@ und <- function(fn, ...) {
     stop("The input must be an atomic vector.")
   }
   # character vector --------------------------------------------------------
-  # check whether the vector is character
-  if (is.character(x) == FALSE) {
-    stop("The input must be a character vector.")
-  }
   # convert substrings from unicode
   if (fn == "convert_from_unicode") {
     # conversions
@@ -135,6 +131,10 @@ und <- function(fn, ...) {
   }
   # compare strings
   if (fn == "compare_strings") {
+    # check whether the vector is character
+    if (is.character(x) == FALSE) {
+      stop("The input must be a character vector.")
+    }
     # check whether the vector has a length greater than 1
     if (length(x) <= 1) {
       stop("The input vector must have more than one element.")
@@ -180,11 +180,6 @@ und <- function(fn, ...) {
     output <- list("position_of_difference" = i)
     return(output)
   }
-# numeric vector ----------------------------------------------------------
-  # starting from the line below, the input x must be a numeric vector
-  if (is.numeric(x) == FALSE) {
-    stop("Please enter a numeric vector as an input.")
-  }
   # mean center, standardize, z_score
   if (fn == "mean_center") {
     output <- scale(x = x, scale = FALSE)
@@ -204,6 +199,10 @@ und <- function(fn, ...) {
   }
   # mode
   if (fn == "mode") {
+    # the input x must be a numeric vector
+    if (is.numeric(x) == FALSE) {
+      stop("Please enter a numeric vector as an input.")
+    }
     unique_values <- unique(x)
     counts <- vapply(unique_values, function(value) {
       sum(x == value, na.rm = TRUE)
