@@ -128,7 +128,9 @@ und <- function(fn, ...) {
     string_lengths <- vapply(seq_along(x), function(i) {
       nchar(x[i])
     }, numeric(1L))
-    if (all(string_lengths <= 80) == TRUE) {
+    # get the maximum length
+    max_string_legnth <- max(string_lengths)
+    if (max_string_legnth <= 80) {
       cat(x, sep = "\n")
     }
     # find the position where the elements differ
@@ -145,10 +147,13 @@ und <- function(fn, ...) {
         break
       }
     }
-    cat(paste0(c(
-      rep("_", position_of_difference - 1),
-      "^",
-      " (Position ", i, ")\n"), collapse = ""))
+    if (max_string_legnth <= 80) {
+      cat(paste0(c(
+        rep("_", position_of_difference - 1),
+        "^",
+        " (Position ", i, ")\n"), collapse = ""))
+    }
+    # return the position of difference
     output <- list("position_of_difference" = i)
     return(output)
   }
