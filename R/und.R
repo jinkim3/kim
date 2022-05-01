@@ -96,7 +96,7 @@ und <- function(fn, ...) {
     non_outlier_values <- x[which(!x %in% outliers)]
     return(non_outlier_values)
   }
-  # confirm that only one vector is entered
+  # confirm that the input has a length of 1
   if (length(ae) == 1) {
     x <- ae[[1]]
   } else if ("x" %in% names(ae)) {
@@ -106,12 +106,35 @@ und <- function(fn, ...) {
       "There must be only one input, or the input must be entered ",
       "as follows: x = [input]"))
   }
+  # atomic vector --------------------------------------------------------
+  # check whether the input is character
+  if (is.atomic(x) == FALSE) {
+    stop("The input must be an atomic vector.")
+  }
+  # character vector --------------------------------------------------------
+  # check whether the vector is character
+  if (is.character(x) == FALSE) {
+    stop("The input must be a character vector.")
+  }
+  # convert substrings from unicode
+  if (fn == "convert_from_unicode") {
+    # conversions
+    Encoding(x) <- "UTF-8"
+    # double quotation marks
+    x <- gsub("[\u201C\u201D]", '"', x)
+    # single quotation marks
+    x <- gsub("[\u2018\u2019\u201B]", "'", x)
+    # prime and reverse prime
+    x <- gsub("[\u2032\u2035]", "'", x)
+    # space
+    x <- gsub("\u00A0", " ", x)
+    # ellipsis
+    x <- gsub("\u2026", "...", x)
+    # return output
+    return(x)
+  }
   # compare strings
   if (fn == "compare_strings") {
-    # check whether the vector is character
-    if (is.character(x) == FALSE) {
-      stop("The input must be a character vector.")
-    }
     # check whether the vector has a length greater than 1
     if (length(x) <= 1) {
       stop("The input vector must have more than one element.")
@@ -157,6 +180,7 @@ und <- function(fn, ...) {
     output <- list("position_of_difference" = i)
     return(output)
   }
+# numeric vector ----------------------------------------------------------
   # starting from the line below, the input x must be a numeric vector
   if (is.numeric(x) == FALSE) {
     stop("Please enter a numeric vector as an input.")
