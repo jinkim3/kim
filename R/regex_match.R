@@ -28,10 +28,15 @@ regex_match <- function(
   }
   output <- vector[grepl(regex, vector, perl = perl)]
   if (silent == FALSE) {
-    message(paste0(
-      "A total of ", length(output), " matches were found:"))
-    cat(output)
-    cat("\n")
+    if (length(output) == 0) {
+      message(paste0(
+        "A total of ", length(output), " matches were found."))
+    } else {
+      message(paste0(
+        "A total of ", length(output), " matches were found:"))
+      cat(output)
+      cat("\n")
+    }
   }
   invisible(output)
 }
