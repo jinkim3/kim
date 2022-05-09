@@ -130,11 +130,15 @@ und <- function(fn, ...) {
     if (is.numeric(x) == FALSE) {
       stop("The input x must be a numeric vector.")
     }
+    # remove na values
+    if (!"na.rm" %in% names(ae)) {
+      ae$na.rm <- TRUE
+    }
     # find mad
     if ("constant" %in% names(ae)) {
-      mad <- stats::mad(x, constant = ae$constant)
+      mad <- stats::mad(x, constant = ae$constant, na.rm = ae$na.rm)
     } else {
-      mad <- stats::mad(x)
+      mad <- stats::mad(x, na.rm = ae$na.rm)
     }
     # threshold
     if ("threshold" %in% names(ae)) {
@@ -143,7 +147,7 @@ und <- function(fn, ...) {
       threshold <- 2.5
     }
     # median
-    median <- median(x)
+    median <- median(x, na.rm = ae$na.rm)
     # cutoff values
     cutoff_low <- median - threshold * mad
     cutoff_high <- median + threshold * mad
