@@ -103,6 +103,10 @@ und <- function(fn, ...) {
     } else {
       x <- ae[[1]]
     }
+    # ensure the vector is numeric
+    if (is.numeric(x) == FALSE) {
+      stop("The input x must be a numeric vector.")
+    }
     # set default values
     if (!"iqr" %in% names(ae)) {
       ae$iqr <- 1.5
@@ -121,6 +125,10 @@ und <- function(fn, ...) {
       x <- ae[["x"]]
     } else {
       x <- ae[[1]]
+    }
+    # ensure the vector is numeric
+    if (is.numeric(x) == FALSE) {
+      stop("The input x must be a numeric vector.")
     }
     # find mad
     if ("constant" %in% names(ae)) {
@@ -145,6 +153,11 @@ und <- function(fn, ...) {
       if (ae$return_cutoff == TRUE) {
         return(cutoff_values)
       }
+    }
+    # switch outliers to na
+    if ("switch_outlier_to" %in% names(ae)) {
+      x[x < cutoff_low | x > cutoff_high] <- ae$switch_outlier_to
+      return(x)
     }
     # values to keep
     non_outlier_values <- x[which(x >= cutoff_low & x <= cutoff_high)]
