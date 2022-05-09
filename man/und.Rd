@@ -17,6 +17,11 @@ the output will vary by function
 \description{
 A collection of miscellaneous functions lacking documentations
 }
+\details{
+For more information on functions contained within this function,
+please refer to the following:
+mad_rm, Leys et al. (2013) doi:10.1016/j.jesp.2013.03.013
+}
 \examples{
 # correlation
 und(corr_text, x = 1:5, y = c(1, 2, 2, 2, 3))

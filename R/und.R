@@ -2,6 +2,10 @@
 #'
 #' A collection of miscellaneous functions lacking documentations
 #'
+#' For more information on functions contained within this function,
+#' please refer to the following:
+#' mad_rm, Leys et al. (2013) doi:10.1016/j.jesp.2013.03.013
+#'
 #' @param fn name of the function
 #' @param ... arguments for the function
 #' @return the output will vary by function
@@ -37,6 +41,17 @@ und <- function(fn, ...) {
   # evaluate languages
   # ae stands for arguments evaluated
   ae <- lapply(al, eval, envir = focal_environment)
+  # list all subfunctions
+  if (fn == "list_functions") {
+    list_of_subfunctions <- sort(c(
+      "list_functions", "corr_text", "round_trail_0", "outlier_rm",
+      "convert_from_unicode", "compare_strings",
+      "mean_center", "mode", "mad_rm"))
+    kim::pm(
+      "The following ", length(list_of_subfunctions),
+      " undocumented functions are contained in the 'und' function:")
+    return(paste0(list_of_subfunctions, collapse = ", "))
+  }
   # corr text
   if (fn == "corr_text") {
     if (all(c("x", "y") %in% names(ae))) {
@@ -64,7 +79,7 @@ und <- function(fn, ...) {
     }
   }
   # round including trailing 0s
-  if (fn == "round_t0") {
+  if (fn == "round_trail_0") {
     # get the vector
     if ("x" %in% names(ae)) {
       x <- ae[["x"]]
@@ -93,7 +108,46 @@ und <- function(fn, ...) {
       ae$iqr <- 1.5
     }
     outliers <- kim::outlier(x, iqr = ae$iqr)
+    # needs work: the code below can probably be updated
+    # for faster execution
     non_outlier_values <- x[which(!x %in% outliers)]
+    return(non_outlier_values)
+  }
+  # remove outliers using the mad method
+  # see Leys et al. (2013) doi:10.1016/j.jesp.2013.03.013
+  if (fn == "mad_rm") {
+    # get the vector
+    if ("x" %in% names(ae)) {
+      x <- ae[["x"]]
+    } else {
+      x <- ae[[1]]
+    }
+    # find mad
+    if ("constant" %in% names(ae)) {
+      mad <- stats::mad(x, constant = ae$constant)
+    } else {
+      mad <- stats::mad(x)
+    }
+    # threshold
+    if ("threshold" %in% names(ae)) {
+      threshold <- ae$threshold
+    } else {
+      threshold <- 2.5
+    }
+    # median
+    median <- median(x)
+    # cutoff values
+    cutoff_low <- median - threshold * mad
+    cutoff_high <- median + threshold * mad
+    cutoff_values <- c(cutoff_low, cutoff_high)
+    # return cutoff values
+    if ("return_cutoff" %in% names(ae)) {
+      if (ae$return_cutoff == TRUE) {
+        return(cutoff_values)
+      }
+    }
+    # values to keep
+    non_outlier_values <- x[which(x >= cutoff_low & x <= cutoff_high)]
     return(non_outlier_values)
   }
   # confirm that the input has a length of 1
