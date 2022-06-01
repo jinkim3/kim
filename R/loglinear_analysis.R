@@ -50,7 +50,20 @@ loglinear_analysis <- function(
       "'kim::install_all_dependencies()'"))
     return()
   }
-  # convert data to data table
+  # check inputs ----
+  if (is.null(data)) {
+    stop("Please specify a data set for the analysis.")
+  }
+  if (is.null(dv_name)) {
+    stop("The input dv_name is missing.")
+  }
+  if (is.null(iv_1_name)) {
+    stop("The input iv_1_name is missing.")
+  }
+  if (is.null(iv_2_name)) {
+    stop("The input iv_2_name is missing.")
+  }
+  # convert data to data table ----
   dt1 <- data.table::setDT(data.table::copy(data))
   dt1 <- dt1[, c(iv_1_name, iv_2_name, dv_name), with = FALSE]
   # convert iv to factors

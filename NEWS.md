@@ -1,6 +1,6 @@
-# kim 0.5.21
+# kim 0.5.23
 * Highlights:
-* Added the following function(s): loglinear_analysis
+* Added the following function(s): loglinear_analysis, identical_all
 * Updated the following function(s) (and other functions that use them): 
 forest_plot, t_test_pairwise, compare_groups, regex_match,
 install_all_dependencies
