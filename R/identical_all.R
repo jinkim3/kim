@@ -35,12 +35,12 @@ identical_all <- function(...) {
   # sequentially check whether each pair of elements are identical ----
   if (is.list(input_1) == TRUE) {
     results_from_identical_fn <- vapply(
-      head(seq_along(input_1), -1), function(i) {
+      utils::head(seq_along(input_1), -1), function(i) {
         return(identical(input_1[[i]], input_1[[i + 1]]))
       }, logical(1L))
   } else if (is.vector(input_1) == TRUE) {
     results_from_identical_fn <- vapply(
-      head(seq_along(input_1), -1), function(i) {
+      utils::head(seq_along(input_1), -1), function(i) {
         return(identical(input_1[i], input_1[i + 1]))
       }, logical(1L))
   } else {

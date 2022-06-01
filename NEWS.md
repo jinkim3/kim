@@ -1,4 +1,4 @@
-# kim 0.5.24
+# kim 0.5.25
 * Highlights:
 * Added the following function(s): loglinear_analysis, identical_all
 * Updated the following function(s) (and other functions that use them): 

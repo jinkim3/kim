@@ -37,9 +37,11 @@ loglinear_analysis <- function(
   round_chi_sq = 2,
   mosaic_plot = TRUE,
   report_as_field = FALSE) {
+  # bind the vars locally to the function
+  round_trail_0 <- NULL
   # installed packages
   installed_pkgs <- rownames(utils::installed.packages())
-  # check if Package 'ggplot2' is installed
+  # check if Package 'MASS' is installed ----
   if (!"MASS" %in% installed_pkgs) {
     message(paste0(
       "This function requires the installation of Package 'MASS'.",
@@ -49,6 +51,10 @@ loglinear_analysis <- function(
       "for all\nfunctions in Package 'kim', type ",
       "'kim::install_all_dependencies()'"))
     return()
+  } else {
+    # proceed if Package 'MASS' is already installed
+    loglm_from_MASS <- utils::getFromNamespace(
+      "loglm", "MASS")
   }
   # check inputs ----
   if (is.null(data)) {
@@ -87,21 +93,21 @@ loglinear_analysis <- function(
   }
   # contingency table ----
   # ct stands for contingency table ----
-  formula_1 <- as.formula(
+  formula_1 <- stats::as.formula(
     paste0("~ ", iv_1_name, " + ", iv_2_name, " + ", dv_name))
   ct_1 <- stats::xtabs(formula = formula_1, data = dt2)
   # saturated model ----
-  formula_2 <- as.formula(
+  formula_2 <- stats::as.formula(
     paste0("~ ", iv_1_name, " * ", iv_2_name, " * ", dv_name))
-  saturated <- MASS::loglm(formula = formula_2, data = ct_1)
+  saturated <- loglm_from_MASS(formula = formula_2, data = ct_1)
   # summary(saturated)
   # three way interaction ----
-  formula_3 <- as.formula(
+  formula_3 <- stats::as.formula(
     paste0("~ ", iv_1_name, " + ", iv_2_name, " + ", dv_name, " + ",
            iv_1_name, ":", iv_2_name, " + ",
            iv_1_name, ":", dv_name, " + ",
            iv_2_name, ":", dv_name))
-  three_way <- MASS::loglm(formula = formula_3, data = ct_1)
+  three_way <- loglm_from_MASS(formula = formula_3, data = ct_1)
   # summary(three_way)
   # mc stands model comparison ----
   mc_1 <- stats::anova(saturated, three_way)
@@ -142,7 +148,7 @@ loglinear_analysis <- function(
   message(rs)
   # mosaic plot ----
   if (mosaic_plot == TRUE) {
-    mosaicplot(ct_1, shad = TRUE, main = paste0(
+    graphics::mosaicplot(ct_1, shad = TRUE, main = paste0(
       dv_name, " = ", iv_1_name, " x ", iv_2_name))
   }
 }
