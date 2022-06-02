@@ -42,12 +42,12 @@ compare_datasets <- function(
   dataset_1 = NULL,
   dataset_2 = NULL,
   dataset_list = NULL) {
-  # bind the vars locally to the function
+  # bind the vars locally to the function ----
   ..different_vs_same <- NULL
   # copy data sets
   dt1 <- copy(dataset_1)
   dt2 <- copy(dataset_2)
-  # check inputs
+  # check inputs ----
   if (is.null(dataset_list) & !is.null(dt1) & !is.null(dt2)) {
     dt_list <- list(dt1, dt2)
   } else if (
@@ -63,13 +63,13 @@ compare_datasets <- function(
       "or enter two data sets, e.g., dt1 = mtcars, ",
       "dt2 = iris"))
   }
-  # set names of the data sets
+  # set names of the data sets ----
   if (is.null(names(dt_list))) {
     dataset_name <- seq_along(dt_list)
   } else {
     dataset_name <- names(dt_list)
   }
-  # check class
+  # check class ----
   check_class_result <- data.table(
     dataset = dataset_name,
     class = vapply(dt_list, function(dt) {
@@ -79,7 +79,7 @@ compare_datasets <- function(
     message('Data sets have different "class" attributes:')
     return(check_class_result)
   }
-  # check number of columns
+  # check number of columns ----
   check_ncol_result <- data.table(
     dataset = dataset_name,
     number_of_columns = vapply(dt_list, function(dt) {
@@ -89,7 +89,7 @@ compare_datasets <- function(
     message("Data sets have different number of columns:")
     return(check_ncol_result)
   }
-  # check number of rows
+  # check number of rows ----
   check_nrow_result <- data.table(
     dataset = dataset_name,
     number_of_rows = vapply(dt_list, function(dt) {
@@ -99,11 +99,11 @@ compare_datasets <- function(
     message("Data sets have different number of rows:")
     return(check_nrow_result)
   }
-  # get column names of each data set
+  # get column names of each data set ----
   colnames_by_dt <- lapply(dt_list, function(dt) {
     colnames(dt)
   })
-  # fill with na if number of columns differs
+  # fill with na if number of columns differs ----
   colnames_by_dt_max_row <- max(lengths(colnames_by_dt), na.rm = TRUE)
   colnames_by_dt <- lapply(colnames_by_dt, function(x) {
     if (length(x) < colnames_by_dt_max_row) {
@@ -113,7 +113,7 @@ compare_datasets <- function(
     }
     return(new_names)
   })
-  # check column names
+  # check column names ----
   check_colnames_result <- setDT(colnames_by_dt)
   names(check_colnames_result) <- paste0("data set: ", dataset_name)
   # check which pairs of data sets have different column names
@@ -134,7 +134,7 @@ compare_datasets <- function(
       , .SD, .SDcols = c(
         index_of_dt_w_diff_colnames, index_of_dt_w_diff_colnames + 1)])
   }
-  # check whether column classes match
+  # check whether column classes match ----
   col_types_by_dt <- setDT(as.data.frame(do.call(
     rbind,
     lapply(seq_len(length(dt_list)), function(i) {
@@ -156,7 +156,17 @@ compare_datasets <- function(
       "in the following two data sets:"))
     return(col_types_by_dt)
   }
-  # check columns
+  # check if attributes are identical ----
+  list_of_attr_names <- lapply(dt_list, function(dt) {
+    names(attributes(dt))
+  })
+  if (kim::identical_all(list_of_attr_names) == FALSE) {
+    message(paste0(
+      "The data sets have different attributes. ",
+      "List of attributes: "))
+    return(list_of_attr_names)
+  }
+  # check columns ----
   for (i in seq_along(dt_list[[1]])) {
     # get ith column from each of the data sets
     individual_cols <- lapply(dt_list, function(dt) {
@@ -186,7 +196,7 @@ compare_datasets <- function(
       }
     }
   }
-  # check if all data sets are data tables
+  # check if all data sets are data tables ----
   is_data_table <- vapply(
     dt_list, is.data.table, FUN.VALUE = logical(1L))
   # check data.table keys
@@ -201,7 +211,7 @@ compare_datasets <- function(
       return(check_key_result)
     }
   }
-  # check whether data sets are identical
+  # check whether data sets are identical ----
   for (i in utils::head(seq_len(length(dt_list)), -1)) {
     dataset_identical <- identical(
       dt_list[[i]], dt_list[[i + 1]])
@@ -211,7 +221,11 @@ compare_datasets <- function(
         "The following two data sets were not identical:\n",
         paste0(paste0("data set: ", dataset_name[i:(i + 1)]),
                collapse = "\n")))
-      return()
+      results_from_all_equal_fn <- lapply(
+        utils::head(seq_along(dt_list), -1), function(i) {
+          return(all.equal(dt_list[[i]], dt_list[[i + 1]]))
+        })
+      return(results_from_all_equal_fn)
     }
   }
   message("Wow, all of the data sets are identical!")
