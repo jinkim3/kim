@@ -4,7 +4,7 @@
 \alias{read_csv}
 \title{Read a csv file}
 \usage{
-read_csv(name = NULL, head = FALSE, ...)
+read_csv(name = NULL, head = FALSE, dirname = NULL, ...)
 }
 \arguments{
 \item{name}{a character string of the csv file name without the
@@ -13,6 +13,9 @@ enter \code{name = "myfile"}}
 
 \item{head}{logical. if \code{head = TRUE}, prints the first five
 rows of the data set.}
+
+\item{dirname}{a character string of the directory containing
+the csv file, e.g., \code{dirname = "c:/Users/Documents"}}
 
 \item{...}{optional arguments for the \code{fread} function
 from the data.table package. Any arguments for data.table's \code{fread}

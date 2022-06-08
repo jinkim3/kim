@@ -7,6 +7,8 @@
 #' enter \code{name = "myfile"}
 #' @param head logical. if \code{head = TRUE}, prints the first five
 #' rows of the data set.
+#' @param dirname a character string of the directory containing
+#' the csv file, e.g., \code{dirname = "c:/Users/Documents"}
 #' @param ... optional arguments for the \code{fread} function
 #' from the data.table package. Any arguments for data.table's \code{fread}
 #' function can be used, e.g., \code{fill = TRUE}, \code{nrows = 100}
@@ -18,9 +20,10 @@
 #' }
 #' @export
 read_csv <- function(
-  name = NULL,
-  head = FALSE,
-  ...) {
+    name = NULL,
+    head = FALSE,
+    dirname = NULL,
+    ...) {
   # check the name argument; open a dialog if none is given
   if (is.null(name)) {
     message("Please select the file.")
@@ -32,10 +35,25 @@ read_csv <- function(
     }
     return(dt)
   }
+  # folder description
+  if (is.null(dirname)) {
+    folder_description <- "working directory"
+  } else {
+    folder_description <- "specified folder"
+  }
   # print the working directory
-  message(paste0("\nCurrent working directory:\n", getwd(), "\n"))
+  if (is.null(dirname)) {
+    message(paste0("\nCurrent working directory:\n", getwd(), "\n"))
+  } else {
+    message(paste0(
+      "\nLocation searched:\n", dirname, "\n"))
+  }
   # vector of file names
-  file_name_vector <- list.files()
+  if (is.null(dirname)) {
+    file_name_vector <- list.files()
+  } else {
+    file_name_vector <- list.files(path = dirname)
+  }
   # check if the name given has a file extension
   if (grepl("\\.", name)) {
     # check file extension
@@ -50,18 +68,26 @@ read_csv <- function(
   } else {
     csv_file_name <- name
   }
+  # add location if dirname is given
+  if (is.null(dirname)) {
+    fread_input_arg <- csv_file_name
+  } else {
+    fread_input_arg <- paste0(ifelse(
+      endsWith(dirname, "/"), dirname, paste0(dirname, "/")),
+      csv_file_name)
+  }
   # read csv
   if (csv_file_name %in% file_name_vector) {
-    dt <- data.table::fread(input = csv_file_name, ...)
+    dt <- data.table::fread(input = fread_input_arg, ...)
     if (head == TRUE) {
       message("First five (or fewer) rows of the data:")
       print(utils::head(dt, n = 5L))
     }
     message(paste0(
-      "The following csv file was read from the working directory:\n",
+      "The following csv file was read:\n",
       csv_file_name, "\n"))
     return(dt)
   } else {
-    stop(csv_file_name, " does not exist in the working directory.")
+    stop(csv_file_name, " does not exist in the location above.")
   }
 }
