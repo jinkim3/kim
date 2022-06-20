@@ -93,13 +93,17 @@ akaike_weights <- function(
         ref_model_row_number,
         ") is ",
         mult_factor_for_example,
-        " times better than Model ",
+        " times more likely\n",
+        "to be the best model in terms of Kullback Leibler discrepancy\n",
+        "than is Model ",
         row_number_for_example,
         ",\nand there is a ",
         percent_to_prefer_for_example,
         "% probability that the reference model is\n",
         "to be preferred over Model ",
-        row_number_for_example, ".")
+        row_number_for_example,
+        ".\n\nSee Wagenmakers & Farrell (2006),\n",
+        "https://doi.org/10.3758/BF03206482")
       message(explanation_msg)
     }
   }
