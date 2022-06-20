@@ -94,7 +94,7 @@ akaike_weights <- function(
         ") is ",
         mult_factor_for_example,
         " times more likely\n",
-        "to be the best model in terms of Kullback Leibler discrepancy\n",
+        "to be the best model in terms of Kullback-Leibler discrepancy\n",
         "than is Model ",
         row_number_for_example,
         ",\nand there is a ",
