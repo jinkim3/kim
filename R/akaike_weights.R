@@ -70,7 +70,7 @@ akaike_weights <- function(
     aic = aic_values,
     ref_aic = ref_aic,
     aic_weight = aic_weights,
-    ref_model_is_x_times_better = mult_factor,
+    mult_factor,
     evidence_ratio)
   # identify the reference model ----
   if (length(ref_aic) == 1) {

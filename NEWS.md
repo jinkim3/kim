@@ -1,4 +1,4 @@
-# kim 0.5.31
+# kim 0.5.32
 * Highlights:
 * Added the following function(s): loglinear_analysis, identical_all,
 akaike_weights
