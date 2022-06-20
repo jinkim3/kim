@@ -83,7 +83,7 @@ akaike_weights <- function(
       row_number_for_example <- min(setdiff(
         seq_len(nrow(d1)), ref_model_row_number))
       mult_factor_for_example <- signif(
-        d1[["ref_model_is_x_times_better"]][[
+        d1[["mult_factor"]][[
           row_number_for_example]], 2)
       percent_to_prefer_for_example <- 100 * signif(
         d1[["evidence_ratio"]][[row_number_for_example]], 2)
