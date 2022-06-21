@@ -410,22 +410,42 @@ floodlight_2_by_continuous <- function(
   # if sig area is inside
   if (sig_inside_vs_outside == "inside") {
     # nonsig area on the left
-    g1 <- g1 + ggplot2::annotate(
-      "rect", xmin = -Inf, xmax = jn_points[["Lower"]],
-      ymin = -Inf, ymax = Inf,
-      alpha = nonsig_region_alpha, fill = nonsig_region_color)
+    if (jn_points_inside_only == TRUE &
+        jn_points[["Lower"]] < mod_min_observed) {
+    } else {
+      g1 <- g1 + ggplot2::annotate(
+        "rect", xmin = -Inf, xmax = jn_points[["Lower"]],
+        ymin = -Inf, ymax = Inf,
+        alpha = nonsig_region_alpha, fill = nonsig_region_color)
+    }
     # sig area in the middle
-    g1 <- g1 + ggplot2::annotate(
-      "rect",
-      xmin = jn_points[["Lower"]],
-      xmax = jn_points[["Higher"]],
-      ymin = -Inf, ymax = Inf,
-      alpha = sig_region_alpha, fill = sig_region_color)
+    if (jn_points_inside_only == TRUE &
+        jn_points[["Lower"]] < mod_min_observed &
+        jn_points[["Higher"]] > mod_max_observed) {
+      g1 <- g1 + ggplot2::annotate(
+        "rect",
+        xmin = mod_min_observed,
+        xmax = mod_max_observed,
+        ymin = -Inf, ymax = Inf,
+        alpha = sig_region_alpha, fill = sig_region_color)
+    } else {
+      # sig area in the middle
+      g1 <- g1 + ggplot2::annotate(
+        "rect",
+        xmin = jn_points[["Lower"]],
+        xmax = jn_points[["Higher"]],
+        ymin = -Inf, ymax = Inf,
+        alpha = sig_region_alpha, fill = sig_region_color)
+    }
     # nonsig area on the right
-    g1 <- g1 + ggplot2::annotate(
-      "rect", xmin = jn_points[["Higher"]], xmax = Inf,
-      ymin = -Inf, ymax = Inf,
-      alpha = nonsig_region_alpha, fill = nonsig_region_color)
+    if (jn_points_inside_only == TRUE &
+        jn_points[["Higher"]] > mod_max_observed) {
+    } else {
+      g1 <- g1 + ggplot2::annotate(
+        "rect", xmin = jn_points[["Higher"]], xmax = Inf,
+        ymin = -Inf, ymax = Inf,
+        alpha = nonsig_region_alpha, fill = nonsig_region_color)
+    }
   }
   # x axis title
   if (is.null(x_axis_title)) {
