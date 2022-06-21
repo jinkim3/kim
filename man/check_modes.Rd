@@ -4,13 +4,7 @@
 \alias{check_modes}
 \title{Check modes of objects}
 \usage{
-check_modes(
-  ...,
-  mode_to_confirm = NULL,
-  print_ok_msg = TRUE,
-  print_dt = TRUE,
-  output_type = "logical"
-)
+check_modes(..., mode_to_confirm = NULL)
 }
 \arguments{
 \item{...}{R objects.}

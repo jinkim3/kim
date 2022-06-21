@@ -13,10 +13,7 @@
 #' @export
 check_modes <- function(
     ...,
-    mode_to_confirm = NULL,
-    print_ok_msg = TRUE,
-    print_dt = TRUE,
-    output_type = "logical") {
+    mode_to_confirm = NULL) {
   # check the key input
   if (is.null(mode_to_confirm)) {
     stop(paste0(
