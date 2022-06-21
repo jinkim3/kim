@@ -15,7 +15,7 @@ floodlight_2_by_continuous(
   output = "reg_lines_plot",
   jitter_x_percent = 0,
   jitter_y_percent = 0,
-  jn_points_inside_only = FALSE,
+  jn_points_inside_only = TRUE,
   dot_alpha = 0.5,
   dot_size = 4,
   interaction_p_value_font_size = 6,
