@@ -22,7 +22,7 @@
 #' independent variable ordered using R's base function \code{sort}.
 #' @param output type of output (default = "reg_lines_plot").
 #' Possible inputs: "interactions_pkg_results", "simple_effects_plot",
-#' "reg_lines_plot"
+#' "jn_points", "reg_lines_plot"
 #' @param jitter_x_percent horizontally jitter dots by a percentage of the
 #' range of x values
 #' @param jitter_y_percent vertically jitter dots by a percentage of the
@@ -94,36 +94,36 @@
 #' @export
 #' @import data.table
 floodlight_2_by_continuous <- function(
-  data = NULL,
-  iv_name = NULL,
-  dv_name = NULL,
-  mod_name = NULL,
-  covariate_name = NULL,
-  interaction_p_include = TRUE,
-  iv_level_order = NULL,
-  output = "reg_lines_plot",
-  jitter_x_percent = 0,
-  jitter_y_percent = 0,
-  jn_points_inside_only = TRUE,
-  dot_alpha = 0.5,
-  dot_size = 4,
-  interaction_p_value_font_size = 6,
-  jn_point_font_size = 6,
-  jn_point_label_hjust = NULL,
-  plot_margin = ggplot2::unit(c(60, 7, 7, 7), "pt"),
-  legend_position = "right",
-  reg_line_types = c("solid", "dashed"),
-  jn_line_types = c("solid", "solid"),
-  sig_region_color = "green",
-  sig_region_alpha = 0.08,
-  nonsig_region_color = "gray",
-  nonsig_region_alpha = 0.08,
-  x_axis_title = NULL,
-  y_axis_title = NULL,
-  legend_title = NULL,
-  round_decimals_int_p_value = 3,
-  line_of_fit_size = 1,
-  round_jn_point_labels = 2
+    data = NULL,
+    iv_name = NULL,
+    dv_name = NULL,
+    mod_name = NULL,
+    covariate_name = NULL,
+    interaction_p_include = TRUE,
+    iv_level_order = NULL,
+    output = "reg_lines_plot",
+    jitter_x_percent = 0,
+    jitter_y_percent = 0,
+    jn_points_inside_only = TRUE,
+    dot_alpha = 0.5,
+    dot_size = 4,
+    interaction_p_value_font_size = 6,
+    jn_point_font_size = 6,
+    jn_point_label_hjust = NULL,
+    plot_margin = ggplot2::unit(c(60, 7, 7, 7), "pt"),
+    legend_position = "right",
+    reg_line_types = c("solid", "dashed"),
+    jn_line_types = c("solid", "solid"),
+    sig_region_color = "green",
+    sig_region_alpha = 0.08,
+    nonsig_region_color = "gray",
+    nonsig_region_alpha = 0.08,
+    x_axis_title = NULL,
+    y_axis_title = NULL,
+    legend_title = NULL,
+    round_decimals_int_p_value = 3,
+    line_of_fit_size = 1,
+    round_jn_point_labels = 2
 ) {
   # installed packages
   installed_pkgs <- rownames(utils::installed.packages())
@@ -228,12 +228,21 @@ floodlight_2_by_continuous <- function(
   } else {
     lm_formula <- dv ~ iv_binary * mod
   }
-  # jn points
+  # find jn points
   johnson_neyman_result <- jn_fn_from_interactions(
     stats::lm(formula = lm_formula, data = dt),
     pred = iv_binary,
     modx = mod)
+  # return the results from the interactions package
+  if (output == "interactions_pkg_results") {
+    return(johnson_neyman_result)
+  }
+  # get jn points
   jn_points <- johnson_neyman_result[["bounds"]]
+  # return jn points
+  if (output == "jn_points") {
+    return(jn_points)
+  }
   # plot simple effects at values of moderator
   if (output == "simple_effects_plot") {
     g1 <- johnson_neyman_result[["plot"]]
@@ -250,9 +259,10 @@ floodlight_2_by_continuous <- function(
   # plot
   g1 <- ggplot2::ggplot(
     data = dt,
-    ggplot2::aes(x = mod, y = dv,
-                 color = iv_factor,
-                 linetype = iv_factor))
+    ggplot2::aes(
+      x = mod, y = dv,
+      color = iv_factor,
+      linetype = iv_factor))
   # plot points but make them transparent if covariates are used
   if (!is.null(covariate_name)) {
     dot_alpha <- 0
@@ -345,41 +355,75 @@ floodlight_2_by_continuous <- function(
     attributes(johnson_neyman_result)$inside, "inside", "outside")
   # if sig area is outside
   if (sig_inside_vs_outside == "outside") {
-    # sig area on the left
-    g1 <- g1 + ggplot2::annotate(
-      "rect", xmin = -Inf, xmax = jn_line_pos[["Lower"]],
-      ymin = -Inf, ymax = Inf,
-      alpha = sig_region_alpha, fill = sig_region_color)
+    # shade if jn points are outside the range of mod
+    if (jn_points_inside_only == TRUE &
+        jn_points[["Lower"]] >= mod_max_observed) {
+      # sig area on the left
+      g1 <- g1 + ggplot2::annotate(
+        "rect", xmin = -Inf, xmax = mod_max_observed,
+        ymin = -Inf, ymax = Inf,
+        alpha = sig_region_alpha, fill = sig_region_color)
+    } else {
+      if (jn_points_inside_only == TRUE &
+          jn_points[["Higher"]] <= mod_min_observed) {
+      } else {
+        # sig area on the left
+        g1 <- g1 + ggplot2::annotate(
+          "rect", xmin = -Inf, xmax = jn_points[["Lower"]],
+          ymin = -Inf, ymax = Inf,
+          alpha = sig_region_alpha, fill = sig_region_color)
+      }
+    }
     # nonsig area in the middle
-    g1 <- g1 + ggplot2::annotate(
-      "rect",
-      xmin = jn_line_pos[["Lower"]],
-      xmax = jn_line_pos[["Higher"]],
-      ymin = -Inf, ymax = Inf,
-      alpha = nonsig_region_alpha, fill = nonsig_region_color)
-    # sig area on the right
-    g1 <- g1 + ggplot2::annotate(
-      "rect", xmin = jn_line_pos[["Higher"]], xmax = Inf,
-      ymin = -Inf, ymax = Inf,
-      alpha = sig_region_alpha, fill = sig_region_color)
+    if ((jn_points_inside_only == TRUE &
+         jn_points[["Higher"]] <= mod_min_observed) | (
+           jn_points_inside_only == TRUE &
+           jn_points[["Lower"]] >= mod_max_observed)) {
+    } else {
+      g1 <- g1 + ggplot2::annotate(
+        "rect",
+        xmin = jn_points[["Lower"]],
+        xmax = jn_points[["Higher"]],
+        ymin = -Inf, ymax = Inf,
+        alpha = nonsig_region_alpha, fill = nonsig_region_color)
+    }
+    # shade if jn points are outside the range of mod
+    if (jn_points_inside_only == TRUE &
+        jn_points[["Higher"]] <= mod_min_observed) {
+      # sig area on the right
+      g1 <- g1 + ggplot2::annotate(
+        "rect", xmin = mod_min_observed, xmax = Inf,
+        ymin = -Inf, ymax = Inf,
+        alpha = sig_region_alpha, fill = sig_region_color)
+    } else {
+      if (jn_points_inside_only == TRUE &
+          jn_points[["Lower"]] >= mod_max_observed) {
+      } else {
+        # sig area on the right
+        g1 <- g1 + ggplot2::annotate(
+          "rect", xmin = jn_points[["Higher"]], xmax = Inf,
+          ymin = -Inf, ymax = Inf,
+          alpha = sig_region_alpha, fill = sig_region_color)
+      }
+    }
   }
   # if sig area is inside
   if (sig_inside_vs_outside == "inside") {
     # nonsig area on the left
     g1 <- g1 + ggplot2::annotate(
-      "rect", xmin = -Inf, xmax = jn_line_pos[["Lower"]],
+      "rect", xmin = -Inf, xmax = jn_points[["Lower"]],
       ymin = -Inf, ymax = Inf,
       alpha = nonsig_region_alpha, fill = nonsig_region_color)
     # sig area in the middle
     g1 <- g1 + ggplot2::annotate(
       "rect",
-      xmin = jn_line_pos[["Lower"]],
-      xmax = jn_line_pos[["Higher"]],
+      xmin = jn_points[["Lower"]],
+      xmax = jn_points[["Higher"]],
       ymin = -Inf, ymax = Inf,
       alpha = sig_region_alpha, fill = sig_region_color)
     # nonsig area on the right
     g1 <- g1 + ggplot2::annotate(
-      "rect", xmin = jn_line_pos[["Higher"]], xmax = Inf,
+      "rect", xmin = jn_points[["Higher"]], xmax = Inf,
       ymin = -Inf, ymax = Inf,
       alpha = nonsig_region_alpha, fill = nonsig_region_color)
   }
