@@ -21,10 +21,14 @@
 #' variable for legend. By default, it will be set as levels of the
 #' independent variable ordered using R's base function \code{sort}.
 #' @param output type of output (default = "reg_lines_plot").
+#' Possible inputs: "interactions_pkg_results", "simple_effects_plot",
+#' "reg_lines_plot"
 #' @param jitter_x_percent horizontally jitter dots by a percentage of the
 #' range of x values
 #' @param jitter_y_percent vertically jitter dots by a percentage of the
-#' range of y values#'
+#' range of y values
+#' @param jn_points_inside_only logical. Should Johnson-Neyman points
+#' outside the range of moderator variable be disregarded? (default = TRUE)
 #' @param dot_alpha opacity of the dots (0 = completely transparent,
 #' 1 = completely opaque). By default, \code{dot_alpha = 0.5}
 #' @param dot_size size of the dots (default = 4)
@@ -100,6 +104,7 @@ floodlight_2_by_continuous <- function(
   output = "reg_lines_plot",
   jitter_x_percent = 0,
   jitter_y_percent = 0,
+  jn_points_inside_only = FALSE,
   dot_alpha = 0.5,
   dot_size = 4,
   interaction_p_value_font_size = 6,
@@ -293,11 +298,15 @@ floodlight_2_by_continuous <- function(
   jn_line_pos <- jn_points
   mod_min_observed <- min(dt[, mod])
   mod_max_observed <- max(dt[, mod])
-  if (jn_line_pos[["Lower"]] < mod_min_observed) {
-    jn_line_pos[["Lower"]] <- -Inf
-  }
-  if (jn_line_pos[["Higher"]] > mod_max_observed) {
-    jn_line_pos[["Higher"]] <- Inf
+  if (jn_points_inside_only == TRUE) {
+    if (jn_line_pos[["Lower"]] < mod_min_observed |
+        jn_line_pos[["Lower"]] > mod_max_observed) {
+      jn_line_pos[["Lower"]] <- -Inf
+    }
+    if (jn_line_pos[["Higher"]] < mod_min_observed |
+        jn_line_pos[["Higher"]] > mod_max_observed) {
+      jn_line_pos[["Higher"]] <- Inf
+    }
   }
   # apply the theme beforehand
   g1 <- g1 + kim::theme_kim(legend_position = legend_position)
@@ -310,7 +319,7 @@ floodlight_2_by_continuous <- function(
     jn_line_types <- rep(jn_line_types, sum(is.finite(jn_line_pos)))
   }
   # add a vertical line and label for each jn point
-  for(i in which(is.finite(jn_line_pos))) {
+  for (i in which(is.finite(jn_line_pos))) {
     # i <- 2
     # vertical line
     g1 <- g1 + ggplot2::geom_vline(

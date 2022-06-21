@@ -1,10 +1,11 @@
-# kim 0.5.33
+# kim 0.5.34
 * Highlights:
 * Added the following function(s): loglinear_analysis, identical_all,
 akaike_weights
 * Updated the following function(s) (and other functions that use them): 
 forest_plot, t_test_pairwise, compare_groups, regex_match,
-install_all_dependencies, compare_datasets, read_csv
+install_all_dependencies, compare_datasets, read_csv,
+floodlight_2_by_continuous
 * Fixed bugs or errors in the following functions (and other functions
 that use them): repeated_measures_anova, mann_whitney,
 compare_datasets, compare_groups

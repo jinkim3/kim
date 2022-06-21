@@ -15,6 +15,7 @@ floodlight_2_by_continuous(
   output = "reg_lines_plot",
   jitter_x_percent = 0,
   jitter_y_percent = 0,
+  jn_points_inside_only = FALSE,
   dot_alpha = 0.5,
   dot_size = 4,
   interaction_p_value_font_size = 6,
@@ -54,13 +55,18 @@ p-value for the interaction term?}
 variable for legend. By default, it will be set as levels of the
 independent variable ordered using R's base function \code{sort}.}
 
-\item{output}{type of output (default = "reg_lines_plot").}
+\item{output}{type of output (default = "reg_lines_plot").
+Possible inputs: "interactions_pkg_results", "simple_effects_plot",
+"reg_lines_plot"}
 
 \item{jitter_x_percent}{horizontally jitter dots by a percentage of the
 range of x values}
 
 \item{jitter_y_percent}{vertically jitter dots by a percentage of the
-range of y values#'}
+range of y values}
+
+\item{jn_points_inside_only}{logical. Should Johnson-Neyman points
+outside the range of moderator variable be disregarded? (default = TRUE)}
 
 \item{dot_alpha}{opacity of the dots (0 = completely transparent,
 1 = completely opaque). By default, \code{dot_alpha = 0.5}}
