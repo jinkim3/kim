@@ -2,8 +2,8 @@
 #'
 #' This function should be applied to cases where the two ranges are
 #' inclusive of both endpoints. For example, the function can work for
-#' a pair of ranges like [0, 1] and [3, 4] but not for pairs like
-#' [0, 1) and (3, 5)
+#' a pair of ranges like \[0, 1\] and \[3, 4\] but not for pairs like
+#' \[0, 1\) and \(3, 5\)
 #'
 #' @param interval_1_begin a number at which the first interval begins
 #' (the left INCLUSIVE endpoint of interval 1)

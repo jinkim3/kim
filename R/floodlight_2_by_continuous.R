@@ -6,7 +6,7 @@
 #' Package 'interactions' v1.1.1 (or possibly a higher version) by
 #' Jacob A. Long (2020),
 #' <https://cran.r-project.org/package=interactions>
-#' See the following references
+#' See the following references:
 #' Spiller et al. (2013) doi:10.1509/jmr.12.0420.
 #' Kim (2021) \doi{10.5281/zenodo.4445388}
 #'
@@ -27,8 +27,6 @@
 #' range of x values
 #' @param jitter_y_percent vertically jitter dots by a percentage of the
 #' range of y values
-#' @param jn_points_inside_only logical. Should Johnson-Neyman points
-#' outside the range of moderator variable be disregarded? (default = TRUE)
 #' @param dot_alpha opacity of the dots (0 = completely transparent,
 #' 1 = completely opaque). By default, \code{dot_alpha = 0.5}
 #' @param dot_size size of the dots (default = 4)
@@ -167,9 +165,15 @@ floodlight_2_by_continuous <- function(
   dv <- iv <- iv_binary <- iv_factor <- mod <- NULL
   # convert to data.table
   dt <- data.table::setDT(data.table::copy(data))
+  # columns to remove
+  cols_to_remove <- setdiff(names(dt), c(
+    iv_name, dv_name, mod_name, covariate_name))
+  # remove columns not needed for analysis
+  if (length(cols_to_remove) > 0) {
+    dt[, (cols_to_remove) := NULL]
+  }
   # remove rows with na
-  dt <- stats::na.omit(dt[, setdiff(names(dt), c(
-    iv_name, dv_name, mod_name, covariate_name)) := NULL])
+  dt <- stats::na.omit(dt)
   # order and rename columns
   data.table::setcolorder(dt, c(
     iv_name, dv_name, mod_name, covariate_name))
@@ -243,6 +247,37 @@ floodlight_2_by_continuous <- function(
   if (output == "jn_points") {
     return(jn_points)
   }
+  # if there are more than 2 jn points, throw an error
+  if (length(jn_points) > 2) {
+    message(paste0(
+      "An internal computation suggests that there are more than\n",
+      "two Johnson-Neyman points. Whether or not this is theoretically\n",
+      "possible, the current version of the function cannot proceed\n",
+      "with more than two Johnson-Neyman points."))
+    return()
+  }
+  # is the significant region inside or outside
+  sig_inside_vs_outside <- ifelse(
+    attributes(johnson_neyman_result)$inside, "inside", "outside")
+  # min and max of observed mod
+  mod_min_observed <- min(dt[, mod])
+  mod_max_observed <- max(dt[, mod])
+  # find the overlapping regions
+  if (sig_inside_vs_outside == "inside") {
+    sig_region <- list(overlapping_interval(
+      mod_min_observed, mod_max_observed,
+      jn_points[["Lower"]], jn_points[["Higher"]]))
+  } else if (sig_inside_vs_outside == "outside") {
+    sig_region <- list(
+      overlapping_interval(
+        mod_min_observed, mod_max_observed,
+        -Inf, jn_points[["Lower"]]),
+      overlapping_interval(
+        mod_min_observed, mod_max_observed,
+        jn_points[["Higher"]], Inf))
+  }
+  # shade the following regions
+  sig_region <- Filter(Negate(is.null), sig_region)
   # plot simple effects at values of moderator
   if (output == "simple_effects_plot") {
     g1 <- johnson_neyman_result[["plot"]]
@@ -304,20 +339,6 @@ floodlight_2_by_continuous <- function(
       color = "black",
       size = interaction_p_value_font_size)
   }
-  # positions of the lines marking johnson neyman points
-  jn_line_pos <- jn_points
-  mod_min_observed <- min(dt[, mod])
-  mod_max_observed <- max(dt[, mod])
-  if (jn_points_inside_only == TRUE) {
-    if (jn_line_pos[["Lower"]] < mod_min_observed |
-        jn_line_pos[["Lower"]] > mod_max_observed) {
-      jn_line_pos[["Lower"]] <- -Inf
-    }
-    if (jn_line_pos[["Higher"]] < mod_min_observed |
-        jn_line_pos[["Higher"]] > mod_max_observed) {
-      jn_line_pos[["Higher"]] <- Inf
-    }
-  }
   # apply the theme beforehand
   g1 <- g1 + kim::theme_kim(legend_position = legend_position)
   # allow labeling outside the plot area
@@ -329,122 +350,35 @@ floodlight_2_by_continuous <- function(
     jn_line_types <- rep(jn_line_types, sum(is.finite(jn_line_pos)))
   }
   # add a vertical line and label for each jn point
-  for (i in which(is.finite(jn_line_pos))) {
-    # i <- 2
-    # vertical line
-    g1 <- g1 + ggplot2::geom_vline(
-      xintercept = jn_line_pos[i],
-      linetype = jn_line_types[i],
-      size = 1)
-    # label jn points
-    if (is.null(jn_point_label_hjust)) {
-      jn_point_label_hjust <- rep(0.5, length(jn_line_pos))
-    }
-    g1 <- g1 + ggplot2::annotate(
-      geom = "text",
-      x = jn_line_pos[i],
-      y = Inf,
-      label = round(jn_line_pos[i], round_jn_point_labels),
-      hjust = jn_point_label_hjust[i], vjust = -0.5,
-      fontface = "bold",
-      color = "black",
-      size = jn_point_font_size)
-  }
-  # shade
-  sig_inside_vs_outside <- ifelse(
-    attributes(johnson_neyman_result)$inside, "inside", "outside")
-  # if sig area is outside
-  if (sig_inside_vs_outside == "outside") {
-    # shade if jn points are outside the range of mod
-    if (jn_points_inside_only == TRUE &
-        jn_points[["Lower"]] >= mod_max_observed) {
-      # sig area on the left
+  if (length(sig_region) > 0) {
+    for (i in seq_along(sig_region)) {
+      # range of the sig region
+      temp_range <- sig_region[[i]]
+      # shade the sig region
       g1 <- g1 + ggplot2::annotate(
-        "rect", xmin = -Inf, xmax = mod_max_observed,
+        "rect", xmin = temp_range[1], xmax = temp_range[2],
         ymin = -Inf, ymax = Inf,
         alpha = sig_region_alpha, fill = sig_region_color)
-    } else {
-      if (jn_points_inside_only == TRUE &
-          jn_points[["Higher"]] <= mod_min_observed) {
-      } else {
-        # sig area on the left
+      for (j in seq_along(temp_range)) {
+        # vertical line
+        g1 <- g1 + ggplot2::geom_vline(
+          xintercept = temp_range[j],
+          linetype = jn_line_types[j],
+          size = 1)
+        # label jn points
+        if (is.null(jn_point_label_hjust)) {
+          jn_point_label_hjust <- rep(0.5, length(temp_range))
+        }
         g1 <- g1 + ggplot2::annotate(
-          "rect", xmin = -Inf, xmax = jn_points[["Lower"]],
-          ymin = -Inf, ymax = Inf,
-          alpha = sig_region_alpha, fill = sig_region_color)
+          geom = "text",
+          x = temp_range[j],
+          y = Inf,
+          label = round(temp_range[j], round_jn_point_labels),
+          hjust = jn_point_label_hjust[i], vjust = -0.5,
+          fontface = "bold",
+          color = "black",
+          size = jn_point_font_size)
       }
-    }
-    # nonsig area in the middle
-    if ((jn_points_inside_only == TRUE &
-         jn_points[["Higher"]] <= mod_min_observed) | (
-           jn_points_inside_only == TRUE &
-           jn_points[["Lower"]] >= mod_max_observed)) {
-    } else {
-      g1 <- g1 + ggplot2::annotate(
-        "rect",
-        xmin = jn_points[["Lower"]],
-        xmax = jn_points[["Higher"]],
-        ymin = -Inf, ymax = Inf,
-        alpha = nonsig_region_alpha, fill = nonsig_region_color)
-    }
-    # shade if jn points are outside the range of mod
-    if (jn_points_inside_only == TRUE &
-        jn_points[["Higher"]] <= mod_min_observed) {
-      # sig area on the right
-      g1 <- g1 + ggplot2::annotate(
-        "rect", xmin = mod_min_observed, xmax = Inf,
-        ymin = -Inf, ymax = Inf,
-        alpha = sig_region_alpha, fill = sig_region_color)
-    } else {
-      if (jn_points_inside_only == TRUE &
-          jn_points[["Lower"]] >= mod_max_observed) {
-      } else {
-        # sig area on the right
-        g1 <- g1 + ggplot2::annotate(
-          "rect", xmin = jn_points[["Higher"]], xmax = Inf,
-          ymin = -Inf, ymax = Inf,
-          alpha = sig_region_alpha, fill = sig_region_color)
-      }
-    }
-  }
-  # if sig area is inside
-  if (sig_inside_vs_outside == "inside") {
-    # nonsig area on the left
-    if (jn_points_inside_only == TRUE &
-        jn_points[["Lower"]] < mod_min_observed) {
-    } else {
-      g1 <- g1 + ggplot2::annotate(
-        "rect", xmin = -Inf, xmax = jn_points[["Lower"]],
-        ymin = -Inf, ymax = Inf,
-        alpha = nonsig_region_alpha, fill = nonsig_region_color)
-    }
-    # sig area in the middle
-    if (jn_points_inside_only == TRUE &
-        jn_points[["Lower"]] < mod_min_observed &
-        jn_points[["Higher"]] > mod_max_observed) {
-      g1 <- g1 + ggplot2::annotate(
-        "rect",
-        xmin = mod_min_observed,
-        xmax = mod_max_observed,
-        ymin = -Inf, ymax = Inf,
-        alpha = sig_region_alpha, fill = sig_region_color)
-    } else {
-      # sig area in the middle
-      g1 <- g1 + ggplot2::annotate(
-        "rect",
-        xmin = jn_points[["Lower"]],
-        xmax = jn_points[["Higher"]],
-        ymin = -Inf, ymax = Inf,
-        alpha = sig_region_alpha, fill = sig_region_color)
-    }
-    # nonsig area on the right
-    if (jn_points_inside_only == TRUE &
-        jn_points[["Higher"]] > mod_max_observed) {
-    } else {
-      g1 <- g1 + ggplot2::annotate(
-        "rect", xmin = jn_points[["Higher"]], xmax = Inf,
-        ymin = -Inf, ymax = Inf,
-        alpha = nonsig_region_alpha, fill = nonsig_region_color)
     }
   }
   # x axis title

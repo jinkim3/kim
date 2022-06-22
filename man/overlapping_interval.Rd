@@ -31,8 +31,8 @@ region or a vector of the endpoints of the overlapping interval.
 \description{
 This function should be applied to cases where the two ranges are
 inclusive of both endpoints. For example, the function can work for
-a pair of ranges like \link{0, 1} and \link{3, 4} but not for pairs like
-[0, 1) and (3, 5)
+a pair of ranges like [0, 1] and [3, 4] but not for pairs like
+[0, 1\) and \(3, 5\)
 }
 \examples{
 overlapping_interval(1, 3, 2, 4)

@@ -65,9 +65,6 @@ range of x values}
 \item{jitter_y_percent}{vertically jitter dots by a percentage of the
 range of y values}
 
-\item{jn_points_inside_only}{logical. Should Johnson-Neyman points
-outside the range of moderator variable be disregarded? (default = TRUE)}
-
 \item{dot_alpha}{opacity of the dots (0 = completely transparent,
 1 = completely opaque). By default, \code{dot_alpha = 0.5}}
 
@@ -142,7 +139,7 @@ The following package(s) must be installed prior to running this function:
 Package 'interactions' v1.1.1 (or possibly a higher version) by
 Jacob A. Long (2020),
 \url{https://cran.r-project.org/package=interactions}
-See the following references
+See the following references:
 Spiller et al. (2013) doi:10.1509/jmr.12.0420.
 Kim (2021) \doi{10.5281/zenodo.4445388}
 }

@@ -1,4 +1,4 @@
-# kim 0.5.42
+# kim 0.5.43
 * Highlights:
 * Added the following function(s): loglinear_analysis, identical_all,
 akaike_weights, modes_of_objects, check_modes, overlapping_interval
