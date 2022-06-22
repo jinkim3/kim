@@ -4,7 +4,7 @@
 \alias{modes_of_objects}
 \title{Find modes of objects}
 \usage{
-modes_of_objects(..., mode_to_confirm = NULL)
+modes_of_objects(...)
 }
 \arguments{
 \item{...}{R objects.}

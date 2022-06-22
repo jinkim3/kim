@@ -6,7 +6,7 @@
 #' check_modes(a, mode_to_confirm = "numeric")}, the function will check
 #' whether the object `a` is numeric.
 #' @examples
-#' check_modes(T, mode_to_confirm = "logical")
+#' check_modes(1L, mode_to_confirm = "numeric")
 #' check_modes(
 #' TRUE, FALSE, 1L, 1:3, 1.1, c(1.2, 1.3), "abc", 1 + 2i, intToBits(1L),
 #' mode_to_confirm = "numeric")

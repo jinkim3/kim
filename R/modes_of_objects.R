@@ -6,7 +6,7 @@
 #' modes_of_objects(
 #' TRUE, FALSE, 1L, 1:3, 1.1, c(1.2, 1.3), "abc", 1 + 2i, intToBits(1L))
 #' @export
-modes_of_objects <- function(..., mode_to_confirm = NULL) {
+modes_of_objects <- function(...) {
   # list of objects ----
   inputs <- list(...)
   modes <- unlist(lapply(inputs, mode), recursive = FALSE)
