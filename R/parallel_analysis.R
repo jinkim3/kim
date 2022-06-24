@@ -55,6 +55,13 @@ parallel_analysis <- function(
     # proceed if Package 'paran' is already installed
     parallel_analysis_function <- utils::getFromNamespace("paran", "paran")
   }
+  # check inputs
+  if (is.null(data)) {
+    stop("Please enter an input for the `data` argument")
+  }
+  if (is.null(names_of_vars)) {
+    stop("Please enter an input for the `names_of_vars` argument")
+  }
   # bind the vars locally to the function
   eigenvalue <- eigenvalue_type <- NULL
   # convert to data table and omit na
