@@ -16,7 +16,9 @@
 #' By default, \code{timestamp} will be set as TRUE, if no input
 #' is given for the \code{name} argument, and as FALSE, if an input
 #' is given for the \code{name} argument.
-#' @param file_name_extension file name extension (default = ".png")
+#' @param file_name_extension file name extension (default = "png").
+#' If \code{file_name_extension = "svg"}, Package svglite needs to
+#' be installed.
 #' @param width width of the plot to be saved. This argument will be
 #' directly entered as the \code{width} argument for the \code{ggsave}
 #' function within \code{ggplot2} package (default = 16)
@@ -33,7 +35,7 @@
 ggsave_quick <- function(
   name = NULL,
   timestamp = NULL,
-  file_name_extension = ".png",
+  file_name_extension = "png",
   width = 16,
   height = 9) {
   # check if Package 'ggplot2' is installed
@@ -46,6 +48,28 @@ ggsave_quick <- function(
       "for all\nfunctions in Package 'kim', type ",
       "'kim::install_all_dependencies()'"))
     return()
+  }
+  if (file_name_extension == "svg") {
+    if (!"svglite" %in% rownames(utils::installed.packages())) {
+      message(paste0(
+        'Setting the argument file_name_extension = "svg" requires\n',
+        "the installation of Package 'svglite'.",
+        "\nTo install Package 'svglite', type ",
+        "'kim::prep(svglite)'",
+        "\n\nAlternatively, to install all packages (dependencies) required ",
+        "for all\nfunctions in Package 'kim', type ",
+        "'kim::install_all_dependencies()'"))
+      return()
+    }
+  }
+
+  # check default values
+  if (file_name_extension %in% c("png", "svg") == FALSE) {
+    stop(paste0(
+      "The current version of the function accepts only the following\n",
+      "inputs for the `file_name_extension` argument: ",
+      paste0(c("png", "svg"), collapse = ", "),
+      "."))
   }
   # set default values
   if (is.null(name) & is.null(timestamp)) {
@@ -62,7 +86,8 @@ ggsave_quick <- function(
     ts <- ""
   }
   # set file name
-  file_name <- paste0(name, ts, file_name_extension)
+  file_name <- paste0(name, ts, ".", file_name_extension)
   # save
-  ggplot2::ggsave(filename = file_name, width = width, height = height)
+  ggplot2::ggsave(
+    filename = file_name, width = width, height = height)
 }

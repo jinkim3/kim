@@ -14,8 +14,8 @@ install_all_dependencies <- function() {
   pkgs <- c(
     "boot", "car", "data.table", "effsize", "ggplot2",
     "ggridges", "gridExtra", "interactions", "lemon", "lm.beta",
-    "mediation", "moments", "paran", "psych", "remotes", "weights",
-    "WRS2", "MASS")
+    "mediation", "moments", "paran", "psych", "remotes", "svglite",
+    "weights", "WRS2", "MASS")
   # prep the packages
   kim::prep(pkgs, pkg_names_as_object = TRUE)
 }
