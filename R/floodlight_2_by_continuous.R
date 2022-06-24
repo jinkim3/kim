@@ -102,7 +102,6 @@ floodlight_2_by_continuous <- function(
     output = "reg_lines_plot",
     jitter_x_percent = 0,
     jitter_y_percent = 0,
-    jn_points_inside_only = TRUE,
     dot_alpha = 0.5,
     dot_size = 4,
     interaction_p_value_font_size = 6,
@@ -347,7 +346,7 @@ floodlight_2_by_continuous <- function(
     plot.margin = plot_margin)
   # if only one type is entered for jn line
   if (length(jn_line_types) == 1) {
-    jn_line_types <- rep(jn_line_types, sum(is.finite(jn_line_pos)))
+    jn_line_types <- rep(jn_line_types, length(unlist(sig_region)))
   }
   # add a vertical line and label for each jn point
   if (length(sig_region) > 0) {
