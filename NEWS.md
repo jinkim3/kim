@@ -1,4 +1,4 @@
-# kim 0.5.48
+# kim 0.5.49
 * Highlights:
 * Added the following function(s): loglinear_analysis, identical_all,
 akaike_weights, modes_of_objects, check_modes, overlapping_interval
@@ -6,7 +6,7 @@ akaike_weights, modes_of_objects, check_modes, overlapping_interval
 forest_plot, t_test_pairwise, compare_groups, regex_match,
 install_all_dependencies, compare_datasets, read_csv,
 floodlight_2_by_continuous, parallel_analysis, ggsave_quick,
-akaike_weights
+akaike_weights, scatterplot
 * Fixed bugs or errors in the following functions (and other functions
 that use them): repeated_measures_anova, mann_whitney,
 compare_datasets, compare_groups

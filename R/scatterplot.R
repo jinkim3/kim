@@ -40,6 +40,7 @@
 #' @param ci_for_line_of_fit if \code{ci_for_line_of_fit = TRUE},
 #' confidence interval for the line of fit will be shaded
 #' @param line_of_fit_color color of the line of fit (default = "blue")
+#' @param line_of_fit_thickness thickness of the line of fit (default = 1)
 #' @param dot_color color of the dots (default = "black")
 #' @param x_axis_label alternative label for the x axis
 #' @param y_axis_label alternative label for the y axis
@@ -89,6 +90,7 @@ scatterplot <- function(
   line_of_fit_type = "lm",
   ci_for_line_of_fit = FALSE,
   line_of_fit_color = "blue",
+  line_of_fit_thickness = 1,
   dot_color = "black",
   x_axis_label = NULL,
   y_axis_label = NULL,
@@ -228,12 +230,14 @@ scatterplot <- function(
         method = line_of_fit_type,
         mapping = ggplot2::aes(weight = dt02$weight),
         color = line_of_fit_color,
+        size = line_of_fit_thickness,
         se = ci_for_line_of_fit)
     } else {
       g1 <- g1 + ggplot2::geom_smooth(
         formula = y ~ x,
         method = line_of_fit_type,
         color = line_of_fit_color,
+        size = line_of_fit_thickness,
         se = ci_for_line_of_fit)
     }
   }
