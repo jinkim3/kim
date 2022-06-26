@@ -4,17 +4,10 @@
 \alias{akaike_weights}
 \title{Akaike Weights}
 \usage{
-akaike_weights(
-  aic_values = NULL,
-  ref_aic = NULL,
-  print_output_explanation = TRUE
-)
+akaike_weights(aic_values = NULL, print_output_explanation = TRUE)
 }
 \arguments{
 \item{aic_values}{a vector of AIC values}
-
-\item{ref_aic}{reference AIC value(s). This could be a single AIC value,
-or a vector of AIC values with the same length as \code{aic_values}.}
 
 \item{print_output_explanation}{logical. Should an explanation about
 how to read the output be printed? (default = TRUE).}
@@ -34,7 +27,4 @@ doi:10.3758/BF03206482
 \examples{
 # default reference AIC value is the minimum AIC value, e.g., 202 below.
 akaike_weights(c(204, 202, 206, 206, 214))
-akaike_weights(
-aic_values = c(204, 202, 206, 206, 214),
-ref_aic = 201:205)
 }

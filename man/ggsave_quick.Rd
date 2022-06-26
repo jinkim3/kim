@@ -6,8 +6,8 @@
 \usage{
 ggsave_quick(
   name = NULL,
-  timestamp = NULL,
   file_name_extension = "png",
+  timestamp = NULL,
   width = 16,
   height = 9
 )
@@ -19,6 +19,10 @@ the file name will begin with "ggplot".
 If the desired output file name is "myplot.png",
 enter \code{name = "myplot", timestamp = FALSE}}
 
+\item{file_name_extension}{file name extension (default = "png").
+If \code{file_name_extension = "svg"}, Package svglite needs to
+be installed.}
+
 \item{timestamp}{if \code{timestamp = TRUE}, a timestamp of the
 current time will be appended to the file name.
 The timestamp will be in the format, jan_01_2021_1300_10_000001,
@@ -28,10 +32,6 @@ indicate 10.000001 seconds after the hour.
 By default, \code{timestamp} will be set as TRUE, if no input
 is given for the \code{name} argument, and as FALSE, if an input
 is given for the \code{name} argument.}
-
-\item{file_name_extension}{file name extension (default = "png").
-If \code{file_name_extension = "svg"}, Package svglite needs to
-be installed.}
 
 \item{width}{width of the plot to be saved. This argument will be
 directly entered as the \code{width} argument for the \code{ggsave}
