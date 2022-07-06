@@ -9,6 +9,7 @@ spotlight_2_by_continuous(
   iv_name = NULL,
   dv_name = NULL,
   mod_name = NULL,
+  logistic = NULL,
   covariate_name = NULL,
   focal_values = NULL,
   interaction_p_include = TRUE,
@@ -80,6 +81,10 @@ spotlight_2_by_continuous(
 \item{dv_name}{name of the dependent variable (DV)}
 
 \item{mod_name}{name of the continuous moderator variable (MOD)}
+
+\item{logistic}{logical. Should logistic regressions be conducted,
+rather than ordinary least squares regressions? By default,
+ordinary least squares regressions will be conducted.}
 
 \item{covariate_name}{name(s) of the variable(s) to control for in
 estimating conditional values of the DV.}

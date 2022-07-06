@@ -7,6 +7,9 @@
 #' @param iv_name name of the binary independent variable (IV)
 #' @param dv_name name of the dependent variable (DV)
 #' @param mod_name name of the continuous moderator variable (MOD)
+#' @param logistic logical. Should logistic regressions be conducted,
+#' rather than ordinary least squares regressions? By default,
+#' ordinary least squares regressions will be conducted.
 #' @param covariate_name name(s) of the variable(s) to control for in
 #' estimating conditional values of the DV.
 #' @param focal_values focal values of the moderator variable at which
@@ -164,71 +167,72 @@
 #' }
 #' @export
 spotlight_2_by_continuous <- function(
-  data = NULL,
-  iv_name = NULL,
-  dv_name = NULL,
-  mod_name = NULL,
-  covariate_name = NULL,
-  focal_values = NULL,
-  interaction_p_include = TRUE,
-  iv_level_order = NULL,
-  output_type = "plot",
-  colors = c("red", "blue"),
-  dot_size = 3,
-  observed_dots = FALSE,
-  reg_lines = FALSE,
-  reg_line_size = 1,
-  lines_connecting_est_dv = TRUE,
-  lines_connecting_est_dv_size = 1,
-  estimated_dv_dot_shape = 15,
-  estimated_dv_dot_size = 6,
-  error_bar = "ci",
-  error_bar_range = 0.95,
-  error_bar_tip_width = NULL,
-  error_bar_tip_width_percent = 8,
-  error_bar_thickness = 1,
-  error_bar_offset = NULL,
-  error_bar_offset_percent = 8,
-  simp_eff_bracket_leg_ht = NULL,
-  simp_eff_bracket_leg_ht_perc = 2,
-  simp_eff_bracket_offset = NULL,
-  simp_eff_bracket_offset_perc = 1,
-  simp_eff_bracket_color = "black",
-  simp_eff_bracket_line_size = 1,
-  simp_eff_text_offset = NULL,
-  simp_eff_text_offset_percent = 7,
-  simp_eff_text_hjust = 0.5,
-  simp_eff_text_part_1 = "Simple Effect\n",
-  simp_eff_text_color = "black",
-  simp_eff_font_size = 5,
-  interaction_p_value_x = NULL,
-  interaction_p_value_y = NULL,
-  interaction_p_value_font_size = 6,
-  interaction_p_value_vjust = -1,
-  interaction_p_value_hjust = 0.5,
-  x_axis_breaks = NULL,
-  x_axis_limits = NULL,
-  x_axis_tick_mark_labels = NULL,
-  y_axis_breaks = NULL,
-  y_axis_limits = NULL,
-  x_axis_space_left_perc = 10,
-  x_axis_space_right_perc = 30,
-  y_axis_tick_mark_labels = NULL,
-  x_axis_title = NULL,
-  y_axis_title = NULL,
-  legend_title = NULL,
-  legend_position = "right",
-  y_axis_title_vjust = 0.85,
-  round_decimals_int_p_value = 3,
-  jitter_x_percent = 0,
-  jitter_y_percent = 0,
-  dot_alpha = 0.2,
-  reg_line_alpha = 0.5,
-  jn_point_font_size = 6,
-  reg_line_types = c("solid", "dashed"),
-  caption = NULL,
-  plot_margin = ggplot2::unit(c(60, 30, 7, 7), "pt"),
-  silent = FALSE
+    data = NULL,
+    iv_name = NULL,
+    dv_name = NULL,
+    mod_name = NULL,
+    logistic = NULL,
+    covariate_name = NULL,
+    focal_values = NULL,
+    interaction_p_include = TRUE,
+    iv_level_order = NULL,
+    output_type = "plot",
+    colors = c("red", "blue"),
+    dot_size = 3,
+    observed_dots = FALSE,
+    reg_lines = FALSE,
+    reg_line_size = 1,
+    lines_connecting_est_dv = TRUE,
+    lines_connecting_est_dv_size = 1,
+    estimated_dv_dot_shape = 15,
+    estimated_dv_dot_size = 6,
+    error_bar = "ci",
+    error_bar_range = 0.95,
+    error_bar_tip_width = NULL,
+    error_bar_tip_width_percent = 8,
+    error_bar_thickness = 1,
+    error_bar_offset = NULL,
+    error_bar_offset_percent = 8,
+    simp_eff_bracket_leg_ht = NULL,
+    simp_eff_bracket_leg_ht_perc = 2,
+    simp_eff_bracket_offset = NULL,
+    simp_eff_bracket_offset_perc = 1,
+    simp_eff_bracket_color = "black",
+    simp_eff_bracket_line_size = 1,
+    simp_eff_text_offset = NULL,
+    simp_eff_text_offset_percent = 7,
+    simp_eff_text_hjust = 0.5,
+    simp_eff_text_part_1 = "Simple Effect\n",
+    simp_eff_text_color = "black",
+    simp_eff_font_size = 5,
+    interaction_p_value_x = NULL,
+    interaction_p_value_y = NULL,
+    interaction_p_value_font_size = 6,
+    interaction_p_value_vjust = -1,
+    interaction_p_value_hjust = 0.5,
+    x_axis_breaks = NULL,
+    x_axis_limits = NULL,
+    x_axis_tick_mark_labels = NULL,
+    y_axis_breaks = NULL,
+    y_axis_limits = NULL,
+    x_axis_space_left_perc = 10,
+    x_axis_space_right_perc = 30,
+    y_axis_tick_mark_labels = NULL,
+    x_axis_title = NULL,
+    y_axis_title = NULL,
+    legend_title = NULL,
+    legend_position = "right",
+    y_axis_title_vjust = 0.85,
+    round_decimals_int_p_value = 3,
+    jitter_x_percent = 0,
+    jitter_y_percent = 0,
+    dot_alpha = 0.2,
+    reg_line_alpha = 0.5,
+    jn_point_font_size = 6,
+    reg_line_types = c("solid", "dashed"),
+    caption = NULL,
+    plot_margin = ggplot2::unit(c(60, 30, 7, 7), "pt"),
+    silent = FALSE
 ) {
   # installed packages
   installed_pkgs <- rownames(utils::installed.packages())
@@ -393,53 +397,184 @@ spotlight_2_by_continuous <- function(
           dt[[paste0("cov_", j)]], scale = FALSE))
     }
   }
-  # conduct spotlight regressions
-  spotlight_results <- lapply(seq_along(focal_values), function(i) {
-    # create a column for mod minus the focal value of the iteration
-    dt[, mod_minus_focal_value := mod - focal_values[i]]
-    # regression model with iv normal
-    lm_1 <- stats::lm(formula = lm_formula_1, dt)
-    # simple effect p value
-    simp_eff_p_value <- summary(lm_1)[[
-      "coefficients"]]["iv_binary", "Pr(>|t|)"]
-    # estimated dv when iv = 0
-    y1 <- summary(lm_1)[["coefficients"]]["(Intercept)", "Estimate"]
-    # error bar
-    if (error_bar == "ci") {
-      error_bar_range_y1 <- stats::confint(lm_1, level = error_bar_range)[
-        "(Intercept)", ]
-      names(error_bar_range_y1) <- c(
-        "y1_error_bar_begin", "y1_error_bar_end")
-    } else if (error_bar == "se") {
-      se_of_intercept <- summary(lm_1)[["coefficients"]][
-        "(Intercept)", "Std. Error"]
-      error_bar_range_y1 <- c(y1 - se_of_intercept, y1 + se_of_intercept)
-      names(error_bar_range_y1) <- c(
-        "y1_error_bar_begin", "y1_error_bar_end")
+  # check if dv is binary
+  if (is.null(logistic)) {
+    if (length(unique(dt[, dv])) == 2) {
+      message(paste0(
+        "The DV seems to be a binary variable. ",
+        "To conduct a logistic regressions,\nplease enter the ",
+        "following argument: logisitic = TRUE"))
+    } else {
+      logistic <- FALSE
     }
-    # regression model with iv flipped
-    lm_2 <- stats::lm(formula = lm_formula_2, dt)
-    # estimated dv when iv = 0
-    y2 <- summary(lm_2)[["coefficients"]]["(Intercept)", "Estimate"]
-    # error bar
-    if (error_bar == "ci") {
-      error_bar_range_y2 <- stats::confint(lm_2, level = error_bar_range)[
-        "(Intercept)", ]
-      names(error_bar_range_y2) <- c(
-        "y2_error_bar_begin", "y2_error_bar_end")
-    } else if (error_bar == "se") {
-      se_of_intercept <- summary(lm_2)[["coefficients"]][
-        "(Intercept)", "Std. Error"]
-      error_bar_range_y2 <- c(y1 - se_of_intercept, y1 + se_of_intercept)
-      names(error_bar_range_y2) <- c(
-        "y2_error_bar_begin", "y2_error_bar_end")
-    }
-    # output
-    output <- c(
-      y1 = y1, error_bar_range_y1, y2 = y2, error_bar_range_y2,
-      simp_eff_p_value = simp_eff_p_value)
-    return(output)
-  })
+  }
+  if (logistic == FALSE) {
+    # conduct spotlight regressions
+    spotlight_results <- lapply(seq_along(focal_values), function(i) {
+      # create a column for mod minus the focal value of the iteration
+      dt[, mod_minus_focal_value := mod - focal_values[i]]
+      # regression model with iv normal
+      lm_1 <- stats::lm(formula = lm_formula_1, dt)
+      # simple effect p value
+      simp_eff_p_value <- summary(lm_1)[[
+        "coefficients"]]["iv_binary", "Pr(>|t|)"]
+      # estimated dv when iv = 0
+      y1 <- summary(lm_1)[["coefficients"]]["(Intercept)", "Estimate"]
+      # error bar
+      if (error_bar == "ci") {
+        error_bar_range_y1 <- stats::confint(lm_1, level = error_bar_range)[
+          "(Intercept)", ]
+        names(error_bar_range_y1) <- c(
+          "y1_error_bar_begin", "y1_error_bar_end")
+      } else if (error_bar == "se") {
+        se_of_intercept <- summary(lm_1)[["coefficients"]][
+          "(Intercept)", "Std. Error"]
+        error_bar_range_y1 <- c(y1 - se_of_intercept, y1 + se_of_intercept)
+        names(error_bar_range_y1) <- c(
+          "y1_error_bar_begin", "y1_error_bar_end")
+      }
+      # regression model with iv flipped
+      lm_2 <- stats::lm(formula = lm_formula_2, dt)
+      # estimated dv when iv = 0
+      y2 <- summary(lm_2)[["coefficients"]]["(Intercept)", "Estimate"]
+      # error bar
+      if (error_bar == "ci") {
+        error_bar_range_y2 <- stats::confint(lm_2, level = error_bar_range)[
+          "(Intercept)", ]
+        names(error_bar_range_y2) <- c(
+          "y2_error_bar_begin", "y2_error_bar_end")
+      } else if (error_bar == "se") {
+        se_of_intercept <- summary(lm_2)[["coefficients"]][
+          "(Intercept)", "Std. Error"]
+        error_bar_range_y2 <- c(y1 - se_of_intercept, y1 + se_of_intercept)
+        names(error_bar_range_y2) <- c(
+          "y2_error_bar_begin", "y2_error_bar_end")
+      }
+      # output
+      output <- c(
+        y1 = y1, error_bar_range_y1, y2 = y2, error_bar_range_y2,
+        simp_eff_p_value = simp_eff_p_value)
+      return(output)
+    })
+  } else if (logistic == TRUE) {
+    warning(paste0(
+      "The analyses presented below may be wrong, ",
+      "as this function was originally\n",
+      "intended for ordinary least squares regressions, rather than ",
+      "logistic regressions."))
+    # conduct spotlight regressions
+    spotlight_results <- lapply(seq_along(focal_values), function(i) {
+      # focal value of the moderator
+      mod_focal <- focal_values[i]
+      # create a column for mod minus the focal value of the iteration
+      dt[, mod_minus_focal_value := mod - mod_focal]
+      # regression model with iv normal
+      lm_1 <- stats::glm(
+        formula = lm_formula_1, data = dt, family = binomial())
+      # simple effect p value
+      simp_eff_p_value <- summary(lm_1)[[
+        "coefficients"]]["iv_binary", "Pr(>|z|)"]
+      # estimated probability when iv = 0
+      iv_focal <- 0
+      # clear the values
+      b0_1 <- b1_1 <- b2_1 <- b3_1 <- NULL
+      b0_1 <- summary(lm_1)[["coefficients"]]["(Intercept)", "Estimate"]
+      b1_1 <- summary(lm_1)[["coefficients"]]["iv_binary", "Estimate"]
+      b2_1 <- summary(lm_1)[["coefficients"]][
+        "mod_minus_focal_value", "Estimate"]
+      b3_1 <- summary(lm_1)[["coefficients"]][
+        "iv_binary:mod_minus_focal_value", "Estimate"]
+      y1 <- 1 / (1 + exp(-(
+        b0_1 + b1_1 * iv_focal + b2_1 * mod_focal + b3_1 * iv_focal *
+          mod_focal)))
+      # error bar
+      if (error_bar == "se") {
+        error_bar <- "ci"
+        error_bar_range <- 0.68
+        message("The error bars are 68% CIs.")
+      }
+      if (error_bar == "ci") {
+        # ci for the estimated probability when iv = 0
+        coeff_for_ci <- suppressMessages(
+          stats::confint(lm_1, level = error_bar_range))
+        # clear the values
+        b0_1 <- b1_1 <- b2_1 <- b3_1 <- NULL
+        # get the coefficients for the lower limit of the ci
+        b0_1 <- coeff_for_ci["(Intercept)", 1]
+        b1_1 <- coeff_for_ci["iv_binary", 1]
+        b2_1 <- coeff_for_ci["mod_minus_focal_value", 1]
+        b3_1 <- coeff_for_ci["iv_binary:mod_minus_focal_value", 1]
+        y1_ci_ll <- 1 / (1 + exp(-(
+          b0_1 + b1_1 * iv_focal + b2_1 * mod_focal + b3_1 * iv_focal *
+            mod_focal)))
+        # clear the values
+        b0_1 <- b1_1 <- b2_1 <- b3_1 <- NULL
+        # get the coefficients for the upper limit of the ci
+        b0_1 <- coeff_for_ci["(Intercept)", 2]
+        b1_1 <- coeff_for_ci["iv_binary", 2]
+        b2_1 <- coeff_for_ci["mod_minus_focal_value", 2]
+        b3_1 <- coeff_for_ci["iv_binary:mod_minus_focal_value", 2]
+        y1_ci_ul <- 1 / (1 + exp(-(
+          b0_1 + b1_1 * iv_focal + b2_1 * mod_focal + b3_1 * iv_focal *
+            mod_focal)))
+        # error bar range for y1
+        error_bar_range_y1 <- c(y1_ci_ll, y1_ci_ul)
+        names(error_bar_range_y1) <- c(
+          "y1_error_bar_begin", "y1_error_bar_end")
+      }
+      # regression model with iv flipped
+      lm_2 <- stats::glm(
+        formula = lm_formula_2, data = dt, family = binomial())
+      # simple effect p value should be the same as that for y1
+      # estimated probability when iv = 1
+      iv_focal <- 0
+      # clear the values
+      b0_2 <- b1_2 <- b2_2 <- b3_2 <- NULL
+      b0_2 <- summary(lm_2)[["coefficients"]]["(Intercept)", "Estimate"]
+      b1_2 <- summary(lm_2)[["coefficients"]][
+        "iv_binary_flipped", "Estimate"]
+      b2_2 <- summary(lm_2)[["coefficients"]][
+        "mod_minus_focal_value", "Estimate"]
+      b3_2 <- summary(lm_2)[["coefficients"]][
+        "iv_binary_flipped:mod_minus_focal_value", "Estimate"]
+      y2 <- 1 / (1 + exp(-(
+        b0_2 + b1_2 * iv_focal + b2_2 * mod_focal + b3_2 * iv_focal *
+          mod_focal)))
+      if (error_bar == "ci") {
+        # ci for the estimated probability when iv = 1
+        coeff_for_ci <- NULL
+        coeff_for_ci <- suppressMessages(
+          stats::confint(lm_2, level = error_bar_range))
+        # get the coefficients for the lower limit of the ci
+        b0_2 <- b1_2 <- b2_2 <- b3_2 <- NULL
+        b0_2 <- coeff_for_ci["(Intercept)", 1]
+        b1_2 <- coeff_for_ci["iv_binary_flipped", 1]
+        b2_2 <- coeff_for_ci["mod_minus_focal_value", 1]
+        b3_2 <- coeff_for_ci["iv_binary_flipped:mod_minus_focal_value", 1]
+        y2_ci_ll <- 1 / (1 + exp(-(
+          b0_2 + b1_2 * iv_focal + b2_2 * mod_focal + b3_2 * iv_focal *
+            mod_focal)))
+        # get the coefficients for the upper limit of the ci
+        b0_2 <- b1_2 <- b2_2 <- b3_2 <- NULL
+        b0_2 <- coeff_for_ci["(Intercept)", 2]
+        b1_2 <- coeff_for_ci["iv_binary_flipped", 2]
+        b2_2 <- coeff_for_ci["mod_minus_focal_value", 2]
+        b3_2 <- coeff_for_ci["iv_binary_flipped:mod_minus_focal_value", 2]
+        y2_ci_ul <- 1 / (1 + exp(-(
+          b0_2 + b1_2 * iv_focal + b2_2 * mod_focal + b3_2 * iv_focal *
+            mod_focal)))
+        # error bar range for y1
+        error_bar_range_y2 <- c(y2_ci_ll, y2_ci_ul)
+        names(error_bar_range_y2) <- c(
+          "y2_error_bar_begin", "y2_error_bar_end")
+      }
+      # output
+      output <- c(
+        y1 = y1, error_bar_range_y1, y2 = y2, error_bar_range_y2,
+        simp_eff_p_value = simp_eff_p_value)
+      return(output)
+    })
+  }
   # spotlight regression results as a data table
   dt2 <- data.table::data.table(
     do.call(rbind, spotlight_results))
@@ -571,15 +706,17 @@ spotlight_2_by_continuous <- function(
           height = y_range * jitter_y_percent / 100))
     }
     # add regression lines
-    if (reg_lines == TRUE) {
-      g1 <- g1 + ggplot2::geom_line(
-        stat = "smooth",
-        formula = y ~ x,
-        method = "lm", se = FALSE,
-        size = reg_line_size,
-        alpha = reg_line_alpha)
-      g1 <- g1 + ggplot2::scale_linetype_manual(
-        values = reg_line_types)
+    if (logistic == FALSE) {
+      if (reg_lines == TRUE) {
+        g1 <- g1 + ggplot2::geom_line(
+          stat = "smooth",
+          formula = y ~ x,
+          method = "lm", se = FALSE,
+          size = reg_line_size,
+          alpha = reg_line_alpha)
+        g1 <- g1 + ggplot2::scale_linetype_manual(
+          values = reg_line_types)
+      }
     }
     # add estimated values of dv from spotlight regressions
     g1 <- g1 + ggplot2::geom_point(
@@ -692,12 +829,21 @@ spotlight_2_by_continuous <- function(
   }
   # include interaction p value
   if (interaction_p_include == TRUE) {
-    lm_summary <- summary(stats::lm(
-      formula = lm_formula_main, data = dt))
-    interaction_p_value <- kim::pretty_round_p_value(
-      lm_summary[["coefficients"]]["iv_binary:mod", "Pr(>|t|)"],
-      include_p_equals = TRUE,
-      round_digits_after_decimal = round_decimals_int_p_value)
+    if (logistic == FALSE) {
+      lm_summary <- summary(stats::lm(
+        formula = lm_formula_main, data = dt))
+      interaction_p_value <- kim::pretty_round_p_value(
+        lm_summary[["coefficients"]]["iv_binary:mod", "Pr(>|t|)"],
+        include_p_equals = TRUE,
+        round_digits_after_decimal = round_decimals_int_p_value)
+    } else if (logistic == TRUE) {
+      lm_summary <- summary(stats::glm(
+        formula = lm_formula_main, data = dt, family = binomial()))
+      interaction_p_value <- kim::pretty_round_p_value(
+        lm_summary[["coefficients"]]["iv_binary:mod", "Pr(>|z|)"],
+        include_p_equals = TRUE,
+        round_digits_after_decimal = round_decimals_int_p_value)
+    }
     interaction_p_value_text <- paste0(
       "Interaction ", interaction_p_value)
     # label interaction p value
