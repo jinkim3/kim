@@ -470,7 +470,7 @@ spotlight_2_by_continuous <- function(
       dt[, mod_minus_focal_value := mod - mod_focal]
       # regression model with iv normal
       lm_1 <- stats::glm(
-        formula = lm_formula_1, data = dt, family = binomial())
+        formula = lm_formula_1, data = dt, family = stats::binomial())
       # simple effect p value
       simp_eff_p_value <- summary(lm_1)[[
         "coefficients"]]["iv_binary", "Pr(>|z|)"]
@@ -524,7 +524,7 @@ spotlight_2_by_continuous <- function(
       }
       # regression model with iv flipped
       lm_2 <- stats::glm(
-        formula = lm_formula_2, data = dt, family = binomial())
+        formula = lm_formula_2, data = dt, family = stats::binomial())
       # simple effect p value should be the same as that for y1
       # estimated probability when iv = 1
       iv_focal <- 0
@@ -838,7 +838,7 @@ spotlight_2_by_continuous <- function(
         round_digits_after_decimal = round_decimals_int_p_value)
     } else if (logistic == TRUE) {
       lm_summary <- summary(stats::glm(
-        formula = lm_formula_main, data = dt, family = binomial()))
+        formula = lm_formula_main, data = dt, family = stats::binomial()))
       interaction_p_value <- kim::pretty_round_p_value(
         lm_summary[["coefficients"]]["iv_binary:mod", "Pr(>|z|)"],
         include_p_equals = TRUE,
