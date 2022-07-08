@@ -29,27 +29,27 @@ und <- function(fn, ...) {
   al <- as.list(match.call(expand.dots = TRUE))
   # if no argument is given, run the default function.
   # the default function for now is list_functions
-  if (identical(und(), list(sym("und")))) {
-    default_function <- "list_functions"
+  if (identical(al, list(sym("und")))) {
+    # set the default function
+    fn <- "list_functions"
   } else {
-    default_function <- FALSE
+    # change function name to a character
+    fn <- as.character(al$fn)
+    # the code above returns the function name, e.g., "corr_text"
+    # remove the first two elements as we probably will not need them
+    al[1:2] <- NULL
+    # the code above returns a list of inputs,
+    # e.g., [[1]]1:10, if the input was 1:10
+    # environment for evaluating language
+    focal_environment <- new.env(parent = parent.frame())
+    # evaluate languages
+    # ae stands for arguments evaluated
+    ae <- lapply(al, eval, envir = focal_environment)
   }
   # the code above returns the following list:
   # [[1]]und, $fn [function name], [[3]] [vector input etc]
-  # change function name to a character
-  fn <- as.character(al$fn)
-  # the code above returns the function name, e.g., "corr_text"
-  # remove the first two elements as we probably will not need them
-  al[1:2] <- NULL
-  # the code above returns a list of inputs,
-  # e.g., [[1]]1:10, if the input was 1:10
-  # environment for evaluating language
-  focal_environment <- new.env(parent = parent.frame())
-  # evaluate languages
-  # ae stands for arguments evaluated
-  ae <- lapply(al, eval, envir = focal_environment)
   # list all subfunctions
-  if (fn == "list_functions" | default_function == "list_functions") {
+  if (fn == "list_functions") {
     list_of_subfunctions <- sort(c(
       "list_functions", "corr_text", "round_trail_0", "outlier_rm",
       "convert_from_unicode", "compare_strings",

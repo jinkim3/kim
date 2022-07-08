@@ -1,4 +1,4 @@
-# kim 0.5.56
+# kim 0.5.57
 * Highlights:
 * The package title was changed from 
 "Behavioral Scientists' Analysis Toolkit" to 
