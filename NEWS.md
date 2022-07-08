@@ -1,5 +1,8 @@
-# kim 0.5.54
+# kim 0.5.55
 * Highlights:
+* The package title was changed from 
+"Behavioral Scientists' Analysis Toolkit" to 
+"A Toolkit for Behavioral Scientists"
 * Added the following function(s): loglinear_analysis, identical_all,
 akaike_weights, modes_of_objects, check_modes, overlapping_interval,
 standardized_regression
