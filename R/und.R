@@ -27,6 +27,13 @@ und <- function(fn, ...) {
   # list of arguments entered
   # al stands for argument list
   al <- as.list(match.call(expand.dots = TRUE))
+  # if no argument is given, run the default function.
+  # the default function for now is list_functions
+  if (identical(und(), list(sym("und")))) {
+    default_function <- "list_functions"
+  } else {
+    default_function <- FALSE
+  }
   # the code above returns the following list:
   # [[1]]und, $fn [function name], [[3]] [vector input etc]
   # change function name to a character
@@ -42,7 +49,7 @@ und <- function(fn, ...) {
   # ae stands for arguments evaluated
   ae <- lapply(al, eval, envir = focal_environment)
   # list all subfunctions
-  if (fn == "list_functions") {
+  if (fn == "list_functions" | default_function == "list_functions") {
     list_of_subfunctions <- sort(c(
       "list_functions", "corr_text", "round_trail_0", "outlier_rm",
       "convert_from_unicode", "compare_strings",
