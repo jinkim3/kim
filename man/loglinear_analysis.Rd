@@ -54,5 +54,7 @@ will follow the format suggested by Andy Field (2012)
 Conduct a loglinear analysis
 }
 \examples{
+\donttest{
 loglinear_analysis(data = data.frame(Titanic), "Survived", "Sex", "Age")
+}
 }

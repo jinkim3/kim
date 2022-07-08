@@ -23,7 +23,9 @@
 #' will follow the format suggested by Andy Field (2012)
 #' (ISBN: 978-1-4462-0045-2, p. 851)
 #' @examples
+#' \donttest{
 #' loglinear_analysis(data = data.frame(Titanic), "Survived", "Sex", "Age")
+#' }
 #' @export
 loglinear_analysis <- function(
   data = NULL,
