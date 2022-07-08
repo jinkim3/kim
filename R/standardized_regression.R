@@ -6,6 +6,7 @@
 #'
 #' @param data a data object (a data frame or a data.table)
 #' @param formula a formula object for the regression equation
+#' @param reverse_code_vars names of binary variables to reverse code
 #' @param sigfigs number of significant digits to round to
 #' @param round_digits_after_decimal round to nth digit after decimal
 #' (alternative to \code{sigfigs})
@@ -29,36 +30,54 @@
 #' @examples
 #' \donttest{
 #' standardized_regression(data = mtcars, formula = mpg ~ gear * cyl)
+#' standardized_regression(
+#' data = mtcars, formula = mpg ~ gear + gear:am + disp * cyl,
+#' round_digits_after_decimal = 3)
 #' }
 #' @export
 standardized_regression <- function(
-  data = NULL,
-  formula = NULL,
-  sigfigs = NULL,
-  round_digits_after_decimal = NULL,
-  round_p = 3,
-  pretty_round_p_value = TRUE,
-  return_table_upper_half = FALSE,
-  round_r_squared = 3,
-  round_f_stat = 2,
-  prettify_reg_table_col_names = TRUE) {
+    data = NULL,
+    formula = NULL,
+    reverse_code_vars = NULL,
+    sigfigs = NULL,
+    round_digits_after_decimal = NULL,
+    round_p = 3,
+    pretty_round_p_value = TRUE,
+    return_table_upper_half = FALSE,
+    round_r_squared = 3,
+    round_f_stat = 2,
+    prettify_reg_table_col_names = TRUE) {
   # check whether all variable names are unique
-  all_vars <- all.vars(formula)
-  if (any(duplicated(all_vars)) == TRUE) {
-    kim::find_duplicates(all_vars)
+  all_vars_in_entered_formula <- all.vars(formula)
+  if (any(duplicated(all_vars_in_entered_formula)) == TRUE) {
+    kim::find_duplicates(all_vars_in_entered_formula)
     stop(paste0(
       "This function requires that\nall variable names in the formula",
       " be unique (see above)."))
   }
+  # check whether colon is included in any variable name
+  if (any(grepl("\\:", all_vars_in_entered_formula)) == TRUE) {
+    stop(
+      "This function requires that no variable name contains a colon ':'")
+  }
   # copy data
   dt <- data.table::setDT(data.table::copy(data))
   # subset to only the vars needed
-  dt <- dt[, all_vars, with = FALSE]
+  dt <- dt[, all_vars_in_entered_formula, with = FALSE]
   # remove na values
   dt <- stats::na.omit(dt)
+  # get the righthand side terms
+  rhs_terms <- labels(stats::terms(formula))
+  # get the lefthand side term
+  lhs_term <- all.vars(formula)[1]
+  # get all vars to be used in regression
+  all_vars_in_reg <- c(lhs_term, rhs_terms)
+  # lists to store old and new values
+  old_values <- new_values <- list()
   # deal with variables of different types
   # i.e., convert character or factor variables if they are binary
-  invisible(lapply(all_vars, function(x) {
+  for (i in seq_along(all_vars_in_entered_formula)) {
+    x <- all_vars_in_entered_formula[i]
     if (is.character(dt[[x]]) == TRUE) {
       if (length(unique(dt[[x]])) != 2) {
         stop(paste0(
@@ -67,20 +86,19 @@ standardized_regression <- function(
           " levels.\nPlease ensure that all character ",
           "variables have exactly 2 levels."))
       } else if (length(unique(dt[[x]])) == 2) {
+        # order the values
+        if (x %in% reverse_code_vars == FALSE) {
+          ordered_old_values <- sort(unique(dt[[x]]))
+        } else {
+          # reverse code
+          ordered_old_values <- rev(sort(unique(dt[[x]])))
+        }
         # old values for a conversion table
-        old_value <- sort(unique(dt[[x]]))
+        old_values[[x]] <- ordered_old_values
         # convert the character variable to a binary variable
-        data.table::set(dt, j = x, value = scale(fcase(
-          dt[[x]] == sort(unique(dt[[x]]))[1], 0,
-          dt[[x]] == sort(unique(dt[[x]]))[2], 1)))
-        # new values for a conversion table
-        new_value <- sort(unique(dt[[x]]))
-        conversion_table <- data.table::data.table(
-          old_value, new_value)
-        # print the conversion table
-        message(paste0(
-          "The variable '", x, "' has been recoded as follows:"))
-        print(conversion_table)
+        data.table::set(dt, j = x, value = fcase(
+          dt[[x]] == ordered_old_values[1], 0,
+          dt[[x]] == ordered_old_values[2], 1))
       }
     } else if (is.factor(dt[[x]]) == TRUE) {
       if (length(unique(dt[[x]])) != 2) {
@@ -90,32 +108,60 @@ standardized_regression <- function(
           " levels.\nPlease ensure that all character ",
           "variables have exactly 2 levels."))
       } else if (length(unique(dt[[x]])) == 2) {
+        # order the values
+        if (x %in% reverse_code_vars == FALSE) {
+          ordered_old_values <- levels(dt[[x]])
+        } else {
+          # reverse code
+          ordered_old_values <- rev(levels(dt[[x]]))
+        }
         # old values for a conversion table
-        old_value <- levels(dt[[x]])
+        old_values[[x]] <- ordered_old_values
         # convert the character variable to a binary variable
-        data.table::set(dt, j = x, value = scale(fcase(
-          dt[[x]] == levels(dt[[x]])[1], 0,
-          dt[[x]] == levels(dt[[x]])[2], 1)))
-        # new values for a conversion table
-        new_value <- sort(unique(dt[[x]]))
-        conversion_table <- data.table::data.table(
-          old_value, new_value)
-        # print the conversion table
-        message(paste0(
-          "The variable '", x, "' has been recoded as follows:"))
-        print(conversion_table)
+        data.table::set(dt, j = x, value = fcase(
+          dt[[x]] == ordered_old_values[1], 0,
+          dt[[x]] == ordered_old_values[2], 1))
       }
-    } else if (is.numeric(dt[[x]]) == TRUE) {
-      data.table::set(dt, j = x, value = scale(dt[[x]]))
-    } else {
+    } else if (is.numeric(dt[[x]]) == FALSE) {
       stop(paste0(
         "For this function to run, the variable '", x,
         "' must be either\na numeric variable ",
         "or a character/factor variable with exactly two levels."))
     }
-  }))
+  }
+  # a data table to store vars for standardizing
+  dt2 <- data.table::data.table()
+  # a vector to store temporary names for dealing with product terms
+  # that contain the colon in their names
+  all_vars_in_reg_temp_names <- rep(NA, length(all_vars_in_reg))
+  # get all vars ready for standardization
+  for (i in seq_along(all_vars_in_reg)) {
+    # check if the term is a product
+    if (grepl("\\:", all_vars_in_reg[i]) == TRUE) {
+      # give a new, temporary name for the product term
+      temp_name <- gsub("\\:", "__times__", all_vars_in_reg[i])
+      all_vars_in_reg_temp_names[i] <- temp_name
+      terms_for_product <- unlist(strsplit(
+        all_vars_in_reg[i], ":"))
+      data.table::set(dt2, j = temp_name, value = Reduce(
+        "*", as.list(dt[, terms_for_product, with = FALSE])))
+    } else {
+      data.table::set(
+        dt2, j = all_vars_in_reg[i], value = dt[[all_vars_in_reg[i]]])
+      all_vars_in_reg_temp_names[i] <- all_vars_in_reg[i]
+    }
+  }
+  # standardize all variables
+  for (j in names(dt2)) {
+    set(dt2, j = j, value = scale(dt2[[j]]))
+  }
+  # formula that uses only the plus signs
+  formula_2 <- stats::as.formula(paste0(
+    all_vars_in_reg_temp_names[1], " ~ ",
+    paste0(utils::tail(
+      all_vars_in_reg_temp_names, -1), collapse = " + ")))
   # conduct a regression
-  model <- stats::lm(formula = formula, data = dt)
+  model <- stats::lm(formula = formula_2, data = dt2)
   # regression model summary
   model_summary <- summary(model)
   # get the results
@@ -172,6 +218,31 @@ standardized_regression <- function(
   # upper part of the regression table
   t1 <- data.table::data.table(
     variable, std_beta, se_of_std_beta, t_stat, p_value)
+  # correct variable names
+  all_vars_in_reg_temp_names[1] <- "(Constant)"
+  if (all(t1[["variable"]] == all_vars_in_reg_temp_names)) {
+    all_vars_in_reg[1] <- "(Constant)"
+    t1[["variable"]] <- all_vars_in_reg
+  }
+  # print conversion tables
+  if (length(old_values) > 0) {
+    vars_for_printing_conv_table <- names(old_values)
+    for (x in vars_for_printing_conv_table) {
+      if (length(old_values[[x]]) == length(unique(dt2[[x]]))) {
+        conversion_table <- data.table::data.table(
+          old_value = old_values[[x]],
+          new_value = sort(unique(dt2[[x]])))
+        message(paste0(
+          "The variable '", x, "' has been recoded as follows:"))
+        print(conversion_table)
+      } else {
+        stop(paste0(
+          "An error seems to have occurred while recoding variable '",
+          x, "'.\nPlease run the function again after manually coding ",
+          "the variable."))
+      }
+    }
+  }
   # return only the upper part of the regression table
   if (return_table_upper_half == TRUE) {
     return(t1)

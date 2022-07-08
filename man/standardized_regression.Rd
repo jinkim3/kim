@@ -7,6 +7,7 @@
 standardized_regression(
   data = NULL,
   formula = NULL,
+  reverse_code_vars = NULL,
   sigfigs = NULL,
   round_digits_after_decimal = NULL,
   round_p = 3,
@@ -21,6 +22,8 @@ standardized_regression(
 \item{data}{a data object (a data frame or a data.table)}
 
 \item{formula}{a formula object for the regression equation}
+
+\item{reverse_code_vars}{names of binary variables to reverse code}
 
 \item{sigfigs}{number of significant digits to round to}
 
@@ -60,5 +63,8 @@ conducts a regression with the standardized variables.
 \examples{
 \donttest{
 standardized_regression(data = mtcars, formula = mpg ~ gear * cyl)
+standardized_regression(
+data = mtcars, formula = mpg ~ gear + gear:am + disp * cyl,
+round_digits_after_decimal = 3)
 }
 }
