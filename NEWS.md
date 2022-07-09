@@ -1,4 +1,18 @@
-# kim 0.5.57
+# kim 0.5.58
+* Highlights:
+* The package title was changed from 
+"Behavioral Scientists' Analysis Toolkit" to 
+"A Toolkit for Behavioral Scientists"
+* Added the following function(s): 
+* Updated the following function(s) (and other functions that use them): 
+parallel_analysis
+* Fixed bugs or errors in the following functions (and other functions
+that use them): 
+* Critical improvement in the following functions (and other functions
+that use them): 
+* Undocumented functions added (see the function `und`):
+
+# kim 0.5.55
 * Highlights:
 * The package title was changed from 
 "Behavioral Scientists' Analysis Toolkit" to 

@@ -14,6 +14,8 @@
 #' this value will be set as 30 * number of variables.
 #' @param percentile_for_eigenvalue percentile used in estimating bias
 #' (default = 95).
+#' @param line_types types of the lines connecting eigenvalues.
+#' By default, \code{line_types = c("dashed", "solid")}
 #' @examples
 #' \donttest{
 #' parallel_analysis(
@@ -24,10 +26,13 @@
 #' @export
 # parallel analysis factor analysis
 parallel_analysis <- function(
-  data = NULL,
-  names_of_vars = NULL,
-  iterations = NULL,
-  percentile_for_eigenvalue = 95) {
+    data = NULL,
+    names_of_vars = NULL,
+    iterations = NULL,
+    percentile_for_eigenvalue = 95,
+    line_types = c("dashed", "solid"),
+    dot_size = 5,
+    line_thickness = 1.5) {
   # installed packages
   installed_pkgs <- rownames(utils::installed.packages())
   # check if Package 'ggplot2' is installed
@@ -117,11 +122,11 @@ parallel_analysis <- function(
     x = component_number,
     y = eigenvalue,
     group = eigenvalue_type,
-    color = eigenvalue_type))
-  g1 <- g1 + ggplot2::geom_point(
-    ggplot2::aes(color = eigenvalue_type), size = 4)
-  g1 <- g1 + ggplot2::geom_line(
-    ggplot2::aes(color = eigenvalue_type), size = 2)
+    color = eigenvalue_type,
+    linetype = eigenvalue_type))
+  g1 <- g1 + ggplot2::geom_point(size = dot_size)
+  g1 <- g1 + ggplot2::geom_line(size = line_thickness)
+  g1 <- g1 + scale_linetype_manual(values = line_types)
   g1 <- g1 + ggplot2::geom_text(data = dt5, ggplot2::aes(
     x = component_number, y = eigenvalue, label = eigenvalue_type,
     color = eigenvalue_type, hjust = -0.1, vjust = -0.1),
