@@ -138,7 +138,8 @@ parallel_analysis <- function(
     fontface = "bold", size = label_size, inherit.aes = FALSE)
   g1 <- g1 + ggplot2::theme_classic(base_size = 16) +
     ggplot2::theme(
-      plot.title = ggplot2::element_text(hjust = 0.5),
+      plot.title = ggplot2::element_text(
+        color = "black", size = 14, hjust = 0.5),
       legend.position = "none",
       axis.text = ggplot2::element_text(color = "black", size = 12),
       axis.title.x = ggplot2::element_text(
@@ -146,7 +147,8 @@ parallel_analysis <- function(
       axis.title.y = ggplot2::element_text(
         angle = 90, margin = ggplot2::margin(r = 12)))
   g1 <- g1 + ggplot2::theme(
-    plot.subtitle = ggplot2::element_text(hjust = 0.5)) +
+    plot.subtitle = ggplot2::element_text(
+      color = "black", size = 12, hjust = 0.5)) +
     ggplot2::scale_x_continuous(breaks = component_number) +
     ggplot2::xlab("\nComponent Number") +
     ggplot2::ylab("Eigenvalue\n")
