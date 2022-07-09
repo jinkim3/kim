@@ -16,6 +16,10 @@
 #' (default = 95).
 #' @param line_types types of the lines connecting eigenvalues.
 #' By default, \code{line_types = c("dashed", "solid")}
+#' @param dot_size size of the dots denoting eigenvalues (default = 5).
+#' @param line_thickness thickness of the eigenvalue curves (default = 1.5).
+#' @param label_size font size of the labels for the eigenvalue curves
+#' (default = 6)
 #' @examples
 #' \donttest{
 #' parallel_analysis(
@@ -32,7 +36,8 @@ parallel_analysis <- function(
     percentile_for_eigenvalue = 95,
     line_types = c("dashed", "solid"),
     dot_size = 5,
-    line_thickness = 1.5) {
+    line_thickness = 1.5,
+    label_size = 6) {
   # installed packages
   installed_pkgs <- rownames(utils::installed.packages())
   # check if Package 'ggplot2' is installed
@@ -130,7 +135,7 @@ parallel_analysis <- function(
   g1 <- g1 + ggplot2::geom_text(data = dt5, ggplot2::aes(
     x = component_number, y = eigenvalue, label = eigenvalue_type,
     color = eigenvalue_type, hjust = -0.1, vjust = -0.1),
-    fontface = "bold", size = 4, inherit.aes = FALSE)
+    fontface = "bold", size = label_size, inherit.aes = FALSE)
   g1 <- g1 + ggplot2::theme_classic(base_size = 16) +
     ggplot2::theme(
       plot.title = ggplot2::element_text(hjust = 0.5),

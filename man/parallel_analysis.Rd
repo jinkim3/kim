@@ -11,7 +11,8 @@ parallel_analysis(
   percentile_for_eigenvalue = 95,
   line_types = c("dashed", "solid"),
   dot_size = 5,
-  line_thickness = 1.5
+  line_thickness = 1.5,
+  label_size = 6
 )
 }
 \arguments{
@@ -27,6 +28,13 @@ this value will be set as 30 * number of variables.}
 
 \item{line_types}{types of the lines connecting eigenvalues.
 By default, \code{line_types = c("dashed", "solid")}}
+
+\item{dot_size}{size of the dots denoting eigenvalues (default = 5).}
+
+\item{line_thickness}{thickness of the eigenvalue curves (default = 1.5).}
+
+\item{label_size}{font size of the labels for the eigenvalue curves
+(default = 6)}
 }
 \description{
 Conducts a parallel analysis to determine how many factors
