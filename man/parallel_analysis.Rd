@@ -8,7 +8,10 @@ parallel_analysis(
   data = NULL,
   names_of_vars = NULL,
   iterations = NULL,
-  percentile_for_eigenvalue = 95
+  percentile_for_eigenvalue = 95,
+  line_types = c("dashed", "solid"),
+  dot_size = 5,
+  line_thickness = 1.5
 )
 }
 \arguments{
@@ -21,6 +24,9 @@ this value will be set as 30 * number of variables.}
 
 \item{percentile_for_eigenvalue}{percentile used in estimating bias
 (default = 95).}
+
+\item{line_types}{types of the lines connecting eigenvalues.
+By default, \code{line_types = c("dashed", "solid")}}
 }
 \description{
 Conducts a parallel analysis to determine how many factors
