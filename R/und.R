@@ -29,9 +29,13 @@ und <- function(fn, ...) {
   al <- as.list(match.call(expand.dots = TRUE))
   # if no argument is given, run the default function.
   # the default function for now is list_functions
-  if (identical(al, list(sym("und")))) {
-    # set the default function
-    fn <- "list_functions"
+  if (length(al) == 1) {
+    if (is.symbol(al[[1]]) == TRUE) {
+      if (al[[1]] == "und") {
+        # set the default function
+        fn <- "list_functions"
+      }
+    }
   } else {
     # change function name to a character
     fn <- as.character(al$fn)

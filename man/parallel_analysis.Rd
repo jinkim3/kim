@@ -10,9 +10,18 @@ parallel_analysis(
   iterations = NULL,
   percentile_for_eigenvalue = 95,
   line_types = c("dashed", "solid"),
+  colors = c("red", "blue"),
+  eigenvalue_random_label_x_pos = NULL,
+  eigenvalue_random_label_y_pos = NULL,
+  unadj_eigenvalue_label_x_pos = NULL,
+  unadj_eigenvalue_label_y_pos = NULL,
+  label_offset_percent = 2,
+  label_size = 6,
   dot_size = 5,
   line_thickness = 1.5,
-  label_size = 6
+  y_axis_title_vjust = 0.8,
+  title_text_size = 26,
+  axis_text_size = 22
 )
 }
 \arguments{
@@ -29,12 +38,37 @@ this value will be set as 30 * number of variables.}
 \item{line_types}{types of the lines connecting eigenvalues.
 By default, \code{line_types = c("dashed", "solid")}}
 
+\item{colors}{size of the dots denoting eigenvalues (default = 5).}
+
+\item{eigenvalue_random_label_x_pos}{(optional) x coordinate of
+the label for eigenvalues from randomly generated data.}
+
+\item{eigenvalue_random_label_y_pos}{(optional) y coordinate of
+the label for eigenvalues from randomly generated data.}
+
+\item{unadj_eigenvalue_label_x_pos}{(optional) x coordinate of
+the label for unadjusted eigenvalues}
+
+\item{unadj_eigenvalue_label_y_pos}{(optional) y coordinate of
+the label for unadjusted eigenvalues}
+
+\item{label_offset_percent}{How much should labels for the
+eigenvalue curves be offset, as a percentage of the plot's
+x and y range? (default = 2)}
+
+\item{label_size}{size of the labels for the eigenvalue curves
+(default = 6).}
+
 \item{dot_size}{size of the dots denoting eigenvalues (default = 5).}
 
 \item{line_thickness}{thickness of the eigenvalue curves (default = 1.5).}
 
-\item{label_size}{font size of the labels for the eigenvalue curves
-(default = 6)}
+\item{y_axis_title_vjust}{position of the y axis title as a
+proportion of the range (default = 0.8).}
+
+\item{title_text_size}{size of the plot title (default = 26).}
+
+\item{axis_text_size}{size of the text on the axes (default = 22).}
 }
 \description{
 Conducts a parallel analysis to determine how many factors
