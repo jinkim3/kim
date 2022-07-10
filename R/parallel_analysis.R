@@ -191,7 +191,7 @@ parallel_analysis <- function(
     number_of_retained_factors,
     " Factor",
     ifelse(number_of_retained_factors > 1, "s", ""),
-    "\n(N = ", sample_size, ")\n")
+    "\n\n(N = ", sample_size, ")")
   g1 <- g1 + ggplot2::labs(
     title = plot_title,
     x = "Component Number",
