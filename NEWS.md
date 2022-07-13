@@ -1,10 +1,11 @@
-# kim 0.5.63
+# kim 0.5.64
 * Highlights:
 * Added the following function(s): 
 * Updated the following function(s) (and other functions that use them): 
 parallel_analysis, und
 * Fixed bugs or errors in the following functions (and other functions
 that use them): 
+compare_dependent_rs
 * Critical improvement in the following functions (and other functions
 that use them): 
 * Undocumented functions added (see the function `und`):

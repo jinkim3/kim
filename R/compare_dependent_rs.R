@@ -39,22 +39,46 @@
 #' @export
 #' @import data.table
 compare_dependent_rs <- function(
-  data = NULL,
-  var_1_name = NULL,
-  var_2_name = NULL,
-  var_3_name = NULL,
-  one_tailed = FALSE,
-  round_r = 3,
-  round_p = 3,
-  round_t = 2,
-  print_summary = TRUE,
-  return_dt = FALSE
-  ) {
+    data = NULL,
+    var_1_name = NULL,
+    var_2_name = NULL,
+    var_3_name = NULL,
+    one_tailed = FALSE,
+    round_r = 3,
+    round_p = 3,
+    round_t = 2,
+    print_summary = TRUE,
+    return_dt = FALSE
+) {
+  # following the notations of chen and popovich (2002, p. 24 ["Case 1"]),
+  # the two correlations are r_jk and r_jh
+  # j is the variable that is involved with both correlations
+  # var 1 = j
+  # var 2 = k
+  # var 3 = h
+  # h0: r_jk = r_jh
+  # ha: r_jk > r_jh
   # deal with na values
-  dt <- stats::na.omit(data.frame(
+  dt <- data.frame(
     j = data[[var_1_name]],
-    h = data[[var_2_name]],
-    k = data[[var_3_name]]))
+    k = data[[var_2_name]],
+    h = data[[var_3_name]])
+  num_of_rows_in_original_data <- nrow(dt)
+  dt <- stats::na.omit(dt)
+  num_of_rows_after_removing_na <- nrow(dt)
+  # count na rows
+  if (num_of_rows_in_original_data != num_of_rows_after_removing_na) {
+    kim::pm(
+      num_of_rows_in_original_data - num_of_rows_after_removing_na,
+      " rows were removed due to missing values.")
+  }
+  # count if n is larger than 20
+  if (num_of_rows_after_removing_na < 20) {
+    warning(paste0(
+      "Sample size < 20. This test may not be warranted.\n",
+      "See p. 24 (Case 1) on Chen & Popovich (2002)\n",
+      "doi:10.4135/9781412983808"))
+  }
   # estimate correlations
   r_jk_results <- stats::cor.test(dt$j, dt$k)
   r_jh_results <- stats::cor.test(dt$j, dt$h)
@@ -66,29 +90,20 @@ compare_dependent_rs <- function(
   # p values
   r_jk_p_value <- r_jk_results$p.value
   r_jh_p_value <- r_jh_results$p.value
-  # n
-  n <- nrow(dt)
-  # # formula from chen popovich
+  # test values as in chen & popovich 2002 p. 24
   # r_jk <- 0.5
   # r_jh <- 0.2
   # r_kh <- 0.3
   # n <- 103
-  # abs_r <- 1 - r_jk ^ 2 - r_jh ^ 2 - r_kh ^ 2 + 2 * r_jk * r_jh * r_kh
-  # r_bar <- (r_jk + r_jh) / 2
-  # t2 <- (r_jk - r_jh) * sqrt((n - 1) * (1 + r_kh) / (
-  #   2 * ((n - 1) / (n - 3)) * abs_r + r_bar ^ 2 * (1 - r_kh) ^ 3))
-  # t2
-  # formula from steiger
-  # r_jk <- 0.4
-  # r_jh <- 0.5
-  # r_kh <- 0.1
-  # n <- 103
-  abs_big_r <- 1 - r_jk ^ 2 - r_jh ^ 2 - r_kh ^ 2 + 2 * r_jk * r_jh * r_kh
+  # n
+  n <- num_of_rows_after_removing_na
+  abs_big_r <- 1 - (r_jk ^ 2) - (r_jh ^ 2) - (r_kh ^ 2) + (
+    2 * r_jk * r_jh * r_kh)
   small_r_bar <- (r_jk + r_jh) / 2
   t_diff <- (r_jk - r_jh) * sqrt(
-    (n - 1) * (1 + r_kh) /
-      (2 * (n - 1) / (n - 3) * abs_big_r +
-         small_r_bar ^ 2 * (1 - r_kh) ^ 3))
+    ((n - 1) * (1 + r_kh)) /
+      (2 * ((n - 1) / (n - 3)) * abs_big_r +
+         (small_r_bar ^ 2) * ((1 - r_kh) ^ 3)))
   # df for t test for difference
   df_diff <- n - 3
   # p value of difference, from the t test
@@ -99,9 +114,9 @@ compare_dependent_rs <- function(
   }
   # test text
   test_text <- paste0(
-    "A ",
+    "A Williams's t-test (",
     ifelse(one_tailed == TRUE, "one-tailed", "two-tailed"),
-    " t-test revealed that ")
+    ") revealed that ")
   # sig text
   sig_text <- ifelse(
     p_diff < 0.05, "significantly different",
@@ -134,7 +149,7 @@ compare_dependent_rs <- function(
   # p value
   kim::pm(
     test_text,
-    "the two correlations, ", r_jk_rounded, " and ",
+    "the two correlations,\n", r_jk_rounded, " and ",
     r_jh_rounded, ", are ", sig_text,
     ", t(", df_diff, ") = ", t_diff_rounded, " ", p_diff_rounded)
   # output table
