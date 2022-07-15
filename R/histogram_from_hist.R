@@ -56,22 +56,24 @@ histogram_from_hist <- function(
     y_axis_title_vjust = 0.85) {
   # bind the vars locally to the function
   xmin <- xmax <- ymin <- ymax <- NULL
-  # deal with NA values
-  v_no_na <- vector[!is.na(vector)]
-  na_count <- length(vector) - length(v_no_na)
-  # by default, notify only if NA values are present
-  if (is.null(notify_na_count)) {
-    notify_na_count <- ifelse(na_count > 0, TRUE, FALSE)
-  }
-  if (notify_na_count == TRUE) {
-    message(paste0(
-      na_count, " observation(s) were removed due to missing values."))
-  }
-  # get bin heights etc from hist
-  hist_results <- graphics::hist(vector)
-  if (is.null(breaks) & is.null(counts)) {
-    breaks <- hist_results$breaks
-    counts <- hist_results$counts
+  if (!is.null(vector)) {
+    # deal with NA values
+    v_no_na <- vector[!is.na(vector)]
+    na_count <- length(vector) - length(v_no_na)
+    # by default, notify only if NA values are present
+    if (is.null(notify_na_count)) {
+      notify_na_count <- ifelse(na_count > 0, TRUE, FALSE)
+    }
+    if (notify_na_count == TRUE) {
+      message(paste0(
+        na_count, " observation(s) were removed due to missing values."))
+    }
+    # get bin heights etc from hist
+    hist_results <- graphics::hist(vector)
+    if (is.null(breaks) & is.null(counts)) {
+      breaks <- hist_results$breaks
+      counts <- hist_results$counts
+    }
   }
   if (!is.null(breaks) | !is.null(counts)) {
     # check the lengths of breaks and counts
