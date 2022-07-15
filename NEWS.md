@@ -1,6 +1,6 @@
-# kim 0.5.64
+# kim 0.5.65
 * Highlights:
-* Added the following function(s): 
+* Added the following function(s): histogram_from_hist
 * Updated the following function(s) (and other functions that use them): 
 parallel_analysis, und
 * Fixed bugs or errors in the following functions (and other functions

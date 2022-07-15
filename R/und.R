@@ -178,6 +178,11 @@ und <- function(fn, ...) {
     non_outlier_values <- x[which(x >= cutoff_low & x <= cutoff_high)]
     return(non_outlier_values)
   }
+  #######################################################
+  #
+  # the functions below take an input of length = 1
+  #
+  #######################################################
   # confirm that the input has a length of 1
   if (length(ae) == 1) {
     x <- ae[[1]]
