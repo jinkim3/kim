@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# kim: Behavioral Scientists’ Analysis Toolkit
+# kim: A Toolkit for Behavioral Scientists
 
 <!-- badges: start -->
 

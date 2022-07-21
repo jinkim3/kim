@@ -109,7 +109,7 @@ parallel_analysis <- function(
   if (num_of_rows_new != num_of_rows_original) {
     num_of_rows_removed <- num_of_rows_original - num_of_rows_new
     if (num_of_rows_removed == num_of_rows_original) {
-      message(paste0(
+      stop(paste0(
         "Removing rows with missing value(s) resulted in an empty",
         " data set.\nPlease check your data input."))
     } else {
@@ -207,7 +207,7 @@ parallel_analysis <- function(
     number_of_retained_factors,
     " Factor",
     ifelse(number_of_retained_factors > 1, "s", ""),
-    "\n\n(N = ", sample_size, ")")
+    "\n\n(N = ", num_of_rows_new, ")")
   g1 <- g1 + ggplot2::labs(
     title = plot_title,
     x = "Component Number",
@@ -231,7 +231,7 @@ parallel_analysis <- function(
       angle = 0, vjust = y_axis_title_vjust))
   g1 <- g1 + ggplot2::scale_x_continuous(breaks = component_number)
   # g1 <- g1 + ggplot2::labs(subtitle = bquote(
-  #   italic(N) ~ " = " ~ .(sample_size)
+  #   italic(N) ~ " = " ~ .(num_of_rows_new)
   # ))
   return(g1)
 }
