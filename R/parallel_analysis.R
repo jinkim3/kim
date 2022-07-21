@@ -102,8 +102,24 @@ parallel_analysis <- function(
   # convert to data table and omit na
   dt <- data.table::setDT(data.table::copy(
     data))[, names_of_vars, with = FALSE]
-  # stats::na.omit(
-  sample_size <- nrow(dt)
+  num_of_rows_original <- nrow(dt)
+  # exclude na
+  dt <- stats::na.omit(dt)
+  num_of_rows_new <- nrow(dt)
+  if (num_of_rows_new != num_of_rows_original) {
+    num_of_rows_removed <- num_of_rows_original - num_of_rows_new
+    if (num_of_rows_removed == num_of_rows_original) {
+      message(paste0(
+        "Removing rows with missing value(s) resulted in an empty",
+        " data set.\nPlease check your data input."))
+    } else {
+      message(paste0(
+        num_of_rows_removed,
+        " rows (",
+        signif(num_of_rows_removed / num_of_rows_original * 100, 2),
+        "%) were removed due to missing values."))
+    }
+  }
   # set default number of iterations
   if (is.null(iterations)) {
     iterations <- 0
