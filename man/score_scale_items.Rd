@@ -8,6 +8,7 @@ score_scale_items(
   item_list = NULL,
   reverse_item_list = NULL,
   operation = "mean",
+  na.rm = FALSE,
   na_summary = TRUE,
   reverse_code_minuend = NULL
 )
@@ -21,6 +22,9 @@ to code normally (as opposed to reverse coding).}
 \item{operation}{if \code{operation = "mean"}, mean of the scale items
 will be calculated; if \code{operation = "sum"}, sum of the scale items
 will be calculated (default = "mean").}
+
+\item{na.rm}{logical. The \code{na.rm} argument that will be passed
+onto the base R's \code{rowMeans} or \code{rowSums} function (default = FALSE).}
 
 \item{na_summary}{logical. If \code{na_summary = TRUE} a summary of
 NA values will be printed; if \code{na_summary = FALSE} the summary
@@ -45,4 +49,6 @@ score_scale_items(item_list = list(c(1, 1), c(1, 5)),
 reverse_item_list = list(c(5, 1)),
 reverse_code_minuend = 6, operation = "sum")
 score_scale_items(item_list = list(1:5, rep(3, 5)))
+score_scale_items(item_list = list(c(1, NA, 3), c(NA, 2, 3)))
+score_scale_items(item_list = list(c(1, NA, 3), c(NA, 2, 3)), na.rm = TRUE)
 }

@@ -9,6 +9,8 @@
 #' @param operation if \code{operation = "mean"}, mean of the scale items
 #' will be calculated; if \code{operation = "sum"}, sum of the scale items
 #' will be calculated (default = "mean").
+#' @param na.rm logical. The `na.rm` argument that will be passed
+#' onto the base R's `rowMeans` or `rowSums` function (default = FALSE).
 #' @param na_summary logical. If \code{na_summary = TRUE} a summary of
 #' NA values will be printed; if \code{na_summary = FALSE} the summary
 #' will not be printed (default = TRUE).
@@ -26,12 +28,15 @@
 #' reverse_item_list = list(c(5, 1)),
 #' reverse_code_minuend = 6, operation = "sum")
 #' score_scale_items(item_list = list(1:5, rep(3, 5)))
+#' score_scale_items(item_list = list(c(1, NA, 3), c(NA, 2, 3)))
+#' score_scale_items(item_list = list(c(1, NA, 3), c(NA, 2, 3)), na.rm = TRUE)
 #' @export
 #' @import data.table
 score_scale_items <- function(
   item_list = NULL,
   reverse_item_list = NULL,
   operation = "mean",
+  na.rm = FALSE,
   na_summary = TRUE,
   reverse_code_minuend = NULL) {
   # deal with argument inputs
@@ -79,11 +84,11 @@ score_scale_items <- function(
       number_of_na_values = c(na_summary_1, na_summary_2))
     # report
     if (any(na_summary_final[["number_of_na_values"]] > 0)) {
-      message("The NA values will be omitted when scoring scale items.")
+      message("NA values were observed as follows:")
+      print(na_summary_final)
     } else {
       message("There were no NA values in any of the items.")
     }
-    print(na_summary_final)
   }
   # reverse code items
   if (!is.null(reverse_item_list)) {
@@ -100,11 +105,11 @@ score_scale_items <- function(
   ratings_dt <- data.table::setDT(items_after_rev_coding)[]
   # calculate mean
   if (operation == "mean") {
-    output <- rowMeans(ratings_dt, na.rm = TRUE)
+    output <- rowMeans(ratings_dt, na.rm = na.rm)
   }
   # calculate sum
   if (operation == "sum") {
-    output <- rowSums(ratings_dt, na.rm = TRUE)
+    output <- rowSums(ratings_dt, na.rm = na.rm)
   }
   # final output
   return(output)
