@@ -9,6 +9,8 @@
 #' @param counts a numeric vector containing counts for the bins
 #' (i.e., heights of the bins). By default, no input is required
 #' for this argument.
+#' @param percent logical. If \code{percent = TRUE}, percentages
+#' will be plotted rather than frequencies (default = FALSE).
 #' @param bin_fill_color color of the area inside each bin
 #' (default = "green4")
 #' @param bin_border_color color of the border around each bin
@@ -27,7 +29,8 @@
 #' @param cap_axis_lines logical. Should the axis lines be capped at the
 #' outer tick marks? (default = FALSE)
 #' @param x_axis_title title for x axis (default = "Value")
-#' @param y_axis_title title for y axis (default = "Count")
+#' @param y_axis_title title for y axis (default = "Count" or "Percentage",
+#' depending on the value of \code{percent})
 #' @param y_axis_title_vjust position of the y axis title (default = 0.85).
 #' @return the output will be a histogram, a ggplot object.
 #' @examples
@@ -35,6 +38,7 @@
 #' histogram_from_hist(1:100)
 #' histogram_from_hist(c(1:100, NA))
 #' histogram_from_hist(vector = mtcars[["mpg"]])
+#' histogram_from_hist(vector = mtcars[["mpg"]], percent = TRUE)
 #' histogram_from_hist(vector = mtcars[["mpg"]],
 #' x_axis_tick_marks = c(10, 25, 35), y_axis_title_vjust = 0.5,
 #' y_axis_title = "Freq", x_axis_title = "Values of mpg")
@@ -44,6 +48,7 @@ histogram_from_hist <- function(
     vector = NULL,
     breaks = NULL,
     counts = NULL,
+    percent = FALSE,
     bin_fill_color = "green4",
     bin_border_color = "black",
     bin_border_thickness = 1,
@@ -52,7 +57,7 @@ histogram_from_hist <- function(
     y_axis_tick_marks = NULL,
     cap_axis_lines = TRUE,
     x_axis_title = "Value",
-    y_axis_title = "Count",
+    y_axis_title = NULL,
     y_axis_title_vjust = 0.85) {
   # bind the vars locally to the function
   xmin <- xmax <- ymin <- ymax <- NULL
@@ -70,9 +75,17 @@ histogram_from_hist <- function(
     }
     # get bin heights etc from hist
     hist_results <- graphics::hist(vector)
-    if (is.null(breaks) & is.null(counts)) {
+    # frequncies or percentages
+    if (percent == TRUE) {
       breaks <- hist_results$breaks
-      counts <- hist_results$counts
+      counts <- hist_results$counts / sum(hist_results$counts) * 100
+      y_axis_title <- "Percentage"
+    } else {
+      if (is.null(breaks) & is.null(counts)) {
+        breaks <- hist_results$breaks
+        counts <- hist_results$counts
+        y_axis_title <- "Count"
+      }
     }
   }
   if (!is.null(breaks) | !is.null(counts)) {
@@ -98,7 +111,7 @@ histogram_from_hist <- function(
   g1 <- ggplot2::ggplot(data = df)
   g1 <- g1 + ggplot2::geom_rect(
     ggplot2::aes(xmin = xmin, xmax = xmax,
-        ymin = ymin, ymax = ymax),
+                 ymin = ymin, ymax = ymax),
     fill = bin_fill_color,
     color = bin_border_color,
     size = bin_border_thickness)
