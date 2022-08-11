@@ -8,6 +8,7 @@ histogram_from_hist(
   vector = NULL,
   breaks = NULL,
   counts = NULL,
+  percent = FALSE,
   bin_fill_color = "green4",
   bin_border_color = "black",
   bin_border_thickness = 1,
@@ -16,7 +17,7 @@ histogram_from_hist(
   y_axis_tick_marks = NULL,
   cap_axis_lines = TRUE,
   x_axis_title = "Value",
-  y_axis_title = "Count",
+  y_axis_title = NULL,
   y_axis_title_vjust = 0.85
 )
 }
@@ -29,6 +30,9 @@ By default, no input is required for this argument.}
 \item{counts}{a numeric vector containing counts for the bins
 (i.e., heights of the bins). By default, no input is required
 for this argument.}
+
+\item{percent}{logical. If \code{percent = TRUE}, percentages
+will be plotted rather than frequencies (default = FALSE).}
 
 \item{bin_fill_color}{color of the area inside each bin
 (default = "green4")}
@@ -56,7 +60,8 @@ outer tick marks? (default = FALSE)}
 
 \item{x_axis_title}{title for x axis (default = "Value")}
 
-\item{y_axis_title}{title for y axis (default = "Count")}
+\item{y_axis_title}{title for y axis (default = "Count" or "Percentage",
+depending on the value of \code{percent})}
 
 \item{y_axis_title_vjust}{position of the y axis title (default = 0.85).}
 }
@@ -72,6 +77,7 @@ in the \code{graphics} package.
 histogram_from_hist(1:100)
 histogram_from_hist(c(1:100, NA))
 histogram_from_hist(vector = mtcars[["mpg"]])
+histogram_from_hist(vector = mtcars[["mpg"]], percent = TRUE)
 histogram_from_hist(vector = mtcars[["mpg"]],
 x_axis_tick_marks = c(10, 25, 35), y_axis_title_vjust = 0.5,
 y_axis_title = "Freq", x_axis_title = "Values of mpg")

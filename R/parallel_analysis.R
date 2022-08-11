@@ -162,15 +162,15 @@ parallel_analysis <- function(
   # plot each layer
   g1 <- ggplot2::ggplot()
   # unadjusted eigenvalues
-  g1 <- g1 + ggplot2::geom_point(aes(
+  g1 <- g1 + ggplot2::geom_point(ggplot2::aes(
     x = component_number, y = unadjusted_eigenvalues),
     color = colors[2], size = dot_size)
-  g1 <- g1 + ggplot2::geom_line(aes(
+  g1 <- g1 + ggplot2::geom_line(ggplot2::aes(
     x = component_number, y = unadjusted_eigenvalues),
     color = colors[2], size = line_thickness,
     linetype = line_types[2])
   # label
-  g1 <- g1 + annotate(
+  g1 <- g1 + ggplot2::annotate(
     geom = "text",
     x = unadj_eigenvalue_label_x_pos,
     y = unadj_eigenvalue_label_y_pos,
@@ -181,15 +181,15 @@ parallel_analysis <- function(
     color = colors[2],
     fontface = "bold")
   # eigenvalues from randomly generated data
-  g1 <- g1 + ggplot2::geom_point(aes(
+  g1 <- g1 + ggplot2::geom_point(ggplot2::aes(
     x = component_number, y = eigenvalues_of_random_data),
     color = colors[1], size = dot_size)
-  g1 <- g1 + ggplot2::geom_line(aes(
+  g1 <- g1 + ggplot2::geom_line(ggplot2::aes(
     x = component_number, y = eigenvalues_of_random_data),
     color = colors[1], size = line_thickness,
     linetype = line_types[1])
   # label
-  g1 <- g1 + annotate(
+  g1 <- g1 + ggplot2::annotate(
     geom = "text",
     x = eigenvalue_random_label_x_pos,
     y = eigenvalue_random_label_y_pos,

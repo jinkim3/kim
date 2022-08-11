@@ -1,4 +1,4 @@
-# kim 0.5.72
+# kim 0.5.73
 * Highlights:
 * Added the following function(s): histogram_from_hist
 * Updated the following function(s) (and other functions that use them): 
