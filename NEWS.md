@@ -1,4 +1,4 @@
-# kim 0.5.102
+# kim 0.5.131
 * Highlights: Fixed the logistic regression section for
 spotlight_2_by_continuous
 * Added the following function(s): 
