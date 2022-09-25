@@ -1,12 +1,23 @@
-# kim 0.5.101
+# kim 0.5.102
+* Highlights: Fixed the logistic regression section for
+spotlight_2_by_continuous
+* Added the following function(s): 
+* Updated the following function(s) (and other functions that use them): 
+* Fixed bugs or errors in the following functions (and other functions
+that use them): spotlight_2_by_continuous
+* Critical improvement in the following functions (and other functions
+that use them): 
+* Undocumented functions added (see the function `und`):
+
+# kim 0.5.73
 * Highlights:
 * Added the following function(s): histogram_from_hist
 * Updated the following function(s) (and other functions that use them): 
 parallel_analysis, und, parallel_analysis, score_scale_items,
 histogram_from_hist
 * Fixed bugs or errors in the following functions (and other functions
-that use them): parallel_analysis, compare_dependent_rs,
-spotlight_2_by_continuous
+that use them): parallel_analysis
+compare_dependent_rs
 * Critical improvement in the following functions (and other functions
 that use them): 
 * Undocumented functions added (see the function `und`):

@@ -17,7 +17,9 @@
 #' @param iv_level_order order of levels in the independent
 #' variable for legend. By default, it will be set as levels of the
 #' independent variable ordered using R's base function \code{sort}.
-#' @param output_type type of output (default = "plot").
+#' @param output_type type of output (default = "plot"). Other
+#' possible values include "spotlight_results", "dt_for_plotting",
+#' "modified_dt"
 #' @param colors set colors for the two levels of the independent variable
 #' By default, \code{colors = c("red", "blue")}.
 #' @param observed_dots logical. If \code{observed_dots = TRUE}, the
@@ -241,6 +243,73 @@ spotlight_2_by_continuous <- function(
     plot_margin = ggplot2::unit(c(60, 30, 7, 7), "pt"),
     silent = FALSE
 ) {
+  # for testing
+  # data = NULL
+  # iv_name = NULL
+  # dv_name = NULL
+  # mod_name = NULL
+  # logistic = NULL
+  # covariate_name = NULL
+  # focal_values = NULL
+  # interaction_p_include = TRUE
+  # iv_level_order = NULL
+  # output_type = "plot"
+  # colors = c("red", "blue")
+  # dot_size = 3
+  # observed_dots = FALSE
+  # reg_lines = FALSE
+  # reg_line_size = 1
+  # lines_connecting_est_dv = TRUE
+  # lines_connecting_est_dv_size = 1
+  # estimated_dv_dot_shape = 15
+  # estimated_dv_dot_size = 6
+  # error_bar = "ci"
+  # error_bar_range = 0.95
+  # error_bar_tip_width = NULL
+  # error_bar_tip_width_percent = 8
+  # error_bar_thickness = 1
+  # error_bar_offset = NULL
+  # error_bar_offset_percent = 8
+  # simp_eff_bracket_leg_ht = NULL
+  # simp_eff_bracket_leg_ht_perc = 2
+  # simp_eff_bracket_offset = NULL
+  # simp_eff_bracket_offset_perc = 1
+  # simp_eff_bracket_color = "black"
+  # simp_eff_bracket_line_size = 1
+  # simp_eff_text_offset = NULL
+  # simp_eff_text_offset_percent = 7
+  # simp_eff_text_hjust = 0.5
+  # simp_eff_text_part_1 = "Simple Effect\n"
+  # simp_eff_text_color = "black"
+  # simp_eff_font_size = 5
+  # interaction_p_value_x = NULL
+  # interaction_p_value_y = NULL
+  # interaction_p_value_font_size = 6
+  # interaction_p_value_vjust = -1
+  # interaction_p_value_hjust = 0.5
+  # x_axis_breaks = NULL
+  # x_axis_limits = NULL
+  # x_axis_tick_mark_labels = NULL
+  # y_axis_breaks = NULL
+  # y_axis_limits = NULL
+  # x_axis_space_left_perc = 10
+  # x_axis_space_right_perc = 30
+  # y_axis_tick_mark_labels = NULL
+  # x_axis_title = NULL
+  # y_axis_title = NULL
+  # legend_title = NULL
+  # legend_position = "right"
+  # y_axis_title_vjust = 0.85
+  # round_decimals_int_p_value = 3
+  # jitter_x_percent = 0
+  # jitter_y_percent = 0
+  # dot_alpha = 0.2
+  # reg_line_alpha = 0.5
+  # jn_point_font_size = 6
+  # reg_line_types = c("solid", "dashed")
+  # caption = NULL
+  # plot_margin = ggplot2::unit(c(60, 30, 7, 7), "pt")
+  # silent = FALSE
   # installed packages
   installed_pkgs <- rownames(utils::installed.packages())
   # check if Package 'ggplot2' is installed
@@ -596,6 +665,10 @@ spotlight_2_by_continuous <- function(
   # add focal values
   dt2[, focal_value := focal_values]
   dt2[, focal_value_description := focal_value_description]
+  # ouptut spotlight results
+  if (output_type == "spotlight_results") {
+    return(dt2[])
+  }
   # parameters for plotting
   # min and max of x and y
   if (overlay == TRUE) {

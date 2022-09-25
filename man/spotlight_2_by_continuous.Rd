@@ -99,7 +99,9 @@ p-value for the interaction term?}
 variable for legend. By default, it will be set as levels of the
 independent variable ordered using R's base function \code{sort}.}
 
-\item{output_type}{type of output (default = "plot").}
+\item{output_type}{type of output (default = "plot"). Other
+possible values include "spotlight_results", "dt_for_plotting",
+"modified_dt"}
 
 \item{colors}{set colors for the two levels of the independent variable
 By default, \code{colors = c("red", "blue")}.}
