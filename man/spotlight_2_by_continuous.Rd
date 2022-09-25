@@ -305,5 +305,12 @@ error_bar_tip_width_percent = 3,
 simp_eff_text_offset_percent = 3,
 simp_eff_bracket_leg_ht_perc = 1,
 x_axis_breaks = seq(15, 22, 1))
+# spotlight for logistic regression
+spotlight_2_by_continuous(
+data = mtcars,
+iv_name = "am",
+dv_name = "vs",
+mod_name = "drat",
+logistic = TRUE)
 }
 }
