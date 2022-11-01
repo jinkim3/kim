@@ -76,6 +76,7 @@
 #' @param line_of_fit_size thickness of the lines of fit (default = 1)
 #' @examples
 #' \donttest{
+#' # typical example
 #' floodlight_2_by_continuous(
 #' data = mtcars,
 #' iv_name = "am",
@@ -89,6 +90,13 @@
 #' mod_name = "qsec",
 #' covariate_name = c("cyl", "hp"))
 #' }
+#' # adjust the jn point label positions
+#' floodlight_2_by_continuous(
+#' data = mtcars,
+#' iv_name = "am",
+#' dv_name = "mpg",
+#' mod_name = "qsec",
+#' jn_point_label_hjust = c(1, 0))
 #' @export
 #' @import data.table
 floodlight_2_by_continuous <- function(
@@ -263,15 +271,15 @@ floodlight_2_by_continuous <- function(
   mod_max_observed <- max(dt[, mod])
   # find the overlapping regions
   if (sig_inside_vs_outside == "inside") {
-    sig_region <- list(overlapping_interval(
+    sig_region <- list(kim::overlapping_interval(
       mod_min_observed, mod_max_observed,
       jn_points[["Lower"]], jn_points[["Higher"]]))
   } else if (sig_inside_vs_outside == "outside") {
     sig_region <- list(
-      overlapping_interval(
+      kim::overlapping_interval(
         mod_min_observed, mod_max_observed,
         -Inf, jn_points[["Lower"]]),
-      overlapping_interval(
+      kim::overlapping_interval(
         mod_min_observed, mod_max_observed,
         jn_points[["Higher"]], Inf))
   }
@@ -373,7 +381,7 @@ floodlight_2_by_continuous <- function(
           x = temp_range[j],
           y = Inf,
           label = round(temp_range[j], round_jn_point_labels),
-          hjust = jn_point_label_hjust[i], vjust = -0.5,
+          hjust = jn_point_label_hjust[j], vjust = -0.5,
           fontface = "bold",
           color = "black",
           size = jn_point_font_size)

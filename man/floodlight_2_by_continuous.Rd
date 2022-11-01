@@ -144,6 +144,7 @@ Kim (2021) \doi{10.5281/zenodo.4445388}
 }
 \examples{
 \donttest{
+# typical example
 floodlight_2_by_continuous(
 data = mtcars,
 iv_name = "am",
@@ -157,4 +158,11 @@ dv_name = "mpg",
 mod_name = "qsec",
 covariate_name = c("cyl", "hp"))
 }
+# adjust the jn point label positions
+floodlight_2_by_continuous(
+data = mtcars,
+iv_name = "am",
+dv_name = "mpg",
+mod_name = "qsec",
+jn_point_label_hjust = c(1, 0))
 }
