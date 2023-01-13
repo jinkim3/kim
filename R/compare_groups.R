@@ -28,8 +28,8 @@
 #' @param mann_whitney if \code{TRUE}, Mann-Whitney test results will be
 #' included in the pairwise comparison data.table.
 #' If \code{FALSE}, Mann-Whitney tests will not be performed.
-#' @param t_test_stats if \code{t_test_stats = TRUE}, t-test statistic
-#' and degrees of freedom will be included in the pairwise comparison
+#' @param t_test_stats if \code{t_test_stats = FALSE}, t-test statistic
+#' and degrees of freedom will be excluded in the pairwise comparison
 #' data.table.
 #' @param t_test_df_decimals number of decimals for the degrees of freedom
 #' in t-tests (default = 1)
@@ -95,7 +95,7 @@ compare_groups <- function(
   cohen_d_w_ci = TRUE,
   bonferroni = FALSE,
   mann_whitney = TRUE,
-  t_test_stats = FALSE,
+  t_test_stats = TRUE,
   t_test_df_decimals = 1,
   round_p = 3,
   save_as_png = FALSE,
@@ -105,8 +105,8 @@ compare_groups <- function(
   x_limits = NULL,
   x_breaks = NULL,
   x_labels = NULL,
-  width = 4000,
-  height = 3000,
+  width = 5000,
+  height = 3600,
   units = "px",
   res = 300,
   layout_matrix = NULL,
