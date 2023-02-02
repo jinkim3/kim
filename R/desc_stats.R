@@ -7,10 +7,19 @@
 #' of descriptive statistics; if \code{output_type = "dt"}, return a
 #' data.table of descriptive statistics (default = "vector")
 #' @param sigfigs number of significant digits to round to (default = 3)
+#' @param se_of_mean logical. Should the standard errors around
+#' the mean be included in the descriptive stats?
+#' (default = FALSE)
 #' @param ci logical. Should 95% CI be included in the descriptive stats?
-#' (default = TRUE)
+#' (default = FALSE)
 #' @param pi logical. Should 95% PI be included in the descriptive stats?
-#' (default = TRUE)
+#' (default = FALSE)
+#' @param skewness logical. Should the skewness statistic be included
+#' in the descriptive stats?
+#' (default = FALSE)
+#' @param kurtosis logical. Should the kurtosis statistic be included
+#' in the descriptive stats?
+#' (default = FALSE)
 #' @param notify_na_count if \code{TRUE}, notify how many observations
 #' were removed due to missing values. By default, NA count will be printed
 #' only if there are any NA values.
@@ -22,17 +31,24 @@
 #' @examples
 #' desc_stats(1:100)
 #' desc_stats(1:100, ci = TRUE, pi = TRUE, sigfigs = 2)
+#' desc_stats(1:100, se_of_mean = TRUE,
+#' ci = TRUE, pi = TRUE, sigfigs = 2,
+#' skewness = TRUE, kurtosis = TRUE)
 #' desc_stats(c(1:100, NA))
-#' desc_stats(vector = c(1:100, NA), output_type = "dt")
+#' example_dt <- desc_stats(vector = c(1:100, NA), output_type = "dt")
+#' example_dt
 #' @export
 desc_stats <- function(
   vector = NULL,
   output_type = "vector",
   sigfigs = 3,
-  ci = TRUE,
-  pi = TRUE,
+  se_of_mean = FALSE,
+  ci = FALSE,
+  pi = FALSE,
+  skewness = FALSE,
+  kurtosis = FALSE,
   notify_na_count = NULL,
-  print_dt = TRUE) {
+  print_dt = FALSE) {
   # deal with NA values
   v_no_na <- vector[!is.na(vector)]
   na_count <- length(vector) - length(v_no_na)
@@ -53,7 +69,6 @@ desc_stats <- function(
   median <- stats::median(v_no_na)
   min <- min(v_no_na)
   max <- max(v_no_na)
-  se_of_mean <- se_of_mean(v_no_na, notify_na_count = FALSE)
   if (ci == TRUE) {
     ci_95_ll <- tryCatch(
       as.numeric(stats::t.test(v_no_na)[["conf.int"]][1]),
@@ -72,8 +87,6 @@ desc_stats <- function(
           stats::qt(0.975, length(v_no_na) - 1)),
       warning = function(w) NA_real_, error = function(e) NA_real_)
   }
-  skewness <- kim::skewness(v_no_na)
-  kurtosis <- kim::kurtosis(v_no_na)
   # stats to report
   stats_to_report <- list(
     n = n,
@@ -81,8 +94,13 @@ desc_stats <- function(
     sd = sd,
     median = median,
     min = min,
-    max = max,
-    se_of_mean = se_of_mean)
+    max = max)
+  # add se of mean
+  if (se_of_mean == TRUE) {
+    stats_to_report <- c(
+      stats_to_report,
+      se_of_mean = kim::se_of_mean(v_no_na, notify_na_count = FALSE))
+  }
   # add ci
   if (ci == TRUE) {
     stats_to_report <- c(
@@ -97,13 +115,20 @@ desc_stats <- function(
       pi_95_ll = pi_95_ll,
       pi_95_ul = pi_95_ul)
   }
-  # add skewness and kurtosis
-  stats_to_report <- c(
-    stats_to_report,
-    skewness = skewness,
-    kurtosis = kurtosis)
+  # add skewness
+  if (skewness == TRUE) {
+    stats_to_report <- c(
+      stats_to_report,
+      skewness = kim::skewness(v_no_na))
+  }
+  # add kurtosis
+  if (kurtosis == TRUE) {
+    stats_to_report <- c(
+      stats_to_report,
+      kurtosis = kim::kurtosis(v_no_na))
+  }
   # stats in a data table format
-  dt <- setDT(stats_to_report)
+  dt <- data.table::setDT(stats_to_report)
   # round
   stats_to_round <- c(
     "mean", "sd", "median", "se_of_mean", "ci_95_ll", "ci_95_ul",
