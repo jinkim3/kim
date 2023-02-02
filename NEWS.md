@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # kim 0.5.135
+=======
+# kim 0.5.134
+>>>>>>> d7de5c665dc9541fef4d9f0efbaed344e15303a1
 * Highlights: Fixed the logistic regression section for
 spotlight_2_by_continuous
 * Added the following function(s): 
