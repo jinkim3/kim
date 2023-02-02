@@ -1,4 +1,4 @@
-# kim 0.5.137
+# kim 0.5.138
 * Highlights: Fixed the logistic regression section for
 spotlight_2_by_continuous
 * Added the following function(s): z_score, standardize

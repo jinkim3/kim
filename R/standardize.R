@@ -1,6 +1,6 @@
 #' Standardize
 #'
-#' Calculate z-scores (i.e., standardize, normalize, or obtain the
+#' Standardize (i.e., normalize, obtain z-scores, or obtain the
 #' standard scores)
 #'
 #' @param x a numeric vector
