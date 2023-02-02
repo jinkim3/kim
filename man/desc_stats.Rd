@@ -8,10 +8,13 @@ desc_stats(
   vector = NULL,
   output_type = "vector",
   sigfigs = 3,
-  ci = TRUE,
-  pi = TRUE,
+  se_of_mean = FALSE,
+  ci = FALSE,
+  pi = FALSE,
+  skewness = FALSE,
+  kurtosis = FALSE,
   notify_na_count = NULL,
-  print_dt = TRUE
+  print_dt = FALSE
 )
 }
 \arguments{
@@ -23,11 +26,23 @@ data.table of descriptive statistics (default = "vector")}
 
 \item{sigfigs}{number of significant digits to round to (default = 3)}
 
+\item{se_of_mean}{logical. Should the standard errors around
+the mean be included in the descriptive stats?
+(default = FALSE)}
+
 \item{ci}{logical. Should 95\% CI be included in the descriptive stats?
-(default = TRUE)}
+(default = FALSE)}
 
 \item{pi}{logical. Should 95\% PI be included in the descriptive stats?
-(default = TRUE)}
+(default = FALSE)}
+
+\item{skewness}{logical. Should the skewness statistic be included
+in the descriptive stats?
+(default = FALSE)}
+
+\item{kurtosis}{logical. Should the kurtosis statistic be included
+in the descriptive stats?
+(default = FALSE)}
 
 \item{notify_na_count}{if \code{TRUE}, notify how many observations
 were removed due to missing values. By default, NA count will be printed
@@ -47,6 +62,10 @@ Returns descriptive statistics for a numeric vector.
 \examples{
 desc_stats(1:100)
 desc_stats(1:100, ci = TRUE, pi = TRUE, sigfigs = 2)
+desc_stats(1:100, se_of_mean = TRUE,
+ci = TRUE, pi = TRUE, sigfigs = 2,
+skewness = TRUE, kurtosis = TRUE)
 desc_stats(c(1:100, NA))
-desc_stats(vector = c(1:100, NA), output_type = "dt")
+example_dt <- desc_stats(vector = c(1:100, NA), output_type = "dt")
+example_dt
 }
