@@ -1,8 +1,8 @@
-# kim 0.5.151
+# kim 0.5.152
 * Highlights: Replaced the histogram function and replaced it
 with the function histogram_from_hist. Now executing the histogram 
 function will execute the histogram_from_hist function
-* Added the following function(s): 
+* Added the following function(s): odds_ratio
 * Updated the following function(s) (and other functions that use them): 
 * Fixed bugs or errors in the following functions (and other functions
 that use them): 
