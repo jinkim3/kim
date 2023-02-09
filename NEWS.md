@@ -1,3 +1,15 @@
+# kim 0.5.151
+* Highlights: Replaced the histogram function and replaced it
+with the function histogram_from_hist. Now executing the histogram 
+function will execute the histogram_from_hist function
+* Added the following function(s): 
+* Updated the following function(s) (and other functions that use them): 
+* Fixed bugs or errors in the following functions (and other functions
+that use them): 
+* Critical improvement in the following functions (and other functions
+that use them): 
+* Undocumented functions added (see the function `und`):
+
 # kim 0.5.138
 * Highlights: Fixed the logistic regression section for
 spotlight_2_by_continuous

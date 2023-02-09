@@ -6,62 +6,80 @@
 \usage{
 histogram(
   vector = NULL,
-  number_of_bins = 30,
-  x_tick_marks = NULL,
-  y_tick_marks = NULL,
-  fill_color = "cyan4",
-  border_color = "black",
-  y_axis_title_vjust = 0.85,
-  x_axis_title = NULL,
+  breaks = NULL,
+  counts = NULL,
+  percent = FALSE,
+  bin_fill_color = "green4",
+  bin_border_color = "black",
+  bin_border_thickness = 1,
+  notify_na_count = NULL,
+  x_axis_tick_marks = NULL,
+  y_axis_tick_marks = NULL,
+  cap_axis_lines = TRUE,
+  x_axis_title = "Value",
   y_axis_title = NULL,
-  cap_axis_lines = FALSE,
-  notify_na_count = NULL
+  y_axis_title_vjust = 0.85
 )
 }
 \arguments{
 \item{vector}{a numeric vector}
 
-\item{number_of_bins}{number of bins for the histogram (default = 30)}
+\item{breaks}{a numeric vector indicating breaks for the bins.
+By default, no input is required for this argument.}
 
-\item{x_tick_marks}{a vector of values at which to place tick marks
-on the x axis (e.g., setting \code{x_tick_marks = seq(0, 10, 5)} will
-put tick marks at 0, 5, and 10.)}
+\item{counts}{a numeric vector containing counts for the bins
+(i.e., heights of the bins). By default, no input is required
+for this argument.}
 
-\item{y_tick_marks}{a vector of values at which to place tick marks
-on the y axis (e.g., setting \code{y_tick_marks = seq(0, 10, 5)} will
-put tick marks at 0, 5, and 10.)}
+\item{percent}{logical. If \code{percent = TRUE}, percentages
+will be plotted rather than frequencies (default = FALSE).}
 
-\item{fill_color}{color for inside of the bins (default = "cyan4")}
+\item{bin_fill_color}{color of the area inside each bin
+(default = "green4")}
 
-\item{border_color}{color for borders of the bins (default = "black")}
+\item{bin_border_color}{color of the border around each bin
+(default = "black")}
 
-\item{y_axis_title_vjust}{position of the y axis title (default = 0.85).}
-
-\item{x_axis_title}{title for x axis (default = "Value")}
-
-\item{y_axis_title}{title for y axis (default = "Count")}
-
-\item{cap_axis_lines}{logical. Should the axis lines be capped at the
-outer tick marks? (default = FALSE)}
+\item{bin_border_thickness}{thickness of the border around each bin
+(default = 1)}
 
 \item{notify_na_count}{if \code{TRUE}, notify how many observations
 were removed due to missing values. By default, NA count will be printed
 only if there are any NA values.}
+
+\item{x_axis_tick_marks}{a vector of values at which to place tick marks
+on the x axis (e.g., setting \code{x_axis_tick_marks = seq(0, 10, 5)} will
+put tick marks at 0, 5, and 10.)}
+
+\item{y_axis_tick_marks}{a vector of values at which to place tick marks
+on the y axis (e.g., setting \code{y_axis_tick_marks = seq(0, 10, 5)} will
+put tick marks at 0, 5, and 10.)}
+
+\item{cap_axis_lines}{logical. Should the axis lines be capped at the
+outer tick marks? (default = FALSE)}
+
+\item{x_axis_title}{title for x axis (default = "Value")}
+
+\item{y_axis_title}{title for y axis (default = "Count" or "Percentage",
+depending on the value of \code{percent})}
+
+\item{y_axis_title_vjust}{position of the y axis title (default = 0.85).}
 }
 \value{
 the output will be a histogram, a ggplot object.
 }
 \description{
-Create a histogram
+Create a histogram based on the output of the \code{hist} function
+in the \code{graphics} package.
 }
 \examples{
 \donttest{
 histogram(1:100)
 histogram(c(1:100, NA))
 histogram(vector = mtcars[["mpg"]])
-histogram(vector = mtcars[["mpg"]], x_tick_marks = seq(10, 36, 2))
-histogram(vector = mtcars[["mpg"]], x_tick_marks = seq(10, 36, 2),
-y_tick_marks = seq(0, 8, 2), y_axis_title_vjust = 0.5,
+histogram(vector = mtcars[["mpg"]], percent = TRUE)
+histogram(vector = mtcars[["mpg"]],
+x_axis_tick_marks = c(10, 25, 35), y_axis_title_vjust = 0.5,
 y_axis_title = "Freq", x_axis_title = "Values of mpg")
 }
 }
