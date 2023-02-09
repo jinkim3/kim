@@ -1,4 +1,4 @@
-# kim 0.5.152
+# kim 0.5.153
 * Highlights: Replaced the histogram function and replaced it
 with the function histogram_from_hist. Now executing the histogram 
 function will execute the histogram_from_hist function
