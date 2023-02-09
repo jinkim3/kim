@@ -38,9 +38,10 @@ odds_ratio <- function(
     stop("The input for 'ci' must be in the range [0, 1).")
   }
   # contingency table
-  if (!is.null(contingency_table)) {
+  if (is.null(contingency_table)) {
     # convert to data.table
-    dt <- data.table::setDT(data.table::copy(data))
+    dt <- data.table::setDT(data.table::copy(data))[
+      , c(iv_name, dv_name), with = FALSE]
     # remove rows with na
     dt <- stats::na.omit(dt)
     # check if iv is binary
