@@ -118,9 +118,9 @@ cohen_d_borenstein <- function(
   }
   # "the variance of d (to a very good approximation)"
   # p.27 of Borenstein et al. (2009)
-  v_d <- (n_1 + n_2) / (n_1 * n_2) + d ^ 2 / (2 * (n_1 + n_2))
+  var_of_d <- (n_1 + n_2) / (n_1 * n_2) + d ^ 2 / (2 * (n_1 + n_2))
   # standard error of d
-  se_d <- sqrt(v_d)
+  se_d <- sqrt(var_of_d)
   # t test for finding ncp
   if (direction == "2_minus_1") {
     t_test_results <- stats::t.test(v2, v1)
@@ -150,7 +150,7 @@ cohen_d_borenstein <- function(
   # output
   if (output_type %in% c("all", "d_var_se_and_ci")) {
     message("Standard error of Cohen's d is approximate.")
-    output <- c(cohen_d = d, v_d = v_d, se_d = se_d, ci)
+    output <- c(cohen_d = d, var_of_d = var_of_d, se_d = se_d, ci)
   } else if (output_type %in% c("d_se_and_ci")) {
     message("Standard error of Cohen's d is approximate.")
     output <- c(cohen_d = d, se_d = se_d, ci)
