@@ -12,6 +12,8 @@
 #' less than 1 and greater than or equal to 0. By default, \code{ci = 0.95}.
 #' If \code{ci = TRUE}, the default value of 0.95 will be used. If \code{
 #' ci = FALSE}, no confidence interval will be estimated.
+#' @param var_include logical. Should the output include
+#' variance of the log of odds ratio? (default = FALSE)
 #' @param invert logical. Whether the inverse of the odds ratio
 #' (i.e., 1 / odds ratio) should be returned.
 #' @examples
@@ -21,6 +23,8 @@
 #' log_odds_ratio(contingency_table = matrix(c(5, 10, 95, 90), nrow = 2),
 #' invert = TRUE)
 #' log_odds_ratio(contingency_table = matrix(c(34, 39, 16, 11), nrow = 2))
+#' log_odds_ratio(contingency_table = matrix(c(34, 39, 16, 11), nrow = 2),
+#' var_include = TRUE)
 #' }
 #' @export
 log_odds_ratio <- function(
@@ -29,6 +33,7 @@ log_odds_ratio <- function(
     dv_name = NULL,
     contingency_table = NULL,
     ci = 0.95,
+    var_include = FALSE,
     invert = FALSE) {
   # check if ci input is valid
   if (ci == TRUE) {
@@ -72,16 +77,16 @@ log_odds_ratio <- function(
     odds_ratio <- 1 / odds_ratio
   }
   log_odds_ratio <- log(odds_ratio)
+  # approximate variance
+  var_of_log_odds_ratio <-
+    1 / contingency_table[1, 1] +
+    1 / contingency_table[1, 2] +
+    1 / contingency_table[2, 1] +
+    1 / contingency_table[2, 2]
+  se_of_log_odds_ratio <- sqrt(var_of_log_odds_ratio)
   if (ci == FALSE) {
     output <- c(ln_odds_ratio = log_odds_ratio)
   } else {
-    # approximate variance
-    var_of_log_odds_ratio <-
-      1 / contingency_table[1, 1] +
-      1 / contingency_table[1, 2] +
-      1 / contingency_table[2, 1] +
-      1 / contingency_table[2, 2]
-    se_of_log_odds_ratio <- sqrt(var_of_log_odds_ratio)
     # critical values for estimating the confidence interval
     cv <- c((1 - ci) / 2, 1 - (1 - ci) / 2)
     odds_ratio_ci <- exp(
@@ -93,6 +98,9 @@ log_odds_ratio <- function(
       log_odds_ratio = log_odds_ratio,
       log_odds_ratio_ll = log(odds_ratio_ll),
       log_odds_ratio_ul = log(odds_ratio_ul))
+  }
+  if (var_include == TRUE) {
+    output <- c(output, var_of_log_odds_ratio = var_of_log_odds_ratio)
   }
   return(output)
 }

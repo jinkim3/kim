@@ -10,6 +10,7 @@ log_odds_ratio(
   dv_name = NULL,
   contingency_table = NULL,
   ci = 0.95,
+  var_include = FALSE,
   invert = FALSE
 )
 }
@@ -28,6 +29,9 @@ less than 1 and greater than or equal to 0. By default, \code{ci = 0.95}.
 If \code{ci = TRUE}, the default value of 0.95 will be used. If \code{
 ci = FALSE}, no confidence interval will be estimated.}
 
+\item{var_include}{logical. Should the output include
+variance of the log of odds ratio? (default = FALSE)}
+
 \item{invert}{logical. Whether the inverse of the odds ratio
 (i.e., 1 / odds ratio) should be returned.}
 }
@@ -42,5 +46,7 @@ log_odds_ratio(contingency_table = matrix(c(5, 10, 95, 90), nrow = 2))
 log_odds_ratio(contingency_table = matrix(c(5, 10, 95, 90), nrow = 2),
 invert = TRUE)
 log_odds_ratio(contingency_table = matrix(c(34, 39, 16, 11), nrow = 2))
+log_odds_ratio(contingency_table = matrix(c(34, 39, 16, 11), nrow = 2),
+var_include = TRUE)
 }
 }
