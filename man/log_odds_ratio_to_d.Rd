@@ -4,11 +4,14 @@
 \alias{log_odds_ratio_to_d}
 \title{Convert log odds ratio to Cohen's d}
 \usage{
-log_odds_ratio_to_d(log_odds_ratio = NULL)
+log_odds_ratio_to_d(log_odds_ratio = NULL, unname = TRUE)
 }
 \arguments{
 \item{log_odds_ratio}{log odds ratio (the input can be a vector of values),
 which will be converted to Cohen's d}
+
+\item{unname}{logical. Should the names from the input be removed?
+(default = TRUE)}
 }
 \description{
 Convert log odds ratio to Cohen'd (standardized mean difference),

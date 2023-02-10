@@ -1,10 +1,11 @@
-# kim 0.5.163
+# kim 0.5.165
 * Highlights: Replaced the histogram function and replaced it
 with the function histogram_from_hist. Now executing the histogram 
 function will execute the histogram_from_hist function
 * Added the following function(s): odds_ratio, log_odds_ratio, 
-log_odds_ratio_to_d, cohen_d_to_r
+log_odds_ratio_to_d, cohen_d_to_r, weighted_mean_effect_size
 * Updated the following function(s) (and other functions that use them): 
+forest_plot
 * Fixed bugs or errors in the following functions (and other functions
 that use them): 
 * Critical improvement in the following functions (and other functions

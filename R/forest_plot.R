@@ -117,6 +117,19 @@ forest_plot <- function(
       "'kim::install_all_dependencies()'"))
     return()
   }
+  # check inputs ----
+  if (is.null(estimates)) {
+    stop("Please provide an input for the 'estimates' argument.")
+  }
+  if (is.null(estimate_ci_ll)) {
+    stop("Please provide an input for the 'estimate_ci_ll' argument.")
+  }
+  if (is.null(estimate_ci_ul)) {
+    stop("Please provide an input for the 'estimate_ci_ul' argument.")
+  }
+  if (is.null(weights)) {
+    stop("Please provide an input for the 'weights' argument.")
+  }
   # data table of values for plotting
   dt1 <- data.table::data.table(
     estimates, estimate_ci_ll, estimate_ci_ul)
