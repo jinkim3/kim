@@ -1,4 +1,4 @@
-# kim 0.5.167
+# kim 0.5.168
 * Highlights: Replaced the histogram function and replaced it
 with the function histogram_from_hist. Now executing the histogram 
 function will execute the histogram_from_hist function
@@ -8,7 +8,7 @@ var_of_log_odds_ratio_to_var_of_d
 * Updated the following function(s) (and other functions that use them): 
 forest_plot, cohen_d_borenstein
 * Fixed bugs or errors in the following functions (and other functions
-that use them): 
+that use them): cohen_d_borenstein
 * Critical improvement in the following functions (and other functions
 that use them): 
 * Undocumented functions added (see the function `und`):

@@ -103,7 +103,7 @@ cohen_d_borenstein <- function(
   mean_2 <- mean(v2, na.rm = TRUE)
   # n
   n_1 <- sum(!is.na(v1))
-  n_2 <- sum(!is.na(v1))
+  n_2 <- sum(!is.na(v2))
   # sd
   sd_1 <- stats::sd(v1, na.rm = TRUE)
   sd_2 <- stats::sd(v2, na.rm = TRUE)
