@@ -17,7 +17,7 @@ log_odds_ratio_to_d <- function(
     log_odds_ratio = NULL,
     unname = TRUE) {
   d <- log_odds_ratio * sqrt(3) / pi
-  if (unname = TRUE) {
+  if (unname == TRUE) {
     d <- unname(d)
   }
   return(d)
