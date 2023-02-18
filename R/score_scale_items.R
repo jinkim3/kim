@@ -87,7 +87,7 @@ score_scale_items <- function(
       message("NA values were observed as follows:")
       print(na_summary_final)
     } else {
-      message("There were no NA values in any of the items.")
+      message("Good! There were no NA values in any of the items.")
     }
   }
   # reverse code items
