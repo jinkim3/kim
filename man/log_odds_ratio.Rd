@@ -24,7 +24,7 @@ log_odds_ratio(
 \item{contingency_table}{a contingency table, which can be directly
 entered as an input for calculating the odds ratio}
 
-\item{ci}{size of the confidence interval. Input can be any value
+\item{ci}{width of the confidence interval. Input can be any value
 less than 1 and greater than or equal to 0. By default, \code{ci = 0.95}.
 If \code{ci = TRUE}, the default value of 0.95 will be used. If \code{
 ci = FALSE}, no confidence interval will be estimated.}

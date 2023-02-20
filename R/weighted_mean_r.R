@@ -7,7 +7,7 @@
 #' @param r a (vector of) correlation coefficient(s)
 #' @param n a (vector of) sample size(s)
 #' @param sigfigs number of significant digits to round to (default = 3)
-#' @param ci size of the confidence interval. Input can be any value
+#' @param ci width of the confidence interval. Input can be any value
 #' less than 1 and greater than or equal to 0. By default, \code{ci = 0.95}.
 #' If \code{ci = TRUE}, the default value of 0.95 will be used. If \code{
 #' ci = FALSE}, no confidence interval will be estimated.

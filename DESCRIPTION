@@ -1,6 +1,6 @@
 Package: kim
 Title: A Toolkit for Behavioral Scientists
-Version: 0.5.169
+Version: 0.5.170
 Authors@R: 
     person(given = "Jin",
            family = "Kim",
@@ -27,7 +27,9 @@ Imports:
 Suggests:
     boot,
     ggplot2,
-    moments
+    moments,
+    testthat (>= 3.0.0)
 Encoding: UTF-8
 RoxygenNote: 7.2.3
 Roxygen: list(markdown = TRUE)
+Config/testthat/edition: 3

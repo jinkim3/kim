@@ -6,7 +6,7 @@
 #' @param df degrees of freedom associated with the noncentrality parameters
 #' @param initial_value initial value of the noncentrality parameter for
 #' optimization (default = 0). Adjust this value if results look strange.
-#' @param ci range of the confidence interval associated with the
+#' @param ci width of the confidence interval associated with the
 #' noncentrality parameters (default = 0.95)
 #' @examples
 #' \donttest{

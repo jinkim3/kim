@@ -5,6 +5,10 @@
 #'
 #' @param effect_sizes effect sizes (e.g., standardized mean differences)
 #' @param effect_size_variances within-study variances
+#' @param ci width of the confidence interval (default = 0.95)
+#' @param one_tailed logical. If \code{one_tailed = FALSE}, a two-tailed
+#' p-value will be calculated. If \code{one_tailed = TRUE}, a one-tailed
+#' p-value will be calculated (default = FALSE)
 #' @examples
 #' \dontrun{
 #' weighted_mean_effect_size(

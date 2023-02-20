@@ -73,7 +73,7 @@
 #' rounded? (default = 3)
 #' @param round_jn_point_labels To how many digits after the
 #' decimal point should the jn point labels be rounded? (default = 2)
-#' @param line_of_fit_size thickness of the lines of fit (default = 1)
+#' @param line_of_fit_thickness thickness of the lines of fit (default = 1)
 #' @examples
 #' \donttest{
 #' # typical example
@@ -127,7 +127,7 @@ floodlight_2_by_continuous <- function(
     y_axis_title = NULL,
     legend_title = NULL,
     round_decimals_int_p_value = 3,
-    line_of_fit_size = 1,
+    line_of_fit_thickness = 1,
     round_jn_point_labels = 2
 ) {
   # installed packages
@@ -172,13 +172,8 @@ floodlight_2_by_continuous <- function(
   dv <- iv <- iv_binary <- iv_factor <- mod <- NULL
   # convert to data.table
   dt <- data.table::setDT(data.table::copy(data))
-  # columns to remove
-  cols_to_remove <- setdiff(names(dt), c(
-    iv_name, dv_name, mod_name, covariate_name))
   # remove columns not needed for analysis
-  if (length(cols_to_remove) > 0) {
-    dt[, (cols_to_remove) := NULL]
-  }
+  dt <- dt[, c(iv_name, dv_name, mod_name, covariate_name), with = FALSE]
   # remove rows with na
   dt <- stats::na.omit(dt)
   # order and rename columns
@@ -322,7 +317,7 @@ floodlight_2_by_continuous <- function(
       formula = y ~ x,
       method = "lm",
       se = FALSE,
-      size = line_of_fit_size)
+      linewidth = line_of_fit_thickness)
     g1 <- g1 + ggplot2::scale_linetype_manual(
       values = reg_line_types)
   }
@@ -371,7 +366,7 @@ floodlight_2_by_continuous <- function(
         g1 <- g1 + ggplot2::geom_vline(
           xintercept = temp_range[j],
           linetype = jn_line_types[j],
-          size = 1)
+          linewidth = 1)
         # label jn points
         if (is.null(jn_point_label_hjust)) {
           jn_point_label_hjust <- rep(0.5, length(temp_range))
