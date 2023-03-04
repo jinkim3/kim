@@ -1,4 +1,4 @@
-# kim 0.5.170
+# kim 0.5.171
 * Highlights: Replaced the histogram function and replaced it
 with the function histogram_from_hist. Now executing the histogram 
 function will execute the histogram_from_hist function
@@ -6,7 +6,7 @@ function will execute the histogram_from_hist function
 log_odds_ratio_to_d, cohen_d_to_r, weighted_mean_effect_size,
 var_of_log_odds_ratio_to_var_of_d
 * Updated the following function(s) (and other functions that use them): 
-forest_plot, cohen_d_borenstein, score_scale_items
+forest_plot, cohen_d_borenstein, score_scale_items, z_score
 * Fixed bugs or errors in the following functions (and other functions
 that use them): cohen_d_borenstein, floodlight_2_by_continuous
 * Critical improvement in the following functions (and other functions

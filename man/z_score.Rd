@@ -4,10 +4,13 @@
 \alias{z_score}
 \title{z score}
 \usage{
-z_score(x = NULL)
+z_score(x = NULL, na.rm = TRUE)
 }
 \arguments{
 \item{x}{a numeric vector}
+
+\item{na.rm}{logical. If \code{na.rm = TRUE}, NA values in the vector
+will be removed before calculating z-scores (default = TRUE).}
 }
 \value{
 the output will be a vector of z-scores.
