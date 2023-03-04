@@ -1,6 +1,6 @@
-# kim 0.5.201
+# kim 0.5.202
 * Critical fix or improvement in the following functions (and other 
-functions that use them): z_score
+functions that use them): z_score*
 * Highlights: Replaced the histogram function and replaced it
 with the function histogram_from_hist. Now executing the histogram 
 function will execute the histogram_from_hist function
