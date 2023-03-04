@@ -10,5 +10,5 @@
 #' z_score(1:10)
 #' @export
 z_score <- function(x = NULL, na.rm = TRUE) {
-  return(x - mean(x, na.rm = na.rm) / stats::sd(x, na.rm = na.rm))
+  return((x - mean(x, na.rm = na.rm)) / stats::sd(x, na.rm = na.rm))
 }

@@ -1,4 +1,6 @@
-# kim 0.5.171
+# kim 0.5.201
+* Critical fix or improvement in the following functions (and other 
+functions that use them): z_score
 * Highlights: Replaced the histogram function and replaced it
 with the function histogram_from_hist. Now executing the histogram 
 function will execute the histogram_from_hist function
@@ -9,8 +11,6 @@ var_of_log_odds_ratio_to_var_of_d
 forest_plot, cohen_d_borenstein, score_scale_items, z_score
 * Fixed bugs or errors in the following functions (and other functions
 that use them): cohen_d_borenstein, floodlight_2_by_continuous
-* Critical improvement in the following functions (and other functions
-that use them): 
 * Undocumented functions added (see the function `und`):
 
 # kim 0.5.138
