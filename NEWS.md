@@ -1,4 +1,4 @@
-# kim 0.5.206
+# kim 0.5.207
 * Added the following function(s): contingency_table, chi_squared_test
 * Updated the following function(s) (and other functions that use them): 
 chi_squared_test_pairwise, odds_ratio

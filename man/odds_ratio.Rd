@@ -10,6 +10,7 @@ odds_ratio(
   dv_name = NULL,
   contingency_table = NULL,
   ci = 0.95,
+  round_ci_limits = 2,
   invert = FALSE
 )
 }
@@ -27,6 +28,9 @@ entered as an input for calculating the odds ratio}
 less than 1 and greater than or equal to 0. By default, \code{ci = 0.95}.
 If \code{ci = TRUE}, the default value of 0.95 will be used. If \code{
 ci = FALSE}, no confidence interval will be estimated.}
+
+\item{round_ci_limits}{number of decimal places to which to
+round the limits of the confidence interval (default = 2)}
 
 \item{invert}{logical. Whether the inverse of the odds ratio
 (i.e., 1 / odds ratio) should be returned.}

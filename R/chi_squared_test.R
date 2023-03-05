@@ -19,6 +19,8 @@
 #' If \code{odds_ratio_ci = TRUE}, the default value of 0.95 will be used.
 #' If \code{odds_ratio_ci = FALSE}, no confidence interval will be estimated
 #' for the odds ratio.
+#' @param round_odds_ratio_ci_limits number of decimal places to which to
+#' round the limits of the odds ratio's confidence interval (default = 2)
 #' @examples
 #' chi_squared_test(data = mtcars, iv_name = "cyl", dv_name = "am")
 #' # if the iv has only two levels, odds ratio will also be calculated
@@ -32,7 +34,8 @@ chi_squared_test <- function(
   round_p = 3,
   sigfigs_proportion = 2,
   correct = TRUE,
-  odds_ratio_ci = 0.95
+  odds_ratio_ci = 0.95,
+  round_odds_ratio_ci_limits = 2
 ) {
   # make sure the dv has only two levels of value
   values_of_dv <- unique(data[[dv_name]])
@@ -98,6 +101,7 @@ chi_squared_test <- function(
   if (length(values_of_iv) == 2) {
     kim::odds_ratio(
       data = data, iv_name = iv_name, dv_name = dv_name,
-      ci = odds_ratio_ci)
+      ci = odds_ratio_ci,
+      round_ci_limits = round_odds_ratio_ci_limits)
   }
 }
