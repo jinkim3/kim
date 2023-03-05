@@ -6,10 +6,8 @@
 \usage{
 chi_squared_test(
   data = NULL,
-  row_var_name = NULL,
-  col_var_name = NULL,
-  row = NULL,
-  col = NULL,
+  iv_name = NULL,
+  dv_name = NULL,
   sigfigs = 2,
   correct = TRUE
 )
@@ -17,20 +15,12 @@ chi_squared_test(
 \arguments{
 \item{data}{a data object (a data frame or a data.table)}
 
-\item{row_var_name}{name of the variable whose values will fill the
-rows of the contingency table}
+\item{iv_name}{name of the independent variable}
 
-\item{col_var_name}{name of the variable whose values will fill the
-columns of the contingency table}
-
-\item{row}{a vector whose values will fill the rows of the
-contingency table}
-
-\item{col}{a vector whose values will fill the columns of the
-contingency table}
+\item{dv_name}{name of the dependent variable (must be a binary variable)}
 
 \item{sigfigs}{number of significant digits to round to (for the
-frequency table). By default \code{sigfigs = 2}}
+table of proportions). By default \code{sigfigs = 2}}
 
 \item{correct}{logical. Should continuity correction be applied?
 (default = TRUE)}
@@ -39,7 +29,5 @@ frequency table). By default \code{sigfigs = 2}}
 Conduct a chi-squared test and produce a contingency table
 }
 \examples{
-chi_squared_test(data = mtcars, row_var_name = "am", col_var_name = "cyl")
-chi_squared_test(row = mtcars$cyl, col = mtcars$am)
-chi_squared_test(mtcars, "am", "cyl", output_type = "dt")
+chi_squared_test(data = mtcars, iv_name = "cyl", dv_name = "am")
 }
