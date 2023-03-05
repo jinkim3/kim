@@ -38,6 +38,7 @@ Calculate odds ratio, as illustrated in Borenstein et al.
 \examples{
 \dontrun{
 odds_ratio(data = mtcars, iv_name = "vs", dv_name = "am")
+odds_ratio(data = mtcars, iv_name = "vs", dv_name = "am", ci = 0.9)
 odds_ratio(contingency_table = matrix(c(5, 10, 95, 90), nrow = 2))
 odds_ratio(contingency_table = matrix(c(5, 10, 95, 90), nrow = 2),
 invert = TRUE)

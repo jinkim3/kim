@@ -5,19 +5,34 @@
 #' @param data a data object (a data frame or a data.table)
 #' @param iv_name name of the independent variable
 #' @param dv_name name of the dependent variable (must be a binary variable)
-#' @param sigfigs number of significant digits to round to (for the
-#' table of proportions). By default \code{sigfigs = 2}
+#' @param round_chi_sq_test_stat number of decimal places to which to
+#' round the chi-squared test statistic (default = 2)
+#' @param round_p number of decimal places to which to round the
+#' p-value from the chi-squared test (default = 3)
+#' @param sigfigs_proportion number of significant digits to round to
+#' (for the table of proportions). By default \code{sigfigs_proportion = 2}
 #' @param correct logical. Should continuity correction be applied?
 #' (default = TRUE)
+#' @param odds_ratio_ci width of the confidence interval for the odds ratio.
+#' Input can be any value less than 1 and greater than or equal to 0.
+#' By default, \code{odds_ratio_ci = 0.95}.
+#' If \code{odds_ratio_ci = TRUE}, the default value of 0.95 will be used.
+#' If \code{odds_ratio_ci = FALSE}, no confidence interval will be estimated
+#' for the odds ratio.
 #' @examples
 #' chi_squared_test(data = mtcars, iv_name = "cyl", dv_name = "am")
+#' # if the iv has only two levels, odds ratio will also be calculated
+#' chi_squared_test(data = mtcars, iv_name = "vs", dv_name = "am")
 #' @export
 chi_squared_test <- function(
   data = NULL,
   iv_name = NULL,
   dv_name = NULL,
-  sigfigs = 2,
-  correct = TRUE
+  round_chi_sq_test_stat = 2,
+  round_p = 3,
+  sigfigs_proportion = 2,
+  correct = TRUE,
+  odds_ratio_ci = 0.95
 ) {
   # make sure the dv has only two levels of value
   values_of_dv <- unique(data[[dv_name]])
@@ -27,36 +42,62 @@ chi_squared_test <- function(
       "expected 2 levels."))
   }
   # check inputs
-  if (!is.null(data) & !is.null(iv_name) & !is.null(dv_name)) {
-    # ct is short for contingency table ----
-    ct <- table(data[[iv_name]], data[[dv_name]])
-    # chi-squared test
-    chi_sq_test_results <- stats::chisq.test(
-      data[[iv_name]], data[[dv_name]], correct = correct)
-  } else {
+  if (is.null(data) | is.null(iv_name) | is.null(dv_name)) {
     stop(paste0(
       "Please check your inputs. You must enter an input for\n",
       "'data', 'iv_name', and 'dv_name'"))
   }
+  # ct is short for contingency table
+  ct <- table(data[[iv_name]], data[[dv_name]])
+  ct2 <- data.frame(matrix(ct, nrow(ct)))
+  row.names(ct2) <- dimnames(ct)[[1]]
+  names(ct2) <- dimnames(ct)[[2]]
   # print the contingency table
   message("Table of Counts:")
-  print(ct)
+  print(ct2)
   cat("\n")
   # print the table of proportions
   # "pt" stands for proportion table
-  pt <- signif(prop.table(ct, margin = 1) * 100, sigfigs)
+  pt <- signif(prop.table(ct, margin = 1) * 100, sigfigs_proportion)
   pt2 <- data.frame(matrix(paste0(pt, "%"), nrow = nrow(pt)))
   row.names(pt2) <- dimnames(pt)[[1]]
   names(pt2) <- dimnames(pt)[[2]]
   message("Table of Proportions:")
   print(pt2)
   # chi squared test
-  if (!is.null(data) & !is.null(iv_name) & !is.null(dv_name)) {
-    # chi-squared test
-    print(stats::chisq.test(
-      data[[iv_name]], data[[dv_name]], correct = correct))
-  } else if (!is.null(row) & !is.null(col)) {
-    # chi-squared test
-    print(stats::chisq.test(row, col, correct = correct))
+  chi_sq_test_results <- stats::chisq.test(
+    data[[iv_name]], data[[dv_name]], correct = correct)
+  chi_sq_test_df <- chi_sq_test_results[["parameter"]][["df"]]
+  chi_sq_test_stat <- chi_sq_test_results[["statistic"]][["X-squared"]]
+  chi_sq_test_p <- chi_sq_test_results[["p.value"]]
+  chi_sq_test_inference_pt_1 <- "The proportions (counts) associated with '"
+  chi_sq_test_inference_pt_2 <- paste0(dv_name, "'\n")
+  chi_sq_test_inference_pt_3 <- data.table::fcase(
+    chi_sq_test_p > 0.1,
+    "did not vary as a function of ",
+    chi_sq_test_p >= 0.05,
+    "varied marginally significantly as a function of ",
+    chi_sq_test_p < 0.05,
+    "varied significantly as a function of ")
+  chi_sq_test_inference_pt_4 <- paste0("'", iv_name, "',\n")
+  chi_sq_test_inference_pt_5 <- paste0(
+    "Chi-squared (df = ", chi_sq_test_df, ") = ",
+    round(chi_sq_test_stat, round_chi_sq_test_stat),
+    ", ", kim::pretty_round_p_value(
+      chi_sq_test_p, round_p, include_p_equals = TRUE))
+  cat("\n")
+  message(paste0(
+    chi_sq_test_inference_pt_1,
+    chi_sq_test_inference_pt_2,
+    chi_sq_test_inference_pt_3,
+    chi_sq_test_inference_pt_4,
+    chi_sq_test_inference_pt_5))
+  cat("\n")
+  # calculate the odds ratio if the iv has two levels
+  values_of_iv <- unique(data[[iv_name]])
+  if (length(values_of_iv) == 2) {
+    kim::odds_ratio(
+      data = data, iv_name = iv_name, dv_name = dv_name,
+      ci = odds_ratio_ci)
   }
 }

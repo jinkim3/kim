@@ -17,6 +17,7 @@
 #' @examples
 #' \dontrun{
 #' odds_ratio(data = mtcars, iv_name = "vs", dv_name = "am")
+#' odds_ratio(data = mtcars, iv_name = "vs", dv_name = "am", ci = 0.9)
 #' odds_ratio(contingency_table = matrix(c(5, 10, 95, 90), nrow = 2))
 #' odds_ratio(contingency_table = matrix(c(5, 10, 95, 90), nrow = 2),
 #' invert = TRUE)
@@ -89,10 +90,18 @@ odds_ratio <- function(
     # ll stands for lower limit; ul for upper limit
     odds_ratio_ll <- min(odds_ratio_ci)
     odds_ratio_ul <- max(odds_ratio_ci)
-    output <- c(
-      odds_ratio = odds_ratio,
-      odds_ratio_ll = odds_ratio_ll,
-      odds_ratio_ul = odds_ratio_ul)
+    if (ci == 0.95) {
+      output <- c(
+        odds_ratio = odds_ratio,
+        odds_ratio_95_ci_ll = odds_ratio_ll,
+        odds_ratio_95_ci_ul = odds_ratio_ul)
+    } else {
+      message(ci * 100,  "% CI were calculated:")
+      output <- c(
+        odds_ratio = odds_ratio,
+        odds_ratio_ll = odds_ratio_ll,
+        odds_ratio_ul = odds_ratio_ul)
+    }
   }
   return(output)
 }

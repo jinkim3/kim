@@ -8,8 +8,11 @@ chi_squared_test(
   data = NULL,
   iv_name = NULL,
   dv_name = NULL,
-  sigfigs = 2,
-  correct = TRUE
+  round_chi_sq_test_stat = 2,
+  round_p = 3,
+  sigfigs_proportion = 2,
+  correct = TRUE,
+  odds_ratio_ci = 0.95
 )
 }
 \arguments{
@@ -19,15 +22,30 @@ chi_squared_test(
 
 \item{dv_name}{name of the dependent variable (must be a binary variable)}
 
-\item{sigfigs}{number of significant digits to round to (for the
-table of proportions). By default \code{sigfigs = 2}}
+\item{round_chi_sq_test_stat}{number of decimal places to which to
+round the chi-squared test statistic (default = 2)}
+
+\item{round_p}{number of decimal places to which to round the
+p-value from the chi-squared test (default = 3)}
+
+\item{sigfigs_proportion}{number of significant digits to round to
+(for the table of proportions). By default \code{sigfigs_proportion = 2}}
 
 \item{correct}{logical. Should continuity correction be applied?
 (default = TRUE)}
+
+\item{odds_ratio_ci}{width of the confidence interval for the odds ratio.
+Input can be any value less than 1 and greater than or equal to 0.
+By default, \code{odds_ratio_ci = 0.95}.
+If \code{odds_ratio_ci = TRUE}, the default value of 0.95 will be used.
+If \code{odds_ratio_ci = FALSE}, no confidence interval will be estimated
+for the odds ratio.}
 }
 \description{
 Conduct a chi-squared test and produce a contingency table
 }
 \examples{
 chi_squared_test(data = mtcars, iv_name = "cyl", dv_name = "am")
+# if the iv has only two levels, odds ratio will also be calculated
+chi_squared_test(data = mtcars, iv_name = "vs", dv_name = "am")
 }
