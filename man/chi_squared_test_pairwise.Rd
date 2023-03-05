@@ -15,7 +15,8 @@ chi_squared_test_pairwise(
   percentages_only = NULL,
   counts_only = NULL,
   sigfigs = 3,
-  chi_sq_test_stats = FALSE
+  chi_sq_test_stats = FALSE,
+  correct = TRUE
 )
 }
 \arguments{
@@ -55,6 +56,9 @@ the two values in DV. By default \code{percent_and_total = FALSE}}
 \item{chi_sq_test_stats}{if \code{chi_sq_test_stats = TRUE},
 chi-squared test statistic and degrees of freedom will be included
 in the pairwise comparison data.table.}
+
+\item{correct}{logical. Should continuity correction be applied?
+(default = TRUE)}
 }
 \description{
 Conducts a chi-squared test for every possible pairwise comparison

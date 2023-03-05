@@ -29,6 +29,8 @@
 #' @param chi_sq_test_stats if \code{chi_sq_test_stats = TRUE},
 #' chi-squared test statistic and degrees of freedom will be included
 #' in the pairwise comparison data.table.
+#' @param correct logical. Should continuity correction be applied?
+#' (default = TRUE)
 #' @examples
 #' chi_squared_test_pairwise(data = mtcars, iv_name = "vs", dv_name = "am")
 #' chi_squared_test_pairwise(data = mtcars, iv_name = "vs", dv_name = "am",
@@ -57,7 +59,8 @@ chi_squared_test_pairwise <- function(
   percentages_only = NULL,
   counts_only = NULL,
   sigfigs = 3,
-  chi_sq_test_stats = FALSE
+  chi_sq_test_stats = FALSE,
+  correct = TRUE
 ) {
   # bind the vars locally to the function
   iv <- dv <- g1_dv_count <- g2_dv_count <- NULL
@@ -228,7 +231,7 @@ chi_squared_test_pairwise <- function(
   chi_sq_test_results <- lapply(seq_len(nrow(dt02)), function(i) {
     dt03 <- dt01[iv %in% dt02[i, ]]
     stats::chisq.test(
-      dt03$iv, dt03$dv, correct = FALSE)
+      dt03$iv, dt03$dv, correct = correct)
   })
   # chi-squared test stats
   if (chi_sq_test_stats == TRUE) {
