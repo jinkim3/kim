@@ -2,10 +2,6 @@
 #'
 #' A collection of miscellaneous functions lacking documentations
 #'
-#' For more information on functions contained within this function,
-#' please refer to the following:
-#' mad_rm, Leys et al. (2013) doi:10.1016/j.jesp.2013.03.013
-#'
 #' @param fn name of the function
 #' @param ... arguments for the function
 #' @return the output will vary by function
@@ -129,7 +125,7 @@ und <- function(fn, ...) {
     return(non_outlier_values)
   }
   # remove outliers using the mad method
-  # see Leys et al. (2013) doi:10.1016/j.jesp.2013.03.013
+  # see Leys et al. (2013)
   if (fn == "mad_rm") {
     # get the vector
     if ("x" %in% names(ae)) {

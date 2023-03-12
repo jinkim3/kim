@@ -21,8 +21,7 @@ Compare adequacy of different models by calculating their Akaike weights
 and the associated evidence ratio.
 }
 \details{
-Please refer to Wagenmakers & Farrell (2004),
-\doi{doi:10.3758/BF03206482}
+Please refer to Wagenmakers & Farrell (2004), \doi{10.3758/BF03206482}
 }
 \examples{
 # default reference AIC value is the minimum AIC value, e.g., 202 below.

@@ -3,8 +3,7 @@
 #' Compare adequacy of different models by calculating their Akaike weights
 #' and the associated evidence ratio.
 #'
-#' Please refer to Wagenmakers & Farrell (2004),
-#' \doi{doi:10.3758/BF03206482}
+#' Please refer to Wagenmakers & Farrell (2004), \doi{10.3758/BF03206482}
 #'
 #' @param aic_values a vector of AIC values
 #' @param print_output_explanation logical. Should an explanation about
