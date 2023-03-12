@@ -60,10 +60,10 @@ weighted_mean_effect_size <- function(
   # p value for the z test above
   # z <- 1.24 z <- -1.24 z <- -0.77 z <- 1.87 z <- 0 z = 0.00001
   if (z > 0) {
-    p <- pnorm(q = z, lower.tail = FALSE)
+    p <- stats::pnorm(q = z, lower.tail = FALSE)
     p_label <- "p_right_tailed"
   } else {
-    p <- pnorm(q = z, lower.tail = TRUE)
+    p <- stats::pnorm(q = z, lower.tail = TRUE)
     p_label <- "p_left_tailed"
   }
   # one-tailed p
