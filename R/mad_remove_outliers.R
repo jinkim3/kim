@@ -72,7 +72,7 @@ mad_remove_outliers <- function(
   # find mad
   mad <- stats::mad(x, constant = constant, na.rm = TRUE)
   # median
-  x_median <- median(x, na.rm = TRUE)
+  x_median <- stats::median(x, na.rm = TRUE)
   # cutoff values
   cutoff_low <- x_median - threshold * mad
   cutoff_high <- x_median + threshold * mad
