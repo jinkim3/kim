@@ -29,7 +29,7 @@ the output will be a list of  vector of correlation coefficient(s).
 \description{
 Calculate the weighted mean correlation coefficient for a given
 correlations and sample sizes.
-See Field (2001) doi:10.1037/1082-989X.6.2.161
+See Field (2001) \doi{10.1037/1082-989X.6.2.161}
 }
 \examples{
 weighted_mean_r(r = c(0.2, 0.4), n = c(100, 100))

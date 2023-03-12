@@ -2,7 +2,7 @@
 #'
 #' Calculate the weighted mean correlation coefficient for a given
 #' correlations and sample sizes.
-#' See Field (2001) doi:10.1037/1082-989X.6.2.161
+#' See Field (2001) \doi{10.1037/1082-989X.6.2.161}
 #'
 #' @param r a (vector of) correlation coefficient(s)
 #' @param n a (vector of) sample size(s)

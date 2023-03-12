@@ -8,8 +8,8 @@
 #' Put differently, this function tests H0: r(A, B) = r(A, C)
 #'
 #' For more information on formulas used in this function, please refer to
-#' Steiger (1980) doi:10.1037/0033-2909.87.2.245
-#' and Chen & Popovich (2002) doi:10.4135/9781412983808
+#' Steiger (1980) \doi{10.1037/0033-2909.87.2.245}
+#' and Chen & Popovich (2002) \doi{10.4135/9781412983808}
 #'
 #' @param data a data object (a data frame or a data.table)
 #' @param var_1_name name of the variable whose correlations with two other
@@ -77,7 +77,7 @@ compare_dependent_rs <- function(
     warning(paste0(
       "Sample size < 20. This test may not be warranted.\n",
       "See p. 24 (Case 1) on Chen & Popovich (2002)\n",
-      "doi:10.4135/9781412983808"))
+      "https://doi.org/10.4135/9781412983808"))
   }
   # estimate correlations
   r_jk_results <- stats::cor.test(dt$j, dt$k)

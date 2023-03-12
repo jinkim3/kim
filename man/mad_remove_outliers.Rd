@@ -55,7 +55,7 @@ By default, \code{output_type = "converted_vector"}.}
 Detect outliers in a numeric vector using the
 Median Absolute Deviation (MAD) method and remove or convert them.
 For more information on MAD, see Leys et al. (2013)
-doi:10.1016/j.jesp.2013.03.013
+\doi{10.1016/j.jesp.2013.03.013}
 }
 \examples{
 \dontrun{

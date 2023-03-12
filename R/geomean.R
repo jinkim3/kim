@@ -20,7 +20,7 @@
 #' }
 #' @export
 geomean <- function(
-  x = NULL, zero_or_neg_convert_to = NA) {
+    x = NULL, zero_or_neg_convert_to = NA) {
   # ensure the vector is numeric
   if (is.numeric(x) == FALSE) {
     stop("The input x must be a numeric vector.")

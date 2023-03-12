@@ -3,7 +3,7 @@
 #' Calculate kurtosis of the sample using a formula for either the
 #' (1) biased estimator or (2) an unbiased estimator of the
 #' population kurtosis. Formulas were taken from DeCarlo (1997),
-#' doi:10.1037/1082-989X.2.3.292
+#' \doi{10.1037/1082-989X.2.3.292}
 #'
 #' @param vector a numeric vector
 #' @param unbiased logical. If \code{unbiased = TRUE}, the unbiased

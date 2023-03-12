@@ -3,7 +3,7 @@
 #' Detect outliers in a numeric vector using the
 #' Median Absolute Deviation (MAD) method and remove or convert them.
 #' For more information on MAD, see Leys et al. (2013)
-#' doi:10.1016/j.jesp.2013.03.013
+#' \doi{10.1016/j.jesp.2013.03.013}
 #'
 #' @param x a numeric vector
 #' @param threshold the threshold value for determining outliers.
@@ -60,11 +60,11 @@
 #' }
 #' @export
 mad_remove_outliers <- function(
-  x = NULL,
-  threshold = 2.5,
-  constant = 1.4826,
-  convert_outliers_to = NA,
-  output_type = "converted_vector") {
+    x = NULL,
+    threshold = 2.5,
+    constant = 1.4826,
+    convert_outliers_to = NA,
+    output_type = "converted_vector") {
   # ensure the vector is numeric
   if (is.numeric(x) == FALSE) {
     stop("The input x must be a numeric vector.")
