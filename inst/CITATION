@@ -1,13 +1,13 @@
 citHeader("Please cite the R package 'kim' in publications as follows:")
 
-citEntry(
-  entry    = "Manual",
-  author   = "Jin Kim",
-  year     = "2023",
-  title    = "kim: A Toolkit for Behavioral Scientists",
-  note     = "R package version 0.5.212",
+bibentry(
+  bibtype = "Manual",
+  title = "kim: A Toolkit for Behavioral Scientists",
+  author = "Jin Kim",
+  year = "2023",
+  note = "R package version 0.5.212",
   howpublished = "url{https://jinkim.science/docs/kim.pdf}",
-  url      = "https://cran.r-project.org/package=kim",
+  url = "https://cran.r-project.org/package=kim",
   textVersion = paste0(
   "Jin Kim (2023). ",
   "kim: A Toolkit for Behavioral Scientists. ",
