@@ -1,3 +1,7 @@
+# kim 0.5.213
+* Updated the following function(s) (and other functions that use them): 
+chi_squared_test
+
 # kim 0.5.212
 * Added the following function(s): contingency_table, chi_squared_test,
 geomean, mad_remove_outliers

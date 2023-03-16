@@ -39,11 +39,17 @@ chi_squared_test <- function(
 ) {
   # make sure the dv has only two levels of value
   values_of_dv <- unique(data[[dv_name]])
-  if (length(values_of_dv) != 2) {
+  if (length(values_of_dv) < 2) {
     stop(paste0(
       "The DV has ", length(values_of_dv), " level(s), rather than the ",
-      "expected 2 levels."))
-  }
+      "expected 2 levels (or more)."))
+  } else if (length(values_of_dv) > 2) {
+    stop(paste0(
+      "The current version of this function can only handle a DV with",
+      " 2 levels.\n",
+      "For a DV with more than two levels, try the 'CrossTable'",
+      "function\nin the 'gmodels' package as in the following example:\n",
+      "gmodels::CrossTable(mtcars$cyl, mtcars$carb)"))
   # check inputs
   if (is.null(data) | is.null(iv_name) | is.null(dv_name)) {
     stop(paste0(
