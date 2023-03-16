@@ -50,6 +50,7 @@ chi_squared_test <- function(
       "For a DV with more than two levels, try the 'CrossTable'",
       "function\nin the 'gmodels' package as in the following example:\n",
       "gmodels::CrossTable(mtcars$cyl, mtcars$carb)"))
+  }
   # check inputs
   if (is.null(data) | is.null(iv_name) | is.null(dv_name)) {
     stop(paste0(
