@@ -1,3 +1,8 @@
+# kim 0.5.221
+* Added the following function(s): two_way_anova
+* Updated the following function(s) (and other functions that use them): 
+levene_test
+
 # kim 0.5.213
 * Updated the following function(s) (and other functions that use them): 
 chi_squared_test

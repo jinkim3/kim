@@ -22,7 +22,13 @@ two_way_anova(
   error_bar_tip_width = 0.13,
   position_dodge = 0.13,
   legend_position = "right",
-  output = "anova_table"
+  output = "anova_table",
+  png_name = NULL,
+  width = 5000,
+  height = 3600,
+  units = "px",
+  res = 300,
+  layout_matrix = NULL
 )
 }
 \arguments{
@@ -53,12 +59,11 @@ handling time is not an issue.}
 \item{plot}{if \code{TRUE}, print a plot and enable returning an output.}
 
 \item{error_bar}{if \code{error_bar = "se"}; error bars will be +/-1
-standard error, if \code{error_bar = "ci"} error bars will be a
-confidence interval; if \code{error_bar = "pi"}, error bars will be
-a prediction interval}
+standard error; if \code{error_bar = "ci"} error bars will be a
+confidence interval}
 
-\item{error_bar_range}{width of the confidence or prediction interval
-(default = 0.95 for 95 percent confidence or prediction interval).
+\item{error_bar_range}{width of the confidence interval
+(default = 0.95 for 95 percent confidence interval).
 This argument will not apply when \code{error_bar = "se"}}
 
 \item{line_size}{thickness of the lines connecting group means,
@@ -78,9 +83,33 @@ be horizontally offset from each other so as not to overlap?
 (default = \code{"right"})}
 
 \item{output}{output type can be one of the following: \code{"anova_table"},
-\code{"group_stats"}, \code{"plot"}, \code{"levene_test_result"},
+\code{"group_stats"}, \code{"plot"},
 \code{"robust_anova_results"}, \code{"robust_anova_post_hoc_results"},
 \code{"robust_anova_post_hoc_contrast"}, \code{"all"}}
+
+\item{png_name}{name of the PNG file to be saved.
+If \code{png_name = TRUE}, the name will be "two_way_anova_"
+followed by a timestamp of the current time.
+The timestamp will be in the format, jan_01_2021_1300_10_000001,
+where "jan_01_2021" would indicate January 01, 2021;
+1300 would indicate 13:00 (i.e., 1 PM); and 10_000001 would
+indicate 10.000001 seconds after the hour.}
+
+\item{width}{width of the PNG file (default = 4000)}
+
+\item{height}{height of the PNG file (default = 3000)}
+
+\item{units}{the units for the \code{width} and \code{height} arguments.
+Can be \code{"px"} (pixels), \code{"in"} (inches), \code{"cm"},
+or \code{"mm"}. By default, \code{units = "px"}.}
+
+\item{res}{The nominal resolution in ppi which will be recorded
+in the png file, if a positive integer. Used for units
+other than the default. If not specified, taken as 300 ppi
+to set the size of text and line widths.}
+
+\item{layout_matrix}{The layout argument for arranging plots and tables
+using the \code{grid.arrange} function.}
 }
 \value{
 by default, the output will be \code{"anova_table"}

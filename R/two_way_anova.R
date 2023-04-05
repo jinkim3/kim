@@ -30,11 +30,10 @@
 #' handling time is not an issue.
 #' @param plot if \code{TRUE}, print a plot and enable returning an output.
 #' @param error_bar if \code{error_bar = "se"}; error bars will be +/-1
-#' standard error, if \code{error_bar = "ci"} error bars will be a
-#' confidence interval; if \code{error_bar = "pi"}, error bars will be
-#' a prediction interval
-#' @param error_bar_range width of the confidence or prediction interval
-#' (default = 0.95 for 95 percent confidence or prediction interval).
+#' standard error; if \code{error_bar = "ci"} error bars will be a
+#' confidence interval
+#' @param error_bar_range width of the confidence interval
+#' (default = 0.95 for 95 percent confidence interval).
 #' This argument will not apply when \code{error_bar = "se"}
 #' @param line_size thickness of the lines connecting group means,
 #' (default = 1)
@@ -48,9 +47,27 @@
 #' \code{"none", "top", "right", "bottom", "left", "none"}
 #' (default = \code{"right"})
 #' @param output output type can be one of the following: \code{"anova_table"},
-#' \code{"group_stats"}, \code{"plot"}, \code{"levene_test_result"},
+#' \code{"group_stats"}, \code{"plot"},
 #' \code{"robust_anova_results"}, \code{"robust_anova_post_hoc_results"},
 #' \code{"robust_anova_post_hoc_contrast"}, \code{"all"}
+#' @param png_name name of the PNG file to be saved.
+#' If \code{png_name = TRUE}, the name will be "two_way_anova_"
+#' followed by a timestamp of the current time.
+#' The timestamp will be in the format, jan_01_2021_1300_10_000001,
+#' where "jan_01_2021" would indicate January 01, 2021;
+#' 1300 would indicate 13:00 (i.e., 1 PM); and 10_000001 would
+#' indicate 10.000001 seconds after the hour.
+#' @param width width of the PNG file (default = 4000)
+#' @param height height of the PNG file (default = 3000)
+#' @param units the units for the \code{width} and \code{height} arguments.
+#' Can be \code{"px"} (pixels), \code{"in"} (inches), \code{"cm"},
+#' or \code{"mm"}. By default, \code{units = "px"}.
+#' @param res The nominal resolution in ppi which will be recorded
+#' in the png file, if a positive integer. Used for units
+#' other than the default. If not specified, taken as 300 ppi
+#' to set the size of text and line widths.
+#' @param layout_matrix The layout argument for arranging plots and tables
+#' using the \code{grid.arrange} function.
 #' @return by default, the output will be \code{"anova_table"}
 #' @examples
 #' \donttest{
@@ -82,7 +99,13 @@ two_way_anova <- function(
   error_bar_tip_width = 0.13,
   position_dodge = 0.13,
   legend_position = "right",
-  output = "anova_table") {
+  output = "anova_table",
+  png_name = NULL,
+  width = 5000,
+  height = 3600,
+  units = "px",
+  res = 300,
+  layout_matrix = NULL) {
   # installed packages
   installed_pkgs <- rownames(utils::installed.packages())
   # check if Package 'ggplot2' is installed
@@ -144,11 +167,12 @@ two_way_anova <- function(
   }
   # remove na
   dt2 <- stats::na.omit(dt1)
-  # count na rows
-  message(paste0(
+  # missing value message
+  missing_value_message <- paste0(
     nrow(dt1) - nrow(dt2),
-    " rows were removed due to missing values."
-  ))
+    " rows were removed due to missing values.")
+  # count na rows
+  message(missing_value_message)
   # subset for certain values
   if (!is.null(iv_1_values)) {
     dt2 <- dt2[get(iv_1_name) %in% iv_1_values]
@@ -173,7 +197,7 @@ two_way_anova <- function(
   message(paste0("\nGroup Statistics on ", dv_name, ":"))
   print(group_stats)
   # print or return plot
-  if (plot == TRUE | output %in% c("plot", "all")) {
+  if (plot == TRUE | output %in% c("plot", "all") | !is.null(png_name)) {
     g1 <- kim::plot_group_means(
       data = dt2,
       dv_name = dv_name,
@@ -198,14 +222,21 @@ two_way_anova <- function(
   levene_test_result <- levene_test_fn_from_car(
     y = formula_1, data = dt2)
   levene_test_p_value <- levene_test_result[["Pr(>F)"]][1]
-  message("\nLevene's Test Results:")
+  message("\nLevene's Test Results:\n")
+  # update the levene test table
+  data.table::setDT(levene_test_result)
   print(levene_test_result)
   if (levene_test_p_value < .05) {
-    message(paste0(
-      "The homogeneity of variance assumption is violated."))
+    message(
+      "The homogeneity of variance assumption is violated.")
   }
   if (output == "levene_test_result") {
-    return(levene_test_result)
+    stop(paste0(
+      "The output option of 'levene_test_result' is deprecated as of ",
+      "Apr 5, 2023.",
+      "\nTo conduct Levene's test, use the function 'levene_test'",
+      " instead.\n",
+      "Type '?kim::levene_test' for more information."))
   }
   # anova instead of regression
   model_1 <- stats::aov(formula = formula_1, data = dt2)
@@ -224,6 +255,87 @@ two_way_anova <- function(
   anova_table[, p := kim::pretty_round_p_value(p)]
   message("\nANOVA Results:")
   print(anova_table)
+  # save as png
+  if (!is.null(png_name)) {
+    # installed packages
+    installed_pkgs <- rownames(utils::installed.packages())
+    # required packages
+    # required_pkgs <-
+    # check if Package 'gridExtra' is installed
+    if (!"gridExtra" %in% installed_pkgs) {
+      message(paste0(
+        "This function requires the installation of Package 'gridExtra'.",
+        "\nTo install Package 'gridExtra', type ",
+        "'kim::prep(gridExtra)'",
+        "\n\nAlternatively, to install all packages (dependencies) ",
+        "required for all\nfunctions in Package 'kim', type ",
+        "'kim::install_all_dependencies()'"))
+      return()
+    } else {
+      # proceed if Package 'gridExtra' is already installed
+      table_grob_from_grid_extra <- utils::getFromNamespace(
+        "tableGrob", "gridExtra")
+      grid_arrange_from_grid_extra <- utils::getFromNamespace(
+        "grid.arrange", "gridExtra")
+    }
+    # default file name
+    if (png_name == TRUE) {
+      # ts stands for time stamp
+      ts <- tolower(
+        gsub("\\.", "_", format(Sys.time(), "_%b_%d_%Y_%H%M_%OS6")))
+      png_name <- paste0("two_way_anova_results", ts)
+    }
+    # initialize the png
+    grDevices::png(
+      paste0(png_name, ".png"),
+      height = height, width = width, units = units, res = res)
+    # grobs
+    grob_1 <- grid::textGrob(missing_value_message)
+    grob_2 <- grid::textGrob(paste0(
+      "\nGroup Statistics on ", dv_name, ": "))
+    grob_3 <- table_grob_from_grid_extra(group_stats)
+    grob_4 <- grid::textGrob("\nLevene's Test Results: ")
+    # levene test
+    levene_test_result_text <- kim::levene_test(
+      data = dt2,
+      dv_name = dv_name,
+      iv_1_name = iv_1_name,
+      iv_2_name = iv_2_name,
+      output_type = "text")
+    grob_5 <- grid::textGrob(levene_test_result_text)
+    grob_6 <- grid::textGrob("\nANOVA Results: ")
+    grob_7 <- table_grob_from_grid_extra(anova_table)
+    grob_8 <- grid::textGrob("Plot of Group Means")
+    grob_9 <- g1
+    # grob list
+    grob_list <- list(
+      grob_1, grob_2, grob_3, grob_4, grob_5,
+      grob_6, grob_7, grob_8, grob_9)
+    # layout matrix
+    ncol_left <- 17
+    ncol_right <- 10
+    if (is.null(layout_matrix)) {
+      layout_matrix <- rbind(
+        c(rep(1, ncol_left), rep(NA, ncol_right)),
+        c(rep(2, ncol_left), rep(NA, ncol_right)),
+        c(rep(3, ncol_left), rep(NA, ncol_right)),
+        c(rep(3, ncol_left), rep(NA, ncol_right)),
+        c(rep(3, ncol_left), rep(8, ncol_right)),
+        c(rep(3, ncol_left), rep(9, ncol_right)),
+        c(rep(4, ncol_left), rep(9, ncol_right)),
+        c(rep(5, ncol_left), rep(9, ncol_right)),
+        c(rep(5, ncol_left), rep(9, ncol_right)),
+        c(rep(6, ncol_left), rep(9, ncol_right)),
+        c(rep(7, ncol_left), rep(9, ncol_right)),
+        c(rep(7, ncol_left), rep(NA, ncol_right)),
+        c(rep(7, ncol_left), rep(NA, ncol_right)),
+        c(rep(7, ncol_left), rep(NA, ncol_right)),
+        c(rep(7, ncol_left), rep(NA, ncol_right)))
+    }
+    grid_arrange_from_grid_extra(
+      grobs = grob_list, layout_matrix = layout_matrix)
+    grDevices::dev.off()
+  }
   # output by type
   if (output == "anova_table") {
     invisible(anova_table)
