@@ -24,8 +24,8 @@ two_way_anova(
   legend_position = "right",
   output = "anova_table",
   png_name = NULL,
-  width = 5000,
-  height = 3600,
+  width = 7000,
+  height = 4000,
   units = "px",
   res = 300,
   layout_matrix = NULL
@@ -95,9 +95,9 @@ where "jan_01_2021" would indicate January 01, 2021;
 1300 would indicate 13:00 (i.e., 1 PM); and 10_000001 would
 indicate 10.000001 seconds after the hour.}
 
-\item{width}{width of the PNG file (default = 4000)}
+\item{width}{width of the PNG file (default = 7000)}
 
-\item{height}{height of the PNG file (default = 3000)}
+\item{height}{height of the PNG file (default = 4000)}
 
 \item{units}{the units for the \code{width} and \code{height} arguments.
 Can be \code{"px"} (pixels), \code{"in"} (inches), \code{"cm"},
