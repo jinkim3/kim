@@ -313,7 +313,7 @@ two_way_anova <- function(
       grob_6, grob_7, grob_8, grob_9)
     # layout matrix
     ncol_left <- 17
-    ncol_right <- 10
+    ncol_right <- 20
     if (is.null(layout_matrix)) {
       layout_matrix <- rbind(
         c(rep(1, ncol_left), rep(NA, ncol_right)),
