@@ -35,6 +35,8 @@ levene_test <- function(
     round_f = 2,
     round_p = 3,
     output_type = "text") {
+  # installed packages
+  installed_pkgs <- rownames(utils::installed.packages())
   # check if Package 'car' is installed
   if (!"car" %in% installed_pkgs) {
     message(paste0(
