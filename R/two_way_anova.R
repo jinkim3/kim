@@ -296,12 +296,12 @@ two_way_anova <- function(
     grob_3 <- table_grob_from_grid_extra(group_stats)
     grob_4 <- grid::textGrob("\nLevene's Test Results: ")
     # levene test
-    levene_test_result_text <- kim::levene_test(
+    levene_test_result_text <- suppressMessages(kim::levene_test(
       data = dt2,
       dv_name = dv_name,
       iv_1_name = iv_1_name,
       iv_2_name = iv_2_name,
-      output_type = "text")
+      output_type = "text"))
     grob_5 <- grid::textGrob(levene_test_result_text)
     grob_6 <- grid::textGrob("\nANOVA Results: ")
     grob_7 <- table_grob_from_grid_extra(anova_table)
