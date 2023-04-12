@@ -1,5 +1,5 @@
-# kim 0.5.221
-* Added the following function(s): two_way_anova
+# kim 0.5.222
+* Added the following function(s): two_way_anova, lu
 * Updated the following function(s) (and other functions that use them): 
 levene_test
 
