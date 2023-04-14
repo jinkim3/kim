@@ -8,7 +8,8 @@ weighted_mean_effect_size(
   effect_sizes = NULL,
   effect_size_variances = NULL,
   ci = 0.95,
-  one_tailed = FALSE
+  one_tailed = FALSE,
+  random_vs_fixed = "random"
 )
 }
 \arguments{
@@ -21,6 +22,10 @@ weighted_mean_effect_size(
 \item{one_tailed}{logical. If \code{one_tailed = FALSE}, a two-tailed
 p-value will be calculated. If \code{one_tailed = TRUE}, a one-tailed
 p-value will be calculated (default = FALSE)}
+
+\item{random_vs_fixed}{If \code{random_vs_fixed = "random"},
+the summary effect will be calculated under the random-effects model
+(default = "random").}
 }
 \description{
 Estimate the mean effect size in a meta analysis, as illustrated

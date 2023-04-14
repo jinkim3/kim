@@ -9,6 +9,9 @@
 #' @param one_tailed logical. If \code{one_tailed = FALSE}, a two-tailed
 #' p-value will be calculated. If \code{one_tailed = TRUE}, a one-tailed
 #' p-value will be calculated (default = FALSE)
+#' @param random_vs_fixed If \code{random_vs_fixed = "random"},
+#' the summary effect will be calculated under the random-effects model
+#' (default = "random").
 #' @examples
 #' \dontrun{
 #' weighted_mean_effect_size(
@@ -22,7 +25,8 @@ weighted_mean_effect_size <- function(
     effect_sizes = NULL,
     effect_size_variances = NULL,
     ci = 0.95,
-    one_tailed = FALSE) {
+    one_tailed = FALSE,
+    random_vs_fixed = "random") {
   # check inputs ----
   if (is.null(effect_sizes)) {
     stop("Please provide an input for the 'effect_sizes' argument.")
@@ -32,6 +36,11 @@ weighted_mean_effect_size <- function(
   }
   if (length(effect_sizes) != length(effect_size_variances)) {
     stop("The effect sizes and their variances are of different lengths.")
+  }
+  if (fixed_vs_random != "random") {
+    stop(paste0(
+      "The current version of the function only supports calculations",
+      " under the random-effects model."))
   }
   # tau-squared which is the between-studies variance
   tau_squared <- kim::tau_squared(
