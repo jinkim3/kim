@@ -9,14 +9,18 @@ merge_data_table_list(dt_list = NULL, id = NULL, silent = TRUE)
 \arguments{
 \item{dt_list}{a list of data.table objects}
 
-\item{id}{name of the column that will contain the ID values
-in the data tables. The name of the ID column must be identical
-in the all data tables.}
+\item{id}{name(s) of the column(s) that will contain the ID values
+in the two data tables. The name(s) of the ID column(s) must be identical
+in the two data tables.}
 
 \item{silent}{If \code{silent = TRUE}, no message will be printed
 regarding how many ID values and column names were duplicated.
 If \code{silent = FALSE}, messages will be printed regarding
-how many ID values and column names were duplicated. (default = FALSE)}
+how many column names were duplicated.
+In cases where only one column was used as the 'id' column (which is the
+most common case), \code{silent = FALSE} will also print messages
+regarding how many input ID values were duplicated.
+By default, \code{silent = FALSE}.}
 }
 \value{
 a data.table object, which successively merges (joins)

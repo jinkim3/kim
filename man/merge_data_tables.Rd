@@ -16,14 +16,18 @@ cell values in the first data.table will remain intact and
 the cell values in the second data.table will be discarded for the
 resulting merged data table.}
 
-\item{id}{name of the column that will contain the ID values
-in the two data tables. The name of the ID column must be identical
+\item{id}{name(s) of the column(s) that will contain the ID values
+in the two data tables. The name(s) of the ID column(s) must be identical
 in the two data tables.}
 
 \item{silent}{If \code{silent = TRUE}, no message will be printed
 regarding how many ID values and column names were duplicated.
 If \code{silent = FALSE}, messages will be printed regarding
-how many ID values and column names were duplicated. (default = FALSE)}
+how many column names were duplicated.
+In cases where only one column was used as the 'id' column (which is the
+most common case), \code{silent = FALSE} will also print messages
+regarding how many input ID values were duplicated.
+By default, \code{silent = FALSE}.}
 }
 \value{
 a data.table object, which merges (joins) the second data.table
@@ -37,6 +41,7 @@ the cell values in the second data.table will be discarded for the
 resulting merged data table.
 }
 \examples{
+## Example 1: Typical Usage
 data_1 <- data.table::data.table(
 id_col = c(4, 2, 1, 3),
 a = 3:6,
@@ -47,19 +52,56 @@ id_col = c(1, 99, 4),
 e = 6:8,
 b = c("p", "q", "r"),
 d = c(TRUE, FALSE, FALSE))
+# check the two example data tables
+data_1
+data_2
+# check the result of merging the two data tables above and
+# note how data_1 (the upper left portion) is intact in the resulting
+# data table
 merge_data_tables(dt1 = data_1, dt2 = data_2, id = "id_col")
+# compare the result with above with the result from the `merge` function
+merge(data_1, data_2, by = "id_col", all = TRUE)
+## Example 2: Some values can be converted
 data_3 <- data.table::data.table(
 id_col = 99,
 a = "abc",
 b = TRUE,
 c = TRUE)
-# Note how the value of TRUE gets converted to 1 when merging in Column 'c'
+data_1
+data_3
 merge_data_tables(data_1, data_3, id = "id_col")
+# In the example above, note how the value of TRUE gets
+# converted to 1 in the last row of Column 'b' in the resulting data table
+## Example 3: A simpler case
 data_4 <- data.table::data.table(
 id_col = c(5, 3),
 a = c("a", NA))
 data_5 <- data.table::data.table(
 id_col = 1,
 a = 2)
+# check the two example data tables
+data_4
+data_5
 merge_data_tables(data_4, data_5, id = "id_col")
+## Example 4: Merging data tables using multiple ID columns
+data_6 <- data.table::data.table(
+id_col_1 = 3:1,
+id_col_2 = c("a", "b", "c"),
+id_col_3 = 4:6,
+a = 7:9,
+b = 10:12)
+data_7 <- data.table::data.table(
+id_col_1 = c(3, 2),
+id_col_3 = c(3, 5),
+id_col_2 = c("a", "b"),
+c = 13:14,
+a = 15:16)
+# check the example data sets
+data_6
+data_7
+# merge data sets using the three id columns
+suppressWarnings(merge_data_tables(
+dt1 = data_6,
+dt2 = data_7,
+id = c("id_col_1", "id_col_2", "id_col_3")))
 }

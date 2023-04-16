@@ -1,3 +1,8 @@
+# kim 0.5.231
+* Responded to the issue raised by oliviermeslin on github
+* Updated the following function(s) (and other functions that use them): 
+merge_data_tables, merge_data_table_list
+
 # kim 0.5.222
 * Added the following function(s): two_way_anova, lu
 * Updated the following function(s) (and other functions that use them): 

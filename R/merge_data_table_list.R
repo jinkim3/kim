@@ -11,13 +11,17 @@
 #' discarded for the resulting merged data table in each recursion.
 #'
 #' @param dt_list a list of data.table objects
-#' @param id name of the column that will contain the ID values
-#' in the data tables. The name of the ID column must be identical
-#' in the all data tables.
+#' @param id name(s) of the column(s) that will contain the ID values
+#' in the two data tables. The name(s) of the ID column(s) must be identical
+#' in the two data tables.
 #' @param silent If \code{silent = TRUE}, no message will be printed
 #' regarding how many ID values and column names were duplicated.
 #' If \code{silent = FALSE}, messages will be printed regarding
-#' how many ID values and column names were duplicated. (default = FALSE)
+#' how many column names were duplicated.
+#' In cases where only one column was used as the 'id' column (which is the
+#' most common case), \code{silent = FALSE} will also print messages
+#' regarding how many input ID values were duplicated.
+#' By default, \code{silent = FALSE}.
 #' @return a data.table object, which successively merges (joins)
 #' a data table around (i.e., outside) the previous data table in the
 #' list of data tables.
@@ -47,6 +51,6 @@ merge_data_table_list <- function(
 ) {
   # recursively apply the merge_data_tables function
   output <- Reduce(function(x, y) {
-    merge_data_tables(x, y, id = id, silent = silent)}, dt_list)
+    kim::merge_data_tables(x, y, id = id, silent = silent)}, dt_list)
   return(output)
 }
