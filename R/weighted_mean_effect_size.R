@@ -37,7 +37,7 @@ weighted_mean_effect_size <- function(
   if (length(effect_sizes) != length(effect_size_variances)) {
     stop("The effect sizes and their variances are of different lengths.")
   }
-  if (fixed_vs_random != "random") {
+  if (random_vs_fixed != "random") {
     stop(paste0(
       "The current version of the function only supports calculations",
       " under the random-effects model."))

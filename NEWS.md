@@ -1,4 +1,4 @@
-# kim 0.5.231
+# kim 0.5.232
 * Responded to the issue raised by oliviermeslin on github
 * Updated the following function(s) (and other functions that use them): 
 merge_data_tables, merge_data_table_list

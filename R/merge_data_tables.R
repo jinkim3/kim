@@ -170,6 +170,7 @@ merge_data_tables <- function(
         i <- i + 1
       }
     }
+    separator <- gsub("\\.", "", format(Sys.time(), "_%Y%m%d%H%M%OS6_"))
     dt1c[, (temp_id_col_name) :=
            do.call(paste, c(.SD, sep = separator)), .SDcols = id]
     # check the temporary id column just created for dt1
