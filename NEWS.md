@@ -1,3 +1,7 @@
+# kim 0.5.233
+* Updated the following function(s) (and other functions that use them): 
+chi_squared_test
+
 # kim 0.5.232
 * Responded to the issue raised by oliviermeslin on github
 * Updated the following function(s) (and other functions that use them): 
