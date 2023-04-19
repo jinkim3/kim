@@ -13,7 +13,8 @@ chi_squared_test(
   sigfigs_proportion = 2,
   correct = TRUE,
   odds_ratio_ci = 0.95,
-  round_odds_ratio_ci_limits = 2
+  round_odds_ratio_ci_limits = 2,
+  invert = FALSE
 )
 }
 \arguments{
@@ -44,6 +45,9 @@ for the odds ratio.}
 
 \item{round_odds_ratio_ci_limits}{number of decimal places to which to
 round the limits of the odds ratio's confidence interval (default = 2)}
+
+\item{invert}{logical. Whether the inverse of the odds ratio
+(i.e., 1 / odds ratio) should be returned.}
 }
 \description{
 Conduct a chi-squared test and produce a contingency table
