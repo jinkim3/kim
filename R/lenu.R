@@ -1,4 +1,4 @@
-#' lu: Length of unique values
+#' lenu: Length of unique values
 #'
 #' Extract unique elements and get the length of those elements
 #'
@@ -7,11 +7,11 @@
 #' elements/rows removed.
 #' @examples
 #' unique(c(10, 3, 7, 10))
-#' lu(c(10, 3, 7, 10))
+#' lenu(c(10, 3, 7, 10))
 #' unique(c(10, 3, 7, 10, NA))
-#' lu(c(10, 3, 7, 10, NA))
-#' lu(c("b", "z", "b", "a", NA, NA, NA))
+#' lenu(c(10, 3, 7, 10, NA))
+#' lenu(c("b", "z", "b", "a", NA, NA, NA))
 #' @export
-lu <- function(x = NULL) {
+lenu <- function(x = NULL) {
   return(length(unique(x)))
 }

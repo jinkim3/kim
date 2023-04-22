@@ -1,3 +1,7 @@
+# kim 0.5.241
+* Deleted the following function(s): lu
+* Added the following function(s): lenu
+
 # kim 0.5.240
 * Added the following function(s): binomial_test
 
