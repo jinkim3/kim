@@ -2,6 +2,7 @@
 
 export(akaike_weights)
 export(barplot_for_counts)
+export(binomial_test)
 export(bracket)
 export(capitalize)
 export(change_var_names)

@@ -1,3 +1,6 @@
+# kim 0.5.240
+* Added the following function(s): binomial_test
+
 # kim 0.5.233
 * Updated the following function(s) (and other functions that use them):
 chi_squared_test
