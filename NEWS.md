@@ -1,5 +1,6 @@
-# kim 0.5.242
-* Added the following function(s): var_of_proportion, se_of_proportion
+# kim 0.5.243
+* Added the following function(s): var_of_proportion, se_of_proportion,
+var_of_percentage, se_of_percentage
 
 # kim 0.5.241
 * Deleted the following function(s): lu
