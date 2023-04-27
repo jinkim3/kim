@@ -3,9 +3,10 @@
 #' Calculate the variance of a proportion
 #' Anderson and Finn (1996, p. 364, ISBN: 978-1-4612-8466-6)
 #'
-#' @param p proportion; a value between 0 and 1
-#' @param n sample size; number of observations used to calculate
-#' the proportion
+#' @param p a vector of proportions; each of the proportion values
+#' must be between 0 and 1
+#' @param n a vector of sample sizes; number of observations used
+#' to calculate each of the percentage values
 #' @examples
 #' var_of_proportion(p = 0.56, n = 400)
 #' var_of_proportion(p = 0.5, n = 100)

@@ -7,10 +7,11 @@
 var_of_proportion(p = NULL, n = NULL)
 }
 \arguments{
-\item{p}{proportion; a value between 0 and 1}
+\item{p}{a vector of proportions; each of the proportion values
+must be between 0 and 1}
 
-\item{n}{sample size; number of observations used to calculate
-the proportion}
+\item{n}{a vector of sample sizes; number of observations used
+to calculate each of the percentage values}
 }
 \description{
 Calculate the variance of a proportion

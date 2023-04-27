@@ -7,10 +7,11 @@
 se_of_percentage(percent = NULL, n = NULL)
 }
 \arguments{
-\item{percent}{percentage; a value between 0 and 100}
+\item{percent}{a vector of percentages; each of the percentage values
+must be between 0 and 100}
 
-\item{n}{sample size; number of observations used to calculate
-the percentage}
+\item{n}{a vector of sample sizes; number of observations used
+to calculate each of the percentage values}
 }
 \description{
 Calculate the standard error of a percentage.

@@ -1,4 +1,4 @@
-# kim 0.5.243
+# kim 0.5.244
 * Added the following function(s): var_of_proportion, se_of_proportion,
 var_of_percentage, se_of_percentage
 
