@@ -86,12 +86,18 @@ cohen_d <- function(
   # deal w na rows
   dt <- stats::na.omit(dt)
   # calculate d
-  cohen_d_results <- cohen_d_fn_from_psych(
-    dv ~ iv, alpha = 1 - ci_range, data = dt)
-  cohen_d <- cohen_d_results$cohen.d[, "effect"]
-  # ci of d
-  cohen_d_ci_ll <- cohen_d_results$cohen.d[, "lower"]
-  cohen_d_ci_ul <- cohen_d_results$cohen.d[, "upper"]
+  cohen_d_results <- tryCatch(
+    cohen_d_fn_from_psych(
+      dv ~ iv, alpha = 1 - ci_range, data = dt),
+    warning = function(w) "warning", error = function(e) "error")
+  if (cohen_d_results == "warning" | cohen_d_results == "error") {
+    cohen_d <- cohen_d_ci_ll <- cohen_d_ci_ul <- NA_real_
+  } else {
+    cohen_d <- cohen_d_results$cohen.d[, "effect"]
+    # ci of d
+    cohen_d_ci_ll <- cohen_d_results$cohen.d[, "lower"]
+    cohen_d_ci_ul <- cohen_d_results$cohen.d[, "upper"]
+  }
   # output
   if (output_type %in% c("all", "d_and_ci")) {
     output <- c(cohen_d, cohen_d_ci_ll, cohen_d_ci_ul)
