@@ -90,8 +90,10 @@ cohen_d <- function(
     cohen_d_fn_from_psych(
       dv ~ iv, alpha = 1 - ci_range, data = dt),
     warning = function(w) "warning", error = function(e) "error")
-  if (cohen_d_results == "warning" | cohen_d_results == "error") {
-    cohen_d <- cohen_d_ci_ll <- cohen_d_ci_ul <- NA_real_
+  if (length(cohen_d_results) == 1) {
+    if (cohen_d_results == "warning" | cohen_d_results == "error") {
+      cohen_d <- cohen_d_ci_ll <- cohen_d_ci_ul <- NA_real_
+    }
   } else {
     cohen_d <- cohen_d_results$cohen.d[, "effect"]
     # ci of d
