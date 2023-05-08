@@ -96,11 +96,11 @@ cohen_d_over_n <- function(
     if (is.null(png_name)) {
       ts <- tolower(
         gsub("\\.", "_", format(Sys.time(), "_%b_%d_%Y_%H%M_%OS6")))
-      png_name <- paste0("cohen_d_over_n_", ts)
+      png_name <- paste0("cohen_d_over_n", ts)
     }
   }
   if (!is.null(png_name)) {
-    kim::ggsave_quick(g1, png_name, width = width, height = height)
+    kim::ggsave_quick(name = png_name, width = width, height = height)
   }
   # output
   output_list <- list(g1, dt2)

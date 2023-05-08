@@ -71,6 +71,12 @@
 #' indicate 10.000001 seconds after the hour.
 #' @param save_as_png if \code{save = TRUE}, the plot will be saved
 #' as a PNG file.
+#' @param width width of the plot to be saved. This argument will be
+#' directly entered as the \code{width} argument for the \code{ggsave}
+#' function within \code{ggplot2} package (default = 16)
+#' @param height height of the plot to be saved. This argument will be
+#' directly entered as the \code{height} argument for the \code{ggsave}
+#' function within \code{ggplot2} package (default = 9)
 #' @return the output will be a scatter plot, a ggplot object.
 #' @examples
 #' \dontrun{
@@ -114,7 +120,9 @@ scatterplot <- function(
   cap_axis_lines = TRUE,
   color_dots_by = NULL,
   png_name = NULL,
-  save_as_png = NULL) {
+  save_as_png = FALSE,
+  width = 16,
+  height = 9) {
   # bind the vars locally to the function
   x <- y <- NULL
   # installed packages
@@ -248,7 +256,7 @@ scatterplot <- function(
         method = line_of_fit_type,
         mapping = ggplot2::aes(weight = dt02$weight),
         color = line_of_fit_color,
-        size = line_of_fit_thickness,
+        linewidth = line_of_fit_thickness,
         se = ci_for_line_of_fit)
     } else {
       g1 <- g1 + ggplot2::geom_smooth(
@@ -324,11 +332,11 @@ scatterplot <- function(
     if (is.null(png_name)) {
       ts <- tolower(
         gsub("\\.", "_", format(Sys.time(), "_%b_%d_%Y_%H%M_%OS6")))
-      png_name <- paste0("scatterplot_", ts)
+      png_name <- paste0("scatterplot", ts)
     }
   }
   if (!is.null(png_name)) {
-    kim::ggsave_quick(g1, png_name, width = width, height = height)
+    kim::ggsave_quick(name = png_name, width = width, height = height)
   }
   # return the ggplot
   invisible(g1)
