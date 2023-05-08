@@ -28,7 +28,8 @@ scatterplot(
   dot_size_range = c(3, 12),
   jitter_x_percent = 0,
   jitter_y_percent = 0,
-  cap_axis_lines = FALSE,
+  jitter_x_y_percent = 0,
+  cap_axis_lines = TRUE,
   color_dots_by = NULL
 )
 }
@@ -99,16 +100,30 @@ dot sizes will be determined by the argument \code{dot_size_range}}
 on the plot when they are weighted}
 
 \item{jitter_x_percent}{horizontally jitter dots by a percentage of the
-range of x values}
+range of x values.}
 
 \item{jitter_y_percent}{vertically jitter dots by a percentage of the
 range of y values}
+
+\item{jitter_x_y_percent}{horizontally and vertically jitter dots
+by a percentage of the range of x and y values.}
 
 \item{cap_axis_lines}{logical. Should the axis lines be capped at the
 outer tick marks? (default = TRUE)}
 
 \item{color_dots_by}{name of the variable that will determine
 colors of the dots}
+
+\item{png_name}{name of the PNG file to be saved. By default, the name
+will be "scatterplot_" followed by a timestamp of the
+current time.
+The timestamp will be in the format, jan_01_2021_1300_10_000001,
+where "jan_01_2021" would indicate January 01, 2021;
+1300 would indicate 13:00 (i.e., 1 PM); and 10_000001 would
+indicate 10.000001 seconds after the hour.}
+
+\item{save_as_png}{if \code{save = TRUE}, the plot will be saved
+as a PNG file.}
 }
 \value{
 the output will be a scatter plot, a ggplot object.

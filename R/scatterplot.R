@@ -52,14 +52,25 @@
 #' dot sizes will be determined by the argument \code{dot_size_range}
 #' @param dot_size_range minimum and maximum size for dots
 #' on the plot when they are weighted
+#' @param jitter_x_y_percent horizontally and vertically jitter dots
+#' by a percentage of the range of x and y values.
 #' @param jitter_x_percent horizontally jitter dots by a percentage of the
-#' range of x values
+#' range of x values.
 #' @param jitter_y_percent vertically jitter dots by a percentage of the
 #' range of y values
 #' @param cap_axis_lines logical. Should the axis lines be capped at the
 #' outer tick marks? (default = TRUE)
 #' @param color_dots_by name of the variable that will determine
 #' colors of the dots
+#' @param png_name name of the PNG file to be saved. By default, the name
+#' will be "scatterplot_" followed by a timestamp of the
+#' current time.
+#' The timestamp will be in the format, jan_01_2021_1300_10_000001,
+#' where "jan_01_2021" would indicate January 01, 2021;
+#' 1300 would indicate 13:00 (i.e., 1 PM); and 10_000001 would
+#' indicate 10.000001 seconds after the hour.
+#' @param save_as_png if \code{save = TRUE}, the plot will be saved
+#' as a PNG file.
 #' @return the output will be a scatter plot, a ggplot object.
 #' @examples
 #' \dontrun{
@@ -99,7 +110,8 @@ scatterplot <- function(
   dot_size_range = c(3, 12),
   jitter_x_percent = 0,
   jitter_y_percent = 0,
-  cap_axis_lines = FALSE,
+  jitter_x_y_percent = 0,
+  cap_axis_lines = TRUE,
   color_dots_by = NULL) {
   # bind the vars locally to the function
   x <- y <- NULL
@@ -172,6 +184,10 @@ scatterplot <- function(
     g1 <- g1 + ggplot2::aes(color = dt02$color)
   }
   # add jitter
+  if (jitter_x_y_percent > 0) {
+    jitter_x_percent <- jitter_x_y_percent
+    jitter_y_percent <- jitter_x_y_percent
+  }
   if (jitter_x_percent > 0 | jitter_y_percent > 0) {
     pj <- ggplot2::position_jitter(
       width = jitter_x_percent / 100 * x_range,
@@ -299,6 +315,19 @@ scatterplot <- function(
   g1 <- g1 + ggplot2::ylab(y_axis_label)
   # plot theme
   g1 <- g1 + kim::theme_kim(cap_axis_lines = cap_axis_lines)
+  print(g1)
+  # save as png
+  if (save_as_png == TRUE & is.null(png_name)) {
+    # default file name
+    if (is.null(png_name)) {
+      ts <- tolower(
+        gsub("\\.", "_", format(Sys.time(), "_%b_%d_%Y_%H%M_%OS6")))
+      png_name <- paste0("scatterplot_", ts)
+    }
+  }
+  if (!is.null(png_name)) {
+    kim::ggsave_quick(g1, png_name, width = width, height = height)
+  }
   # return the ggplot
-  return(g1)
+  invisible(g1)
 }

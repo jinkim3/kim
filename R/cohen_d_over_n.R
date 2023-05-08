@@ -91,7 +91,15 @@ cohen_d_over_n <- function(
   }
   print(g1)
   # save as png
-  if (save_as_png == TRUE | !is.null(png_name)) {
+  if (save_as_png == TRUE & is.null(png_name)) {
+    # default file name
+    if (is.null(png_name)) {
+      ts <- tolower(
+        gsub("\\.", "_", format(Sys.time(), "_%b_%d_%Y_%H%M_%OS6")))
+      png_name <- paste0("cohen_d_over_n_", ts)
+    }
+  }
+  if (!is.null(png_name)) {
     kim::ggsave_quick(g1, png_name, width = width, height = height)
   }
   # output
