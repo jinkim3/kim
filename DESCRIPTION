@@ -1,6 +1,6 @@
 Package: kim
 Title: A Toolkit for Behavioral Scientists
-Version: 0.5.248
+Version: 0.5.249
 Authors@R: 
     person(given = "Jin",
            family = "Kim",

@@ -30,7 +30,9 @@ scatterplot(
   jitter_y_percent = 0,
   jitter_x_y_percent = 0,
   cap_axis_lines = TRUE,
-  color_dots_by = NULL
+  color_dots_by = NULL,
+  png_name = NULL,
+  save_as_png = NULL
 )
 }
 \arguments{
