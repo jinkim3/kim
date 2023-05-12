@@ -1,4 +1,4 @@
-# kim 0.5.250
+# kim 0.5.252
 * Added the following function(s): var_of_proportion, se_of_proportion,
 var_of_percentage, se_of_percentage, cohen_d_for_one_sample
 * Updated the following function(s) (and other functions that use them):

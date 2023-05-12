@@ -14,11 +14,12 @@ must be between 0 and 1}
 to calculate each of the percentage values}
 }
 \description{
-Calculate the variance of a proportion
-Anderson and Finn (1996, p. 364, ISBN: 978-1-4612-8466-6)
+Calculate the variance of a proportion.
+See Anderson and Finn (1996, p. 364, ISBN: 978-1-4612-8466-6)
 }
 \examples{
 var_of_proportion(p = 0.56, n = 400)
 var_of_proportion(p = 0.5, n = 100)
 var_of_proportion(p = 0.4, n = 50)
+var_of_proportion(p = c(0.5, 0.9), n = c(100, 200))
 }

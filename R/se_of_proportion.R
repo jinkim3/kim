@@ -1,7 +1,7 @@
 #' Standard Error (SE) of a proportion
 #'
-#' Calculate the standard error of a proportion
-#' Anderson and Finn (1996, p. 364, ISBN: 978-1-4612-8466-6)
+#' Calculate the standard error of a proportion.
+#' See Anderson and Finn (1996, p. 364, ISBN: 978-1-4612-8466-6)
 #'
 #' @param p a vector of proportions; each of the proportion values
 #' must be between 0 and 1

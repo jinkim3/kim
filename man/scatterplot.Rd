@@ -32,7 +32,9 @@ scatterplot(
   cap_axis_lines = TRUE,
   color_dots_by = NULL,
   png_name = NULL,
-  save_as_png = NULL
+  save_as_png = FALSE,
+  width = 16,
+  height = 9
 )
 }
 \arguments{
@@ -126,6 +128,14 @@ indicate 10.000001 seconds after the hour.}
 
 \item{save_as_png}{if \code{save = TRUE}, the plot will be saved
 as a PNG file.}
+
+\item{width}{width of the plot to be saved. This argument will be
+directly entered as the \code{width} argument for the \code{ggsave}
+function within \code{ggplot2} package (default = 16)}
+
+\item{height}{height of the plot to be saved. This argument will be
+directly entered as the \code{height} argument for the \code{ggsave}
+function within \code{ggplot2} package (default = 9)}
 }
 \value{
 the output will be a scatter plot, a ggplot object.
