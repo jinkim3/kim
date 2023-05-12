@@ -19,6 +19,11 @@
 #' weighted_mean_effect_size(
 #' effect_sizes = c(0.095, 0.277, 0.367, 0.664, 0.462, 0.185),
 #' effect_size_variances = c(0.033, 0.031, 0.050, 0.011, 0.043, 0.023))
+#' # if effect sizes have a variance of 0, they will be excluded from
+#' # the analysis
+#' weighted_mean_effect_size(
+#' effect_sizes = c(1.1, 1.2, 1.3, 1.4),
+#' effect_size_variances = c(1, 0, 0, 4))
 #' }
 #' @export
 weighted_mean_effect_size <- function(
@@ -41,6 +46,28 @@ weighted_mean_effect_size <- function(
     stop(paste0(
       "The current version of the function only supports calculations",
       " under the random-effects model."))
+  }
+  # if there are values of 0 values for effect size variance,
+  # exclude the effect size from the analysis
+  if (any(effect_size_variances == 0)) {
+    position_in_effect_size_variance_vector <-
+      which(effect_size_variances == 0)
+    effect_sizes_to_exclude <- effect_sizes[
+      position_in_effect_size_variance_vector]
+    exclusion_summary_dt <- data.table::data.table(
+      effect_size = effect_sizes_to_exclude,
+      effect_size_variance = effect_size_variances[
+        position_in_effect_size_variance_vector],
+      position_in_effect_size_variance_vector)
+    message(paste0(
+      "The following effect sizes were excluded from the analysis",
+      "\nbecause their variance was 0:"))
+    print(exclusion_summary_dt)
+    cat("\n")
+    effect_sizes <-
+      effect_sizes[-position_in_effect_size_variance_vector]
+    effect_size_variances <-
+      effect_size_variances[-position_in_effect_size_variance_vector]
   }
   # tau-squared which is the between-studies variance
   tau_squared <- kim::tau_squared(

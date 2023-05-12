@@ -38,5 +38,10 @@ effect_sizes = c(1, 2), effect_size_variances = c(3, 4))
 weighted_mean_effect_size(
 effect_sizes = c(0.095, 0.277, 0.367, 0.664, 0.462, 0.185),
 effect_size_variances = c(0.033, 0.031, 0.050, 0.011, 0.043, 0.023))
+# if effect sizes have a variance of 0, they will be excluded from
+# the analysis
+weighted_mean_effect_size(
+effect_sizes = c(1.1, 1.2, 1.3, 1.4),
+effect_size_variances = c(1, 0, 0, 4))
 }
 }
