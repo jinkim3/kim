@@ -1,6 +1,7 @@
-# kim 0.5.252
+# kim 0.5.254
 * Added the following function(s): var_of_proportion, se_of_proportion,
-var_of_percentage, se_of_percentage, cohen_d_for_one_sample
+var_of_percentage, se_of_percentage, cohen_d_for_one_sample,
+correlation_kim
 * Updated the following function(s) (and other functions that use them):
 cohen_d, cohen_d_over_n, scatterplot, weighted_mean_effect_size,
 tau_squared
