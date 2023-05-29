@@ -1,4 +1,4 @@
-# kim 0.5.255
+# kim 0.5.260
 * Added the following function(s): var_of_proportion, se_of_proportion,
 var_of_percentage, se_of_percentage, cohen_d_for_one_sample,
 correlation_kim, package_list_default
