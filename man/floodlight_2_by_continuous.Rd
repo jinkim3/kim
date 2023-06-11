@@ -56,7 +56,7 @@ independent variable ordered using R's base function \code{sort}.}
 
 \item{output}{type of output (default = "reg_lines_plot").
 Possible inputs: "interactions_pkg_results", "simple_effects_plot",
-"jn_points", "reg_lines_plot"}
+"jn_points", "regions", "reg_lines_plot"}
 
 \item{jitter_x_percent}{horizontally jitter dots by a percentage of the
 range of x values}
@@ -165,4 +165,11 @@ iv_name = "am",
 dv_name = "mpg",
 mod_name = "qsec",
 jn_point_label_hjust = c(1, 0))
+# return regions of significance and nonsignificance
+floodlight_2_by_continuous(
+data = mtcars,
+iv_name = "am",
+dv_name = "mpg",
+mod_name = "qsec",
+output = "regions")
 }
