@@ -1,3 +1,7 @@
+# kim 0.5.261
+* Updated the following function(s) (and other functions that use them):
+floodlight_2_by_continuous
+
 # kim 0.5.260
 * Added the following function(s): var_of_proportion, se_of_proportion,
 var_of_percentage, se_of_percentage, cohen_d_for_one_sample,

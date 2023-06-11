@@ -22,7 +22,7 @@
 #' independent variable ordered using R's base function \code{sort}.
 #' @param output type of output (default = "reg_lines_plot").
 #' Possible inputs: "interactions_pkg_results", "simple_effects_plot",
-#' "jn_points", "reg_lines_plot"
+#' "jn_points", "regions", "reg_lines_plot"
 #' @param jitter_x_percent horizontally jitter dots by a percentage of the
 #' range of x values
 #' @param jitter_y_percent vertically jitter dots by a percentage of the
@@ -97,6 +97,13 @@
 #' dv_name = "mpg",
 #' mod_name = "qsec",
 #' jn_point_label_hjust = c(1, 0))
+#' # return regions of significance and nonsignificance
+#' floodlight_2_by_continuous(
+#' data = mtcars,
+#' iv_name = "am",
+#' dv_name = "mpg",
+#' mod_name = "qsec",
+#' output = "regions")
 #' @export
 #' @import data.table
 floodlight_2_by_continuous <- function(
@@ -239,6 +246,9 @@ floodlight_2_by_continuous <- function(
     stats::lm(formula = lm_formula, data = dt),
     pred = iv_binary,
     modx = mod)
+  # is the significant region inside or outside
+  sig_inside_vs_outside <- ifelse(
+    attributes(johnson_neyman_result)$inside, "inside", "outside")
   # return the results from the interactions package
   if (output == "interactions_pkg_results") {
     return(johnson_neyman_result)
@@ -249,6 +259,14 @@ floodlight_2_by_continuous <- function(
   if (output == "jn_points") {
     return(jn_points)
   }
+  # get regions of significance and nonsignficance
+  if (output == "regions") {
+    regions_of_sig_nonsig <- data.table::data.table(
+      t(jn_points), sig_inside_vs_outside)
+    names(regions_of_sig_nonsig) <-
+      tolower(names(regions_of_sig_nonsig))
+    return(regions_of_sig_nonsig)
+  }
   # if there are more than 2 jn points, throw an error
   if (length(jn_points) > 2) {
     message(paste0(
@@ -258,9 +276,6 @@ floodlight_2_by_continuous <- function(
       "with more than two Johnson-Neyman points."))
     return()
   }
-  # is the significant region inside or outside
-  sig_inside_vs_outside <- ifelse(
-    attributes(johnson_neyman_result)$inside, "inside", "outside")
   # min and max of observed mod
   mod_min_observed <- min(dt[, mod])
   mod_max_observed <- max(dt[, mod])
