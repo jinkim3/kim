@@ -8,8 +8,10 @@ multiple_regression(
   data = NULL,
   formula = NULL,
   vars_to_mean_center = NULL,
+  mean_center_vars = NULL,
   sigfigs = NULL,
   round_digits_after_decimal = NULL,
+  round_p = NULL,
   pretty_round_p_value = TRUE,
   return_table_upper_half = FALSE,
   round_r_squared = 3,
@@ -23,7 +25,11 @@ multiple_regression(
 
 \item{formula}{a formula object for the regression equation}
 
-\item{vars_to_mean_center}{a character vector specifying names
+\item{vars_to_mean_center}{(deprecated) a character vector specifying names
+of variables that will be mean-centered before the regression model
+is estimated}
+
+\item{mean_center_vars}{a character vector specifying names
 of variables that will be mean-centered before the regression model
 is estimated}
 
@@ -31,6 +37,9 @@ is estimated}
 
 \item{round_digits_after_decimal}{round to nth digit after decimal
 (alternative to \code{sigfigs})}
+
+\item{round_p}{number of decimal places to round p values
+(overrides all other rounding arguments)}
 
 \item{pretty_round_p_value}{logical. Should the p-values be rounded
 in a pretty format (i.e., lower threshold: "<.001").
@@ -74,6 +83,7 @@ Stefan Behrendt (2014),
 multiple_regression(data = mtcars, formula = mpg ~ gear * cyl)
 multiple_regression(
 data = mtcars, formula = mpg ~ gear * cyl,
-vars_to_mean_center = "gear")
+mean_center_vars = "gear",
+round_digits_after_decimal = 2)
 }
 }
