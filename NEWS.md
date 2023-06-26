@@ -1,6 +1,7 @@
-# kim 0.5.261
+# kim 0.5.262
+* Added the following function(s): mean_center
 * Updated the following function(s) (and other functions that use them):
-floodlight_2_by_continuous
+floodlight_2_by_continuous, multiple_regression
 
 # kim 0.5.260
 * Added the following function(s): var_of_proportion, se_of_proportion,

@@ -11,12 +11,17 @@
 #'
 #' @param data a data object (a data frame or a data.table)
 #' @param formula a formula object for the regression equation
-#' @param vars_to_mean_center a character vector specifying names
+#' @param vars_to_mean_center (deprecated) a character vector specifying names
+#' of variables that will be mean-centered before the regression model
+#' is estimated
+#' @param mean_center_vars a character vector specifying names
 #' of variables that will be mean-centered before the regression model
 #' is estimated
 #' @param sigfigs number of significant digits to round to
 #' @param round_digits_after_decimal round to nth digit after decimal
 #' (alternative to \code{sigfigs})
+#' @param round_p number of decimal places to round p values
+#' (overrides all other rounding arguments)
 #' @param pretty_round_p_value logical. Should the p-values be rounded
 #' in a pretty format (i.e., lower threshold: "<.001").
 #' By default, \code{pretty_round_p_value = TRUE}.
@@ -40,15 +45,18 @@
 #' multiple_regression(data = mtcars, formula = mpg ~ gear * cyl)
 #' multiple_regression(
 #' data = mtcars, formula = mpg ~ gear * cyl,
-#' vars_to_mean_center = "gear")
+#' mean_center_vars = "gear",
+#' round_digits_after_decimal = 2)
 #' }
 #' @export
 multiple_regression <- function(
   data = NULL,
   formula = NULL,
   vars_to_mean_center = NULL,
+  mean_center_vars = NULL,
   sigfigs = NULL,
   round_digits_after_decimal = NULL,
+  round_p = NULL,
   pretty_round_p_value = TRUE,
   return_table_upper_half = FALSE,
   round_r_squared = 3,
@@ -71,10 +79,17 @@ multiple_regression <- function(
     lm_beta_fn_from_lm_beta <- utils::getFromNamespace(
       "lm.beta", "lm.beta")
   }
-  # mean center vars
+  # warning about deprecated argument
   if (!is.null(vars_to_mean_center)) {
+    warning(paste0(
+      "The argument 'vars_to_mean_center' is deprecated.\n",
+      "Please use 'mean_center_vars' instead."))
+    mean_center_vars <- vars_to_mean_center
+  }
+  # mean center vars
+  if (!is.null(mean_center_vars)) {
     mean_center_vars_missing_in_data <- setdiff(
-      vars_to_mean_center, names(data))
+      mean_center_vars, names(data))
     if (length(mean_center_vars_missing_in_data) > 0) {
       stop(paste0(
         "The following variable(s) for mean-centering ",
@@ -86,7 +101,7 @@ multiple_regression <- function(
     # remove rows with na values in the key vars
     dt <- stats::na.omit(dt, cols = all.vars(formula))
     # mean center vars
-    for (col in vars_to_mean_center) {
+    for (col in mean_center_vars) {
       data.table::set(
         dt, j = col, value = scale(dt[[col]], scale = FALSE))
     }
@@ -95,7 +110,7 @@ multiple_regression <- function(
       kim::pm(
         "The following variable(s) were mean-centered prior to ",
         "the regression analysis:\n",
-        paste0(vars_to_mean_center, collapse = "\n"))
+        paste0(mean_center_vars, collapse = "\n"))
     }
     # regression model after mean centering
     model <- stats::lm(formula = formula, data = dt)
@@ -144,7 +159,7 @@ multiple_regression <- function(
     se <- kim::round_flexibly(se, sigfigs)
     std_beta <- kim::round_flexibly(std_beta, sigfigs)
     t_stat <- kim::round_flexibly(t_stat, sigfigs)
-    p_value <- kim::round_flexibly(p_value, sigfigs)
+    p_value_rounded <- kim::round_flexibly(p_value, sigfigs)
     model_p_value <- kim::round_flexibly(model_p_value, sigfigs)
   }
   if (!is.null(round_digits_after_decimal)) {
@@ -152,8 +167,19 @@ multiple_regression <- function(
     se <- round(se, round_digits_after_decimal)
     std_beta <- round(std_beta, round_digits_after_decimal)
     t_stat <- round(t_stat, round_digits_after_decimal)
-    p_value <- round(p_value, round_digits_after_decimal)
+    p_value_rounded <- round(p_value, round_digits_after_decimal)
     model_p_value <- round(model_p_value, round_digits_after_decimal)
+  }
+  # round p values only
+  if (!is.null(round_p)) {
+    p_value_rounded <- round(p_value, round_p)
+  } else if (is.null(round_p)) {
+    if (!is.null(sigfigs)) {
+      round_p <- sigfigs
+    }
+    if (!is.null(round_digits_after_decimal)) {
+      round_p <- round_digits_after_decimal
+    }
   }
   # round figures in the first column of the regression table
   r_squared <- kim::pretty_round_r(r_squared, round_r_squared)
@@ -161,11 +187,13 @@ multiple_regression <- function(
   f_stat <- round(f_stat, round_f_stat)
   # pretty round p_value
   if (pretty_round_p_value == TRUE) {
-    p_value <- kim::pretty_round_p_value(p_value)
+    p_value_rounded <- kim::pretty_round_p_value(
+      p_value, round_digits_after_decimal = round_p)
   }
   # upper part of the regression table
   t1 <- data.table::data.table(
-    variable, estimate, se, std_beta, t_stat, p_value)
+    variable, estimate, se, std_beta, t_stat,
+    p_value = p_value_rounded)
   # return only the upper part of the regression table
   if (return_table_upper_half == TRUE) {
     return(t1)
@@ -189,10 +217,10 @@ multiple_regression <- function(
     paste0("DV: ", all.vars(formula[[2]]))
   )
   # note the mean centered variables
-  if (!is.null(vars_to_mean_center)) {
+  if (!is.null(mean_center_vars)) {
     variable_2 <- c(variable_2, paste0(
       "Mean-centered variable(s): ", paste0(
-        vars_to_mean_center, collapse = ", ")))
+        mean_center_vars, collapse = ", ")))
   }
   t3 <- data.table::data.table(
     variable = variable_2,
