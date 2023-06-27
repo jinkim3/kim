@@ -24,6 +24,9 @@
 #' calculated? (default = "HC4")
 #' @param round_r_squared number of decimal places to which to round
 #' r-squared values (default = 3)
+#' @param sigfigs number of significant digits to round to
+#' (for values in the regression tables, except for p values).
+#' By default \code{sigfigs = 2}
 #' @param output type of output (default = "reg_lines_plot").
 #' Possible inputs: "interactions_pkg_results", "simple_effects_plot",
 #' "jn_points", "regions", "reg_lines_plot"
@@ -120,6 +123,7 @@ floodlight_multi_by_continuous <- function(
     covariate_name = NULL,
     heteroskedasticity_consistent_se = "HC4",
     round_r_squared = 3,
+    sigfigs = 2,
     interaction_p_include = TRUE,
     iv_category_order = NULL,
     output = "reg_lines_plot",
@@ -315,6 +319,34 @@ floodlight_multi_by_continuous <- function(
   lm_2_w_hc_se <- coeftest_fn_from_lmtest(
     lm_2, vcov. = vcovHC_fn_from_sandwich(
       lm_2, type = heteroskedasticity_consistent_se))
+  # create regression tables
+  lm_1_reg_table <- data.table::data.table(
+    variable = row.names(lm_1_w_hc_se),
+    lm_1_w_hc_se[,])
+  lm_2_reg_table <- data.table::data.table(
+    variable = row.names(lm_2_w_hc_se),
+    lm_2_w_hc_se[,])
+  names(lm_1_reg_table) <- names(lm_2_reg_table) <-
+    c("variable", "b", "se_b", "t", "p")
+  # round values in the reg tables
+  lm_1_reg_table_rounded <- data.table::copy(lm_1_reg_table)
+  lm_2_reg_table_rounded <- data.table::copy(lm_2_reg_table)
+  for (x in c("b", "se_b", "t")) {
+    data.table::set(
+      lm_1_reg_table_rounded, j = x,
+      value = kim::round_flexibly(
+        lm_1_reg_table_rounded[[x]], sigfigs = sigfigs))
+    data.table::set(
+      lm_2_reg_table_rounded, j = x,
+      value = kim::round_flexibly(
+        lm_2_reg_table_rounded[[x]], sigfigs = sigfigs))
+  }
+  # column names in the reg tables
+  names(lm_1_reg_table_rounded) <- names(lm_2_reg_table_rounded) <-
+    c("Variable", "B", "SE B", "t", "p")
+  # round the p values
+  lm_1_reg_table_rounded[, p := kim::pretty_round_p_value(p)]
+  lm_2_reg_table_rounded[, p := kim::pretty_round_p_value(p)]
   # results message
   if (p_for_f_stat_for_model_fit_diff < .05) {
     sig_text <- "explained data significantly better"
@@ -337,9 +369,9 @@ floodlight_multi_by_continuous <- function(
       p_for_f_stat_for_model_fit_diff, include_p_equals = TRUE))
   # print the two models
   cat(paste0("Model 1: ", lm_1_formula_character))
-  print(summary(lm_1))
+  print(lm_1_reg_table_rounded)
   cat(paste0("Model 2: ", lm_2_formula_character))
-  print(summary(lm_2))
+  print(lm_2_reg_table_rounded)
   message(results_message)
   # # set the order of levels in iv
   # if (is.null(iv_category_order)) {

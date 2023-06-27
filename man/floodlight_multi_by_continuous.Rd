@@ -14,6 +14,7 @@ floodlight_multi_by_continuous(
   covariate_name = NULL,
   heteroskedasticity_consistent_se = "HC4",
   round_r_squared = 3,
+  sigfigs = 2,
   interaction_p_include = TRUE,
   iv_category_order = NULL,
   output = "reg_lines_plot",
@@ -58,6 +59,10 @@ calculated? (default = "HC4")}
 
 \item{round_r_squared}{number of decimal places to which to round
 r-squared values (default = 3)}
+
+\item{sigfigs}{number of significant digits to round to
+(for values in the regression tables, except for p values).
+By default \code{sigfigs = 2}}
 
 \item{interaction_p_include}{logical. Should the plot include a
 p-value for the interaction term?}
