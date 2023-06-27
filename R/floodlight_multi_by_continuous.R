@@ -24,6 +24,8 @@
 #' calculated? (default = "HC4")
 #' @param round_r_squared number of decimal places to which to round
 #' r-squared values (default = 3)
+#' @param round_f number of decimal places to which to round
+#' the f statistic for model comparison (default = 2)
 #' @param sigfigs number of significant digits to round to
 #' (for values in the regression tables, except for p values).
 #' By default \code{sigfigs = 2}
@@ -123,6 +125,7 @@ floodlight_multi_by_continuous <- function(
     covariate_name = NULL,
     heteroskedasticity_consistent_se = "HC4",
     round_r_squared = 3,
+    round_f = 2,
     sigfigs = 2,
     interaction_p_include = TRUE,
     iv_category_order = NULL,
@@ -366,17 +369,18 @@ floodlight_multi_by_continuous <- function(
     sig_text <- "did not explain data better"
   }
   results_message <- paste0(
-    "The model with the interaction terms ",
+    "Model 2 with the interaction terms ",
     sig_text,
-    " (R^2 = ",
+    "\n(R^2 = ",
     round(lm_2_r_squared, round_r_squared),
-    ")\nthan the model without the interaction terms (R^2 = ",
+    ") than Model 1 without the interaction terms (R^2 = ",
     round(lm_1_r_squared, round_r_squared),
     "),\nR^2 Increase = ",
     round(r_squared_increase, round_r_squared),
     ", F(",
     num_of_levels_in_iv - 1, ", ",
-    lm_2_df_residual, "), ",
+    lm_2_df_residual, ") = ",
+    round(f_stat_for_model_fit_diff, round_f), ", ",
     kim::pretty_round_p_value(
       p_for_f_stat_for_model_fit_diff, include_p_equals = TRUE))
   # print the two models
