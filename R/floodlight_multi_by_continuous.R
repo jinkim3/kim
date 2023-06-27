@@ -313,18 +313,25 @@ floodlight_multi_by_continuous <- function(
     df2 = lm_2_df_residual,
     lower.tail = FALSE)
   # use heteroskedasticity consistent standard errors
-  lm_1_w_hc_se <- coeftest_fn_from_lmtest(
-    lm_1, vcov. = vcovHC_fn_from_sandwich(
-      lm_1, type = heteroskedasticity_consistent_se))
-  lm_2_w_hc_se <- coeftest_fn_from_lmtest(
-    lm_2, vcov. = vcovHC_fn_from_sandwich(
-      lm_2, type = heteroskedasticity_consistent_se))
+  if (!is.null(heteroskedasticity_consistent_se)) {
+    lm_1_w_hc_se <- coeftest_fn_from_lmtest(
+      lm_1, vcov. = vcovHC_fn_from_sandwich(
+        lm_1, type = heteroskedasticity_consistent_se))
+    lm_2_w_hc_se <- coeftest_fn_from_lmtest(
+      lm_2, vcov. = vcovHC_fn_from_sandwich(
+        lm_2, type = heteroskedasticity_consistent_se))
+    lm_1_coeff_only <- lm_1_w_hc_se
+    lm_2_coeff_only <- lm_2_w_hc_se
+  } else {
+    lm_1_coeff_only <-summary(lm_1)$coefficients
+    lm_2_coeff_only <-summary(lm_2)$coefficients
+  }
   # create regression tables
   lm_1_reg_table <- data.table::data.table(
-    variable = row.names(lm_1_w_hc_se),
+    variable = row.names(lm_1_coeff_only),
     lm_1_w_hc_se[,])
   lm_2_reg_table <- data.table::data.table(
-    variable = row.names(lm_2_w_hc_se),
+    variable = row.names(lm_2_coeff_only),
     lm_2_w_hc_se[,])
   names(lm_1_reg_table) <- names(lm_2_reg_table) <-
     c("variable", "b", "se_b", "t", "p")
