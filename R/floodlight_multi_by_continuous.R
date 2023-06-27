@@ -368,9 +368,9 @@ floodlight_multi_by_continuous <- function(
     kim::pretty_round_p_value(
       p_for_f_stat_for_model_fit_diff, include_p_equals = TRUE))
   # print the two models
-  cat(paste0("Model 1: ", lm_1_formula_character))
+  cat(paste0("Model 1: ", lm_1_formula_character, "\n"))
   print(lm_1_reg_table_rounded)
-  cat(paste0("Model 2: ", lm_2_formula_character))
+  cat(paste0("Model 2: ", lm_2_formula_character, "\n"))
   print(lm_2_reg_table_rounded)
   message(results_message)
   # # set the order of levels in iv
