@@ -1,4 +1,4 @@
-# kim 0.5.268
+# kim 0.5.269
 * Added the following function(s): floodlight_multi_by_continuous, mean_center
 * Updated the following function(s) (and other functions that use them):
 floodlight_2_by_continuous, multiple_regression

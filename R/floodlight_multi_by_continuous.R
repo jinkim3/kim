@@ -313,7 +313,12 @@ floodlight_multi_by_continuous <- function(
     df2 = lm_2_df_residual,
     lower.tail = FALSE)
   # use heteroskedasticity consistent standard errors
-  if (!is.null(heteroskedasticity_consistent_se)) {
+  if (heteroskedasticity_consistent_se == FALSE) {
+    message(
+      "Heteroskedacity-Consistent Standard Errors were NOT calculated.")
+    lm_1_coeff_only <- summary(lm_1)$coefficients
+    lm_2_coeff_only <- summary(lm_2)$coefficients
+  } else {
     message(paste0(
       "Heteroskedacity-Consistent Standard Errors are calculated using",
       " the ", heteroskedasticity_consistent_se, " estimator:"))
@@ -325,11 +330,6 @@ floodlight_multi_by_continuous <- function(
         lm_2, type = heteroskedasticity_consistent_se))
     lm_1_coeff_only <- lm_1_w_hc_se[,]
     lm_2_coeff_only <- lm_2_w_hc_se[,]
-  } else {
-    message(
-      "Heteroskedacity-Consistent Standard Errors were NOT calculated.")
-    lm_1_coeff_only <- summary(lm_1)$coefficients
-    lm_2_coeff_only <- summary(lm_2)$coefficients
   }
   # create regression tables
   lm_1_reg_table <- data.table::data.table(
