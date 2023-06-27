@@ -314,25 +314,30 @@ floodlight_multi_by_continuous <- function(
     lower.tail = FALSE)
   # use heteroskedasticity consistent standard errors
   if (!is.null(heteroskedasticity_consistent_se)) {
+    message(paste0(
+      "Heteroskedacity-Consistent Standard Errors are calculated using",
+      " the ", heteroskedasticity_consistent_se, " estimator:"))
     lm_1_w_hc_se <- coeftest_fn_from_lmtest(
       lm_1, vcov. = vcovHC_fn_from_sandwich(
         lm_1, type = heteroskedasticity_consistent_se))
     lm_2_w_hc_se <- coeftest_fn_from_lmtest(
       lm_2, vcov. = vcovHC_fn_from_sandwich(
         lm_2, type = heteroskedasticity_consistent_se))
-    lm_1_coeff_only <- lm_1_w_hc_se
-    lm_2_coeff_only <- lm_2_w_hc_se
+    lm_1_coeff_only <- lm_1_w_hc_se[,]
+    lm_2_coeff_only <- lm_2_w_hc_se[,]
   } else {
-    lm_1_coeff_only <-summary(lm_1)$coefficients
-    lm_2_coeff_only <-summary(lm_2)$coefficients
+    message(
+      "Heteroskedacity-Consistent Standard Errors were NOT calculated.")
+    lm_1_coeff_only <- summary(lm_1)$coefficients
+    lm_2_coeff_only <- summary(lm_2)$coefficients
   }
   # create regression tables
   lm_1_reg_table <- data.table::data.table(
     variable = row.names(lm_1_coeff_only),
-    lm_1_w_hc_se[,])
+    lm_1_coeff_only)
   lm_2_reg_table <- data.table::data.table(
     variable = row.names(lm_2_coeff_only),
-    lm_2_w_hc_se[,])
+    lm_2_coeff_only)
   names(lm_1_reg_table) <- names(lm_2_reg_table) <-
     c("variable", "b", "se_b", "t", "p")
   # round values in the reg tables
@@ -377,7 +382,7 @@ floodlight_multi_by_continuous <- function(
   # print the two models
   cat(paste0("Model 1: ", lm_1_formula_character, "\n"))
   print(lm_1_reg_table_rounded)
-  cat(paste0("Model 2: ", lm_2_formula_character, "\n"))
+  cat(paste0("\nModel 2: ", lm_2_formula_character, "\n"))
   print(lm_2_reg_table_rounded)
   message(results_message)
   # # set the order of levels in iv
