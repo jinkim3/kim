@@ -19,6 +19,7 @@ floodlight_multi_by_continuous(
   round_f = 2,
   sigfigs = 2,
   jn_points_disregard_threshold = NULL,
+  print_floodlight_plots = TRUE,
   output = "reg_lines_plot",
   jitter_x_percent = 0,
   jitter_y_percent = 0,
@@ -100,6 +101,10 @@ jn_points_disregard_threshold = range of the moderator / 10000}
 For example, if the observed moderator values range from 1 to 7
 (because it is a 7-point scale), then \code{
 jn_points_disregard_threshold = (7 - 1) / 10000 = 0.0006}}
+
+\item{print_floodlight_plots}{If \code{print_floodlight_plots = TRUE},
+a floodlight plot for each dummy variable will be printed.
+By default, \code{print_floodlight_plots = TRUE}}
 
 \item{output}{type of output (default = "reg_lines_plot").
 Possible inputs: "interactions_pkg_results", "simple_effects_plot",

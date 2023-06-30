@@ -12,7 +12,8 @@ compare_groups(
   stats = "basic",
   cohen_d = TRUE,
   cohen_d_w_ci = TRUE,
-  bonferroni = FALSE,
+  adjust_p = "holm",
+  bonferroni = NULL,
   mann_whitney = TRUE,
   t_test_stats = TRUE,
   t_test_df_decimals = 1,
@@ -59,7 +60,14 @@ included in the pairwise comparison data.table.}
 \item{cohen_d_w_ci}{if \code{cohen_d_w_ci = TRUE},
 Cohen's d with 95\% CI will be included in the output data.table.}
 
-\item{bonferroni}{if \code{bonferroni = TRUE}, Bonferroni tests will be
+\item{adjust_p}{the name of the method to use to adjust p-values.
+If \code{adjust_p = "holm"}, the Holm method will be used;
+if \code{adjust_p = "bonferroni"}, the Bonferroni method will be used.
+By default, \code{adjust_p = "holm"}}
+
+\item{bonferroni}{The use of this argument is deprecated.
+Use the 'adjust_p' argument instead.
+If \code{bonferroni = TRUE}, Bonferroni tests will be
 conducted for t-tests or Mann-Whitney tests.}
 
 \item{mann_whitney}{if \code{TRUE}, Mann-Whitney test results will be
@@ -125,6 +133,10 @@ using the \code{grid.arrange} function.}
 
 \item{col_names_nicer}{if \code{col_names_nicer = TRUE}, column names
 will be converted from snake_case to an easier-to-eye format.}
+
+\item{holm}{if \code{holm = TRUE}, the relevant p values will be
+adjusted using Holm method (also known as the Holm-Bonferroni or
+Bonferroni-Holm method)}
 }
 \value{
 the output will be a list of (1) ggplot object

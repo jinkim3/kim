@@ -1,7 +1,7 @@
-#' t test, pairwise
+#' t-tests, pairwise
 #'
 #' Conducts a t-test for every possible pairwise comparison
-#' with Bonferroni correction
+#' with Holm or Bonferroni correction
 #'
 #' @param data a data object (a data frame or a data.table)
 #' @param iv_name name of the independent variable
@@ -11,7 +11,13 @@
 #' included in the output data.table.
 #' @param cohen_d_w_ci if \code{cohen_d_w_ci = TRUE},
 #' Cohen's d with 95% CI will be included in the output data.table.
-#' @param bonferroni if \code{bonferroni = TRUE}, Bonferroni tests will be
+#' @param adjust_p the name of the method to use to adjust p-values.
+#' If \code{adjust_p = "holm"}, the Holm method will be used;
+#' if \code{adjust_p = "bonferroni"}, the Bonferroni method will be used.
+#' By default, \code{adjust_p = "holm"}
+#' @param bonferroni The use of this argument is deprecated.
+#' Use the 'adjust_p' argument instead.
+#' If \code{bonferroni = TRUE}, Bonferroni tests will be
 #' conducted for t-tests or Mann-Whitney tests.
 #' @param mann_whitney if \code{TRUE}, Mann-Whitney test results will be
 #' included in the output data.table. If \code{FALSE}, Mann-Whitney
@@ -43,7 +49,8 @@ t_test_pairwise <- function(
   sigfigs = 3,
   cohen_d = TRUE,
   cohen_d_w_ci = TRUE,
-  bonferroni = TRUE,
+  adjust_p = "holm",
+  bonferroni = NULL,
   mann_whitney = TRUE,
   t_test_stats = FALSE,
   t_test_df_decimals = 1,
@@ -183,19 +190,39 @@ t_test_pairwise <- function(
       p_value_vector = mann_whitney_p_value,
       round_digits_after_decimal = round_p)][]
   }
-  # if bonferroni
-  if (bonferroni == TRUE) {
-    # bonferroni sig for t test
-    bonferroni_signif_for_t_test <- ifelse(
-      t_test_p_value < .05 / nrow(dt02), "Yes", "No")
-    output[, "bonferroni_signif_for_t_test" :=
-             bonferroni_signif_for_t_test][]
-    # bonferroni sig for mann whitney
+  # adjust p values
+  if (!is.null(bonferroni)) {
+    if (bonferroni == TRUE) {
+      adjust_p <- "bonferroni"
+      warning(paste0(
+        "The use of the 'bonferroni' argument is deprecated.\n",
+        "Use the 'adjust_p' argument instead ",
+        '(e.g., adjust_p = "bonferroni").'))
+    }
+  }
+  # adjust p values with bonferroni
+  if (adjust_p == "holm") {
+    holm_adjusted_p_for_t_tests <- kim::pretty_round_p_value(
+      stats::p.adjust(p = t_test_p_value, method = "holm"))
+    output <- data.table::data.table(output, holm_adjusted_p_for_t_tests)
     if (mann_whitney == TRUE) {
-      bonferroni_signif_for_mann_whitney <- ifelse(
-        mann_whitney_p_value < .05 / nrow(dt02), "Yes", "No")
-      output[, "bonferroni_signif_for_mann_whitney" :=
-               bonferroni_signif_for_mann_whitney][]
+      holm_adjusted_p_for_mann_whitney <- kim::pretty_round_p_value(
+        stats::p.adjust(
+          p = mann_whitney_p_value, method = "holm"))
+      output <- data.table::data.table(
+        output, holm_adjusted_p_for_mann_whitney)
+    }
+  } else if (adjust_p == "bonferroni") {
+    bonferroni_adjusted_p_for_t_tests <- kim::pretty_round_p_value(
+      stats::p.adjust(p = t_test_p_value, method = "bonferroni"))
+    output <- data.table::data.table(
+      output, bonferroni_adjusted_p_for_t_tests)
+    if (mann_whitney == TRUE) {
+      bonferroni_adjusted_p_for_mann_whitney <- kim::pretty_round_p_value(
+        stats::p.adjust(
+          p = mann_whitney_p_value, method = "bonferroni"))
+      output <- data.table::data.table(
+        output, bonferroni_adjusted_p_for_mann_whitney)
     }
   }
   return(output)

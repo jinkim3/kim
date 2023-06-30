@@ -23,8 +23,17 @@
 #' included in the pairwise comparison data.table.
 #' @param cohen_d_w_ci if \code{cohen_d_w_ci = TRUE},
 #' Cohen's d with 95% CI will be included in the output data.table.
-#' @param bonferroni if \code{bonferroni = TRUE}, Bonferroni tests will be
+#' @param adjust_p the name of the method to use to adjust p-values.
+#' If \code{adjust_p = "holm"}, the Holm method will be used;
+#' if \code{adjust_p = "bonferroni"}, the Bonferroni method will be used.
+#' By default, \code{adjust_p = "holm"}
+#' @param bonferroni The use of this argument is deprecated.
+#' Use the 'adjust_p' argument instead.
+#' If \code{bonferroni = TRUE}, Bonferroni tests will be
 #' conducted for t-tests or Mann-Whitney tests.
+#' @param holm if \code{holm = TRUE}, the relevant p values will be
+#' adjusted using Holm method (also known as the Holm-Bonferroni or
+#' Bonferroni-Holm method)
 #' @param mann_whitney if \code{TRUE}, Mann-Whitney test results will be
 #' included in the pairwise comparison data.table.
 #' If \code{FALSE}, Mann-Whitney tests will not be performed.
@@ -93,7 +102,8 @@ compare_groups <- function(
   stats = "basic",
   cohen_d = TRUE,
   cohen_d_w_ci = TRUE,
-  bonferroni = FALSE,
+  adjust_p = "holm",
+  bonferroni = NULL,
   mann_whitney = TRUE,
   t_test_stats = TRUE,
   t_test_df_decimals = 1,
@@ -129,7 +139,7 @@ compare_groups <- function(
     sigfigs = sigfigs,
     cohen_d = cohen_d,
     cohen_d_w_ci = cohen_d_w_ci,
-    bonferroni = bonferroni,
+    adjust_p = adjust_p,
     mann_whitney = mann_whitney,
     t_test_stats = t_test_stats,
     t_test_df_decimals = t_test_df_decimals,
