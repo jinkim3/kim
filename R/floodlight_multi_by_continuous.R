@@ -51,6 +51,9 @@
 #' For example, if the observed moderator values range from 1 to 7
 #' (because it is a 7-point scale), then \code{
 #' jn_points_disregard_threshold = (7 - 1) / 10000 = 0.0006}
+#' @param print_floodlight_plots If \code{print_floodlight_plots = TRUE},
+#' a floodlight plot for each dummy variable will be printed.
+#' By default, \code{print_floodlight_plots = TRUE}
 #' @param output type of output (default = "reg_lines_plot").
 #' Possible inputs: "interactions_pkg_results", "simple_effects_plot",
 #' "jn_points", "regions", "reg_lines_plot"
@@ -131,6 +134,7 @@ floodlight_multi_by_continuous <- function(
     round_f = 2,
     sigfigs = 2,
     jn_points_disregard_threshold = NULL,
+    print_floodlight_plots = TRUE,
     output = "reg_lines_plot",
     jitter_x_percent = 0,
     jitter_y_percent = 0,
@@ -774,7 +778,9 @@ floodlight_multi_by_continuous <- function(
         "Covariates (Variables Controlled for):\n",
         paste0(covariate_name, collapse = ", ")))
     }
-    print(g1)
+    if (print_floodlight_plots == TRUE) {
+      print(g1)
+    }
     floodlight_plots[[i]] <- g1
   }
   output <- floodlight_plots
