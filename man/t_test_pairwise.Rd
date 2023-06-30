@@ -17,7 +17,9 @@ t_test_pairwise(
   t_test_stats = FALSE,
   t_test_df_decimals = 1,
   sd = FALSE,
-  round_p = 3
+  round_p = 3,
+  anova = TRUE,
+  round_f = 2
 )
 }
 \arguments{
@@ -60,6 +62,12 @@ included in the output data.table.}
 
 \item{round_p}{number of decimal places to which to round
 p-values (default = 3)}
+
+\item{anova}{Should a one-way ANOVA be conducted and reported?
+(default = TRUE)}
+
+\item{round_f}{number of decimal places to which to round
+the f statistic (default = 2)}
 }
 \value{
 the output will be a data.table showing results of all

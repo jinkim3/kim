@@ -30,6 +30,10 @@
 #' included in the output data.table.
 #' @param round_p number of decimal places to which to round
 #' p-values (default = 3)
+#' @param anova Should a one-way ANOVA be conducted and reported?
+#' (default = TRUE)
+#' @param round_f number of decimal places to which to round
+#' the f statistic (default = 2)
 #' @return the output will be a data.table showing results of all
 #' pairwise comparisons between levels of the independent variable.
 #' @examples
@@ -55,7 +59,9 @@ t_test_pairwise <- function(
   t_test_stats = FALSE,
   t_test_df_decimals = 1,
   sd = FALSE,
-  round_p = 3) {
+  round_p = 3,
+  anova = TRUE,
+  round_f = 2) {
   # bind the vars locally to the function
   iv <- dv <- group_1 <- group_2 <- NULL
   # check number of iv_name and dv_name
@@ -71,6 +77,25 @@ t_test_pairwise <- function(
   # convert iv to factor
   dt01[, iv := factor(iv)]
   dt01 <- stats::na.omit(dt01)
+  # conduct and report a one way anova
+  if (anova == TRUE) {
+    anova_results <- stats::aov(dv ~ iv, data = dt01)
+    # alternatively called: Degree of Freedom for Groups,
+    # df groups, df between
+    anova_df_groups <- summary(anova_results)[[1]]["iv", "Df"]
+    # alternatively called: Degree of Freedom for Error,
+    # df error, df within, df residual
+    anova_df_error <- summary(anova_results)[[1]]["Residuals", "Df"]
+    anova_f <- summary(anova_results)[[1]]["iv", "F value"]
+    anova_p <- summary(anova_results)[[1]]["iv", "Pr(>F)"]
+    results <- paste0(
+      "One-way ANOVA revealed that '", dv_name,
+      "'\nvaried significantly as a function of '", iv_name,
+      ",'\nF(", anova_df_groups, ", ", anova_df_error, ") = ",
+      round(anova_f, round_f), ", ",
+      kim::pretty_round_p_value(anova_p, include_p_equals = TRUE), ".")
+    message(results)
+  }
   # pairs
   group <- sort(unique(dt01$iv))
   dt02 <- data.table::data.table(t(utils::combn(group, 2)))
