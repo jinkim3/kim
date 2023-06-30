@@ -87,20 +87,19 @@ By default \code{sigfigs = 2}}
 \item{jn_points_disregard_threshold}{the Minimum Distance in
 the unit of the moderator variable that will be used for various purposes,
 such as (1) to disregard the second Johnson-Neyman point
-that is different from the first Johnson-Neyman point by
+that is different from the first Johnson-Neyman (JN) point by
 less than the Minimum Distance; (2) to determine regions of
-significance, which will calculate the p-value of an IV's effect
-(dummy variable's effect) on DV at the minimum moderator value observed
-\itemize{
-\item the Minimum Distance or at the maximum moderator value observed -
-the Minimum Distance. This input is hard to explain, but a user can
-enter a really low value for this argument or use the default.
+significance, which will calculate the p-value of the IV's effect
+(the focal dummy variable's effect) on DV at a candidate
+JN point + / - the Minimum Distance.
+This input is hard to explain, but a user can enter a really low value
+for this argument (e.g., \code{jn_points_disregard_threshold = 0.1}
+for a moderator measured on a 100-point scale) or use the default.
 By default, \code{
 jn_points_disregard_threshold = range of the moderator / 10000}
 For example, if the observed moderator values range from 1 to 7
-because it is a 7-point scale, then \code{
-jn_points_disregard_threshold = (7 - 1) / 10000 = 0.0006}
-}}
+(because it is a 7-point scale), then \code{
+jn_points_disregard_threshold = (7 - 1) / 10000 = 0.0006}}
 
 \item{output}{type of output (default = "reg_lines_plot").
 Possible inputs: "interactions_pkg_results", "simple_effects_plot",
