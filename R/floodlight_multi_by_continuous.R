@@ -408,8 +408,8 @@ floodlight_multi_by_continuous <- function(
   cat(paste0("Dummy Variable Coding Scheme:\n"))
   dummy_var_coding_table <- unique(dt[, c("iv", paste0(
     "dummy_", seq_len(num_of_dummy_vars))), with = FALSE])
-  setnames(dummy_var_coding_table, "iv", iv_name)
-  setorderv(dummy_var_coding_table, cols = iv_name)
+  data.table::setnames(dummy_var_coding_table, "iv", iv_name)
+  data.table::setorderv(dummy_var_coding_table, cols = iv_name)
   print(dummy_var_coding_table)
   # print the two models
   cat(paste0("\nModel 1: ", lm_1_formula_character, "\n"))
@@ -448,13 +448,14 @@ floodlight_multi_by_continuous <- function(
     vector(mode = "list", length = num_of_dummy_vars)
   # create floodlight plots
   for (i in seq_len(num_of_dummy_vars)) {
-    cat(paste0("\nSearching for JN points for ", paste0("dummy_", i)))
+    cat(paste0(
+      "\nSearching for JN points for ", paste0("dummy_", i), " ..."))
     # disregard the second jn point based on threshold
     if (is.null(jn_points_disregard_threshold)) {
       jn_points_disregard_threshold <- mod_range / 10 ^ 4
     }
     # use deoptim to find the jn points
-    # optimizing 1 of 2
+    # optimizing 1 of 3
     temp_optim_results_1 <- DEoptim_fn_from_DEoptim(
       fn = function_to_find_jn_points,
       lower = mod_min_observed,
@@ -464,35 +465,33 @@ floodlight_multi_by_continuous <- function(
       lm_formula = floodlight_lm_formula,
       predictor_in_regression = paste0("dummy_", i))
     jn_point_candidate_1 <- temp_optim_results_1$optim$bestmem
-    # optimizing 2 of 2
-    # where is the second jn point likely to be?
-    if (mean(temp_optim_results_1$member$pop) < jn_point_candidate_1) {
-      temp_deoptim_lower <- mod_min_observed
-      temp_deoptim_upper <- jn_point_candidate_1
-    } else {
-      temp_deoptim_lower <- jn_point_candidate_1
-      temp_deoptim_upper <- mod_max_observed
-    }
+    # optimizing 2 of 3
     temp_optim_results_2 <- DEoptim_fn_from_DEoptim(
       fn = function_to_find_jn_points,
-      lower = temp_deoptim_lower,
-      upper = temp_deoptim_upper,
+      lower = mod_min_observed,
+      upper = jn_point_candidate_1,
       control = DEoptim_control_fn_from_DEoptim(trace = FALSE),
       data = dt2,
       lm_formula = floodlight_lm_formula,
       predictor_in_regression = paste0("dummy_", i))
     jn_point_candidate_2 <- temp_optim_results_2$optim$bestmem
+    # optimizing 3 of 3
+    temp_optim_results_3 <- DEoptim_fn_from_DEoptim(
+      fn = function_to_find_jn_points,
+      lower = jn_point_candidate_1,
+      upper = mod_max_observed,
+      control = DEoptim_control_fn_from_DEoptim(trace = FALSE),
+      data = dt2,
+      lm_formula = floodlight_lm_formula,
+      predictor_in_regression = paste0("dummy_", i))
+    jn_point_candidate_3 <- temp_optim_results_3$optim$bestmem
     # gather the jn points
-    # if the two candidates are apart by a distance less than the
-    # threshold, remove the second one
-    if (abs(jn_point_candidate_1 - jn_point_candidate_2) <
-        jn_points_disregard_threshold) {
-      jn_point_candidates <- jn_point_candidate_1
-    } else {
-      jn_point_candidates <- c(jn_point_candidate_1, jn_point_candidate_2)
-    }
-    temp_jn_points <- unname(jn_point_candidates)
+    temp_jn_points <- unname(c(
+      jn_point_candidate_1,
+      jn_point_candidate_2,
+      jn_point_candidate_3))
     jn_points_verified <- c()
+    jn_point_p_distance_from_ref_p <- c()
     # verify the jn points
     for (j in seq_along(temp_jn_points)) {
       temp_jn_point_to_verify <- temp_jn_points[j]
@@ -504,13 +503,43 @@ floodlight_multi_by_continuous <- function(
       # p value can be off by 0.0001
       if (abs(temp_p - 0.05) < 0.0001) {
         jn_points_verified <- c(jn_points_verified, temp_jn_points[j])
+        jn_point_p_distance_from_ref_p <- c(
+          jn_point_p_distance_from_ref_p, abs(temp_p - 0.05))
       }
     }
+    temp_jn_point_dt <- data.table::data.table(
+      jn_points_verified, jn_point_p_distance_from_ref_p)
+    data.table::setorder(temp_jn_point_dt, jn_point_p_distance_from_ref_p)
+    most_likely_jn_point_1 <- temp_jn_point_dt[1, jn_points_verified]
+    if (abs(most_likely_jn_point_1 -
+            temp_jn_point_dt[2, jn_points_verified]) >
+        jn_points_disregard_threshold) {
+      most_likely_jn_point_2 <- temp_jn_point_dt[2, jn_points_verified]
+      jn_point_table_rows_to_keep <- 1:2
+    } else {
+      if (abs(most_likely_jn_point_1 -
+              temp_jn_point_dt[3, jn_points_verified]) >
+          jn_points_disregard_threshold) {
+        most_likely_jn_point_2 <- temp_jn_point_dt[3, jn_points_verified]
+        jn_point_table_rows_to_keep <- c(1, 3)
+      } else {
+        most_likely_jn_point_2 <- NULL
+        jn_point_table_rows_to_keep <- 1
+      }
+    }
+    most_likely_jn_points <- c(
+      most_likely_jn_point_1, most_likely_jn_point_2)
+    jn_point_dt_final <-
+      temp_jn_point_dt[jn_point_table_rows_to_keep, ]
+    jn_points_final <- jn_point_dt_final[, jn_points_verified]
     if (!is.null(jn_points_verified)) {
-      jn_points_by_dummy_var[[i]] <- jn_points_verified
+      jn_points_by_dummy_var[[i]] <- jn_points_final
     }
     names(jn_points_by_dummy_var)[i] <- paste0("dummy_", i)
-    num_of_jn_points <- length(jn_points_verified)
+    num_of_jn_points <- length(jn_points_final)
+    # print the jn points table
+    cat(paste0("\nJN Points for ", paste0("dummy_", i), ":\n"))
+    print(jn_point_dt_final)
     # regions of significance
     # if there are more than 2 jn points, throw an error
     if (num_of_jn_points > 2) {
@@ -551,23 +580,23 @@ floodlight_multi_by_continuous <- function(
       # jn point is sig; find out which side
       # p value at mod min
       temp_mod_value_1 <-
-        jn_points_verified - jn_points_disregard_threshold
+        jn_points_final - jn_points_disregard_threshold
       dt2[, mod_temp := mod - temp_mod_value_1]
       temp_p_1 <- summary(stats::lm(
         formula = floodlight_lm_formula, data = dt2))$coefficients[
           paste0("dummy_", i), "Pr(>|t|)"]
       # p value at mod max
       temp_mod_value_2 <-
-        jn_points_verified + jn_points_disregard_threshold
+        jn_points_final + jn_points_disregard_threshold
       dt2[, mod_temp := mod - temp_mod_value_2]
       temp_p_2 <- summary(stats::lm(
         formula = floodlight_lm_formula, data = dt2))$coefficients[
           paste0("dummy_", i), "Pr(>|t|)"]
       # determine regions of sig
       if (temp_p_1 < 0.05 & temp_p_2 >= 0.05) {
-        sig_region <- list(c(mod_min_observed, jn_points_verified))
+        sig_region <- list(c(mod_min_observed, jn_points_final))
       } else if (temp_p_1 >= 0.05 & temp_p_2 < 0.05) {
-        sig_region <- list(c(jn_points_verified, mod_max_observed))
+        sig_region <- list(c(jn_points_final, mod_max_observed))
       } else {
         stop(paste0(
           "An error occurred while determining regions of significance",
@@ -584,7 +613,7 @@ floodlight_multi_by_continuous <- function(
           paste0("dummy_", i), "Pr(>|t|)"]
       # p value in the middle region
       temp_mod_value_2 <- mean(c(
-        max(jn_points_verified), min(jn_points_verified)))
+        max(jn_points_final), min(jn_points_final)))
       dt2[, mod_temp := mod - temp_mod_value_2]
       temp_p_2 <- summary(stats::lm(
         formula = floodlight_lm_formula, data = dt2))$coefficients[
@@ -598,11 +627,11 @@ floodlight_multi_by_continuous <- function(
       # determine regions of sig
       if (temp_p_1 < 0.05 & temp_p_2 >= 0.05 & temp_p_3 < 0.05) {
         sig_region <- list(
-          c(mod_min_observed, jn_points_verified[1]),
-          c(jn_points_verified[2], mod_max_observed))
+          c(mod_min_observed, jn_points_final[1]),
+          c(jn_points_final[2], mod_max_observed))
       } else if (temp_p_1 >= 0.05 & temp_p_2 < 0.05 & temp_p_3 >= 0.05) {
         sig_region <- list(
-          c(jn_points_verified[1], jn_points_verified[2]))
+          c(jn_points_final[1], jn_points_final[2]))
       } else {
         stop(paste0(
           "An error occurred while determining regions of significance",
@@ -623,7 +652,7 @@ floodlight_multi_by_continuous <- function(
     # plot
     g1 <- ggplot2::ggplot(
       data = temp_dt,
-      aes(
+      ggplot2::aes(
         x = mod,
         y = dv,
         color = iv_factor))
@@ -677,7 +706,7 @@ floodlight_multi_by_continuous <- function(
     dt_for_lines_of_fit[, iv_factor := factor(get(iv_name), levels = c(
       baseline_category, iv_non_baseline_categories[i]))]
     g1 <- g1 + ggplot2::geom_segment(
-      mapping = aes(
+      mapping = ggplot2::aes(
         x = segment_x,
         y = segment_y,
         xend = segment_xend,
@@ -717,11 +746,11 @@ floodlight_multi_by_continuous <- function(
       jn_line_types <- rep(jn_line_types, num_of_jn_points)
     }
     # add the vertical line at jn points
-    for (j in seq_along(jn_points_verified)) {
+    for (j in seq_along(jn_points_final)) {
       g1 <- g1 + ggplot2::geom_segment(
-        x = jn_points_verified[j],
+        x = jn_points_final[j],
         y = dv_min_observed,
-        xend = jn_points_verified[j],
+        xend = jn_points_final[j],
         yend = dv_max_observed,
         color = "black")
       # label jn points
@@ -730,9 +759,9 @@ floodlight_multi_by_continuous <- function(
       }
       g1 <- g1 + ggplot2::annotate(
         geom = "text",
-        x = jn_points_verified[j],
+        x = jn_points_final[j],
         y = Inf,
-        label = round(jn_points_verified[j], round_jn_point_labels),
+        label = round(jn_points_final[j], round_jn_point_labels),
         hjust = jn_point_label_hjust[j], vjust = -0.5,
         fontface = "bold",
         color = "black",

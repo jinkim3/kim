@@ -1,3 +1,7 @@
+# kim 0.5.311
+* Updated the following function(s) (and other functions that use them):
+floodlight_multi_by_continuous
+
 # kim 0.5.307
 * Added the following function(s): holm_adjusted_p_values
 * Updated the following function(s) (and other functions that use them):
