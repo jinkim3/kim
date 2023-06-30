@@ -106,7 +106,7 @@
 #' decimal point should the jn point labels be rounded? (default = 2)
 #' @param line_of_fit_thickness thickness of the lines of fit (default = 1)
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' # typical example
 #' floodlight_multi_by_continuous(
 #' data = mtcars,
@@ -211,6 +211,8 @@ floodlight_multi_by_continuous <- function(
     # proceed if Package 'DEoptim' is already installed
     DEoptim_fn_from_DEoptim <- utils::getFromNamespace(
       "DEoptim", "DEoptim")
+    DEoptim_control_fn_from_DEoptim <- utils::getFromNamespace(
+      "DEoptim.control", "DEoptim")
   }
   # check whether all arguments had required inputs
   if (is.null(iv_name)) {
@@ -223,7 +225,9 @@ floodlight_multi_by_continuous <- function(
     stop("Please enter a variable name for the input 'mod_name'")
   }
   # bind the vars locally to the function
-  dv <- iv <- iv_binary <- iv_factor <- mod <- NULL
+  dv <- iv <- iv_binary <- iv_factor <- mod <- p <-
+    mod_temp <- segment_x <- segment_xend <- segment_y <- segment_yend <-
+    variable <- NULL
   # convert to data.table
   dt <- data.table::setDT(data.table::copy(data))
   # remove columns not needed for analysis
@@ -451,7 +455,7 @@ floodlight_multi_by_continuous <- function(
       fn = function_to_find_jn_points,
       lower = mod_min_observed,
       upper = mod_max_observed,
-      control = DEoptim.control(trace = FALSE),
+      control = DEoptim_control_fn_from_DEoptim(trace = FALSE),
       data = dt2,
       lm_formula = floodlight_lm_formula,
       predictor_in_regression = paste0("dummy_", i))
@@ -469,7 +473,7 @@ floodlight_multi_by_continuous <- function(
       fn = function_to_find_jn_points,
       lower = temp_deoptim_lower,
       upper = temp_deoptim_upper,
-      control = DEoptim.control(trace = FALSE),
+      control = DEoptim_control_fn_from_DEoptim(trace = FALSE),
       data = dt2,
       lm_formula = floodlight_lm_formula,
       predictor_in_regression = paste0("dummy_", i))
@@ -542,13 +546,15 @@ floodlight_multi_by_continuous <- function(
       # if there is exactly 1 jn point, then either side of the
       # jn point is sig; find out which side
       # p value at mod min
-      temp_mod_value_1 <- jn_points_verified - jn_points_disregard_threshold
+      temp_mod_value_1 <-
+        jn_points_verified - jn_points_disregard_threshold
       dt2[, mod_temp := mod - temp_mod_value_1]
       temp_p_1 <- summary(stats::lm(
         formula = floodlight_lm_formula, data = dt2))$coefficients[
           paste0("dummy_", i), "Pr(>|t|)"]
       # p value at mod max
-      temp_mod_value_2 <- jn_points_verified + jn_points_disregard_threshold
+      temp_mod_value_2 <-
+        jn_points_verified + jn_points_disregard_threshold
       dt2[, mod_temp := mod - temp_mod_value_2]
       temp_p_2 <- summary(stats::lm(
         formula = floodlight_lm_formula, data = dt2))$coefficients[
@@ -573,7 +579,8 @@ floodlight_multi_by_continuous <- function(
         formula = floodlight_lm_formula, data = dt2))$coefficients[
           paste0("dummy_", i), "Pr(>|t|)"]
       # p value in the middle region
-      temp_mod_value_2 <- jn_points_verified[2] - jn_points_verified[1]
+      temp_mod_value_2 <- mean(c(
+        max(jn_points_verified), min(jn_points_verified)))
       dt2[, mod_temp := mod - temp_mod_value_2]
       temp_p_2 <- summary(stats::lm(
         formula = floodlight_lm_formula, data = dt2))$coefficients[
@@ -665,7 +672,7 @@ floodlight_multi_by_continuous <- function(
       dt_for_lines_of_fit, segment_y_coord_dt)
     dt_for_lines_of_fit[, iv_factor := factor(get(iv_name), levels = c(
       baseline_category, iv_non_baseline_categories[i]))]
-    g1 <- g1 + geom_segment(
+    g1 <- g1 + ggplot2::geom_segment(
       mapping = aes(
         x = segment_x,
         y = segment_y,
@@ -707,7 +714,7 @@ floodlight_multi_by_continuous <- function(
     }
     # add the vertical line at jn points
     for (j in seq_along(jn_points_verified)) {
-      g1 <- g1 + geom_segment(
+      g1 <- g1 + ggplot2::geom_segment(
         x = jn_points_verified[j],
         y = dv_min_observed,
         xend = jn_points_verified[j],

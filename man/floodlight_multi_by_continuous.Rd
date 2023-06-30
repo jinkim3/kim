@@ -188,7 +188,7 @@ Williams (2004) on r-squared values when calculating robust standard errors
 \url{https://web.archive.org/web/20230627025457/https://www.stata.com/statalist/archive/2004-05/msg00107.html}
 }
 \examples{
-\donttest{
+\dontrun{
 # typical example
 floodlight_multi_by_continuous(
 data = mtcars,
