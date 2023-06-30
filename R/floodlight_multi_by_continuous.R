@@ -13,6 +13,12 @@
 #' this variable must have three or more categories.
 #' @param dv_name name of the dependent variable
 #' @param mod_name name of the continuous moderator variable
+#' @param coding name of the coding scheme to use; the current version
+#' of the function allows only the "indicator" coding scheme.
+#' By default, \code{coding = "indicator"}
+#' @param baseline_category value of the independent variable that
+#' will be the reference value against which other values of the
+#' independent variable will be compared
 #' @param covariate_name name of the variables to control for
 #' @param interaction_p_include logical. Should the plot include a
 #' p-value for the interaction term?
@@ -29,6 +35,22 @@
 #' @param sigfigs number of significant digits to round to
 #' (for values in the regression tables, except for p values).
 #' By default \code{sigfigs = 2}
+#' @param jn_points_disregard_threshold the Minimum Distance in
+#' the unit of the moderator variable that will be used for various purposes,
+#' such as (1) to disregard the second Johnson-Neyman point
+#' that is different from the first Johnson-Neyman (JN) point by
+#' less than the Minimum Distance; (2) to determine regions of
+#' significance, which will calculate the p-value of the IV's effect
+#' (the focal dummy variable's effect) on DV at a candidate
+#' JN point + / - the Minimum Distance.
+#' This input is hard to explain, but a user can enter a really low value
+#' for this argument (e.g., \code{jn_points_disregard_threshold = 0.1}
+#' for a moderator measured on a 100-point scale) or use the default.
+#' By default, \code{
+#' jn_points_disregard_threshold = range of the moderator / 10000}
+#' For example, if the observed moderator values range from 1 to 7
+#' (because it is a 7-point scale), then \code{
+#' jn_points_disregard_threshold = (7 - 1) / 10000 = 0.0006}
 #' @param output type of output (default = "reg_lines_plot").
 #' Possible inputs: "interactions_pkg_results", "simple_effects_plot",
 #' "jn_points", "regions", "reg_lines_plot"
@@ -91,27 +113,6 @@
 #' iv_name = "cyl",
 #' dv_name = "mpg",
 #' mod_name = "qsec")
-#' # add covariates
-#' floodlight_multi_by_continuous(
-#' data = mtcars,
-#' iv_name = "cyl",
-#' dv_name = "mpg",
-#' mod_name = "qsec",
-#' covariate_name = c("disp", "hp"))
-#' # adjust the jn point label positions
-#' floodlight_multi_by_continuous(
-#' data = mtcars,
-#' iv_name = "mpg",
-#' dv_name = "cyl",
-#' mod_name = "qsec",
-#' jn_point_label_hjust = c(1, 0))
-#' # return regions of significance and nonsignificance
-#' floodlight_multi_by_continuous(
-#' data = mtcars,
-#' iv_name = "am",
-#' dv_name = "mpg",
-#' mod_name = "qsec",
-#' output = "regions")
 #' }
 #' @export
 #' @import data.table
@@ -123,12 +124,13 @@ floodlight_multi_by_continuous <- function(
     coding = "indicator",
     baseline_category = NULL,
     covariate_name = NULL,
+    interaction_p_include = TRUE,
+    iv_category_order = NULL,
     heteroskedasticity_consistent_se = "HC4",
     round_r_squared = 3,
     round_f = 2,
     sigfigs = 2,
-    interaction_p_include = TRUE,
-    iv_category_order = NULL,
+    jn_points_disregard_threshold = NULL,
     output = "reg_lines_plot",
     jitter_x_percent = 0,
     jitter_y_percent = 0,
@@ -195,21 +197,21 @@ floodlight_multi_by_continuous <- function(
     vcovHC_fn_from_sandwich <- utils::getFromNamespace(
       "vcovHC", "sandwich")
   }
-  # # check if Package 'interactions' is installed
-  # if (!"interactions" %in% installed_pkgs) {
-  #   message(paste0(
-  #     "To conduct floodlight analysis, Package 'interactions' must ",
-  #     "be installed.\nTo install Package 'interactions', type ",
-  #     "'kim::prep(interactions)'",
-  #     "\n\nAlternatively, to install all packages (dependencies) required ",
-  #     "for all\nfunctions in Package 'kim', type ",
-  #     "'kim::install_all_dependencies()'"))
-  #   return()
-  # } else {
-  #   # proceed if Package 'interactions' is already installed
-  #   jn_fn_from_interactions <- utils::getFromNamespace(
-  #     "johnson_neyman", "interactions")
-  # }
+  # check if Package 'DEoptim' is installed
+  if (!"DEoptim" %in% installed_pkgs) {
+    message(paste0(
+      "This function requires the installation of Package 'DEoptim'.",
+      "\nTo install Package 'DEoptim', type ",
+      "'kim::prep(DEoptim)'",
+      "\n\nAlternatively, to install all packages (dependencies) required ",
+      "for all\nfunctions in Package 'kim', type ",
+      "'kim::install_all_dependencies()'"))
+    return()
+  } else {
+    # proceed if Package 'DEoptim' is already installed
+    DEoptim_fn_from_DEoptim <- utils::getFromNamespace(
+      "DEoptim", "DEoptim")
+  }
   # check whether all arguments had required inputs
   if (is.null(iv_name)) {
     stop("Please enter a variable name for the input 'iv_name'")
@@ -260,20 +262,31 @@ floodlight_multi_by_continuous <- function(
       " coding system"))
   }
   if (coding == "indicator") {
+    # number of dummy variables
+    num_of_dummy_vars <- num_of_levels_in_iv - 1
     if (is.null(baseline_category)) {
       baseline_category <- iv_category_order[1]
     }
     iv_non_baseline_categories <- setdiff(
-      iv_unique_values, baseline_category)
-    for (i in seq_along(iv_non_baseline_categories)) {
+      iv_category_order, baseline_category)
+    for (i in seq_len(num_of_dummy_vars)) {
       dt[, paste0("dummy_", i) := ifelse(
         dt[, iv] == iv_non_baseline_categories[i], 1, 0)]
     }
   }
+  # example from hayes montoya appendix 3
+  # dt[, dummy_1 := fcase(
+  #   iv == 1, -2/3,
+  #   iv == 2, 1/3,
+  #   iv == 3, 1/3)]
+  # dt[, dummy_2 := fcase(
+  #   iv == 1, 0,
+  #   iv == 2, -1/2,
+  #   iv == 3, 1/2)]
   # model 1 w no interaction
   lm_1_formula_character <- paste0(
     "dv ~ ", paste0(
-      "dummy", "_", seq_along(iv_non_baseline_categories),
+      "dummy", "_", seq_len(num_of_dummy_vars),
       collapse = " + "),
     " + mod")
   if (!is.null(covariate_name)) {
@@ -286,10 +299,10 @@ floodlight_multi_by_continuous <- function(
   # model 2 w interaction
   lm_2_formula_character <- paste0(
     "dv ~ ", paste0(
-      "dummy", "_", seq_along(iv_non_baseline_categories),
+      "dummy", "_", seq_len(num_of_dummy_vars),
       collapse = " + "),
     " + mod + ", paste0(
-      "dummy", "_", seq_along(iv_non_baseline_categories),
+      "dummy", "_", seq_len(num_of_dummy_vars),
       ":mod",
       collapse = " + "))
   if (!is.null(covariate_name)) {
@@ -324,7 +337,7 @@ floodlight_multi_by_continuous <- function(
   } else {
     message(paste0(
       "Heteroskedacity-Consistent Standard Errors are calculated using",
-      " the ", heteroskedasticity_consistent_se, " estimator:"))
+      " the ", heteroskedasticity_consistent_se, " estimator."))
     lm_1_w_hc_se <- coeftest_fn_from_lmtest(
       lm_1, vcov. = vcovHC_fn_from_sandwich(
         lm_1, type = heteroskedasticity_consistent_se))
@@ -369,7 +382,7 @@ floodlight_multi_by_continuous <- function(
     sig_text <- "did not explain data better"
   }
   results_message <- paste0(
-    "Model 2 with the interaction terms ",
+    "\nModel 2 with the interaction terms ",
     sig_text,
     "\n(R^2 = ",
     round(lm_2_r_squared, round_r_squared),
@@ -383,243 +396,381 @@ floodlight_multi_by_continuous <- function(
     round(f_stat_for_model_fit_diff, round_f), ", ",
     kim::pretty_round_p_value(
       p_for_f_stat_for_model_fit_diff, include_p_equals = TRUE))
+  # print the coding scheme
+  cat(paste0("Dummy Variable Coding Scheme:\n"))
+  dummy_var_coding_table <- unique(dt[, c("iv", paste0(
+    "dummy_", seq_len(num_of_dummy_vars))), with = FALSE])
+  setnames(dummy_var_coding_table, "iv", iv_name)
+  setorderv(dummy_var_coding_table, cols = iv_name)
+  print(dummy_var_coding_table)
   # print the two models
-  cat(paste0("Model 1: ", lm_1_formula_character, "\n"))
+  cat(paste0("\nModel 1: ", lm_1_formula_character, "\n"))
   print(lm_1_reg_table_rounded)
   cat(paste0("\nModel 2: ", lm_2_formula_character, "\n"))
   print(lm_2_reg_table_rounded)
   message(results_message)
-  # # set the order of levels in iv
-  # if (is.null(iv_category_order)) {
-  #   iv_category_order <- sort(unique(dt[, iv]))
-  # } else {
-  #   # check if the iv levels match
-  #   iv_category_order_character <- as.character(iv_category_order)
-  #   if (!identical(iv_unique_values_character,
-  #                  iv_category_order_character)) {
-  #     stop(paste0(
-  #       "\nThe levels of independent variables do not match:\n",
-  #       "iv_category_order input: ",
-  #       paste0(iv_category_order_character, collapse = ", "),
-  #       "\nLevels of IV in the data set: ",
-  #       paste0(iv_unique_values_character, collapse = ", ")))
-  #   }
-  #   iv_level_1 <- iv_category_order[1]
-  #   iv_level_2 <- iv_category_order[2]
-  # }
-  # # add binary variable
-  # dt[, iv_binary := data.table::fcase(
-  #   iv == iv_level_1, 0,
-  #   iv == iv_level_2, 1)]
-  # # add a factor
-  # dt[, iv_factor := factor(
-  #   iv_binary,
-  #   levels = 0:1,
-  #   labels = c(as.character(iv_level_1), as.character(iv_level_2)))]
-  # # lm formula
-  # if (!is.null(covariate_name)) {
-  #   lm_formula <- stats::as.formula(paste0(
-  #     "dv ~ iv_binary * mod + ",
-  #     paste0(cov_temp_names, collapse = " + ")))
-  # } else {
-  #   lm_formula <- dv ~ iv_binary * mod
-  # }
-  # # find jn points
-  # johnson_neyman_result <- jn_fn_from_interactions(
-  #   stats::lm(formula = lm_formula, data = dt),
-  #   pred = iv_binary,
-  #   modx = mod)
-  # # is the significant region inside or outside
-  # sig_inside_vs_outside <- ifelse(
-  #   attributes(johnson_neyman_result)$inside, "inside", "outside")
-  # # return the results from the interactions package
-  # if (output == "interactions_pkg_results") {
-  #   return(johnson_neyman_result)
-  # }
-  # # get jn points
-  # jn_points <- johnson_neyman_result[["bounds"]]
-  # # return jn points
-  # if (output == "jn_points") {
-  #   return(jn_points)
-  # }
-  # # get regions of significance and nonsignficance
-  # if (output == "regions") {
-  #   regions_of_sig_nonsig <- data.table::data.table(
-  #     t(jn_points), sig_inside_vs_outside)
-  #   names(regions_of_sig_nonsig) <-
-  #     tolower(names(regions_of_sig_nonsig))
-  #   return(regions_of_sig_nonsig)
-  # }
-  # # if there are more than 2 jn points, throw an error
-  # if (length(jn_points) > 2) {
-  #   message(paste0(
-  #     "An internal computation suggests that there are more than\n",
-  #     "two Johnson-Neyman points. Whether or not this is theoretically\n",
-  #     "possible, the current version of the function cannot proceed\n",
-  #     "with more than two Johnson-Neyman points."))
-  #   return()
-  # }
-  # # min and max of observed mod
-  # mod_min_observed <- min(dt[, mod])
-  # mod_max_observed <- max(dt[, mod])
-  # # find the overlapping regions
-  # if (sig_inside_vs_outside == "inside") {
-  #   sig_region <- list(kim::overlapping_interval(
-  #     mod_min_observed, mod_max_observed,
-  #     jn_points[["Lower"]], jn_points[["Higher"]]))
-  # } else if (sig_inside_vs_outside == "outside") {
-  #   sig_region <- list(
-  #     kim::overlapping_interval(
-  #       mod_min_observed, mod_max_observed,
-  #       -Inf, jn_points[["Lower"]]),
-  #     kim::overlapping_interval(
-  #       mod_min_observed, mod_max_observed,
-  #       jn_points[["Higher"]], Inf))
-  # }
-  # # shade the following regions
-  # sig_region <- Filter(Negate(is.null), sig_region)
-  # # plot simple effects at values of moderator
-  # if (output == "simple_effects_plot") {
-  #   g1 <- johnson_neyman_result[["plot"]]
-  #   g1 <- g1 + ggplot2::ggtitle(paste0(
-  #     "Johnson-Neyman Plot - ",
-  #     "R Package 'interactions', Jacob A. Long (2020)"))
-  #   g1 <- g1 + ggplot2::xlab(mod_name)
-  #   g1 <- g1 + ggplot2::ylab(paste0("Slope of ", iv_name))
-  #   return(g1)
-  # }
-  # # jitter
-  # x_range <- max(dt[, mod], na.rm = TRUE) - min(dt[, mod], na.rm = TRUE)
-  # y_range <- max(dt[, dv], na.rm = TRUE) - min(dt[, dv], na.rm = TRUE)
-  # # plot
-  # g1 <- ggplot2::ggplot(
-  #   data = dt,
-  #   ggplot2::aes(
-  #     x = mod, y = dv,
-  #     color = iv_factor,
-  #     linetype = iv_factor))
-  # # plot points but make them transparent if covariates are used
-  # if (!is.null(covariate_name)) {
-  #   dot_alpha <- 0
-  #   dot_alpha <- 0
-  # }
-  # g1 <- g1 + ggplot2::geom_point(
-  #   size = dot_size,
-  #   alpha = dot_alpha,
-  #   position = ggplot2::position_jitter(
-  #     width = x_range * jitter_x_percent / 100,
-  #     height = y_range * jitter_y_percent / 100))
-  # # plot regression lines
-  # if (is.null(covariate_name)) {
-  #   g1 <- g1 + ggplot2::geom_smooth(
-  #     formula = y ~ x,
-  #     method = "lm",
-  #     se = FALSE,
-  #     linewidth = line_of_fit_thickness)
-  #   g1 <- g1 + ggplot2::scale_linetype_manual(
-  #     values = reg_line_types)
-  # }
-  # # include interaction p value
-  # if (interaction_p_include == TRUE) {
-  #   lm_summary <- summary(stats::lm(formula = lm_formula, data = dt))
-  #   interaction_p_value <- kim::pretty_round_p_value(
-  #     lm_summary[["coefficients"]]["iv_binary:mod", "Pr(>|t|)"],
-  #     include_p_equals = TRUE,
-  #     round_digits_after_decimal = round_decimals_int_p_value)
-  #   interaction_p_value_text <- paste0(
-  #     "Interaction ", interaction_p_value)
-  #   # label interaction p value
-  #   g1 <- g1 + ggplot2::annotate(
-  #     geom = "text",
-  #     x = min(dt[, mod]) + x_range * 0.5,
-  #     y = Inf,
-  #     label = interaction_p_value_text,
-  #     hjust = 0.5, vjust = -3,
-  #     fontface = "bold",
-  #     color = "black",
-  #     size = interaction_p_value_font_size)
-  # }
-  # # apply the theme beforehand
-  # g1 <- g1 + kim::theme_kim(legend_position = legend_position)
-  # # allow labeling outside the plot area
-  # suppressMessages(g1 <- g1 + ggplot2::coord_cartesian(clip = "off"))
-  # g1 <- g1 + ggplot2::theme(
-  #   plot.margin = plot_margin)
-  # # if only one type is entered for jn line
-  # if (length(jn_line_types) == 1) {
-  #   jn_line_types <- rep(jn_line_types, length(unlist(sig_region)))
-  # }
-  # # add a vertical line and label for each jn point
-  # if (length(sig_region) > 0) {
-  #   for (i in seq_along(sig_region)) {
-  #     # range of the sig region
-  #     temp_range <- sig_region[[i]]
-  #     # shade the sig region
-  #     g1 <- g1 + ggplot2::annotate(
-  #       "rect", xmin = temp_range[1], xmax = temp_range[2],
-  #       ymin = -Inf, ymax = Inf,
-  #       alpha = sig_region_alpha, fill = sig_region_color)
-  #     for (j in seq_along(temp_range)) {
-  #       # vertical line
-  #       g1 <- g1 + ggplot2::geom_vline(
-  #         xintercept = temp_range[j],
-  #         linetype = jn_line_types[j],
-  #         linewidth = 1)
-  #       # label jn points
-  #       if (is.null(jn_point_label_hjust)) {
-  #         jn_point_label_hjust <- rep(0.5, length(temp_range))
-  #       }
-  #       g1 <- g1 + ggplot2::annotate(
-  #         geom = "text",
-  #         x = temp_range[j],
-  #         y = Inf,
-  #         label = round(temp_range[j], round_jn_point_labels),
-  #         hjust = jn_point_label_hjust[j], vjust = -0.5,
-  #         fontface = "bold",
-  #         color = "black",
-  #         size = jn_point_font_size)
-  #     }
-  #   }
-  # }
-  # # x axis title
-  # if (is.null(x_axis_title)) {
-  #   g1 <- g1 + ggplot2::xlab(mod_name)
-  # } else {
-  #   if (x_axis_title == FALSE) {
-  #     g1 <- g1 + ggplot2::theme(axis.title.x = element_blank())
-  #   } else {
-  #     g1 <- g1 + ggplot2::xlab(x_axis_title)
-  #   }
-  # }
-  # # y axis title
-  # if (is.null(y_axis_title)) {
-  #   g1 <- g1 + ggplot2::ylab(dv_name)
-  # } else {
-  #   if (y_axis_title == FALSE) {
-  #     g1 <- g1 + ggplot2::theme(axis.title.y = element_blank())
-  #   } else {
-  #     g1 <- g1 + ggplot2::ylab(y_axis_title)
-  #   }
-  # }
-  # # legend title
-  # if (is.null(legend_title)) {
-  #   g1 <- g1 + ggplot2::labs(
-  #     color = iv_name,
-  #     linetype = iv_name)
-  # } else {
-  #   if (legend_title == FALSE) {
-  #     g1 <- g1 + ggplot2::theme(legend.title = element_blank())
-  #   } else {
-  #     g1 <- g1 + ggplot2::labs(
-  #       color = legend_title,
-  #       linetype = legend_title)
-  #   }
-  # }
-  # # add a note on covariates if applicable
-  # if (!is.null(covariate_name)) {
-  #   g1 <- g1 + ggplot2::labs(caption = paste0(
-  #     "Covariates (Variables Controlled for):\n",
-  #     paste0(covariate_name, collapse = ", ")))
-  # }
-  # return(g1)
+  # begin floodlight
+  # copy the dt
+  dt2 <- data.table::copy(dt)
+  # formula to use
+  floodlight_lm_formula <- do.call(
+    "substitute", list(lm_2_formula, list(mod = quote(mod_temp))))
+  # min and max of observed mod
+  mod_min_observed <- min(dt[, mod])
+  mod_max_observed <- max(dt[, mod])
+  # x range is the same as mod range, because mod is plotted along the x axis
+  mod_range <- x_range <- mod_max_observed - mod_min_observed
+  # function for optimizing to find the mod values at which p value = 0.05
+  function_to_find_jn_points <- function(
+    x = NULL,
+    data = NULL,
+    lm_formula = NULL,
+    predictor_in_regression = NULL,
+    target_p_value = 0.05) {
+    data[, mod_temp := mod - x]
+    temp_lm_summary <- summary(
+      stats::lm(formula = lm_formula, data = data))
+    temp_p <- temp_lm_summary$coefficients[
+      predictor_in_regression, "Pr(>|t|)"]
+    output <- abs(temp_p - target_p_value)
+    return(output)
+  }
+  # find jn points for each dummy variable
+  floodlight_plots <- jn_points_by_dummy_var <-
+    vector(mode = "list", length = num_of_dummy_vars)
+  # create floodlight plots
+  for (i in seq_len(num_of_dummy_vars)) {
+    cat(paste0("\nSearching for JN points for ", paste0("dummy_", i)))
+    # disregard the second jn point based on threshold
+    if (is.null(jn_points_disregard_threshold)) {
+      jn_points_disregard_threshold <- mod_range / 10 ^ 4
+    }
+    # use deoptim to find the jn points
+    # optimizing 1 of 2
+    temp_optim_results_1 <- DEoptim_fn_from_DEoptim(
+      fn = function_to_find_jn_points,
+      lower = mod_min_observed,
+      upper = mod_max_observed,
+      control = DEoptim.control(trace = FALSE),
+      data = dt2,
+      lm_formula = floodlight_lm_formula,
+      predictor_in_regression = paste0("dummy_", i))
+    jn_point_candidate_1 <- temp_optim_results_1$optim$bestmem
+    # optimizing 2 of 2
+    # where is the second jn point likely to be?
+    if (mean(temp_optim_results_1$member$pop) < jn_point_candidate_1) {
+      temp_deoptim_lower <- mod_min_observed
+      temp_deoptim_upper <- jn_point_candidate_1
+    } else {
+      temp_deoptim_lower <- jn_point_candidate_1
+      temp_deoptim_upper <- mod_max_observed
+    }
+    temp_optim_results_2 <- DEoptim_fn_from_DEoptim(
+      fn = function_to_find_jn_points,
+      lower = temp_deoptim_lower,
+      upper = temp_deoptim_upper,
+      control = DEoptim.control(trace = FALSE),
+      data = dt2,
+      lm_formula = floodlight_lm_formula,
+      predictor_in_regression = paste0("dummy_", i))
+    jn_point_candidate_2 <- temp_optim_results_2$optim$bestmem
+    # gather the jn points
+    # if the two candidates are apart by a distance less than the
+    # threshold, remove the second one
+    if (abs(jn_point_candidate_1 - jn_point_candidate_2) <
+        jn_points_disregard_threshold) {
+      jn_point_candidates <- jn_point_candidate_1
+    } else {
+      jn_point_candidates <- c(jn_point_candidate_1, jn_point_candidate_2)
+    }
+    temp_jn_points <- unname(jn_point_candidates)
+    jn_points_verified <- c()
+    # verify the jn points
+    for (j in seq_along(temp_jn_points)) {
+      temp_jn_point_to_verify <- temp_jn_points[j]
+      dt2[, mod_temp := mod - temp_jn_point_to_verify]
+      temp_lm_summary <- summary(
+        stats::lm(formula = floodlight_lm_formula, data = dt2))
+      temp_p <- temp_lm_summary$coefficients[
+        paste0("dummy_", i), "Pr(>|t|)"]
+      # p value can be off by 0.0001
+      if (abs(temp_p - 0.05) < 0.0001) {
+        jn_points_verified <- c(jn_points_verified, temp_jn_points[j])
+      }
+    }
+    if (!is.null(jn_points_verified)) {
+      jn_points_by_dummy_var[[i]] <- jn_points_verified
+    }
+    names(jn_points_by_dummy_var)[i] <- paste0("dummy_", i)
+    num_of_jn_points <- length(jn_points_verified)
+    # regions of significance
+    # if there are more than 2 jn points, throw an error
+    if (num_of_jn_points > 2) {
+      stop(paste0(
+        "An internal computation suggests that there are more than\n",
+        "two Johnson-Neyman points. Whether or not this is theoretically\n",
+        "possible, the current version of the function cannot proceed\n",
+        "with more than two Johnson-Neyman points."))
+    }
+    if (num_of_jn_points == 0) {
+      # if there are no jn points, then either the entire range
+      # of the moderator values is sig or nonsig
+      # find out which is the case
+      # p value at mod min
+      temp_mod_value_1 <- mod_min_observed
+      dt2[, mod_temp := mod - temp_mod_value_1]
+      temp_p_1 <- summary(stats::lm(
+        formula = floodlight_lm_formula, data = dt2))$coefficients[
+          paste0("dummy_", i), "Pr(>|t|)"]
+      # p value at mod max
+      temp_mod_value_2 <- mod_max_observed
+      dt2[, mod_temp := mod - temp_mod_value_2]
+      temp_p_2 <- summary(stats::lm(
+        formula = floodlight_lm_formula, data = dt2))$coefficients[
+          paste0("dummy_", i), "Pr(>|t|)"]
+      # determine regions of sig
+      if (temp_p_1 >= 0.05 & temp_p_2 >= 0.05) {
+        sig_region <- NULL
+      } else if (temp_p_1 < 0.05 & temp_p_2 < 0.05) {
+        sig_region <- list(c(mod_min_observed, mod_max_observed))
+      } else {
+        stop(paste0(
+          "An error occurred while determining regions of significance",
+          "\n(Error Code 101)."))
+      }
+    } else if (num_of_jn_points == 1) {
+      # if there is exactly 1 jn point, then either side of the
+      # jn point is sig; find out which side
+      # p value at mod min
+      temp_mod_value_1 <- jn_points_verified - jn_points_disregard_threshold
+      dt2[, mod_temp := mod - temp_mod_value_1]
+      temp_p_1 <- summary(stats::lm(
+        formula = floodlight_lm_formula, data = dt2))$coefficients[
+          paste0("dummy_", i), "Pr(>|t|)"]
+      # p value at mod max
+      temp_mod_value_2 <- jn_points_verified + jn_points_disregard_threshold
+      dt2[, mod_temp := mod - temp_mod_value_2]
+      temp_p_2 <- summary(stats::lm(
+        formula = floodlight_lm_formula, data = dt2))$coefficients[
+          paste0("dummy_", i), "Pr(>|t|)"]
+      # determine regions of sig
+      if (temp_p_1 < 0.05 & temp_p_2 >= 0.05) {
+        sig_region <- list(c(mod_min_observed, jn_points_verified))
+      } else if (temp_p_1 >= 0.05 & temp_p_2 < 0.05) {
+        sig_region <- list(c(jn_points_verified, mod_max_observed))
+      } else {
+        stop(paste0(
+          "An error occurred while determining regions of significance",
+          "\n(Error Code 102)."))
+      }
+    } else if (num_of_jn_points == 2) {
+      # if there are 2 jn points, then either the middle region is sig
+      # or the two regions on both sides are sig
+      # p value at mod min
+      temp_mod_value_1 <- mod_min_observed + jn_points_disregard_threshold
+      dt2[, mod_temp := mod - temp_mod_value_1]
+      temp_p_1 <- summary(stats::lm(
+        formula = floodlight_lm_formula, data = dt2))$coefficients[
+          paste0("dummy_", i), "Pr(>|t|)"]
+      # p value in the middle region
+      temp_mod_value_2 <- jn_points_verified[2] - jn_points_verified[1]
+      dt2[, mod_temp := mod - temp_mod_value_2]
+      temp_p_2 <- summary(stats::lm(
+        formula = floodlight_lm_formula, data = dt2))$coefficients[
+          paste0("dummy_", i), "Pr(>|t|)"]
+      # p value at mod max
+      temp_mod_value_3 <- mod_max_observed - jn_points_disregard_threshold
+      dt2[, mod_temp := mod - temp_mod_value_3]
+      temp_p_3 <- summary(stats::lm(
+        formula = floodlight_lm_formula, data = dt2))$coefficients[
+          paste0("dummy_", i), "Pr(>|t|)"]
+      # determine regions of sig
+      if (temp_p_1 < 0.05 & temp_p_2 >= 0.05 & temp_p_3 < 0.05) {
+        sig_region <- list(
+          c(mod_min_observed, jn_points_verified[1]),
+          c(jn_points_verified[2], mod_max_observed))
+      } else if (temp_p_1 >= 0.05 & temp_p_2 < 0.05 & temp_p_3 >= 0.05) {
+        sig_region <- list(
+          c(jn_points_verified[1], jn_points_verified[2]))
+      } else {
+        stop(paste0(
+          "An error occurred while determining regions of significance",
+          "\n(Error Code 103)."))
+      }
+    }
+    # dt for plotting
+    # print(paste0("flood", i))
+    temp_dt <- dt[
+      iv %in% c(baseline_category, iv_non_baseline_categories[i])]
+    temp_dt[, iv_factor := factor(iv, levels = c(
+      baseline_category, iv_non_baseline_categories[i]))]
+    # min and max of observed dv
+    dv_min_observed <- min(temp_dt[, dv])
+    dv_max_observed <- max(temp_dt[, dv])
+    # range of y (the dv)
+    y_range <- dv_max_observed - dv_min_observed
+    # plot
+    g1 <- ggplot2::ggplot(
+      data = temp_dt,
+      aes(
+        x = mod,
+        y = dv,
+        color = iv_factor))
+    # shade the regions of sig
+    for (j in seq_along(sig_region)) {
+      # range of the sig region
+      temp_range <- sig_region[[j]]
+      # shade the sig region
+      g1 <- g1 + ggplot2::annotate(
+        "rect", xmin = temp_range[1], xmax = temp_range[2],
+        ymin = dv_min_observed, ymax = dv_max_observed,
+        alpha = sig_region_alpha, fill = sig_region_color)
+    }
+    # plot points but make them transparent if covariates are used
+    if (!is.null(covariate_name)) {
+      dot_alpha <- 0
+      dot_alpha <- 0
+    }
+    # jitter
+    g1 <- g1 + ggplot2::geom_point(
+      size = dot_size,
+      alpha = dot_alpha,
+      position = ggplot2::position_jitter(
+        width = x_range * jitter_x_percent / 100,
+        height = y_range * jitter_y_percent / 100))
+    g1 <- g1 + ggplot2::scale_x_continuous(
+      limits = c(mod_min_observed, mod_max_observed))
+    g1 <- g1 + kim::theme_kim(
+      cap_axis_lines = TRUE,
+      legend_position = legend_position)
+    g1 <- g1 + ggplot2::scale_color_manual(values = c("red", "blue"))
+    # add the lines of fit
+    temp_data_for_predicting <- dummy_var_coding_table[
+      get(iv_name) %in% unique(temp_dt[, iv_factor])]
+    temp_data_for_predicting <- temp_data_for_predicting[
+      rep(seq_len(nrow(temp_data_for_predicting)),
+          each = 2), ]
+    temp_data_for_predicting[, mod := rep(
+      c(mod_min_observed, mod_max_observed), 2)]
+    # predicted dv values
+    predicted_dv <- stats::predict(lm_2, temp_data_for_predicting)
+    dt_for_lines_of_fit <- dummy_var_coding_table[
+      get(iv_name) %in% unique(temp_dt[, iv_factor])]
+    dt_for_lines_of_fit[, segment_x := mod_min_observed]
+    dt_for_lines_of_fit[, segment_xend := mod_max_observed]
+    segment_y_coord_dt <- data.table::data.table(
+      matrix(predicted_dv, ncol = 2, byrow = TRUE))
+    names(segment_y_coord_dt) <- c("segment_y", "segment_yend")
+    dt_for_lines_of_fit <- data.table::data.table(
+      dt_for_lines_of_fit, segment_y_coord_dt)
+    dt_for_lines_of_fit[, iv_factor := factor(get(iv_name), levels = c(
+      baseline_category, iv_non_baseline_categories[i]))]
+    g1 <- g1 + geom_segment(
+      mapping = aes(
+        x = segment_x,
+        y = segment_y,
+        xend = segment_xend,
+        yend = segment_yend,
+        color = iv_factor,
+        linetype = iv_factor),
+      data = dt_for_lines_of_fit)
+    g1 <- g1 + ggplot2::scale_linetype_manual(
+      values = reg_line_types,
+      guide = "none")
+    # include interaction p value
+    if (interaction_p_include == TRUE) {
+      interaction_p_value <- kim::pretty_round_p_value(
+        lm_2_reg_table[variable == paste0("dummy_", i, ":mod"), p],
+        include_p_equals = TRUE,
+        round_digits_after_decimal = round_decimals_int_p_value)
+      interaction_p_value_text <- paste0(
+        "Interaction ", interaction_p_value)
+      # label interaction p value
+      g1 <- g1 + ggplot2::annotate(
+        geom = "text",
+        x = mod_min_observed + x_range * 0.5,
+        y = Inf,
+        label = interaction_p_value_text,
+        hjust = 0.5, vjust = -3,
+        fontface = "bold",
+        color = "black",
+        size = interaction_p_value_font_size)
+    }
+    # allow labeling outside the plot area
+    suppressMessages(g1 <- g1 + ggplot2::coord_cartesian(clip = "off"))
+    g1 <- g1 + ggplot2::theme(
+      plot.margin = plot_margin)
+    # jn line types
+    # if only one type is entered for jn line
+    if (length(jn_line_types) == 1) {
+      jn_line_types <- rep(jn_line_types, num_of_jn_points)
+    }
+    # add the vertical line at jn points
+    for (j in seq_along(jn_points_verified)) {
+      g1 <- g1 + geom_segment(
+        x = jn_points_verified[j],
+        y = dv_min_observed,
+        xend = jn_points_verified[j],
+        yend = dv_max_observed,
+        color = "black")
+      # label jn points
+      if (is.null(jn_point_label_hjust)) {
+        jn_point_label_hjust <- rep(0.5, num_of_jn_points)
+      }
+      g1 <- g1 + ggplot2::annotate(
+        geom = "text",
+        x = jn_points_verified[j],
+        y = Inf,
+        label = round(jn_points_verified[j], round_jn_point_labels),
+        hjust = jn_point_label_hjust[j], vjust = -0.5,
+        fontface = "bold",
+        color = "black",
+        size = jn_point_font_size)
+    }
+    # x axis title
+    if (is.null(x_axis_title)) {
+      g1 <- g1 + ggplot2::xlab(mod_name)
+    } else {
+      if (x_axis_title == FALSE) {
+        g1 <- g1 + ggplot2::theme(axis.title.x = element_blank())
+      } else {
+        g1 <- g1 + ggplot2::xlab(x_axis_title)
+      }
+    }
+    # y axis title
+    if (is.null(y_axis_title)) {
+      g1 <- g1 + ggplot2::ylab(dv_name)
+    } else {
+      if (y_axis_title == FALSE) {
+        g1 <- g1 + ggplot2::theme(axis.title.y = element_blank())
+      } else {
+        g1 <- g1 + ggplot2::ylab(y_axis_title)
+      }
+    }
+    # legend title
+    if (is.null(legend_title)) {
+      g1 <- g1 + ggplot2::labs(
+        color = iv_name,
+        linetype = iv_name)
+    } else {
+      if (legend_title == FALSE) {
+        g1 <- g1 + ggplot2::theme(legend.title = element_blank())
+      } else {
+        g1 <- g1 + ggplot2::labs(
+          color = legend_title,
+          linetype = legend_title)
+      }
+    }
+    # add a note on covariates if applicable
+    if (!is.null(covariate_name)) {
+      g1 <- g1 + ggplot2::labs(caption = paste0(
+        "Covariates (Variables Controlled for):\n",
+        paste0(covariate_name, collapse = ", ")))
+    }
+    print(g1)
+    floodlight_plots[[i]] <- g1
+  }
+  output <- floodlight_plots
+  # output
+  invisible(output)
 }

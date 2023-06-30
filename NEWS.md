@@ -1,3 +1,7 @@
+# kim 0.5.301
+* Updated the following function(s) (and other functions that use them):
+floodlight_multi_by_continuous
+
 # kim 0.5.271
 * Added the following function(s): floodlight_multi_by_continuous, mean_center
 * Updated the following function(s) (and other functions that use them):

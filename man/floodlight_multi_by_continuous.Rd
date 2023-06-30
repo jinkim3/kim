@@ -12,12 +12,13 @@ floodlight_multi_by_continuous(
   coding = "indicator",
   baseline_category = NULL,
   covariate_name = NULL,
+  interaction_p_include = TRUE,
+  iv_category_order = NULL,
   heteroskedasticity_consistent_se = "HC4",
   round_r_squared = 3,
   round_f = 2,
   sigfigs = 2,
-  interaction_p_include = TRUE,
-  iv_category_order = NULL,
+  jn_points_disregard_threshold = NULL,
   output = "reg_lines_plot",
   jitter_x_percent = 0,
   jitter_y_percent = 0,
@@ -52,7 +53,22 @@ this variable must have three or more categories.}
 
 \item{mod_name}{name of the continuous moderator variable}
 
+\item{coding}{name of the coding scheme to use; the current version
+of the function allows only the "indicator" coding scheme.
+By default, \code{coding = "indicator"}}
+
+\item{baseline_category}{value of the independent variable that
+will be the reference value against which other values of the
+independent variable will be compared}
+
 \item{covariate_name}{name of the variables to control for}
+
+\item{interaction_p_include}{logical. Should the plot include a
+p-value for the interaction term?}
+
+\item{iv_category_order}{order of levels in the independent
+variable for legend. By default, it will be set as levels of the
+independent variable ordered using R's base function \code{sort}.}
 
 \item{heteroskedasticity_consistent_se}{which kind of
 heteroskedasticity-consistent (robust) standard errors should be
@@ -68,12 +84,23 @@ the f statistic for model comparison (default = 2)}
 (for values in the regression tables, except for p values).
 By default \code{sigfigs = 2}}
 
-\item{interaction_p_include}{logical. Should the plot include a
-p-value for the interaction term?}
-
-\item{iv_category_order}{order of levels in the independent
-variable for legend. By default, it will be set as levels of the
-independent variable ordered using R's base function \code{sort}.}
+\item{jn_points_disregard_threshold}{the Minimum Distance in
+the unit of the moderator variable that will be used for various purposes,
+such as (1) to disregard the second Johnson-Neyman point
+that is different from the first Johnson-Neyman point by
+less than the Minimum Distance; (2) to determine regions of
+significance, which will calculate the p-value of an IV's effect
+(dummy variable's effect) on DV at the minimum moderator value observed
+\itemize{
+\item the Minimum Distance or at the maximum moderator value observed -
+the Minimum Distance. This input is hard to explain, but a user can
+enter a really low value for this argument or use the default.
+By default, \code{
+jn_points_disregard_threshold = range of the moderator / 10000}
+For example, if the observed moderator values range from 1 to 7
+because it is a 7-point scale, then \code{
+jn_points_disregard_threshold = (7 - 1) / 10000 = 0.0006}
+}}
 
 \item{output}{type of output (default = "reg_lines_plot").
 Possible inputs: "interactions_pkg_results", "simple_effects_plot",
@@ -169,26 +196,5 @@ data = mtcars,
 iv_name = "cyl",
 dv_name = "mpg",
 mod_name = "qsec")
-# add covariates
-floodlight_multi_by_continuous(
-data = mtcars,
-iv_name = "cyl",
-dv_name = "mpg",
-mod_name = "qsec",
-covariate_name = c("disp", "hp"))
-# adjust the jn point label positions
-floodlight_multi_by_continuous(
-data = mtcars,
-iv_name = "mpg",
-dv_name = "cyl",
-mod_name = "qsec",
-jn_point_label_hjust = c(1, 0))
-# return regions of significance and nonsignificance
-floodlight_multi_by_continuous(
-data = mtcars,
-iv_name = "am",
-dv_name = "mpg",
-mod_name = "qsec",
-output = "regions")
 }
 }
