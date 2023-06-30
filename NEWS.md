@@ -1,4 +1,4 @@
-# kim 0.5.306
+# kim 0.5.307
 * Added the following function(s): holm_adjusted_p_values
 * Updated the following function(s) (and other functions that use them):
 t_test_pairwise, compare_groups
