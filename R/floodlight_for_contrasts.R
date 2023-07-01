@@ -618,19 +618,21 @@ floodlight_for_contrasts <- function(
     dt_for_lines_of_fit <- data.table::data.table(
       dt_for_lines_of_fit, segment_y_coord_dt)
     dt_for_lines_of_fit[, iv_factor := factor(get(iv_name))]
-    g1 <- g1 + ggplot2::geom_segment(
-      mapping = ggplot2::aes(
-        x = segment_x,
-        y = segment_y,
-        xend = segment_xend,
-        yend = segment_yend,
-        color = iv_factor,
-        linetype = iv_factor),
-      linewidth = line_of_fit_thickness,
-      data = dt_for_lines_of_fit)
-    g1 <- g1 + ggplot2::scale_linetype_manual(
-      values = line_of_fit_types,
-      guide = "none")
+    # plot the lines of fit (i.e., regression lines)
+    if (is.null(covariate_name)) {
+      g1 <- g1 + ggplot2::geom_segment(
+        mapping = ggplot2::aes(
+          x = segment_x,
+          y = segment_y,
+          xend = segment_xend,
+          yend = segment_yend,
+          color = iv_factor,
+          linetype = iv_factor),
+        linewidth = line_of_fit_thickness,
+        data = dt_for_lines_of_fit)
+      g1 <- g1 + ggplot2::scale_linetype_manual(
+        values = line_of_fit_types)
+    }
     # include interaction p value
     if (interaction_p_include == TRUE) {
       interaction_p_value <- kim::pretty_round_p_value(
