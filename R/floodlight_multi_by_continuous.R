@@ -710,9 +710,9 @@ floodlight_multi_by_continuous <- function(
     g1 <- g1 + kim::theme_kim(
       cap_axis_lines = TRUE,
       legend_position = legend_position)
-    g1 <- g1 + theme(
-      legend.spacing.y = unit(1, "cm"),
-      legend.key.size = unit(3, "lines"))
+    g1 <- g1 + ggplot2::theme(
+      legend.spacing.y = ggplot2::unit(1, "cm"),
+      legend.key.size = ggplot2::unit(3, "lines"))
     g1 <- g1 + ggplot2::scale_color_manual(values = c("red", "blue"))
     # add the lines of fit
     temp_data_for_predicting <- dummy_var_coding_table[
@@ -781,7 +781,8 @@ floodlight_multi_by_continuous <- function(
     }
     # add the vertical line at jn points
     for (j in seq_along(jn_points_final)) {
-      g1 <- g1 + ggplot2::geom_segment(
+      g1 <- g1 + ggplot2::annotate(
+        geom = "segment",
         x = jn_points_final[j],
         y = dv_min_observed,
         xend = jn_points_final[j],

@@ -29,7 +29,7 @@ floodlight_for_contrasts(
   jn_point_font_size = 6,
   jn_point_label_hjust = NULL,
   interaction_p_vjust = -3,
-  plot_margin = ggplot2::unit(c(60, 7, 7, 7), "pt"),
+  plot_margin = ggplot2::unit(c(75, 7, 7, 7), "pt"),
   legend_position = "right",
   line_of_fit_types = c("solid", "dashed"),
   line_of_fit_thickness = 1.5,
