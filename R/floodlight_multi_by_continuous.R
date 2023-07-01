@@ -78,9 +78,10 @@
 #' By default \code{plot_margin = ggplot2::unit(c(75, 7, 7, 7), "pt")}
 #' @param legend_position position of the legend (default = "right").
 #' If \code{legend_position = "none"}, the legend will be removed.
-#' @param reg_line_types types of the regression lines for the two levels
+#' @param line_of_fit_types types of the lines of fit for the two levels
 #' of the independent variable.
-#' By default, \code{reg_line_types = c("solid", "dashed")}
+#' By default, \code{line_of_fit_types = c("solid", "dashed")}
+#' @param line_of_fit_thickness thickness of the lines of fit (default = 1.5)
 #' @param jn_line_types types of the lines for Johnson-Neyman points.
 #' By default, \code{jn_line_types = c("solid", "solid")}
 #' @param sig_region_color color of the significant region, i.e., range(s)
@@ -114,7 +115,7 @@
 #' @examples
 #' \dontrun{
 #' # typical example
-#' aa <- floodlight_multi_by_continuous(
+#' floodlight_multi_by_continuous(
 #' data = mtcars,
 #' iv_name = "cyl",
 #' dv_name = "mpg",
@@ -149,7 +150,8 @@ floodlight_multi_by_continuous <- function(
     interaction_p_vjust = -3,
     plot_margin = ggplot2::unit(c(75, 7, 7, 7), "pt"),
     legend_position = "right",
-    reg_line_types = c("solid", "dashed"),
+    line_of_fit_types = c("solid", "dashed"),
+    line_of_fit_thickness = 1.5,
     jn_line_types = c("solid", "solid"),
     sig_region_color = "green",
     sig_region_alpha = 0.08,
@@ -159,7 +161,6 @@ floodlight_multi_by_continuous <- function(
     y_axis_title = NULL,
     legend_title = NULL,
     round_decimals_int_p_value = 3,
-    line_of_fit_thickness = 1,
     round_jn_point_labels = 2
 ) {
   # installed packages
@@ -737,9 +738,10 @@ floodlight_multi_by_continuous <- function(
         yend = segment_yend,
         color = iv_factor,
         linetype = iv_factor),
+      linewidth = line_of_fit_thickness,
       data = dt_for_lines_of_fit)
     g1 <- g1 + ggplot2::scale_linetype_manual(
-      values = reg_line_types,
+      values = line_of_fit_types,
       guide = "none")
     # include interaction p value
     if (interaction_p_include == TRUE) {
