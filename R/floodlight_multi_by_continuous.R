@@ -706,11 +706,12 @@ floodlight_multi_by_continuous <- function(
       position = ggplot2::position_jitter(
         width = x_range * jitter_x_percent / 100,
         height = y_range * jitter_y_percent / 100))
-    g1 <- g1 + ggplot2::scale_x_continuous(
-      limits = c(mod_min_observed, mod_max_observed))
     g1 <- g1 + kim::theme_kim(
       cap_axis_lines = TRUE,
       legend_position = legend_position)
+    g1 <- g1 + theme(
+      legend.spacing.y = unit(1, "cm"),
+      legend.key.size = unit(3, "lines"))
     g1 <- g1 + ggplot2::scale_color_manual(values = c("red", "blue"))
     # add the lines of fit
     temp_data_for_predicting <- dummy_var_coding_table[
