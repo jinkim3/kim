@@ -144,7 +144,7 @@ If \code{legend_position = "none"}, the legend will be removed.}
 of the independent variable.
 By default, \code{line_of_fit_types = c("solid", "dashed")}}
 
-\item{line_of_fit_thickness}{thickness of the lines of fit (default = 1)}
+\item{line_of_fit_thickness}{thickness of the lines of fit (default = 1.5)}
 
 \item{jn_line_types}{types of the lines for Johnson-Neyman points.
 By default, \code{jn_line_types = c("solid", "solid")}}
