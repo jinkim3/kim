@@ -31,7 +31,8 @@ floodlight_for_contrasts(
   interaction_p_vjust = -3,
   plot_margin = ggplot2::unit(c(60, 7, 7, 7), "pt"),
   legend_position = "right",
-  reg_line_types = c("solid", "dashed"),
+  line_of_fit_types = c("solid", "dashed"),
+  line_of_fit_thickness = 1.5,
   jn_line_types = c("solid", "solid"),
   sig_region_color = "green",
   sig_region_alpha = 0.08,
@@ -41,7 +42,6 @@ floodlight_for_contrasts(
   y_axis_title = NULL,
   legend_title = NULL,
   round_decimals_int_p_value = 3,
-  line_of_fit_thickness = 1,
   round_jn_point_labels = 2
 )
 }
@@ -139,9 +139,11 @@ By default \code{plot_margin = ggplot2::unit(c(75, 7, 7, 7), "pt")}}
 \item{legend_position}{position of the legend (default = "right").
 If \code{legend_position = "none"}, the legend will be removed.}
 
-\item{reg_line_types}{types of the regression lines for the two levels
+\item{line_of_fit_types}{types of the lines of fit for the two levels
 of the independent variable.
-By default, \code{reg_line_types = c("solid", "dashed")}}
+By default, \code{line_of_fit_types = c("solid", "dashed")}}
+
+\item{line_of_fit_thickness}{thickness of the lines of fit (default = 1)}
 
 \item{jn_line_types}{types of the lines for Johnson-Neyman points.
 By default, \code{jn_line_types = c("solid", "solid")}}
@@ -179,8 +181,6 @@ be removed.}
 decimal point should the p value for the interaction term be
 rounded? (default = 3)}
 
-\item{line_of_fit_thickness}{thickness of the lines of fit (default = 1)}
-
 \item{round_jn_point_labels}{To how many digits after the
 decimal point should the jn point labels be rounded? (default = 2)}
 }
@@ -200,7 +200,7 @@ mtcars2 <- setDT(data.table::copy(mtcars))
 # make sure the data table package is attached
 mtcars2[, contrast_1 := fcase(cyl == 4, -2, cyl \%in\% c(6, 8), 1)]
 mtcars2[, contrast_2 := fcase(cyl == 4, 0, cyl == 6, 1, cyl == 8, -1)]
-aa <- floodlight_for_contrasts(
+floodlight_for_contrasts(
 data = mtcars2,
 iv_name = "cyl",
 dv_name = "mpg",
