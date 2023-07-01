@@ -125,6 +125,7 @@ floodlight_2_by_continuous <- function(
     interaction_p_value_font_size = 8,
     jn_point_font_size = 6,
     jn_point_label_hjust = NULL,
+    interaction_p_vjust = -3,
     plot_margin = ggplot2::unit(c(75, 7, 7, 7), "pt"),
     legend_position = "right",
     reg_line_types = c("solid", "dashed"),

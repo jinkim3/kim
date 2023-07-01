@@ -20,6 +20,7 @@ floodlight_2_by_continuous(
   interaction_p_value_font_size = 8,
   jn_point_font_size = 6,
   jn_point_label_hjust = NULL,
+  interaction_p_vjust = -3,
   plot_margin = ggplot2::unit(c(75, 7, 7, 7), "pt"),
   legend_position = "right",
   reg_line_types = c("solid", "dashed"),
@@ -79,6 +80,10 @@ p value (default = 8)}
 Johnson-Neyman point labels. By default, the hjust value will be 0.5 for
 all the points.}
 
+\item{interaction_p_vjust}{By how much should the label for the
+interaction p-value be adjusted vertically?
+By default, \code{interaction_p_vjust = -3})}
+
 \item{plot_margin}{margin for the plot
 By default \code{plot_margin = ggplot2::unit(c(75, 7, 7, 7), "pt")}}
 
@@ -129,10 +134,6 @@ rounded? (default = 3)}
 
 \item{round_jn_point_labels}{To how many digits after the
 decimal point should the jn point labels be rounded? (default = 2)}
-
-\item{interaction_p_vjust}{By how much should the label for the
-interaction p-value be adjusted vertically?
-By default, \code{interaction_p_vjust = -3})}
 }
 \description{
 Conduct a floodlight analysis for 2 x Continuous design.
