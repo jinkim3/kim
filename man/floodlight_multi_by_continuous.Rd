@@ -25,10 +25,11 @@ floodlight_multi_by_continuous(
   jitter_y_percent = 0,
   dot_alpha = 0.5,
   dot_size = 4,
-  interaction_p_value_font_size = 6,
+  interaction_p_value_font_size = 8,
   jn_point_font_size = 6,
   jn_point_label_hjust = NULL,
-  plot_margin = ggplot2::unit(c(60, 7, 7, 7), "pt"),
+  interaction_p_vertical_position = Inf,
+  plot_margin = ggplot2::unit(c(75, 7, 7, 7), "pt"),
   legend_position = "right",
   reg_line_types = c("solid", "dashed"),
   jn_line_types = c("solid", "solid"),
@@ -122,7 +123,7 @@ range of y values}
 \item{dot_size}{size of the dots (default = 4)}
 
 \item{interaction_p_value_font_size}{font size for the interaction
-p value (default = 6)}
+p value (default = 8)}
 
 \item{jn_point_font_size}{font size for Johnson-Neyman point labels
 (default = 6)}
@@ -132,7 +133,7 @@ Johnson-Neyman point labels. By default, the hjust value will be 0.5 for
 all the points.}
 
 \item{plot_margin}{margin for the plot
-By default \code{plot_margin = ggplot2::unit(c(60, 7, 7, 7), "pt")}}
+By default \code{plot_margin = ggplot2::unit(c(75, 7, 7, 7), "pt")}}
 
 \item{legend_position}{position of the legend (default = "right").
 If \code{legend_position = "none"}, the legend will be removed.}
@@ -181,6 +182,10 @@ rounded? (default = 3)}
 
 \item{round_jn_point_labels}{To how many digits after the
 decimal point should the jn point labels be rounded? (default = 2)}
+
+\item{interaction_p_vjust}{By how much should the label for the
+interaction p-value be adjusted vertically?
+By default, \code{interaction_p_vjust = -3})}
 }
 \description{
 Conduct a floodlight analysis for a

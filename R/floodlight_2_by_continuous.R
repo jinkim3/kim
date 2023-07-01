@@ -31,14 +31,17 @@
 #' 1 = completely opaque). By default, \code{dot_alpha = 0.5}
 #' @param dot_size size of the dots (default = 4)
 #' @param interaction_p_value_font_size font size for the interaction
-#' p value (default = 6)
+#' p value (default = 8)
 #' @param jn_point_font_size font size for Johnson-Neyman point labels
 #' (default = 6)
 #' @param jn_point_label_hjust a vector of hjust values for
 #' Johnson-Neyman point labels. By default, the hjust value will be 0.5 for
 #' all the points.
+#' @param interaction_p_vjust By how much should the label for the
+#' interaction p-value be adjusted vertically?
+#' By default, \code{interaction_p_vjust = -3})
 #' @param plot_margin margin for the plot
-#' By default \code{plot_margin = ggplot2::unit(c(60, 7, 7, 7), "pt")}
+#' By default \code{plot_margin = ggplot2::unit(c(75, 7, 7, 7), "pt")}
 #' @param legend_position position of the legend (default = "right").
 #' If \code{legend_position = "none"}, the legend will be removed.
 #' @param reg_line_types types of the regression lines for the two levels
@@ -119,10 +122,10 @@ floodlight_2_by_continuous <- function(
     jitter_y_percent = 0,
     dot_alpha = 0.5,
     dot_size = 4,
-    interaction_p_value_font_size = 6,
+    interaction_p_value_font_size = 8,
     jn_point_font_size = 6,
     jn_point_label_hjust = NULL,
-    plot_margin = ggplot2::unit(c(60, 7, 7, 7), "pt"),
+    plot_margin = ggplot2::unit(c(75, 7, 7, 7), "pt"),
     legend_position = "right",
     reg_line_types = c("solid", "dashed"),
     jn_line_types = c("solid", "solid"),

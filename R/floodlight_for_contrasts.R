@@ -1,24 +1,19 @@
-#' Floodlight Multicategorical by Continuous
+#' Floodlight Analyses for a Set of Contrasts
 #'
-#' Conduct a floodlight analysis for a
-#' Multicategorical IV x Continuous Moderator design.
+#' Conduct a floodlight analysis for a set of contrasts with a
+#' continuous moderator variable.
 #'
-#' See the following reference:
+#' See the following reference, which covers a related topic:
 #' Hayes & Montoya (2017) \doi{10.1080/19312458.2016.1271116}
-#' Williams (2004) on r-squared values when calculating robust standard errors
-#' <https://web.archive.org/web/20230627025457/https://www.stata.com/statalist/archive/2004-05/msg00107.html>
 #'
 #' @param data a data object (a data frame or a data.table)
 #' @param iv_name name of the multicategorical independent variable;
 #' this variable must have three or more categories.
 #' @param dv_name name of the dependent variable
 #' @param mod_name name of the continuous moderator variable
-#' @param coding name of the coding scheme to use; the current version
-#' of the function allows only the "indicator" coding scheme.
-#' By default, \code{coding = "indicator"}
-#' @param baseline_category value of the independent variable that
-#' will be the reference value against which other values of the
-#' independent variable will be compared
+#' @param contrasts names of the contrast variables
+#' @param contrasts_for_floodlight names of the contrast variables for
+#' which floodlight analyses will be conducted
 #' @param covariate_name name of the variables to control for
 #' @param interaction_p_include logical. Should the plot include a
 #' p-value for the interaction term?
@@ -114,21 +109,28 @@
 #' @examples
 #' \dontrun{
 #' # typical example
-#' floodlight_multi_by_continuous(
-#' data = mtcars,
+#' # copy and modify the 'mtcars' data
+#' mtcars2 <- setDT(data.table::copy(mtcars))
+#' # make sure the data table package is attached
+#' mtcars2[, contrast_1 := fcase(cyl == 4, -2, cyl %in% c(6, 8), 1)]
+#' mtcars2[, contrast_2 := fcase(cyl == 4, 0, cyl == 6, 1, cyl == 8, -1)]
+#' floodlight_for_contrasts(
+#' data = mtcars2,
 #' iv_name = "cyl",
 #' dv_name = "mpg",
-#' mod_name = "qsec")
+#' mod_name = "qsec",
+#' contrasts = paste0("contrast_", 1:2),
+#' contrasts_for_floodlight = "contrast_2")
 #' }
 #' @export
 #' @import data.table
-floodlight_multi_by_continuous <- function(
+floodlight_for_contrasts <- function(
     data = NULL,
     iv_name = NULL,
     dv_name = NULL,
     mod_name = NULL,
-    coding = "indicator",
-    baseline_category = NULL,
+    contrasts = NULL,
+    contrasts_for_floodlight = NULL,
     covariate_name = NULL,
     interaction_p_include = TRUE,
     iv_category_order = NULL,
@@ -137,17 +139,17 @@ floodlight_multi_by_continuous <- function(
     round_f = 2,
     sigfigs = 2,
     jn_points_disregard_threshold = NULL,
+    contrast_as_factor_labels = NULL,
     print_floodlight_plots = TRUE,
     output = "reg_lines_plot",
     jitter_x_percent = 0,
     jitter_y_percent = 0,
     dot_alpha = 0.5,
     dot_size = 4,
-    interaction_p_value_font_size = 8,
+    interaction_p_value_font_size = 6,
     jn_point_font_size = 6,
     jn_point_label_hjust = NULL,
-    interaction_p_vertical_position = Inf,
-    plot_margin = ggplot2::unit(c(75, 7, 7, 7), "pt"),
+    plot_margin = ggplot2::unit(c(60, 7, 7, 7), "pt"),
     legend_position = "right",
     reg_line_types = c("solid", "dashed"),
     jn_line_types = c("solid", "solid"),
@@ -226,6 +228,9 @@ floodlight_multi_by_continuous <- function(
   if (is.null(iv_name)) {
     stop("Please enter a variable name for the input 'iv_name'")
   }
+  if (is.null(contrasts)) {
+    stop("Please enter variable names for the input 'contrasts'")
+  }
   if (is.null(dv_name)) {
     stop("Please enter a variable name for the input 'dv_name'")
   }
@@ -236,116 +241,51 @@ floodlight_multi_by_continuous <- function(
   dv <- iv <- iv_binary <- iv_factor <- mod <- p <-
     mod_temp <- segment_x <- segment_xend <- segment_y <- segment_yend <-
     variable <- NULL
+  # number of all contrasts
+  num_of_contrasts <- length(contrasts)
+  # number of contrasts for floodlight
+  num_of_contrasts_for_floodlight <- length(contrasts_for_floodlight)
   # convert to data.table
   dt <- data.table::setDT(data.table::copy(data))
   # remove columns not needed for analysis
-  dt <- dt[, c(iv_name, dv_name, mod_name, covariate_name), with = FALSE]
+  dt <- dt[, c(
+    iv_name, contrasts, dv_name, mod_name, covariate_name), with = FALSE]
   # remove rows with na
   dt <- stats::na.omit(dt)
   # order and rename columns
   data.table::setcolorder(dt, c(
-    iv_name, dv_name, mod_name, covariate_name))
+    iv_name, contrasts, dv_name, mod_name, covariate_name))
   # give temporary names to covariates
   if (length(covariate_name) > 0) {
     cov_temp_names <- paste0("cov_", seq_along(covariate_name))
-    names(dt) <- c("iv", "dv", "mod", cov_temp_names)
+    names(dt) <- c("iv", contrasts, "dv", "mod", cov_temp_names)
   } else {
-    names(dt) <- c("iv", "dv", "mod")
+    names(dt) <- c("iv", contrasts, "dv", "mod")
   }
-  # unique values in iv
-  iv_unique_values <- sort(unique(dt[, iv]))
-  iv_unique_values_character <- as.character(iv_unique_values)
-  # check if iv has 3 or more categories
-  num_of_levels_in_iv <- length(iv_unique_values)
-  if (num_of_levels_in_iv < 3) {
-    stop(paste0(
-      "The independent variable has ", num_of_levels_in_iv,
-      " categories (levels).\n",
-      "It should have three or more categories (levels)."))
-  }
-  # set the order of levels in iv
-  if (is.null(iv_category_order)) {
-    iv_category_order <- iv_unique_values
-  }
-  # coding system
-  if (coding != "indicator") {
-    stop(paste0(
-      "The current version of the function allows only the\nindicator",
-      " coding system"))
-  }
-  if (coding == "indicator") {
-    # number of dummy variables
-    num_of_dummy_vars <- num_of_levels_in_iv - 1
-    if (is.null(baseline_category)) {
-      baseline_category <- iv_category_order[1]
-    }
-    iv_non_baseline_categories <- setdiff(
-      iv_category_order, baseline_category)
-    for (i in seq_len(num_of_dummy_vars)) {
-      dt[, paste0("dummy_", i) := ifelse(
-        dt[, iv] == iv_non_baseline_categories[i], 1, 0)]
-    }
-  }
-  # example from hayes montoya appendix 3
-  # dt[, dummy_1 := fcase(
-  #   iv == 1, -2/3,
-  #   iv == 2, 1/3,
-  #   iv == 3, 1/3)]
-  # dt[, dummy_2 := fcase(
-  #   iv == 1, 0,
-  #   iv == 2, -1/2,
-  #   iv == 3, 1/2)]
-  # model 1 w no interaction
+  # print the coding scheme
+  cat(paste0("Contrast Coding Scheme:\n"))
+  contrast_coding_table <- unique(dt[, c(
+    "iv", contrasts), with = FALSE])
+  data.table::setnames(contrast_coding_table, "iv", iv_name)
+  data.table::setorderv(contrast_coding_table, cols = iv_name)
+  print(contrast_coding_table)
+  cat("\n")
+  # formula for the initial model
   lm_1_formula_character <- paste0(
     "dv ~ ", paste0(
-      "dummy", "_", seq_len(num_of_dummy_vars),
-      collapse = " + "),
-    " + mod")
-  if (!is.null(covariate_name)) {
-    lm_1_formula_character <- paste0(
-      lm_1_formula_character,
-      " + ",
-      paste0(cov_temp_names, collapse = " + "))
-  }
+      contrasts, collapse = " + "),
+    " + mod + ",
+    paste0(paste0(
+      contrasts, ":mod"), collapse = " + "))
+  # estimate the model without floodlight
   lm_1_formula <- stats::as.formula(lm_1_formula_character)
-  # model 2 w interaction
-  lm_2_formula_character <- paste0(
-    "dv ~ ", paste0(
-      "dummy", "_", seq_len(num_of_dummy_vars),
-      collapse = " + "),
-    " + mod + ", paste0(
-      "dummy", "_", seq_len(num_of_dummy_vars),
-      ":mod",
-      collapse = " + "))
-  if (!is.null(covariate_name)) {
-    lm_2_formula_character <- paste0(
-      lm_2_formula_character,
-      " + ",
-      paste0(cov_temp_names, collapse = " + "))
-  }
-  lm_2_formula <- stats::as.formula(lm_2_formula_character)
-  # estimate the models
+  # estimate the model
   lm_1 <- stats::lm(formula = lm_1_formula, data = dt)
-  lm_2 <- stats::lm(formula = lm_2_formula, data = dt)
-  # extract model stats such as r squared values
-  lm_2_df_residual <- stats::df.residual(lm_2)
-  lm_2_r_squared <- summary(lm_2)$r.squared
-  lm_1_r_squared <- summary(lm_1)$r.squared
-  r_squared_increase <- lm_2_r_squared - lm_1_r_squared
-  f_stat_for_model_fit_diff <- lm_2_df_residual *
-    (lm_2_r_squared - lm_1_r_squared) /
-    ((num_of_levels_in_iv - 1) * (1 - lm_2_r_squared))
-  p_for_f_stat_for_model_fit_diff <- stats::pf(
-    q = f_stat_for_model_fit_diff,
-    df1 = num_of_levels_in_iv - 1,
-    df2 = lm_2_df_residual,
-    lower.tail = FALSE)
   # use heteroskedasticity consistent standard errors
   if (heteroskedasticity_consistent_se == FALSE) {
     message(
       "Heteroskedacity-Consistent Standard Errors were NOT calculated.")
     lm_1_coeff_only <- summary(lm_1)$coefficients
-    lm_2_coeff_only <- summary(lm_2)$coefficients
   } else {
     message(paste0(
       "Heteroskedacity-Consistent Standard Errors are calculated using",
@@ -353,80 +293,34 @@ floodlight_multi_by_continuous <- function(
     lm_1_w_hc_se <- coeftest_fn_from_lmtest(
       lm_1, vcov. = vcovHC_fn_from_sandwich(
         lm_1, type = heteroskedasticity_consistent_se))
-    lm_2_w_hc_se <- coeftest_fn_from_lmtest(
-      lm_2, vcov. = vcovHC_fn_from_sandwich(
-        lm_2, type = heteroskedasticity_consistent_se))
     lm_1_coeff_only <- lm_1_w_hc_se[,]
-    lm_2_coeff_only <- lm_2_w_hc_se[,]
   }
   # create regression tables
   lm_1_reg_table <- data.table::data.table(
     variable = row.names(lm_1_coeff_only),
     lm_1_coeff_only)
-  lm_2_reg_table <- data.table::data.table(
-    variable = row.names(lm_2_coeff_only),
-    lm_2_coeff_only)
-  names(lm_1_reg_table) <- names(lm_2_reg_table) <-
-    c("variable", "b", "se_b", "t", "p")
+  names(lm_1_reg_table) <- c("variable", "b", "se_b", "t", "p")
   # round values in the reg tables
   lm_1_reg_table_rounded <- data.table::copy(lm_1_reg_table)
-  lm_2_reg_table_rounded <- data.table::copy(lm_2_reg_table)
   for (x in c("b", "se_b", "t")) {
     data.table::set(
       lm_1_reg_table_rounded, j = x,
       value = kim::round_flexibly(
         lm_1_reg_table_rounded[[x]], sigfigs = sigfigs))
-    data.table::set(
-      lm_2_reg_table_rounded, j = x,
-      value = kim::round_flexibly(
-        lm_2_reg_table_rounded[[x]], sigfigs = sigfigs))
   }
   # column names in the reg tables
-  names(lm_1_reg_table_rounded) <- names(lm_2_reg_table_rounded) <-
+  names(lm_1_reg_table_rounded) <-
     c("Variable", "B", "SE B", "t", "p")
   # round the p values
   lm_1_reg_table_rounded[, p := kim::pretty_round_p_value(p)]
-  lm_2_reg_table_rounded[, p := kim::pretty_round_p_value(p)]
-  # results message
-  if (p_for_f_stat_for_model_fit_diff < .05) {
-    sig_text <- "explained data significantly better"
-  } else {
-    sig_text <- "did not explain data better"
-  }
-  results_message <- paste0(
-    "\nModel 2 with the interaction terms ",
-    sig_text,
-    "\n(R^2 = ",
-    round(lm_2_r_squared, round_r_squared),
-    ") than Model 1 without the interaction terms (R^2 = ",
-    round(lm_1_r_squared, round_r_squared),
-    "),\nR^2 Increase = ",
-    round(r_squared_increase, round_r_squared),
-    ", F(",
-    num_of_levels_in_iv - 1, ", ",
-    lm_2_df_residual, ") = ",
-    round(f_stat_for_model_fit_diff, round_f), ", ",
-    kim::pretty_round_p_value(
-      p_for_f_stat_for_model_fit_diff, include_p_equals = TRUE))
-  # print the coding scheme
-  cat(paste0("Dummy Variable Coding Scheme:\n"))
-  dummy_var_coding_table <- unique(dt[, c("iv", paste0(
-    "dummy_", seq_len(num_of_dummy_vars))), with = FALSE])
-  data.table::setnames(dummy_var_coding_table, "iv", iv_name)
-  data.table::setorderv(dummy_var_coding_table, cols = iv_name)
-  print(dummy_var_coding_table)
-  # print the two models
+  # print the initial model
   cat(paste0("\nModel 1: ", lm_1_formula_character, "\n"))
   print(lm_1_reg_table_rounded)
-  cat(paste0("\nModel 2: ", lm_2_formula_character, "\n"))
-  print(lm_2_reg_table_rounded)
-  message(results_message)
-  # begin floodlight
   # copy the dt
   dt2 <- data.table::copy(dt)
-  # formula to use
+  # formula to use for floodlight
   floodlight_lm_formula <- do.call(
-    "substitute", list(lm_2_formula, list(mod = quote(mod_temp))))
+    "substitute", list(lm_1_formula, list(mod = quote(mod_temp))))
   # min and max of observed mod
   mod_min_observed <- min(dt[, mod])
   mod_max_observed <- max(dt[, mod])
@@ -448,12 +342,13 @@ floodlight_multi_by_continuous <- function(
     return(output)
   }
   # find jn points for each dummy variable
-  floodlight_plots <- jn_points_by_dummy_var <-
-    vector(mode = "list", length = num_of_dummy_vars)
+  floodlight_plots <- jn_points_by_contrast <-
+    vector(mode = "list", length = num_of_contrasts)
   # create floodlight plots
-  for (i in seq_len(num_of_dummy_vars)) {
+  for (i in seq_along(contrasts_for_floodlight)) {
     cat(paste0(
-      "\nSearching for JN points for ", paste0("dummy_", i), " ..."))
+      "\nSearching for JN points for ",
+      contrasts_for_floodlight[i], " ..."))
     # disregard the second jn point based on threshold
     if (is.null(jn_points_disregard_threshold)) {
       jn_points_disregard_threshold <- mod_range / 10 ^ 4
@@ -467,7 +362,7 @@ floodlight_multi_by_continuous <- function(
       control = DEoptim_control_fn_from_DEoptim(trace = FALSE),
       data = dt2,
       lm_formula = floodlight_lm_formula,
-      predictor_in_regression = paste0("dummy_", i))
+      predictor_in_regression = contrasts_for_floodlight[i])
     jn_point_candidate_1 <- temp_optim_results_1$optim$bestmem
     # optimizing 2 of 3
     temp_optim_results_2 <- DEoptim_fn_from_DEoptim(
@@ -477,7 +372,7 @@ floodlight_multi_by_continuous <- function(
       control = DEoptim_control_fn_from_DEoptim(trace = FALSE),
       data = dt2,
       lm_formula = floodlight_lm_formula,
-      predictor_in_regression = paste0("dummy_", i))
+      predictor_in_regression = contrasts_for_floodlight[i])
     jn_point_candidate_2 <- temp_optim_results_2$optim$bestmem
     # optimizing 3 of 3
     temp_optim_results_3 <- DEoptim_fn_from_DEoptim(
@@ -487,7 +382,7 @@ floodlight_multi_by_continuous <- function(
       control = DEoptim_control_fn_from_DEoptim(trace = FALSE),
       data = dt2,
       lm_formula = floodlight_lm_formula,
-      predictor_in_regression = paste0("dummy_", i))
+      predictor_in_regression = contrasts_for_floodlight[i])
     jn_point_candidate_3 <- temp_optim_results_3$optim$bestmem
     # gather the jn points
     temp_jn_points <- unname(c(
@@ -503,7 +398,7 @@ floodlight_multi_by_continuous <- function(
       temp_lm_summary <- summary(
         stats::lm(formula = floodlight_lm_formula, data = dt2))
       temp_p <- temp_lm_summary$coefficients[
-        paste0("dummy_", i), "Pr(>|t|)"]
+        contrasts_for_floodlight[i], "Pr(>|t|)"]
       # p value can be off by 0.0001
       if (abs(temp_p - 0.05) < 0.0001) {
         jn_points_verified <- c(jn_points_verified, temp_jn_points[j])
@@ -539,12 +434,12 @@ floodlight_multi_by_continuous <- function(
     data.table::setorder(jn_point_dt_final, jn_points_verified)
     jn_points_final <- jn_point_dt_final[, jn_points_verified]
     if (!is.null(jn_points_verified)) {
-      jn_points_by_dummy_var[[i]] <- jn_points_final
+      jn_points_by_contrast[[i]] <- jn_points_final
     }
-    names(jn_points_by_dummy_var)[i] <- paste0("dummy_", i)
+    names(jn_points_by_contrast)[i] <- contrasts_for_floodlight[i]
     num_of_jn_points <- length(jn_points_final)
     # print the jn points table
-    cat(paste0("\nJN Points for ", paste0("dummy_", i), ":\n"))
+    cat(paste0("\nJN Points for ", contrasts_for_floodlight[i], ":\n"))
     print(jn_point_dt_final)
     # regions of significance
     # if there are more than 2 jn points, throw an error
@@ -564,13 +459,13 @@ floodlight_multi_by_continuous <- function(
       dt2[, mod_temp := mod - temp_mod_value_1]
       temp_p_1 <- summary(stats::lm(
         formula = floodlight_lm_formula, data = dt2))$coefficients[
-          paste0("dummy_", i), "Pr(>|t|)"]
+          contrasts_for_floodlight[i], "Pr(>|t|)"]
       # p value at mod max
       temp_mod_value_2 <- mod_max_observed
       dt2[, mod_temp := mod - temp_mod_value_2]
       temp_p_2 <- summary(stats::lm(
         formula = floodlight_lm_formula, data = dt2))$coefficients[
-          paste0("dummy_", i), "Pr(>|t|)"]
+          contrasts_for_floodlight[i], "Pr(>|t|)"]
       # determine regions of sig
       if (temp_p_1 >= 0.05 & temp_p_2 >= 0.05) {
         sig_region <- NULL
@@ -590,14 +485,14 @@ floodlight_multi_by_continuous <- function(
       dt2[, mod_temp := mod - temp_mod_value_1]
       temp_p_1 <- summary(stats::lm(
         formula = floodlight_lm_formula, data = dt2))$coefficients[
-          paste0("dummy_", i), "Pr(>|t|)"]
+          contrasts_for_floodlight[i], "Pr(>|t|)"]
       # p value at mod max
       temp_mod_value_2 <-
         jn_points_final + jn_points_disregard_threshold
       dt2[, mod_temp := mod - temp_mod_value_2]
       temp_p_2 <- summary(stats::lm(
         formula = floodlight_lm_formula, data = dt2))$coefficients[
-          paste0("dummy_", i), "Pr(>|t|)"]
+          contrasts_for_floodlight[i], "Pr(>|t|)"]
       # determine regions of sig
       if (temp_p_1 < 0.05 & temp_p_2 >= 0.05) {
         sig_region <- list(c(mod_min_observed, jn_points_final))
@@ -616,20 +511,20 @@ floodlight_multi_by_continuous <- function(
       dt2[, mod_temp := mod - temp_mod_value_1]
       temp_p_1 <- summary(stats::lm(
         formula = floodlight_lm_formula, data = dt2))$coefficients[
-          paste0("dummy_", i), "Pr(>|t|)"]
+          contrasts_for_floodlight[i], "Pr(>|t|)"]
       # p value in the middle region
       temp_mod_value_2 <- mean(c(
         max(jn_points_final), min(jn_points_final)))
       dt2[, mod_temp := mod - temp_mod_value_2]
       temp_p_2 <- summary(stats::lm(
         formula = floodlight_lm_formula, data = dt2))$coefficients[
-          paste0("dummy_", i), "Pr(>|t|)"]
+          contrasts_for_floodlight[i], "Pr(>|t|)"]
       # p value at mod max
       temp_mod_value_3 <- mod_max_observed - jn_points_disregard_threshold
       dt2[, mod_temp := mod - temp_mod_value_3]
       temp_p_3 <- summary(stats::lm(
         formula = floodlight_lm_formula, data = dt2))$coefficients[
-          paste0("dummy_", i), "Pr(>|t|)"]
+          contrasts_for_floodlight[i], "Pr(>|t|)"]
       # determine regions of sig
       if (temp_p_1 < 0.05 & temp_p_2 >= 0.05 & temp_p_3 < 0.05) {
         sig_region <- list(
@@ -647,15 +542,14 @@ floodlight_multi_by_continuous <- function(
     # dt for plotting
     # print(paste0("flood", i))
     temp_dt <- dt[
-      iv %in% c(baseline_category, iv_non_baseline_categories[i])]
-    temp_dt[, iv_factor := factor(iv, levels = c(
-      baseline_category, iv_non_baseline_categories[i]))]
+      get(contrasts_for_floodlight[i]) != 0]
+    temp_dt[, iv_factor := factor(iv)]
     # min and max of observed dv
     dv_min_observed <- min(temp_dt[, dv])
     dv_max_observed <- max(temp_dt[, dv])
     # range of y (the dv)
     y_range <- dv_max_observed - dv_min_observed
-    # plot
+    # begin plottting
     g1 <- ggplot2::ggplot(
       data = temp_dt,
       ggplot2::aes(
@@ -691,7 +585,7 @@ floodlight_multi_by_continuous <- function(
       legend_position = legend_position)
     g1 <- g1 + ggplot2::scale_color_manual(values = c("red", "blue"))
     # add the lines of fit
-    temp_data_for_predicting <- dummy_var_coding_table[
+    temp_data_for_predicting <- contrast_coding_table[
       get(iv_name) %in% unique(temp_dt[, iv_factor])]
     temp_data_for_predicting <- temp_data_for_predicting[
       rep(seq_len(nrow(temp_data_for_predicting)),
@@ -699,8 +593,8 @@ floodlight_multi_by_continuous <- function(
     temp_data_for_predicting[, mod := rep(
       c(mod_min_observed, mod_max_observed), 2)]
     # predicted dv values
-    predicted_dv <- stats::predict(lm_2, temp_data_for_predicting)
-    dt_for_lines_of_fit <- dummy_var_coding_table[
+    predicted_dv <- stats::predict(lm_1, temp_data_for_predicting)
+    dt_for_lines_of_fit <- contrast_coding_table[
       get(iv_name) %in% unique(temp_dt[, iv_factor])]
     dt_for_lines_of_fit[, segment_x := mod_min_observed]
     dt_for_lines_of_fit[, segment_xend := mod_max_observed]
@@ -709,8 +603,7 @@ floodlight_multi_by_continuous <- function(
     names(segment_y_coord_dt) <- c("segment_y", "segment_yend")
     dt_for_lines_of_fit <- data.table::data.table(
       dt_for_lines_of_fit, segment_y_coord_dt)
-    dt_for_lines_of_fit[, iv_factor := factor(get(iv_name), levels = c(
-      baseline_category, iv_non_baseline_categories[i]))]
+    dt_for_lines_of_fit[, iv_factor := factor(get(iv_name))]
     g1 <- g1 + ggplot2::geom_segment(
       mapping = ggplot2::aes(
         x = segment_x,
@@ -726,7 +619,8 @@ floodlight_multi_by_continuous <- function(
     # include interaction p value
     if (interaction_p_include == TRUE) {
       interaction_p_value <- kim::pretty_round_p_value(
-        lm_2_reg_table[variable == paste0("dummy_", i, ":mod"), p],
+        lm_1_reg_table[variable == paste0(
+          contrasts_for_floodlight[i], ":mod"), p],
         include_p_equals = TRUE,
         round_digits_after_decimal = round_decimals_int_p_value)
       interaction_p_value_text <- paste0(
@@ -737,7 +631,7 @@ floodlight_multi_by_continuous <- function(
         x = mod_min_observed + x_range * 0.5,
         y = Inf,
         label = interaction_p_value_text,
-        hjust = 0.5, vjust = interaction_p_vjust,
+        hjust = 0.5, vjust = -3,
         fontface = "bold",
         color = "black",
         size = interaction_p_value_font_size)
