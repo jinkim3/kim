@@ -84,6 +84,8 @@
 #' @param line_of_fit_thickness thickness of the lines of fit (default = 1.5)
 #' @param jn_line_types types of the lines for Johnson-Neyman points.
 #' By default, \code{jn_line_types = c("solid", "solid")}
+#' @param jn_line_thickness thickness of the lines at Johnson-Neyman points
+#' (default = 1.5)
 #' @param sig_region_color color of the significant region, i.e., range(s)
 #' of the moderator variable for which simple effect of the independent
 #' variable on the dependent variable is statistically significant.
@@ -153,6 +155,7 @@ floodlight_multi_by_continuous <- function(
     line_of_fit_types = c("solid", "dashed"),
     line_of_fit_thickness = 1.5,
     jn_line_types = c("solid", "solid"),
+    jn_line_thickness = 1.5,
     sig_region_color = "green",
     sig_region_alpha = 0.08,
     nonsig_region_color = "gray",
@@ -778,7 +781,8 @@ floodlight_multi_by_continuous <- function(
         y = dv_min_observed,
         xend = jn_points_final[j],
         yend = dv_max_observed,
-        color = "black")
+        color = "black",
+        linewidth = jn_line_thickness)
       # label jn points
       if (is.null(jn_point_label_hjust)) {
         jn_point_label_hjust <- rep(0.5, num_of_jn_points)

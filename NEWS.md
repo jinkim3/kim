@@ -1,4 +1,4 @@
-# kim 0.5.324
+# kim 0.5.325
 * Updated the following function(s) (and other functions that use them):
 floodlight_multi_by_continuous, floodlight_for_contrasts
 
