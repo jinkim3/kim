@@ -49,9 +49,9 @@
 #' @param print_floodlight_plots If \code{print_floodlight_plots = TRUE},
 #' a floodlight plot for each dummy variable will be printed.
 #' By default, \code{print_floodlight_plots = TRUE}
-#' @param output type of output (default = "reg_lines_plot").
-#' Possible inputs: "interactions_pkg_results", "simple_effects_plot",
-#' "jn_points", "regions", "reg_lines_plot"
+#' @param output output of the function (default = "all").
+#' Possible inputs: "reg_models", "reg_tables", "reg_tables_rounded",
+#' "all"
 #' @param jitter_x_percent horizontally jitter dots by a percentage of the
 #' range of x values
 #' @param jitter_y_percent vertically jitter dots by a percentage of the
@@ -114,7 +114,7 @@
 #' # make sure the data table package is attached
 #' mtcars2[, contrast_1 := fcase(cyl == 4, -2, cyl %in% c(6, 8), 1)]
 #' mtcars2[, contrast_2 := fcase(cyl == 4, 0, cyl == 6, 1, cyl == 8, -1)]
-#' floodlight_for_contrasts(
+#' aa <- floodlight_for_contrasts(
 #' data = mtcars2,
 #' iv_name = "cyl",
 #' dv_name = "mpg",
@@ -281,6 +281,9 @@ floodlight_for_contrasts <- function(
   lm_1_formula <- stats::as.formula(lm_1_formula_character)
   # estimate the model
   lm_1 <- stats::lm(formula = lm_1_formula, data = dt)
+  if (output == "reg_model") {
+    return(lm_1)
+  }
   # use heteroskedasticity consistent standard errors
   if (heteroskedasticity_consistent_se == FALSE) {
     message(
@@ -300,6 +303,9 @@ floodlight_for_contrasts <- function(
     variable = row.names(lm_1_coeff_only),
     lm_1_coeff_only)
   names(lm_1_reg_table) <- c("variable", "b", "se_b", "t", "p")
+  if (output == "reg_table") {
+    return(lm_1_reg_table)
+  }
   # round values in the reg tables
   lm_1_reg_table_rounded <- data.table::copy(lm_1_reg_table)
   for (x in c("b", "se_b", "t")) {
@@ -313,6 +319,9 @@ floodlight_for_contrasts <- function(
     c("Variable", "B", "SE B", "t", "p")
   # round the p values
   lm_1_reg_table_rounded[, p := kim::pretty_round_p_value(p)]
+  if (output == "reg_table_rounded") {
+    return(lm_1_reg_table_rounded)
+  }
   # print the initial model
   cat(paste0("\nModel 1: ", lm_1_formula_character, "\n"))
   print(lm_1_reg_table_rounded)
@@ -712,7 +721,11 @@ floodlight_for_contrasts <- function(
     }
     floodlight_plots[[i]] <- g1
   }
-  output <- floodlight_plots
-  # output
-  invisible(output)
+  # output of the function
+  fn_output <- list(
+    reg_model = lm_1,
+    reg_table = lm_1_reg_table,
+    reg_table_rounded = lm_1_reg_table_rounded,
+    floodlight_plots = floodlight_plots)
+  invisible(fn_output)
 }

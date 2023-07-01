@@ -104,9 +104,9 @@ jn_points_disregard_threshold = (7 - 1) / 10000 = 0.0006}}
 a floodlight plot for each dummy variable will be printed.
 By default, \code{print_floodlight_plots = TRUE}}
 
-\item{output}{type of output (default = "reg_lines_plot").
-Possible inputs: "interactions_pkg_results", "simple_effects_plot",
-"jn_points", "regions", "reg_lines_plot"}
+\item{output}{output of the function (default = "all").
+Possible inputs: "reg_models", "reg_tables", "reg_tables_rounded",
+"all"}
 
 \item{jitter_x_percent}{horizontally jitter dots by a percentage of the
 range of x values}
@@ -200,7 +200,7 @@ mtcars2 <- setDT(data.table::copy(mtcars))
 # make sure the data table package is attached
 mtcars2[, contrast_1 := fcase(cyl == 4, -2, cyl \%in\% c(6, 8), 1)]
 mtcars2[, contrast_2 := fcase(cyl == 4, 0, cyl == 6, 1, cyl == 8, -1)]
-floodlight_for_contrasts(
+aa <- floodlight_for_contrasts(
 data = mtcars2,
 iv_name = "cyl",
 dv_name = "mpg",

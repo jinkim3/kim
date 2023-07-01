@@ -20,7 +20,7 @@ floodlight_multi_by_continuous(
   sigfigs = 2,
   jn_points_disregard_threshold = NULL,
   print_floodlight_plots = TRUE,
-  output = "reg_lines_plot",
+  output = "all",
   jitter_x_percent = 0,
   jitter_y_percent = 0,
   dot_alpha = 0.5,
@@ -107,9 +107,9 @@ jn_points_disregard_threshold = (7 - 1) / 10000 = 0.0006}}
 a floodlight plot for each dummy variable will be printed.
 By default, \code{print_floodlight_plots = TRUE}}
 
-\item{output}{type of output (default = "reg_lines_plot").
-Possible inputs: "interactions_pkg_results", "simple_effects_plot",
-"jn_points", "regions", "reg_lines_plot"}
+\item{output}{output of the function (default = "all").
+Possible inputs: "reg_models", "reg_tables", "reg_tables_rounded",
+"all"}
 
 \item{jitter_x_percent}{horizontally jitter dots by a percentage of the
 range of x values}
@@ -200,7 +200,7 @@ Williams (2004) on r-squared values when calculating robust standard errors
 \examples{
 \dontrun{
 # typical example
-floodlight_multi_by_continuous(
+aa <- floodlight_multi_by_continuous(
 data = mtcars,
 iv_name = "cyl",
 dv_name = "mpg",

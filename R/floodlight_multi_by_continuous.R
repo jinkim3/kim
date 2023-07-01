@@ -54,9 +54,9 @@
 #' @param print_floodlight_plots If \code{print_floodlight_plots = TRUE},
 #' a floodlight plot for each dummy variable will be printed.
 #' By default, \code{print_floodlight_plots = TRUE}
-#' @param output type of output (default = "reg_lines_plot").
-#' Possible inputs: "interactions_pkg_results", "simple_effects_plot",
-#' "jn_points", "regions", "reg_lines_plot"
+#' @param output output of the function (default = "all").
+#' Possible inputs: "reg_models", "reg_tables", "reg_tables_rounded",
+#' "all"
 #' @param jitter_x_percent horizontally jitter dots by a percentage of the
 #' range of x values
 #' @param jitter_y_percent vertically jitter dots by a percentage of the
@@ -114,7 +114,7 @@
 #' @examples
 #' \dontrun{
 #' # typical example
-#' floodlight_multi_by_continuous(
+#' aa <- floodlight_multi_by_continuous(
 #' data = mtcars,
 #' iv_name = "cyl",
 #' dv_name = "mpg",
@@ -138,7 +138,7 @@ floodlight_multi_by_continuous <- function(
     sigfigs = 2,
     jn_points_disregard_threshold = NULL,
     print_floodlight_plots = TRUE,
-    output = "reg_lines_plot",
+    output = "all",
     jitter_x_percent = 0,
     jitter_y_percent = 0,
     dot_alpha = 0.5,
@@ -286,6 +286,13 @@ floodlight_multi_by_continuous <- function(
         dt[, iv] == iv_non_baseline_categories[i], 1, 0)]
     }
   }
+  # print the coding scheme
+  cat(paste0("Dummy Variable Coding Scheme:\n"))
+  dummy_var_coding_table <- unique(dt[, c("iv", paste0(
+    "dummy_", seq_len(num_of_dummy_vars))), with = FALSE])
+  data.table::setnames(dummy_var_coding_table, "iv", iv_name)
+  data.table::setorderv(dummy_var_coding_table, cols = iv_name)
+  print(dummy_var_coding_table)
   # example from hayes montoya appendix 3
   # dt[, dummy_1 := fcase(
   #   iv == 1, -2/3,
@@ -327,6 +334,12 @@ floodlight_multi_by_continuous <- function(
   # estimate the models
   lm_1 <- stats::lm(formula = lm_1_formula, data = dt)
   lm_2 <- stats::lm(formula = lm_2_formula, data = dt)
+  if (output == "reg_models") {
+    fn_output <- list(
+      lm_1 = lm_1,
+      lm_2 = lm_2)
+    return(fn_output)
+  }
   # extract model stats such as r squared values
   lm_2_df_residual <- stats::df.residual(lm_2)
   lm_2_r_squared <- summary(lm_2)$r.squared
@@ -368,6 +381,12 @@ floodlight_multi_by_continuous <- function(
     lm_2_coeff_only)
   names(lm_1_reg_table) <- names(lm_2_reg_table) <-
     c("variable", "b", "se_b", "t", "p")
+  if (output == "reg_tables") {
+    fn_output <- list(
+      lm_1_reg_table = lm_1_reg_table,
+      lm_2_reg_table = lm_2_reg_table)
+    return(fn_output)
+  }
   # round values in the reg tables
   lm_1_reg_table_rounded <- data.table::copy(lm_1_reg_table)
   lm_2_reg_table_rounded <- data.table::copy(lm_2_reg_table)
@@ -387,6 +406,12 @@ floodlight_multi_by_continuous <- function(
   # round the p values
   lm_1_reg_table_rounded[, p := kim::pretty_round_p_value(p)]
   lm_2_reg_table_rounded[, p := kim::pretty_round_p_value(p)]
+  if (output == "reg_tables_rounded") {
+    fn_output <- list(
+      lm_1_reg_table_rounded = lm_1_reg_table_rounded,
+      lm_2_reg_table_rounded = lm_2_reg_table_rounded)
+    return(fn_output)
+  }
   # results message
   if (p_for_f_stat_for_model_fit_diff < .05) {
     sig_text <- "explained data significantly better"
@@ -408,13 +433,6 @@ floodlight_multi_by_continuous <- function(
     round(f_stat_for_model_fit_diff, round_f), ", ",
     kim::pretty_round_p_value(
       p_for_f_stat_for_model_fit_diff, include_p_equals = TRUE))
-  # print the coding scheme
-  cat(paste0("Dummy Variable Coding Scheme:\n"))
-  dummy_var_coding_table <- unique(dt[, c("iv", paste0(
-    "dummy_", seq_len(num_of_dummy_vars))), with = FALSE])
-  data.table::setnames(dummy_var_coding_table, "iv", iv_name)
-  data.table::setorderv(dummy_var_coding_table, cols = iv_name)
-  print(dummy_var_coding_table)
   # print the two models
   cat(paste0("\nModel 1: ", lm_1_formula_character, "\n"))
   print(lm_1_reg_table_rounded)
@@ -818,7 +836,14 @@ floodlight_multi_by_continuous <- function(
     }
     floodlight_plots[[i]] <- g1
   }
-  output <- floodlight_plots
-  # output
-  invisible(output)
+  # output of the function
+  fn_output <- list(
+    reg_model_1 = lm_1,
+    reg_model_2 = lm_2,
+    reg_table_1 = lm_1_reg_table,
+    reg_table_2 = lm_2_reg_table,
+    reg_table_1_rounded = lm_1_reg_table_rounded,
+    reg_table_2_rounded = lm_2_reg_table_rounded,
+    floodlight_plots = floodlight_plots)
+  invisible(fn_output)
 }
