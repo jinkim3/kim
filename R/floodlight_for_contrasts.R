@@ -151,7 +151,7 @@ floodlight_for_contrasts <- function(
     jn_point_font_size = 6,
     jn_point_label_hjust = NULL,
     interaction_p_vjust = -3,
-    plot_margin = ggplot2::unit(c(60, 7, 7, 7), "pt"),
+    plot_margin = ggplot2::unit(c(75, 7, 7, 7), "pt"),
     legend_position = "right",
     line_of_fit_types = c("solid", "dashed"),
     line_of_fit_thickness = 1.5,
@@ -648,7 +648,8 @@ floodlight_for_contrasts <- function(
         x = mod_min_observed + x_range * 0.5,
         y = Inf,
         label = interaction_p_value_text,
-        hjust = 0.5, vjust = -3,
+        hjust = 0.5,
+        vjust = interaction_p_vjust,
         fontface = "bold",
         color = "black",
         size = interaction_p_value_font_size)

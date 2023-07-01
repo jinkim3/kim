@@ -764,7 +764,8 @@ floodlight_multi_by_continuous <- function(
         x = mod_min_observed + x_range * 0.5,
         y = Inf,
         label = interaction_p_value_text,
-        hjust = 0.5, vjust = interaction_p_vjust,
+        hjust = 0.5,
+        vjust = interaction_p_vjust,
         fontface = "bold",
         color = "black",
         size = interaction_p_value_font_size)
