@@ -683,7 +683,8 @@ floodlight_multi_by_continuous <- function(
       ggplot2::aes(
         x = mod,
         y = dv,
-        color = iv_factor))
+        color = iv_factor,
+        linetype = iv_factor))
     # shade the regions of sig
     for (j in seq_along(sig_region)) {
       # range of the sig region
