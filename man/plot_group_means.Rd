@@ -12,7 +12,9 @@ plot_group_means(
   error_bar = "ci",
   error_bar_range = 0.95,
   lines_connecting_means = TRUE,
-  line_size = 1,
+  line_types = NULL,
+  line_thickness = 1,
+  line_size = NULL,
   dot_size = 3,
   error_bar_tip_width = 0.13,
   error_bar_thickness = 1,
@@ -45,7 +47,14 @@ This argument will not apply when \code{error_bar = "se"}}
 \item{lines_connecting_means}{logical. Should lines connecting means
 within each group be drawn? (default = TRUE)}
 
-\item{line_size}{thickness of the lines connecting group means,
+\item{line_types}{types of the lines connecting means (default = NULL)
+If the second IV has two levels, then by default,
+\code{line_types = c("solid", "dashed")}}
+
+\item{line_thickness}{thickness of the lines connecting group means
+(default = 1)}
+
+\item{line_size}{Deprecated. Use the 'linewidth' argument instead.
 (default = 1)}
 
 \item{dot_size}{size of the dots indicating group means (default = 3)}

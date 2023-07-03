@@ -1,6 +1,7 @@
-# kim 0.5.331
+# kim 0.5.332
 * Updated the following function(s) (and other functions that use them):
-floodlight_multi_by_continuous, floodlight_for_contrasts
+floodlight_multi_by_continuous, floodlight_for_contrasts,
+plot_group_means
 
 # kim 0.5.322
 * Added the following function(s): floodlight_for_contrasts

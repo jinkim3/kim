@@ -18,7 +18,12 @@
 #' This argument will not apply when \code{error_bar = "se"}
 #' @param lines_connecting_means logical. Should lines connecting means
 #' within each group be drawn? (default = TRUE)
-#' @param line_size thickness of the lines connecting group means,
+#' @param line_types types of the lines connecting means (default = NULL)
+#' If the second IV has two levels, then by default,
+#' \code{line_types = c("solid", "dashed")}
+#' @param line_thickness thickness of the lines connecting group means
+#' (default = 1)
+#' @param line_size Deprecated. Use the 'linewidth' argument instead.
 #' (default = 1)
 #' @param dot_size size of the dots indicating group means (default = 3)
 #' @param error_bar_tip_width graphically, width of the segments
@@ -56,7 +61,9 @@ plot_group_means <- function(
   error_bar = "ci",
   error_bar_range = 0.95,
   lines_connecting_means = TRUE,
-  line_size = 1,
+  line_types = NULL,
+  line_thickness = 1,
+  line_size = NULL,
   dot_size = 3,
   error_bar_tip_width = 0.13,
   error_bar_thickness = 1,
@@ -73,6 +80,14 @@ plot_group_means <- function(
       "for all\nfunctions in Package 'kim', type ",
       "'kim::install_all_dependencies()'"))
     return()
+  }
+  # check arguments
+  if (!is.null(line_size)) {
+    warning(paste0(
+      "The use of the 'line_size' argument was deprecated",
+      "\ndue to a change in ggplot2 3.4.0.\n",
+      "Going forward, please use the 'line_thickness' argument instead."))
+    line_thickness <- line_size
   }
   # convert to data table
   dt1 <- data.table::setDT(
@@ -111,15 +126,28 @@ plot_group_means <- function(
       y = mean,
       x = get(iv_name[1]),
       color = get(iv_name[2]),
-      group = get(iv_name[2])
+      group = get(iv_name[2]),
+      linetype = get(iv_name[2])
     ))
+    # number of levels in the second IV
+    num_of_levels_in_iv2 <- length(unique(dt2[, get(iv_name[2])]))
+  }
+  # set defaults if there are two levels in IV 2
+  if (num_of_levels_in_iv2 == 2) {
+    line_types = c("solid", "dashed")
+    line_colors = c("red", "blue")
   }
   # The errorbars will overlap,
   # so use position_dodge to move them horizontally
   pd <- ggplot2::position_dodge(width = position_dodge)
   # points and lines
   if (lines_connecting_means == TRUE) {
-    g1 <- g1 + ggplot2::geom_line(size = line_size, position = pd)
+    g1 <- g1 + ggplot2::geom_line(
+      linewidth = line_thickness, position = pd)
+    if (!is.null(line_types)) {
+      g1 <- g1 + ggplot2::scale_linetype_manual(
+        values = line_types)
+    }
   }
   g1 <- g1 + ggplot2::geom_point(size = dot_size, position = pd)
   if (length(iv_name) == 2) {
@@ -161,11 +189,17 @@ plot_group_means <- function(
   }
   g1 <- g1 + ggplot2::xlab(iv_name[1])
   g1 <- g1 + ggplot2::ylab(dv_name)
-  g1 <- g1 + ggplot2::labs(caption = paste0(
+  g1 <- g1 + ggplot2::labs(
+    color = iv_name[2],
+    linetype = iv_name[2],
+    caption = paste0(
     "\nError bars indicate ", error_bar_desc_text, " around the mean."))
   # plot theme
   g1 <- g1 + kim::theme_kim(
     y_axis_title_vjust = y_axis_title_vjust,
     legend_position = legend_position)
+  g1 <- g1 + ggplot2::theme(
+    legend.spacing.y = ggplot2::unit(1, "cm"),
+    legend.key.size = ggplot2::unit(3, "lines"))
   return(g1)
 }
