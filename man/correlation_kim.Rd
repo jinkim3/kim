@@ -12,7 +12,8 @@ correlation_kim(
   y_var_name = NULL,
   ci_range = 0.95,
   round_r = 2,
-  round_p = 3
+  round_p = 3,
+  output_type = "summary"
 )
 }
 \arguments{
@@ -37,6 +38,12 @@ correlation coefficients (default = 2)}
 
 \item{round_p}{number of decimal places to which to round
 p-values (default = 3)}
+
+\item{output_type}{type of the output. If \code{output_type = "dt"},
+the function's output will be a data.table with the results from the
+correlation analysis. If \code{output_type = "summary"}, the function's
+output will be a statement (a string) summarizing the results from
+the correlation analysis. By default, \code{output_type = "summary"}}
 }
 \description{
 Estimate the correlation between two variables
@@ -45,5 +52,7 @@ Estimate the correlation between two variables
 \dontrun{
 correlation_kim(x = 1:4, y = c(1, 3, 2, 4))
 correlation_kim(x = 1:4, y = c(1, 3, 2, 4), ci_range = FALSE)
+# output as a data table
+correlation_kim(x = 1:4, y = c(1, 3, 2, 4), output_type = "dt")
 }
 }
