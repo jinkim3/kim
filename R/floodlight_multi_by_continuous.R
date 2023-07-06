@@ -474,6 +474,15 @@ floodlight_multi_by_continuous <- function(
     vector(mode = "list", length = num_of_dummy_vars)
   # create floodlight plots
   for (i in seq_len(num_of_dummy_vars)) {
+    # clear the results from the previous iteration
+    temp_optim_results_1 <- temp_optim_results_2 <-
+      temp_optim_results_3 <- temp_jn_points <- jn_points_verified <-
+      jn_point_p_distance_from_ref_p <- temp_lm_summary <-
+      num_of_jn_points <- jn_point_dt_final <-
+      most_likely_jn_point_1 <- temp_mod_value_1 <-
+      temp_mod_value_1 <- temp_mod_value_2 <-
+      temp_mod_value_3 <- temp_mod_value_4 <-
+      sig_region <- temp_p_1 <- temp_p_2 <- temp_p_3 <- NULL
     cat(paste0(
       "\nSearching for JN points for ", paste0("dummy_", i), " ..."))
     # disregard the second jn point based on threshold
@@ -536,146 +545,151 @@ floodlight_multi_by_continuous <- function(
     # continue only if jn points were verified
     if (length(jn_points_verified) == 0) {
       num_of_jn_points <- 0
-    } else if (length(jn_points_verified) == 1) {
-      jn_point_dt_final <- data.table::data.table(
-        jn_points_verified, jn_point_p_distance_from_ref_p)
-    } else if (length(jn_points_verified) %in% 2:3) {
-      temp_jn_point_dt <- data.table::data.table(
-        jn_points_verified, jn_point_p_distance_from_ref_p)
-      data.table::setorder(temp_jn_point_dt, jn_point_p_distance_from_ref_p)
-      most_likely_jn_point_1 <- temp_jn_point_dt[1, jn_points_verified]
-      if (length(jn_points_verified) == 2) {
-        if (abs(most_likely_jn_point_1 -
-                temp_jn_point_dt[2, jn_points_verified]) >
-            jn_points_disregard_threshold) {
-          jn_point_dt_final <- temp_jn_point_dt[1:2, ]
-        } else {
-          jn_point_dt_final <- temp_jn_point_dt[1, ]
-        }
-      } else if (length(jn_points_verified) == 3) {
-        most_likely_jn_point_1 <- temp_jn_point_dt[1, jn_points_verified]
-        if (abs(most_likely_jn_point_1 -
-                temp_jn_point_dt[2, jn_points_verified]) >
-            jn_points_disregard_threshold) {
-          jn_point_dt_final <- temp_jn_point_dt[1:2, ]
-        } else {
+    } else if (length(jn_points_verified) > 0) {
+      if (length(jn_points_verified) == 1) {
+        jn_point_dt_final <- data.table::data.table(
+          jn_points_verified, jn_point_p_distance_from_ref_p)
+      } else if (length(jn_points_verified) %in% 2:3) {
+        temp_jn_point_dt <- data.table::data.table(
+          jn_points_verified, jn_point_p_distance_from_ref_p)
+        data.table::setorder(
+          temp_jn_point_dt, jn_point_p_distance_from_ref_p)
+        most_likely_jn_point_1 <-
+          temp_jn_point_dt[1, jn_points_verified]
+        if (length(jn_points_verified) == 2) {
           if (abs(most_likely_jn_point_1 -
-                  temp_jn_point_dt[3, jn_points_verified]) >
+                  temp_jn_point_dt[2, jn_points_verified]) >
               jn_points_disregard_threshold) {
-            jn_point_dt_final <- temp_jn_point_dt[c(1, 3), ]
+            jn_point_dt_final <- temp_jn_point_dt[1:2, ]
           } else {
             jn_point_dt_final <- temp_jn_point_dt[1, ]
           }
+        } else if (length(jn_points_verified) == 3) {
+          most_likely_jn_point_1 <-
+            temp_jn_point_dt[1, jn_points_verified]
+          if (abs(most_likely_jn_point_1 -
+                  temp_jn_point_dt[2, jn_points_verified]) >
+              jn_points_disregard_threshold) {
+            jn_point_dt_final <- temp_jn_point_dt[1:2, ]
+          } else {
+            if (abs(most_likely_jn_point_1 -
+                    temp_jn_point_dt[3, jn_points_verified]) >
+                jn_points_disregard_threshold) {
+              jn_point_dt_final <- temp_jn_point_dt[c(1, 3), ]
+            } else {
+              jn_point_dt_final <- temp_jn_point_dt[1, ]
+            }
+          }
         }
       }
-    }
-    # sort the jn points table
-    data.table::setorder(jn_point_dt_final, jn_points_verified)
-    jn_points_final <- jn_point_dt_final[, jn_points_verified]
-    if (!is.null(jn_points_verified)) {
-      jn_points_by_dummy_var[[i]] <- jn_points_final
-    }
-    names(jn_points_by_dummy_var)[i] <- paste0("dummy_", i)
-    num_of_jn_points <- length(jn_points_final)
-    # print the jn points table
-    cat(paste0("\nJN Points for ", paste0("dummy_", i), ":\n"))
-    print(jn_point_dt_final)
-    # regions of significance
-    # if there are more than 2 jn points, throw an error
-    if (num_of_jn_points > 2) {
-      stop(paste0(
-        "An internal computation suggests that there are more than\n",
-        "two Johnson-Neyman points. Whether or not this is theoretically\n",
-        "possible, the current version of the function cannot proceed\n",
-        "with more than two Johnson-Neyman points."))
-    }
-    if (num_of_jn_points == 0) {
-      # if there are no jn points, then either the entire range
-      # of the moderator values is sig or nonsig
-      # find out which is the case
-      # p value at mod min
-      temp_mod_value_1 <- mod_min_observed
-      dt2[, mod_temp := mod - temp_mod_value_1]
-      temp_p_1 <- summary(stats::lm(
-        formula = floodlight_lm_formula, data = dt2))$coefficients[
-          paste0("dummy_", i), "Pr(>|t|)"]
-      # p value at mod max
-      temp_mod_value_2 <- mod_max_observed
-      dt2[, mod_temp := mod - temp_mod_value_2]
-      temp_p_2 <- summary(stats::lm(
-        formula = floodlight_lm_formula, data = dt2))$coefficients[
-          paste0("dummy_", i), "Pr(>|t|)"]
-      # determine regions of sig
-      if (temp_p_1 >= 0.05 & temp_p_2 >= 0.05) {
-        sig_region <- NULL
-      } else if (temp_p_1 < 0.05 & temp_p_2 < 0.05) {
-        sig_region <- list(c(mod_min_observed, mod_max_observed))
-      } else {
-        stop(paste0(
-          "An error occurred while determining regions of significance",
-          "\n(Error Code 101)."))
+      # sort the jn points table
+      data.table::setorder(jn_point_dt_final, jn_points_verified)
+      jn_points_final <- jn_point_dt_final[, jn_points_verified]
+      if (!is.null(jn_points_verified)) {
+        jn_points_by_dummy_var[[i]] <- jn_points_final
       }
-    } else if (num_of_jn_points == 1) {
-      # if there is exactly 1 jn point, then either side of the
-      # jn point is sig; find out which side
-      # p value at mod min
-      temp_mod_value_1 <-
-        jn_points_final - jn_points_disregard_threshold
-      dt2[, mod_temp := mod - temp_mod_value_1]
-      temp_p_1 <- summary(stats::lm(
-        formula = floodlight_lm_formula, data = dt2))$coefficients[
-          paste0("dummy_", i), "Pr(>|t|)"]
-      # p value at mod max
-      temp_mod_value_2 <-
-        jn_points_final + jn_points_disregard_threshold
-      dt2[, mod_temp := mod - temp_mod_value_2]
-      temp_p_2 <- summary(stats::lm(
-        formula = floodlight_lm_formula, data = dt2))$coefficients[
-          paste0("dummy_", i), "Pr(>|t|)"]
-      # determine regions of sig
-      if (temp_p_1 < 0.05 & temp_p_2 >= 0.05) {
-        sig_region <- list(c(mod_min_observed, jn_points_final))
-      } else if (temp_p_1 >= 0.05 & temp_p_2 < 0.05) {
-        sig_region <- list(c(jn_points_final, mod_max_observed))
-      } else {
+      names(jn_points_by_dummy_var)[i] <- paste0("dummy_", i)
+      num_of_jn_points <- length(jn_points_final)
+      # print the jn points table
+      cat(paste0("\nJN Points for ", paste0("dummy_", i), ":\n"))
+      print(jn_point_dt_final)
+      # regions of significance
+      # if there are more than 2 jn points, throw an error
+      if (num_of_jn_points > 2) {
         stop(paste0(
-          "An error occurred while determining regions of significance",
-          "\n(Error Code 102)."))
+          "An internal computation suggests that there are more than\n",
+          "two Johnson-Neyman points. Whether or not this is theoretically\n",
+          "possible, the current version of the function cannot proceed\n",
+          "with more than two Johnson-Neyman points."))
       }
-    } else if (num_of_jn_points == 2) {
-      # if there are 2 jn points, then either the middle region is sig
-      # or the two regions on both sides are sig
-      # p value at mod min
-      temp_mod_value_1 <- mod_min_observed + jn_points_disregard_threshold
-      dt2[, mod_temp := mod - temp_mod_value_1]
-      temp_p_1 <- summary(stats::lm(
-        formula = floodlight_lm_formula, data = dt2))$coefficients[
-          paste0("dummy_", i), "Pr(>|t|)"]
-      # p value in the middle region
-      temp_mod_value_2 <- mean(c(
-        max(jn_points_final), min(jn_points_final)))
-      dt2[, mod_temp := mod - temp_mod_value_2]
-      temp_p_2 <- summary(stats::lm(
-        formula = floodlight_lm_formula, data = dt2))$coefficients[
-          paste0("dummy_", i), "Pr(>|t|)"]
-      # p value at mod max
-      temp_mod_value_3 <- mod_max_observed - jn_points_disregard_threshold
-      dt2[, mod_temp := mod - temp_mod_value_3]
-      temp_p_3 <- summary(stats::lm(
-        formula = floodlight_lm_formula, data = dt2))$coefficients[
-          paste0("dummy_", i), "Pr(>|t|)"]
-      # determine regions of sig
-      if (temp_p_1 < 0.05 & temp_p_2 >= 0.05 & temp_p_3 < 0.05) {
-        sig_region <- list(
-          c(mod_min_observed, jn_points_final[1]),
-          c(jn_points_final[2], mod_max_observed))
-      } else if (temp_p_1 >= 0.05 & temp_p_2 < 0.05 & temp_p_3 >= 0.05) {
-        sig_region <- list(
-          c(jn_points_final[1], jn_points_final[2]))
-      } else {
-        stop(paste0(
-          "An error occurred while determining regions of significance",
-          "\n(Error Code 103)."))
+      if (num_of_jn_points == 0) {
+        # if there are no jn points, then either the entire range
+        # of the moderator values is sig or nonsig
+        # find out which is the case
+        # p value at mod min
+        temp_mod_value_1 <- mod_min_observed
+        dt2[, mod_temp := mod - temp_mod_value_1]
+        temp_p_1 <- summary(stats::lm(
+          formula = floodlight_lm_formula, data = dt2))$coefficients[
+            paste0("dummy_", i), "Pr(>|t|)"]
+        # p value at mod max
+        temp_mod_value_2 <- mod_max_observed
+        dt2[, mod_temp := mod - temp_mod_value_2]
+        temp_p_2 <- summary(stats::lm(
+          formula = floodlight_lm_formula, data = dt2))$coefficients[
+            paste0("dummy_", i), "Pr(>|t|)"]
+        # determine regions of sig
+        if (temp_p_1 >= 0.05 & temp_p_2 >= 0.05) {
+          sig_region <- NULL
+        } else if (temp_p_1 < 0.05 & temp_p_2 < 0.05) {
+          sig_region <- list(c(mod_min_observed, mod_max_observed))
+        } else {
+          stop(paste0(
+            "An error occurred while determining regions of significance",
+            "\n(Error Code 101)."))
+        }
+      } else if (num_of_jn_points == 1) {
+        # if there is exactly 1 jn point, then either side of the
+        # jn point is sig; find out which side
+        # p value for the value slightly on the left side
+        temp_mod_value_1 <-
+          jn_points_final - jn_points_disregard_threshold
+        dt2[, mod_temp := mod - temp_mod_value_1]
+        temp_p_1 <- summary(stats::lm(
+          formula = floodlight_lm_formula, data = dt2))$coefficients[
+            paste0("dummy_", i), "Pr(>|t|)"]
+        # p value for the value slightly on the right side
+        temp_mod_value_2 <-
+          jn_points_final + jn_points_disregard_threshold
+        dt2[, mod_temp := mod - temp_mod_value_2]
+        temp_p_2 <- summary(stats::lm(
+          formula = floodlight_lm_formula, data = dt2))$coefficients[
+            paste0("dummy_", i), "Pr(>|t|)"]
+        # determine regions of sig
+        if (temp_p_1 < 0.05 & temp_p_2 >= 0.05) {
+          sig_region <- list(c(mod_min_observed, jn_points_final))
+        } else if (temp_p_1 >= 0.05 & temp_p_2 < 0.05) {
+          sig_region <- list(c(jn_points_final, mod_max_observed))
+        } else {
+          stop(paste0(
+            "An error occurred while determining regions of significance",
+            "\n(Error Code 102)."))
+        }
+      } else if (num_of_jn_points == 2) {
+        # if there are 2 jn points, then either the middle region is sig
+        # or the two regions on both sides are sig
+        # p value at mod min
+        temp_mod_value_1 <- mod_min_observed + jn_points_disregard_threshold
+        dt2[, mod_temp := mod - temp_mod_value_1]
+        temp_p_1 <- summary(stats::lm(
+          formula = floodlight_lm_formula, data = dt2))$coefficients[
+            paste0("dummy_", i), "Pr(>|t|)"]
+        # p value in the middle region
+        temp_mod_value_2 <- mean(c(
+          max(jn_points_final), min(jn_points_final)))
+        dt2[, mod_temp := mod - temp_mod_value_2]
+        temp_p_2 <- summary(stats::lm(
+          formula = floodlight_lm_formula, data = dt2))$coefficients[
+            paste0("dummy_", i), "Pr(>|t|)"]
+        # p value at mod max
+        temp_mod_value_3 <- mod_max_observed - jn_points_disregard_threshold
+        dt2[, mod_temp := mod - temp_mod_value_3]
+        temp_p_3 <- summary(stats::lm(
+          formula = floodlight_lm_formula, data = dt2))$coefficients[
+            paste0("dummy_", i), "Pr(>|t|)"]
+        # determine regions of sig
+        if (temp_p_1 < 0.05 & temp_p_2 >= 0.05 & temp_p_3 < 0.05) {
+          sig_region <- list(
+            c(mod_min_observed, jn_points_final[1]),
+            c(jn_points_final[2], mod_max_observed))
+        } else if (temp_p_1 >= 0.05 & temp_p_2 < 0.05 & temp_p_3 >= 0.05) {
+          sig_region <- list(
+            c(jn_points_final[1], jn_points_final[2]))
+        } else {
+          stop(paste0(
+            "An error occurred while determining regions of significance",
+            "\n(Error Code 103)."))
+        }
       }
     }
     # dt for plotting
