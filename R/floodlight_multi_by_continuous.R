@@ -533,41 +533,46 @@ floodlight_multi_by_continuous <- function(
           jn_point_p_distance_from_ref_p, abs(temp_p - 0.05))
       }
     }
-    temp_jn_point_dt <- data.table::data.table(
-      jn_points_verified, jn_point_p_distance_from_ref_p)
-    data.table::setorder(temp_jn_point_dt, jn_point_p_distance_from_ref_p)
-    most_likely_jn_point_1 <- temp_jn_point_dt[1, jn_points_verified]
-    if (abs(most_likely_jn_point_1 -
-            temp_jn_point_dt[2, jn_points_verified]) >
-        jn_points_disregard_threshold) {
-      most_likely_jn_point_2 <- temp_jn_point_dt[2, jn_points_verified]
-      jn_point_table_rows_to_keep <- 1:2
-    } else {
+    # continue only if jn points were verified
+    if (length(jn_points_verified) > 0) {
+      temp_jn_point_dt <- data.table::data.table(
+        jn_points_verified, jn_point_p_distance_from_ref_p)
+      data.table::setorder(temp_jn_point_dt, jn_point_p_distance_from_ref_p)
+      most_likely_jn_point_1 <- temp_jn_point_dt[1, jn_points_verified]
       if (abs(most_likely_jn_point_1 -
-              temp_jn_point_dt[3, jn_points_verified]) >
+              temp_jn_point_dt[2, jn_points_verified]) >
           jn_points_disregard_threshold) {
-        most_likely_jn_point_2 <- temp_jn_point_dt[3, jn_points_verified]
-        jn_point_table_rows_to_keep <- c(1, 3)
+        most_likely_jn_point_2 <- temp_jn_point_dt[2, jn_points_verified]
+        jn_point_table_rows_to_keep <- 1:2
       } else {
-        most_likely_jn_point_2 <- NULL
-        jn_point_table_rows_to_keep <- 1
+        if (abs(most_likely_jn_point_1 -
+                temp_jn_point_dt[3, jn_points_verified]) >
+            jn_points_disregard_threshold) {
+          most_likely_jn_point_2 <- temp_jn_point_dt[3, jn_points_verified]
+          jn_point_table_rows_to_keep <- c(1, 3)
+        } else {
+          most_likely_jn_point_2 <- NULL
+          jn_point_table_rows_to_keep <- 1
+        }
       }
+      most_likely_jn_points <- c(
+        most_likely_jn_point_1, most_likely_jn_point_2)
+      jn_point_dt_final <-
+        temp_jn_point_dt[jn_point_table_rows_to_keep, ]
+      # sort the jn points table
+      data.table::setorder(jn_point_dt_final, jn_points_verified)
+      jn_points_final <- jn_point_dt_final[, jn_points_verified]
+      if (!is.null(jn_points_verified)) {
+        jn_points_by_dummy_var[[i]] <- jn_points_final
+      }
+      names(jn_points_by_dummy_var)[i] <- paste0("dummy_", i)
+      num_of_jn_points <- length(jn_points_final)
+      # print the jn points table
+      cat(paste0("\nJN Points for ", paste0("dummy_", i), ":\n"))
+      print(jn_point_dt_final)
+    } else if (length(jn_points_verified) == 0) {
+      num_of_jn_points <- 0
     }
-    most_likely_jn_points <- c(
-      most_likely_jn_point_1, most_likely_jn_point_2)
-    jn_point_dt_final <-
-      temp_jn_point_dt[jn_point_table_rows_to_keep, ]
-    # sort the jn points table
-    data.table::setorder(jn_point_dt_final, jn_points_verified)
-    jn_points_final <- jn_point_dt_final[, jn_points_verified]
-    if (!is.null(jn_points_verified)) {
-      jn_points_by_dummy_var[[i]] <- jn_points_final
-    }
-    names(jn_points_by_dummy_var)[i] <- paste0("dummy_", i)
-    num_of_jn_points <- length(jn_points_final)
-    # print the jn points table
-    cat(paste0("\nJN Points for ", paste0("dummy_", i), ":\n"))
-    print(jn_point_dt_final)
     # regions of significance
     # if there are more than 2 jn points, throw an error
     if (num_of_jn_points > 2) {
