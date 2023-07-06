@@ -29,6 +29,7 @@ the output will be a list of  vector of correlation coefficient(s).
 \description{
 Calculate the weighted mean correlation coefficient for a given
 correlations and sample sizes.
+This function uses the Hedges-Olkin Method with random effects.
 See Field (2001) \doi{10.1037/1082-989X.6.2.161}
 }
 \examples{

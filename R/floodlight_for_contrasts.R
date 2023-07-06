@@ -663,34 +663,36 @@ floodlight_for_contrasts <- function(
     suppressMessages(g1 <- g1 + ggplot2::coord_cartesian(clip = "off"))
     g1 <- g1 + ggplot2::theme(
       plot.margin = plot_margin)
-    # jn line types
-    # if only one type is entered for jn line
-    if (length(jn_line_types) == 1) {
-      jn_line_types <- rep(jn_line_types, num_of_jn_points)
-    }
-    # add the vertical line at jn points
-    for (j in seq_along(jn_points_final)) {
-      g1 <- g1 + ggplot2::annotate(
-        geom = "segment",
-        x = jn_points_final[j],
-        y = dv_min_observed,
-        xend = jn_points_final[j],
-        yend = dv_max_observed,
-        color = "black",
-        linewidth = jn_line_thickness)
-      # label jn points
-      if (is.null(jn_point_label_hjust)) {
-        jn_point_label_hjust <- rep(0.5, num_of_jn_points)
+    if (num_of_jn_points %in% 1:2) {
+      # jn line types
+      # if only one type is entered for jn line
+      if (length(jn_line_types) == 1) {
+        jn_line_types <- rep(jn_line_types, num_of_jn_points)
       }
-      g1 <- g1 + ggplot2::annotate(
-        geom = "text",
-        x = jn_points_final[j],
-        y = Inf,
-        label = round(jn_points_final[j], round_jn_point_labels),
-        hjust = jn_point_label_hjust[j], vjust = -0.5,
-        fontface = "bold",
-        color = "black",
-        size = jn_point_font_size)
+      # add the vertical line at jn points
+      for (j in seq_along(jn_points_final)) {
+        g1 <- g1 + ggplot2::annotate(
+          geom = "segment",
+          x = jn_points_final[j],
+          y = dv_min_observed,
+          xend = jn_points_final[j],
+          yend = dv_max_observed,
+          color = "black",
+          linewidth = jn_line_thickness)
+        # label jn points
+        if (is.null(jn_point_label_hjust)) {
+          jn_point_label_hjust <- rep(0.5, num_of_jn_points)
+        }
+        g1 <- g1 + ggplot2::annotate(
+          geom = "text",
+          x = jn_points_final[j],
+          y = Inf,
+          label = round(jn_points_final[j], round_jn_point_labels),
+          hjust = jn_point_label_hjust[j], vjust = -0.5,
+          fontface = "bold",
+          color = "black",
+          size = jn_point_font_size)
+      }
     }
     # x axis title
     if (is.null(x_axis_title)) {

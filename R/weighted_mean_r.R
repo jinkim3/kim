@@ -2,6 +2,7 @@
 #'
 #' Calculate the weighted mean correlation coefficient for a given
 #' correlations and sample sizes.
+#' This function uses the Hedges-Olkin Method with random effects.
 #' See Field (2001) \doi{10.1037/1082-989X.6.2.161}
 #'
 #' @param r a (vector of) correlation coefficient(s)
@@ -45,6 +46,7 @@ weighted_mean_r <- function(
     stop("The input for 'ci' must be in the range [0, 1).")
   }
   # step 1. r to z
+  # This step is described in Field (2001), p. 163, Equation (1)
   z_sub_r_sub_i <- kim::fisher_z_transform(r)
   # step 2. obtain the Q stat
   q_stat <- kim::q_stat_test_homo_r(z = z_sub_r_sub_i, n = n)
@@ -58,6 +60,7 @@ weighted_mean_r <- function(
   # ensure tau squared is not negative
   tau_squared <- max(0, (q_stat - (k - 1)) / c)
   # step 6. obtain weights
+  # This step is described in Field (2001), in the bottom right of p. 164
   v_sub_i <- 1 / (n - 3)
   w_sub_i <- 1 / (v_sub_i + tau_squared)
   random_effect_model_weights <- w_sub_i
