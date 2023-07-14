@@ -1,4 +1,4 @@
-# kim 0.5.337
+# kim 0.5.338
 * Updated the following function(s) (and other functions that use them):
 floodlight_multi_by_continuous, floodlight_for_contrasts,
 plot_group_means, correlation_kim
