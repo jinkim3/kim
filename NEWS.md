@@ -1,3 +1,6 @@
+# kim 0.5.351
+* Added the following function(s): floodlight_2_by_continuous_logistic
+
 # kim 0.5.338
 * Updated the following function(s) (and other functions that use them):
 floodlight_multi_by_continuous, floodlight_for_contrasts,
