@@ -125,10 +125,10 @@ logistic_regression <- function(
   if (output_type == "glm_object_list") {
     return(logistic_reg_models)
   }
+  glm_default_summary_list <- lapply(logistic_reg_models, summary)
   # print logistic regression models
   if (print_glm_default_summary == TRUE) {
-    glm_default_summary_list <- lapply(logistic_reg_models, summary)
-    glm_default_summary_list
+    print(glm_default_summary_list)
   }
   # return glm default summary
   if (output_type == "glm_default_summary_list") {
@@ -194,17 +194,14 @@ logistic_regression <- function(
       "Model 2 is ", ifelse(model_chi_p < 0.05, "", "not "),
       "a significant improvement over Model 1.")
   }
+  # model comparison stats
+  model_comparison_stats <- list(
+    model_chi = model_chi,
+    model_chi_df = model_chi_df,
+    model_chi_p = model_chi_p)
   # return model chi
   if (output_type == "model_comparison_stats") {
-    model_comparison_stats <- list(
-      model_chi = model_chi,
-      model_chi_df = model_chi_df,
-      model_chi_p = model_chi_p)
     return(model_comparison_stats)
-  }
-  # return cleaned summary dt list
-  if (output_type == "summary_dt_list") {
-    invisible(summary_dt_list)
   }
   # return all
   if (output_type == "all") {
@@ -215,4 +212,8 @@ logistic_regression <- function(
       model_comparison_stats = model_comparison_stats)
     return(output)
   }
+  # return cleaned summary dt list
+  if (output_type == "summary_dt_list") {
+    invisible(summary_dt_list)
+  } # seems like the invisible function should be placed at the end
 }
