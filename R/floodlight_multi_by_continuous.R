@@ -113,7 +113,6 @@
 #' rounded? (default = 3)
 #' @param round_jn_point_labels To how many digits after the
 #' decimal point should the jn point labels be rounded? (default = 2)
-#' @param line_of_fit_thickness thickness of the lines of fit (default = 1)
 #' @examples
 #' \dontrun{
 #' # typical example

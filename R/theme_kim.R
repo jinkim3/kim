@@ -9,6 +9,10 @@
 #' <https://cran.r-project.org/package=lemon>
 #'
 #' @param legend_position position of the legend (default = "none")
+#' @param legend_spacing_y vertical spacing of the legend keys in
+#' the unit of "cm" (default = 1)
+#' @param legend_key_size size of the legend keys in the unit of "lines"
+#' (default = 3)
 #' @param base_size base font size
 #' @param axis_tick_font_size font size for axis tick marks
 #' @param axis_title_font_size font size for axis title
@@ -26,11 +30,14 @@
 #' @examples
 #' \donttest{
 #' prep(ggplot2)
-#' ggplot2::ggplot(mtcars, aes(x = cyl, y = mpg)) + geom_point() + theme_kim()
+#' ggplot2::ggplot(mtcars, aes(x = cyl, y = mpg)) +
+#' geom_point() + theme_kim()
 #' }
 #' @export
 theme_kim <- function(
   legend_position = "none",
+  legend_spacing_y = 1,
+  legend_key_size = 3,
   base_size = 20,
   axis_tick_font_size = 20,
   axis_title_font_size = 24,
@@ -84,7 +91,9 @@ theme_kim <- function(
       legend.title = ggplot2::element_text(
         face = "bold", color = "black", size = axis_title_font_size),
       legend.text = ggplot2::element_text(
-        face = "bold", color= "black", size = axis_tick_font_size)
+        face = "bold", color= "black", size = axis_tick_font_size),
+      legend.spacing.y = ggplot2::unit(legend_spacing_y, "cm"),
+      legend.key.size = ggplot2::unit(legend_key_size, "lines")
     )
   # output so far
   output <- theme_object

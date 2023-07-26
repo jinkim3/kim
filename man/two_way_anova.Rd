@@ -17,7 +17,7 @@ two_way_anova(
   plot = FALSE,
   error_bar = "ci",
   error_bar_range = 0.95,
-  line_size = 1,
+  line_thickness = 1,
   dot_size = 3,
   error_bar_tip_width = 0.13,
   position_dodge = 0.13,
@@ -66,7 +66,7 @@ confidence interval}
 (default = 0.95 for 95 percent confidence interval).
 This argument will not apply when \code{error_bar = "se"}}
 
-\item{line_size}{thickness of the lines connecting group means,
+\item{line_thickness}{thickness of the lines connecting group means,
 (default = 1)}
 
 \item{dot_size}{size of the dots indicating group means (default = 3)}

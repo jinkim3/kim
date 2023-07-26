@@ -9,7 +9,6 @@ floodlight_2_by_continuous_mlm_logistic(
   iv_name = NULL,
   dv_name = NULL,
   mod_name = NULL,
-  formula = NULL,
   interaction_p_include = TRUE,
   iv_level_order = NULL,
   dv_level_order = NULL,

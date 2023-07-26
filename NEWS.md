@@ -1,5 +1,7 @@
-# kim 0.5.352
-* Updated the following function(s): logistic_regression
+# kim 0.5.353
+* Updated the following function(s) (and other functions that use them): 
+logistic_regression, theme_kim, floodlight_multi_by_continuous,
+two_way_anova
 
 # kim 0.5.351
 * Added the following function(s): floodlight_2_by_continuous_logistic

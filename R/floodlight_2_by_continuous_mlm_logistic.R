@@ -121,7 +121,7 @@ floodlight_2_by_continuous_mlm_logistic <- function(
     iv_name = NULL,
     dv_name = NULL,
     mod_name = NULL,
-    formula = NULL,
+    # formula = NULL,
     interaction_p_include = TRUE,
     iv_level_order = NULL,
     dv_level_order = NULL,
@@ -194,7 +194,8 @@ floodlight_2_by_continuous_mlm_logistic <- function(
   }
   # bind the vars locally to the function
   dv <- dv_binary <- dv_factor <- iv <- iv_binary <- iv_factor <-
-    mod <- b <- se_b <- z <- p <- variable <- mod_temp <- NULL
+    mod <- b <- se_b <- z <- p <- variable <- mod_temp <-
+    iv_level_1 <- iv_level_2 <- NULL
   # convert to data.table
   dt <- data.table::setDT(data.table::copy(data))
   # run the logistic regression with the interaction term

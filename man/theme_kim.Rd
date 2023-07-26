@@ -6,6 +6,8 @@
 \usage{
 theme_kim(
   legend_position = "none",
+  legend_spacing_y = 1,
+  legend_key_size = 3,
   base_size = 20,
   axis_tick_font_size = 20,
   axis_title_font_size = 24,
@@ -16,6 +18,12 @@ theme_kim(
 }
 \arguments{
 \item{legend_position}{position of the legend (default = "none")}
+
+\item{legend_spacing_y}{vertical spacing of the legend keys in
+the unit of "cm" (default = 1)}
+
+\item{legend_key_size}{size of the legend keys in the unit of "lines"
+(default = 3)}
 
 \item{base_size}{base font size}
 
@@ -52,6 +60,7 @@ Edwards et al. (2020),
 \examples{
 \donttest{
 prep(ggplot2)
-ggplot2::ggplot(mtcars, aes(x = cyl, y = mpg)) + geom_point() + theme_kim()
+ggplot2::ggplot(mtcars, aes(x = cyl, y = mpg)) +
+geom_point() + theme_kim()
 }
 }
