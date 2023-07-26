@@ -27,6 +27,7 @@ floodlight_2_by_continuous(
   reg_line_types = c("solid", "dashed"),
   jn_line_types = c("solid", "solid"),
   jn_line_thickness = 1.5,
+  colors_for_iv = c("red", "blue"),
   sig_region_color = "green",
   sig_region_alpha = 0.08,
   nonsig_region_color = "gray",
@@ -106,6 +107,9 @@ By default, \code{jn_line_types = c("solid", "solid")}}
 
 \item{jn_line_thickness}{thickness of the lines at Johnson-Neyman points
 (default = 1.5)}
+
+\item{colors_for_iv}{colors for the two values of the
+independent variable (default = c("red", "blue"))}
 
 \item{sig_region_color}{color of the significant region, i.e., range(s)
 of the moderator variable for which simple effect of the independent

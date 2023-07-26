@@ -86,6 +86,8 @@
 #' By default, \code{jn_line_types = c("solid", "solid")}
 #' @param jn_line_thickness thickness of the lines at Johnson-Neyman points
 #' (default = 1.5)
+#' @param colors_for_iv colors for the two values of the
+#' independent variable (default = c("red", "blue"))
 #' @param sig_region_color color of the significant region, i.e., range(s)
 #' of the moderator variable for which simple effect of the independent
 #' variable on the dependent variable is statistically significant.
@@ -155,6 +157,7 @@ floodlight_multi_by_continuous <- function(
     line_of_fit_thickness = 1.5,
     jn_line_types = c("solid", "solid"),
     jn_line_thickness = 1.5,
+    colors_for_iv = c("red", "blue"),
     sig_region_color = "green",
     sig_region_alpha = 0.08,
     nonsig_region_color = "gray",
@@ -738,7 +741,8 @@ floodlight_multi_by_continuous <- function(
     g1 <- g1 + ggplot2::theme(
       legend.spacing.y = ggplot2::unit(1, "cm"),
       legend.key.size = ggplot2::unit(3, "lines"))
-    g1 <- g1 + ggplot2::scale_color_manual(values = c("red", "blue"))
+    g1 <- g1 + ggplot2::scale_color_manual(
+      values = colors_for_iv)
     # add the lines of fit
     temp_data_for_predicting <- dummy_var_coding_table[
       get(iv_name) %in% unique(temp_dt[, iv_factor])]

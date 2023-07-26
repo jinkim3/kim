@@ -55,6 +55,8 @@
 #' By default, \code{jn_line_types = c("solid", "solid")}
 #' @param jn_line_thickness thickness of the lines at Johnson-Neyman points
 #' (default = 1.5)
+#' @param colors_for_iv colors for the two values of the
+#' independent variable (default = c("red", "blue"))
 #' @param sig_region_color color of the significant region, i.e., range(s)
 #' of the moderator variable for which simple effect of the independent
 #' variable on the dependent variable is statistically significant.
@@ -146,6 +148,7 @@ floodlight_2_by_continuous <- function(
     reg_line_types = c("solid", "dashed"),
     jn_line_types = c("solid", "solid"),
     jn_line_thickness = 1.5,
+    colors_for_iv = c("red", "blue"),
     sig_region_color = "green",
     sig_region_alpha = 0.08,
     nonsig_region_color = "gray",
@@ -388,6 +391,9 @@ floodlight_2_by_continuous <- function(
       color = "black",
       size = interaction_p_value_font_size)
   }
+  # apply the colors for the two values of the iv
+  g1 <- g1 + ggplot2::scale_color_manual(
+    values = colors_for_iv)
   # apply the theme beforehand
   g1 <- g1 + kim::theme_kim(legend_position = legend_position)
   # allow labeling outside the plot area
@@ -398,7 +404,7 @@ floodlight_2_by_continuous <- function(
   if (length(jn_line_types) == 1) {
     jn_line_types <- rep(jn_line_types, length(unlist(sig_region)))
   }
-  # new way of plotting
+  # new way of plotting as of jul 26 2023
   # shade the regions of sig
   if (length(sig_region) > 0) {
     for (i in seq_along(sig_region)) {
