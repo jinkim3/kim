@@ -20,11 +20,13 @@ floodlight_2_by_continuous(
   interaction_p_value_font_size = 8,
   jn_point_font_size = 6,
   jn_point_label_hjust = NULL,
+  lines_at_mod_extremes = FALSE,
   interaction_p_vjust = -3,
   plot_margin = ggplot2::unit(c(75, 7, 7, 7), "pt"),
   legend_position = "right",
   reg_line_types = c("solid", "dashed"),
   jn_line_types = c("solid", "solid"),
+  jn_line_thickness = 1.5,
   sig_region_color = "green",
   sig_region_alpha = 0.08,
   nonsig_region_color = "gray",
@@ -80,6 +82,11 @@ p value (default = 8)}
 Johnson-Neyman point labels. By default, the hjust value will be 0.5 for
 all the points.}
 
+\item{lines_at_mod_extremes}{logical. Should vertical lines be
+drawn at the observed extreme values of the moderator if those values
+lie in siginificant region(s)?
+(default = FALSE)}
+
 \item{interaction_p_vjust}{By how much should the label for the
 interaction p-value be adjusted vertically?
 By default, \code{interaction_p_vjust = -3})}
@@ -96,6 +103,9 @@ By default, \code{reg_line_types = c("solid", "dashed")}}
 
 \item{jn_line_types}{types of the lines for Johnson-Neyman points.
 By default, \code{jn_line_types = c("solid", "solid")}}
+
+\item{jn_line_thickness}{thickness of the lines at Johnson-Neyman points
+(default = 1.5)}
 
 \item{sig_region_color}{color of the significant region, i.e., range(s)
 of the moderator variable for which simple effect of the independent
@@ -162,7 +172,6 @@ iv_name = "am",
 dv_name = "mpg",
 mod_name = "qsec",
 covariate_name = c("cyl", "hp"))
-}
 # adjust the jn point label positions
 floodlight_2_by_continuous(
 data = mtcars,
@@ -177,4 +186,13 @@ iv_name = "am",
 dv_name = "mpg",
 mod_name = "qsec",
 output = "regions")
+# draw lines at the extreme values of the moderator
+# if they are included in the significant region
+floodlight_2_by_continuous(
+data = mtcars,
+iv_name = "am",
+dv_name = "mpg",
+mod_name = "qsec",
+lines_at_mod_extremes = TRUE)
+}
 }
