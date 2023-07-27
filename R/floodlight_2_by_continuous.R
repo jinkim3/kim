@@ -235,8 +235,9 @@ floodlight_2_by_continuous <- function(
   } else {
     # check if the iv levels match
     iv_level_order_character <- as.character(iv_level_order)
-    if (!identical(iv_unique_values_character,
-                   iv_level_order_character)) {
+    if (!identical(
+      iv_unique_values_character,
+      sort(iv_level_order_character))) {
       stop(paste0(
         "\nThe levels of independent variables do not match:\n",
         "iv_level_order input: ",

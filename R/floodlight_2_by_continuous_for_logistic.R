@@ -223,8 +223,9 @@ floodlight_2_by_continuous_logistic <- function(
   } else {
     # check if the iv levels match
     iv_level_order_character <- as.character(iv_level_order)
-    if (!identical(iv_unique_values_character,
-                   iv_level_order_character)) {
+    if (!identical(
+      iv_unique_values_character,
+      sort(iv_level_order_character))) {
       stop(paste0(
         "\nThe levels of independent variables do not match:\n",
         "iv_level_order input: ",
@@ -264,10 +265,11 @@ floodlight_2_by_continuous_logistic <- function(
   } else {
     # check if the dv levels match
     dv_level_order_character <- as.character(dv_level_order)
-    if (!identical(dv_unique_values_character,
-                   dv_level_order_character)) {
+    if (!identical(
+      dv_unique_values_character,
+      sort(dv_level_order_character))) {
       stop(paste0(
-        "\nThe levels of dependent variables do not match:\n",
+        "\nThe levels of independent variables do not match:\n",
         "dv_level_order input: ",
         paste0(dv_level_order_character, collapse = ", "),
         "\nLevels of DV in the data set: ",
