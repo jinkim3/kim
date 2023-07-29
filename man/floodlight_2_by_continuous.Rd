@@ -18,7 +18,7 @@ floodlight_2_by_continuous(
   dot_alpha = 0.5,
   dot_size = 4,
   interaction_p_value_font_size = 8,
-  jn_point_font_size = 6,
+  jn_point_font_size = 8,
   jn_point_label_hjust = NULL,
   lines_at_mod_extremes = FALSE,
   interaction_p_vjust = -3,
@@ -77,7 +77,7 @@ range of y values}
 p value (default = 8)}
 
 \item{jn_point_font_size}{font size for Johnson-Neyman point labels
-(default = 6)}
+(default = 8)}
 
 \item{jn_point_label_hjust}{a vector of hjust values for
 Johnson-Neyman point labels. By default, the hjust value will be 0.5 for
