@@ -34,6 +34,9 @@
 #' @param x_labels a vector containing labels for the place tick marks
 #' on the x axis.
 #' @param sigfigs number of significant digits to round to (default = 3)
+#' @param convert_dv_to_numeric logical. Should the values in the
+#' dependent variable be converted to numeric for plotting the
+#' histograms? (default = TRUE)
 #' @return the output will be a set of vertically arranged histograms
 #' (a ggplot object), i.e., one histogram for each level of the
 #' independent variable.
@@ -64,7 +67,8 @@ histogram_by_group <- function(
   x_limits = NULL,
   x_breaks = NULL,
   x_labels = NULL,
-  sigfigs = 3) {
+  sigfigs = 3,
+  convert_dv_to_numeric = TRUE) {
   # installed packages
   installed_pkgs <- rownames(utils::installed.packages())
   # check if Package 'ggplot2' is installed
@@ -105,9 +109,12 @@ histogram_by_group <- function(
     dt01$iv <- as.character(dt01$iv)
   }
   # if dv is not numeric, change it to numeric
-  if (is.numeric(dt01$dv) == FALSE) {
-    dt01$dv <- as.numeric(dt01$dv)
-    warning("The DV was converted to numeric for plotting the histograms.")
+  if (convert_dv_to_numeric == TRUE) {
+    if (is.numeric(dt01$dv) == FALSE) {
+      dt01$dv <- as.numeric(dt01$dv)
+      warning(
+        "The DV was converted to numeric for plotting the histograms.")
+    }
   }
   # order groups
   if (is.null(order_of_groups_top_to_bot)) {

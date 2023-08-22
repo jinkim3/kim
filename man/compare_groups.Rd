@@ -30,7 +30,8 @@ compare_groups(
   units = "px",
   res = 300,
   layout_matrix = NULL,
-  col_names_nicer = TRUE
+  col_names_nicer = TRUE,
+  convert_dv_to_numeric = TRUE
 )
 }
 \arguments{
@@ -133,6 +134,10 @@ using the \code{grid.arrange} function.}
 
 \item{col_names_nicer}{if \code{col_names_nicer = TRUE}, column names
 will be converted from snake_case to an easier-to-eye format.}
+
+\item{convert_dv_to_numeric}{logical. Should the values in the
+dependent variable be converted to numeric for plotting the
+histograms? (default = TRUE)}
 
 \item{holm}{if \code{holm = TRUE}, the relevant p values will be
 adjusted using Holm method (also known as the Holm-Bonferroni or

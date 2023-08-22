@@ -17,7 +17,8 @@ histogram_by_group(
   x_limits = NULL,
   x_breaks = NULL,
   x_labels = NULL,
-  sigfigs = 3
+  sigfigs = 3,
+  convert_dv_to_numeric = TRUE
 )
 }
 \arguments{
@@ -60,6 +61,10 @@ place tick marks on the x axis.}
 on the x axis.}
 
 \item{sigfigs}{number of significant digits to round to (default = 3)}
+
+\item{convert_dv_to_numeric}{logical. Should the values in the
+dependent variable be converted to numeric for plotting the
+histograms? (default = TRUE)}
 }
 \value{
 the output will be a set of vertically arranged histograms

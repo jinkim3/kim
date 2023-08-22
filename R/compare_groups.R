@@ -81,6 +81,9 @@
 #' using the \code{grid.arrange} function.
 #' @param col_names_nicer if \code{col_names_nicer = TRUE}, column names
 #' will be converted from snake_case to an easier-to-eye format.
+#' @param convert_dv_to_numeric logical. Should the values in the
+#' dependent variable be converted to numeric for plotting the
+#' histograms? (default = TRUE)
 #' @return the output will be a list of (1) ggplot object
 #' (histogram by group) (2) a data.table with descriptive statistics by
 #' group; and (3) a data.table with pairwise comparison results.
@@ -120,7 +123,8 @@ compare_groups <- function(
   units = "px",
   res = 300,
   layout_matrix = NULL,
-  col_names_nicer = TRUE) {
+  col_names_nicer = TRUE,
+  convert_dv_to_numeric = TRUE) {
   # histogram by group
   output_1 <- kim::histogram_by_group(
     data = data, iv_name = iv_name, dv_name = dv_name,
@@ -128,7 +132,8 @@ compare_groups <- function(
     x_limits = x_limits,
     x_breaks = x_breaks,
     x_labels = x_labels,
-    sigfigs = sigfigs)
+    sigfigs = sigfigs,
+    convert_dv_to_numeric = convert_dv_to_numeric)
   # descriptive stats by group
   output_2 <- kim::desc_stats_by_group(
     data = data, var_for_stats = dv_name, grouping_vars = iv_name,

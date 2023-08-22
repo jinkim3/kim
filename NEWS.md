@@ -1,6 +1,6 @@
 # kim 0.5.360
 * Updated the following function(s) (and other functions that use them): 
-update_kim, .onAttach, histogram_by_group
+update_kim, .onAttach, histogram_by_group, compare_groups
 
 # kim 0.5.357
 * Updated the following function(s) (and other functions that use them): 
