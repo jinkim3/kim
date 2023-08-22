@@ -28,7 +28,7 @@
     startup_message <- paste0(
       "Package attached: kim v", current_pkg_version,
       "\nThe function failed to learn about the most recent version",
-      " available on\nGitHub (possbly due to the lack of ",
+      " available on\nGitHub (possbly due to a lack of ",
       "Internet connection).",
       "\n\nYou have an option to update the package ",
       "with the\nfunction `update_kim()`. ",
