@@ -104,6 +104,11 @@ histogram_by_group <- function(
   if (is.numeric(dt01$iv)) {
     dt01$iv <- as.character(dt01$iv)
   }
+  # if dv is not numeric, change it to numeric
+  if (is.numeric(dt01$dv) == FALSE) {
+    dt01$dv <- as.numeric(dt01$dv)
+    warning("The DV was converted to numeric for plotting the histograms.")
+  }
   # order groups
   if (is.null(order_of_groups_top_to_bot)) {
     order_of_groups_top_to_bot <- sort(unique(dt01$iv))
