@@ -1,3 +1,7 @@
+# kim 0.5.358
+* Updated the following function(s) (and other functions that use them): 
+update_kim
+
 # kim 0.5.357
 * Updated the following function(s) (and other functions that use them): 
 logistic_regression, theme_kim, floodlight_multi_by_continuous,
