@@ -31,8 +31,8 @@
       " available on\nGitHub (possbly due to the lack of ",
       "Internet connection).",
       "\n\nYou have an option to update the package ",
-      "with the function `update_kim()`. ",
-      "If you do so, make sure to restart R.\n")
+      "with the\nfunction `update_kim()`. ",
+      "If you do so, it is recommended that you restart R.\n")
   } else {
     # cases 1, 3-5.
     github_pkg_version <- gsub(
@@ -71,8 +71,8 @@
         "; Most recent version available on GitHub: v",
         github_pkg_version,
         "\n\nYou have an option to update the package ",
-        "with the function `update_kim()`. ",
-        "If you do so, make sure to restart R.\n")
+        "with the\nfunction `update_kim()`. ",
+        "If you do so, it is recommended that you restart R.\n")
     }
   }
   packageStartupMessage(startup_message)
