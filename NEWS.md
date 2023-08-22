@@ -1,6 +1,6 @@
-# kim 0.5.358
+# kim 0.5.359
 * Updated the following function(s) (and other functions that use them): 
-update_kim
+update_kim, .onAttach
 
 # kim 0.5.357
 * Updated the following function(s) (and other functions that use them): 
