@@ -43,8 +43,6 @@
 #' @param line_thickness thickness of the lines connecting group means,
 #' (default = 1)
 #' @param dot_size size of the dots indicating group means (default = 3)
-#' @param error_bar_tip_width graphically, width of the segments
-#' at the end of error bars (default = 0.13)
 #' @param position_dodge by how much should the group means and error bars
 #' be horizontally offset from each other so as not to overlap?
 #' (default = 0.13)
@@ -104,7 +102,6 @@ two_way_anova <- function(
   error_bar_caption = TRUE,
   line_thickness = 1,
   dot_size = 3,
-  error_bar_tip_width = 0.13,
   position_dodge = 0.13,
   legend_position = "right",
   output = "anova_table",
@@ -217,7 +214,6 @@ two_way_anova <- function(
       error_bar_caption = error_bar_caption,
       line_thickness = line_thickness,
       dot_size = dot_size,
-      error_bar_tip_width = error_bar_tip_width,
       position_dodge = position_dodge,
       legend_position = legend_position)
     if (output == "plot") {

@@ -11,14 +11,14 @@ plot_group_means(
   na.rm = TRUE,
   error_bar = "ci",
   error_bar_range = 0.95,
+  error_bar_tip_width = 0.13,
+  error_bar_thickness = 1,
   error_bar_caption = TRUE,
   lines_connecting_means = TRUE,
   line_types = NULL,
   line_thickness = 1,
   line_size = NULL,
   dot_size = 3,
-  error_bar_tip_width = 0.13,
-  error_bar_thickness = 1,
   position_dodge = 0.13,
   legend_position = "right",
   y_axis_title_vjust = 0.85
@@ -45,9 +45,13 @@ a prediction interval}
 (default = 0.95 for 95 percent confidence or prediction interval).
 This argument will not apply when \code{error_bar = "se"}}
 
+\item{error_bar_tip_width}{graphically, width of the segments
+at the end of error bars (default = 0.13)}
+
+\item{error_bar_thickness}{thickness of the error bars (default = 1)}
+
 \item{error_bar_caption}{should a caption be included to indicate
-the width of the error bars? (default = TRUE).
-This argument will not apply when \code{error_bar = "se"}}
+the width of the error bars? (default = TRUE).}
 
 \item{lines_connecting_means}{logical. Should lines connecting means
 within each group be drawn? (default = TRUE)}
@@ -63,11 +67,6 @@ If the second IV has two levels, then by default,
 (default = 1)}
 
 \item{dot_size}{size of the dots indicating group means (default = 3)}
-
-\item{error_bar_tip_width}{graphically, width of the segments
-at the end of error bars (default = 0.13)}
-
-\item{error_bar_thickness}{thickness of the error bars (default = 1)}
 
 \item{position_dodge}{by how much should the group means and error bars
 be horizontally offset from each other so as not to overlap?
