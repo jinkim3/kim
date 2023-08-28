@@ -17,6 +17,7 @@ two_way_anova(
   plot = FALSE,
   error_bar = "ci",
   error_bar_range = 0.95,
+  error_bar_caption = TRUE,
   line_thickness = 1,
   dot_size = 3,
   error_bar_tip_width = 0.13,
@@ -64,6 +65,10 @@ confidence interval}
 
 \item{error_bar_range}{width of the confidence interval
 (default = 0.95 for 95 percent confidence interval).
+This argument will not apply when \code{error_bar = "se"}}
+
+\item{error_bar_caption}{should a caption be included to indicate
+the width of the error bars? (default = TRUE).
 This argument will not apply when \code{error_bar = "se"}}
 
 \item{line_thickness}{thickness of the lines connecting group means,

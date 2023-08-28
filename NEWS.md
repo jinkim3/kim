@@ -1,6 +1,7 @@
-# kim 0.5.360
+# kim 0.5.361
 * Updated the following function(s) (and other functions that use them): 
-update_kim, .onAttach, histogram_by_group, compare_groups
+update_kim, .onAttach, histogram_by_group, compare_groups,
+plot_group_means, two_way_anova
 
 # kim 0.5.357
 * Updated the following function(s) (and other functions that use them): 

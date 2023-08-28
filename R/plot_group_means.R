@@ -16,6 +16,9 @@
 #' @param error_bar_range width of the confidence or prediction interval
 #' (default = 0.95 for 95 percent confidence or prediction interval).
 #' This argument will not apply when \code{error_bar = "se"}
+#' @param error_bar_caption should a caption be included to indicate
+#' the width of the error bars? (default = TRUE).
+#' This argument will not apply when \code{error_bar = "se"}
 #' @param lines_connecting_means logical. Should lines connecting means
 #' within each group be drawn? (default = TRUE)
 #' @param line_types types of the lines connecting means (default = NULL)
@@ -60,6 +63,7 @@ plot_group_means <- function(
   na.rm = TRUE,
   error_bar = "ci",
   error_bar_range = 0.95,
+  error_bar_caption = TRUE,
   lines_connecting_means = TRUE,
   line_types = NULL,
   line_thickness = 1,
@@ -191,9 +195,13 @@ plot_group_means <- function(
   g1 <- g1 + ggplot2::ylab(dv_name)
   g1 <- g1 + ggplot2::labs(
     color = iv_name[2],
-    linetype = iv_name[2],
-    caption = paste0(
-    "\nError bars indicate ", error_bar_desc_text, " around the mean."))
+    linetype = iv_name[2])
+  if (error_bar_caption == TRUE) {
+    g1 <- g1 + ggplot2::labs(
+      caption = paste0(
+        "\nError bars indicate ", error_bar_desc_text,
+        " around the mean."))
+  }
   # plot theme
   g1 <- g1 + kim::theme_kim(
     y_axis_title_vjust = y_axis_title_vjust,

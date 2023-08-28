@@ -11,6 +11,7 @@ plot_group_means(
   na.rm = TRUE,
   error_bar = "ci",
   error_bar_range = 0.95,
+  error_bar_caption = TRUE,
   lines_connecting_means = TRUE,
   line_types = NULL,
   line_thickness = 1,
@@ -42,6 +43,10 @@ a prediction interval}
 
 \item{error_bar_range}{width of the confidence or prediction interval
 (default = 0.95 for 95 percent confidence or prediction interval).
+This argument will not apply when \code{error_bar = "se"}}
+
+\item{error_bar_caption}{should a caption be included to indicate
+the width of the error bars? (default = TRUE).
 This argument will not apply when \code{error_bar = "se"}}
 
 \item{lines_connecting_means}{logical. Should lines connecting means
