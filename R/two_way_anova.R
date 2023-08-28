@@ -35,9 +35,11 @@
 #' @param error_bar_range width of the confidence interval
 #' (default = 0.95 for 95 percent confidence interval).
 #' This argument will not apply when \code{error_bar = "se"}
+#' @param error_bar_tip_width graphically, width of the segments
+#' at the end of error bars (default = 0.13)
+#' @param error_bar_thickness thickness of the error bars (default = 1)
 #' @param error_bar_caption should a caption be included to indicate
 #' the width of the error bars? (default = TRUE).
-#' This argument will not apply when \code{error_bar = "se"}
 #' @param line_thickness thickness of the lines connecting group means,
 #' (default = 1)
 #' @param dot_size size of the dots indicating group means (default = 3)
@@ -97,6 +99,8 @@ two_way_anova <- function(
   plot = FALSE,
   error_bar = "ci",
   error_bar_range = 0.95,
+  error_bar_tip_width = 0.13,
+  error_bar_thickness = 1,
   error_bar_caption = TRUE,
   line_thickness = 1,
   dot_size = 3,
@@ -208,6 +212,8 @@ two_way_anova <- function(
       iv_name = c(iv_1_name, iv_2_name),
       error_bar = error_bar,
       error_bar_range = error_bar_range,
+      error_bar_tip_width = error_bar_tip_width,
+      error_bar_thickness = error_bar_thickness,
       error_bar_caption = error_bar_caption,
       line_thickness = line_thickness,
       dot_size = dot_size,
