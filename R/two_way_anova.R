@@ -245,9 +245,17 @@ two_way_anova <- function(
       " instead.\n",
       "Type '?kim::levene_test' for more information."))
   }
+  # save the current contrast
+  prev_option_for_contrasts <- options("contrasts")
+  # apply the new contrasts, web page for reference:
+  # https://web.archive.org/web/20230908042656/http://www.statscanbefun.com/rblog/2015/8/27/ensuring-r-generates-the-same-anova-f-values-as-spss
+  options(contrasts = c("contr.helmert", "contr.poly"))
   # anova instead of regression
   model_1 <- stats::aov(formula = formula_1, data = dt2)
   anova_table <- anova_fn_from_car(model_1, type = 3)
+  # restore the previous contrasts
+  options(contrasts = prev_option_for_contrasts$contrasts)
+  # edit the anova table
   source <- row.names(anova_table)
   data.table::setDT(anova_table)
   anova_table <- data.table::data.table(source, anova_table)

@@ -1,3 +1,7 @@
+# kim 0.5.401
+* Critical fix or improvement in the following functions (and other 
+functions that use them): two_way_anova
+
 # kim 0.5.363
 * Updated the following function(s) (and other functions that use them): 
 update_kim, .onAttach, histogram_by_group, compare_groups,
