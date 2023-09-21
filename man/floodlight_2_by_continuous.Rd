@@ -18,6 +18,7 @@ floodlight_2_by_continuous(
   dot_alpha = 0.5,
   dot_size = 4,
   interaction_p_value_font_size = 8,
+  jn_point_label_add = TRUE,
   jn_point_font_size = 8,
   jn_point_label_hjust = NULL,
   lines_at_mod_extremes = FALSE,
@@ -75,6 +76,9 @@ range of y values}
 
 \item{interaction_p_value_font_size}{font size for the interaction
 p value (default = 8)}
+
+\item{jn_point_label_add}{logical. Should the labels for
+Johnson-Neyman point labels be added to the plot? (default = TRUE)}
 
 \item{jn_point_font_size}{font size for Johnson-Neyman point labels
 (default = 8)}
@@ -199,4 +203,11 @@ dv_name = "mpg",
 mod_name = "qsec",
 lines_at_mod_extremes = TRUE)
 }
+# remove the labels for jn points
+floodlight_2_by_continuous(
+data = mtcars,
+iv_name = "am",
+dv_name = "mpg",
+mod_name = "qsec",
+jn_point_label_add = FALSE)
 }
