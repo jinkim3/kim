@@ -1,3 +1,7 @@
+# kim 0.5.402
+* Updated the following function(s) (and other functions that use them): 
+floodlight_2_by_continuous
+
 # kim 0.5.401
 * Critical fix or improvement in the following functions (and other 
 functions that use them): two_way_anova

@@ -32,6 +32,8 @@
 #' @param dot_size size of the dots (default = 4)
 #' @param interaction_p_value_font_size font size for the interaction
 #' p value (default = 8)
+#' @param jn_point_label_add logical. Should the labels for
+#' Johnson-Neyman point labels be added to the plot? (default = TRUE)
 #' @param jn_point_font_size font size for Johnson-Neyman point labels
 #' (default = 8)
 #' @param jn_point_label_hjust a vector of hjust values for
@@ -123,6 +125,13 @@
 #' mod_name = "qsec",
 #' lines_at_mod_extremes = TRUE)
 #' }
+#' # remove the labels for jn points
+#' floodlight_2_by_continuous(
+#' data = mtcars,
+#' iv_name = "am",
+#' dv_name = "mpg",
+#' mod_name = "qsec",
+#' jn_point_label_add = FALSE)
 #' @export
 #' @import data.table
 floodlight_2_by_continuous <- function(
@@ -139,6 +148,7 @@ floodlight_2_by_continuous <- function(
     dot_alpha = 0.5,
     dot_size = 4,
     interaction_p_value_font_size = 8,
+    jn_point_label_add = TRUE,
     jn_point_font_size = 8,
     jn_point_label_hjust = NULL,
     lines_at_mod_extremes = FALSE,
@@ -387,7 +397,7 @@ floodlight_2_by_continuous <- function(
       x = min(dt[, mod]) + x_range * 0.5,
       y = Inf,
       label = interaction_p_value_text,
-      hjust = 0.5, vjust = -3,
+      hjust = 0.5, vjust = interaction_p_vjust,
       fontface = "bold",
       color = "black",
       size = interaction_p_value_font_size)
@@ -436,21 +446,23 @@ floodlight_2_by_continuous <- function(
         yend = dv_max_observed,
         color = "black",
         linewidth = jn_line_thickness)
-      # label jn points
-      if (is.null(jn_point_label_hjust)) {
-        jn_point_label_hjust <- rep(
-          0.5, length(vertical_line_xintercepts))
+      if (jn_point_label_add == TRUE) {
+        # label jn points
+        if (is.null(jn_point_label_hjust)) {
+          jn_point_label_hjust <- rep(
+            0.5, length(vertical_line_xintercepts))
+        }
+        g1 <- g1 + ggplot2::annotate(
+          geom = "text",
+          x = vertical_line_xintercepts[i],
+          y = Inf,
+          label = round(
+            vertical_line_xintercepts[i], round_jn_point_labels),
+          hjust = jn_point_label_hjust[i], vjust = -0.5,
+          fontface = "bold",
+          color = "black",
+          size = jn_point_font_size)
       }
-      g1 <- g1 + ggplot2::annotate(
-        geom = "text",
-        x = vertical_line_xintercepts[i],
-        y = Inf,
-        label = round(
-          vertical_line_xintercepts[i], round_jn_point_labels),
-        hjust = jn_point_label_hjust[i], vjust = -0.5,
-        fontface = "bold",
-        color = "black",
-        size = jn_point_font_size)
     }
   }
   # x axis title
