@@ -1,3 +1,11 @@
+# kim 0.5.421
+* Note to developer(s): "The errors for r-devel are from a recent change
+in r-devel fixing the long-standing PR#14359, to the effect that the 
+formula methods for t and Wilcoxon tests defer NA handling to the 
+default method, and do not allow 'paired' arguments."
+* Updated the following function(s) (and other functions that use them): 
+mann_whitney, t_test_pairwise, wilcoxon_rank_sum_test
+
 # kim 0.5.402
 * Updated the following function(s) (and other functions that use them): 
 floodlight_2_by_continuous

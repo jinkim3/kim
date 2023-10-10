@@ -82,8 +82,7 @@ mann_whitney <- function(
   wilcoxon_results <- lapply(seq_len(nrow(dt02)), function(i) {
     results_for_1_pair <- stats::wilcox.test(
       formula = dv ~ iv,
-      data = dt01[iv %in% dt02[i, ]],
-      paired = FALSE)
+      data = dt01[iv %in% dt02[i, ]])
     # p value and w stat
     wilcoxon_rank_sum_p_value <- results_for_1_pair[["p.value"]]
     w_stat <- results_for_1_pair[["statistic"]]
