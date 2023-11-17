@@ -1,3 +1,7 @@
+# kim 0.5.422
+* Updated the following function(s) (and other functions that use them): 
+scatterplot
+
 # kim 0.5.421
 * Note to developer(s): "The errors for r-devel are from a recent change
 in r-devel fixing the long-standing PR#14359, to the effect that the 

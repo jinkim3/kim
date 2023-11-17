@@ -20,13 +20,22 @@
 #' 1 = completely opaque)
 #' @param annotate_stats if \code{TRUE}, the correlation and p-value will
 #' be annotated at the top of the plot (default = TRUE)
-#' @param annotate_y_pos position of the annotated stats, expressed
+#' @param annotate_y_pos_rel position of the annotated stats, expressed
 #' as a percentage of the range of y values by which the annotated
 #' stats will be placed above the maximum value of y in the data set
-#' (default = 5). If \code{annotate_y_pos = 5}, and the minimum and
+#' (default = 5). This value will be determined relative to the data.
+#' If \code{annotate_y_pos_rel = 5}, and the minimum and
 #' maximum y values in the data set are 0 and 100, respectively,
 #' the annotated stats will be placed at 5% of the y range (100 - 0)
 #' above the maximum y value, y = 0.05 * (100 - 0) + 100 = 105.
+#' @param annotate_y_pos_abs as an alternative to the argument
+#' \code{annotate_y_pos_rel}, the input for this argument will determine the
+#' position of the annotated stats. If \code{annotate_y_pos_abs = 7.5},
+#' then the annotated stats will be placed at the y coordinate of 7.5.
+#' By default, this argument will be ignored unless it receives an input.
+#' That is, by default, the function will use the default value of
+#' the \code{annotate_y_pos_rel} argument to determine the y coordinate
+#' of the annotated stats.
 #' @param annotated_stats_color color of the annotated stats
 #' (default = "green4").
 #' @param annotated_stats_font_size font size of the annotated stats
@@ -100,7 +109,8 @@ scatterplot <- function(
   weight_var_name = NULL,
   alpha = 1,
   annotate_stats = TRUE,
-  annotate_y_pos = 5,
+  annotate_y_pos_rel = 5,
+  annotate_y_pos_abs = NULL,
   annotated_stats_color = "green4",
   annotated_stats_font_size = 6,
   annotated_stats_font_face = "bold",
@@ -304,15 +314,27 @@ scatterplot <- function(
           t06 = weighted_r_text
         )
       )))
-    g1 <- g1 + ggplot2::annotate(
-      geom = "text",
-      x = min(dt02$x) + x_range / 2,
-      y = max(dt02$y) + y_range * annotate_y_pos / 100,
-      color = annotated_stats_color,
-      label = annotation_01, parse = TRUE,
-      hjust = 0.5, vjust = 0.5,
-      size = annotated_stats_font_size,
-      fontface = annotated_stats_font_face)
+    if (!is.null(annotate_y_pos_abs)) {
+      g1 <- g1 + ggplot2::annotate(
+        geom = "text",
+        x = min(dt02$x) + x_range / 2,
+        y = annotate_y_pos_abs,
+        color = annotated_stats_color,
+        label = annotation_01, parse = TRUE,
+        hjust = 0.5, vjust = 0.5,
+        size = annotated_stats_font_size,
+        fontface = annotated_stats_font_face)
+    } else if (is.null(annotate_y_pos_abs)) {
+      g1 <- g1 + ggplot2::annotate(
+        geom = "text",
+        x = min(dt02$x) + x_range / 2,
+        y = max(dt02$y) + y_range * annotate_y_pos_rel / 100,
+        color = annotated_stats_color,
+        label = annotation_01, parse = TRUE,
+        hjust = 0.5, vjust = 0.5,
+        size = annotated_stats_font_size,
+        fontface = annotated_stats_font_face)
+    }
   }
   # axis labels
   if (is.null(x_axis_label)) {
