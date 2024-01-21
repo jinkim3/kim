@@ -143,6 +143,13 @@ loglinear_analysis <- function(
       round_digits_after_decimal = round_p,
       include_p_equals = TRUE))
   rs <- paste0(rss_1, rss_2, rss_3, rss_4, rss_5)
+  # return the output as a list
+  if (output == "list") {
+    results_list <- list(
+      interaction_p = int_p,
+      model_comparison_results = mc_1)
+    return(results_list)
+  }
   # return results summary ----
   if (output == "results_summary") {
     return(rs)

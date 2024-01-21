@@ -1,4 +1,8 @@
-# kim 0.5.422
+# kim 0.5.422 (newer version of v0.5.422 as of jan 21 2024)
+* Updated the following function(s) (and other functions that use them): 
+loglinear analysis
+
+# kim 0.5.422 (newer version of v0.5.422 as of jan 21 2024)
 * Updated the following function(s) (and other functions that use them): 
 scatterplot
 
