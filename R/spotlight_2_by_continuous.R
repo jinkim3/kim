@@ -32,11 +32,13 @@
 #' lines from regressing DV on MOD at each value of IV will be plotted.
 #' If \code{reg_lines = FALSE}, these regression lines will not be plotted.
 #' By default, \code{observed_dots = FALSE}.
-#' @param reg_line_size thickness of the regression lines (default = 1).
+#' @param reg_line_size deprecated. Use `reg_line_width` instead.
+#' thickness of the regression lines (default = 1).
+#' @param reg_line_width thickness of the regression lines (default = 1).
 #' @param lines_connecting_est_dv logical. Should lines connecting the
 #' estimated values of DV be drawn? (default = TRUE)
-#' @param lines_connecting_est_dv_size thickness of the lines connecting the
-#' estimated values of DV (default = 1).
+#' @param lines_connecting_est_dv_width thickness of the lines connecting
+#' the estimated values of DV (default = 1).
 #' @param estimated_dv_dot_shape ggplot value for shape of the dots
 #' at estimated values of DV (default = 15, a square shape).
 #' @param estimated_dv_dot_size size of the dots at estimated values of
@@ -58,7 +60,7 @@
 #' @param simp_eff_bracket_offset (default)
 #' @param simp_eff_bracket_offset_perc (default)
 #' @param simp_eff_bracket_color (default)
-#' @param simp_eff_bracket_line_size (default)
+#' @param simp_eff_bracket_line_width (default)
 #' @param simp_eff_text_offset (default)
 #' @param simp_eff_text_offset_percent (default)
 #' @param simp_eff_text_hjust (default)
@@ -190,9 +192,9 @@ spotlight_2_by_continuous <- function(
     dot_size = 3,
     observed_dots = FALSE,
     reg_lines = FALSE,
-    reg_line_size = 1,
+    reg_line_width = 1,
     lines_connecting_est_dv = TRUE,
-    lines_connecting_est_dv_size = 1,
+    lines_connecting_est_dv_width = 1,
     estimated_dv_dot_shape = 15,
     estimated_dv_dot_size = 6,
     error_bar = "ci",
@@ -207,7 +209,7 @@ spotlight_2_by_continuous <- function(
     simp_eff_bracket_offset = NULL,
     simp_eff_bracket_offset_perc = 1,
     simp_eff_bracket_color = "black",
-    simp_eff_bracket_line_size = 1,
+    simp_eff_bracket_line_width = 1,
     simp_eff_text_offset = NULL,
     simp_eff_text_offset_percent = 7,
     simp_eff_text_hjust = 0.5,
@@ -258,9 +260,9 @@ spotlight_2_by_continuous <- function(
   # dot_size = 3
   # observed_dots = FALSE
   # reg_lines = FALSE
-  # reg_line_size = 1
+  # reg_line_width = 1
   # lines_connecting_est_dv = TRUE
-  # lines_connecting_est_dv_size = 1
+  # lines_connecting_est_dv_width = 1
   # estimated_dv_dot_shape = 15
   # estimated_dv_dot_size = 6
   # error_bar = "ci"
@@ -275,7 +277,7 @@ spotlight_2_by_continuous <- function(
   # simp_eff_bracket_offset = NULL
   # simp_eff_bracket_offset_perc = 1
   # simp_eff_bracket_color = "black"
-  # simp_eff_bracket_line_size = 1
+  # simp_eff_bracket_line_width = 1
   # simp_eff_text_offset = NULL
   # simp_eff_text_offset_percent = 7
   # simp_eff_text_hjust = 0.5
@@ -756,12 +758,12 @@ spotlight_2_by_continuous <- function(
     g1 <- g1 + ggplot2::geom_errorbar(ggplot2::aes(
       ymin = error_bar_ll, ymax = error_bar_ul),
       width = error_bar_tip_width,
-      size = error_bar_thickness,
+      linewidth = error_bar_thickness,
       position = pd)
     # lines connecting the estimated dvs at focal values
     if (lines_connecting_est_dv == TRUE) {
       g1 <- g1 + ggplot2::geom_line(
-        size = lines_connecting_est_dv_size,
+        linewidth = lines_connecting_est_dv_width,
         position = pd)
     }
     # estimated dvs at focal values
@@ -800,7 +802,7 @@ spotlight_2_by_continuous <- function(
           stat = "smooth",
           formula = y ~ x,
           method = "lm", se = FALSE,
-          size = reg_line_size,
+          linewidth = reg_line_width,
           alpha = reg_line_alpha)
         g1 <- g1 + ggplot2::scale_linetype_manual(
           values = reg_line_types)
@@ -826,14 +828,14 @@ spotlight_2_by_continuous <- function(
         ymin = dt2$y1_error_bar_begin, ymax = dt2$y1_error_bar_end),
         inherit.aes = FALSE,
         width = error_bar_tip_width,
-        size = error_bar_thickness,
+        linewidth = error_bar_thickness,
         color = colors[1])
       g1 <- g1 + ggplot2::geom_errorbar(data = dt2, ggplot2::aes(
         x = y2_error_bar_x, y = y2,
         ymin = dt2$y2_error_bar_begin, ymax = dt2$y2_error_bar_end),
         inherit.aes = FALSE,
         width = error_bar_tip_width,
-        size = error_bar_thickness,
+        linewidth = error_bar_thickness,
         color = colors[2])
       if (error_bar == "ci") {
         error_bar_desc_text <- paste0(
@@ -848,13 +850,13 @@ spotlight_2_by_continuous <- function(
         data = dt2, ggplot2::aes(
           x = y1_error_bar_x, y = y1),
         inherit.aes = FALSE,
-        size = lines_connecting_est_dv_size,
+        size = lines_connecting_est_dv_width,
         color = colors[1])
       g1 <- g1 + ggplot2::geom_line(
         data = dt2, ggplot2::aes(
           x = y2_error_bar_x, y = y2),
         inherit.aes = FALSE,
-        size = lines_connecting_est_dv_size,
+        size = lines_connecting_est_dv_width,
         color = colors[2])
     }
   }
@@ -875,7 +877,7 @@ spotlight_2_by_continuous <- function(
       xend = temp_bracket_x_end,
       yend = temp_bracket_y_end,
       color = simp_eff_bracket_color,
-      size = simp_eff_bracket_line_size,
+      linewidth = simp_eff_bracket_line_width,
       inherit.aes = FALSE)
     # the horizontal segment at the bottom of the bracket
     g1 <- g1 + ggplot2::geom_segment(
@@ -884,7 +886,7 @@ spotlight_2_by_continuous <- function(
       xend = temp_bracket_x_end,
       yend = temp_bracket_y_begin,
       color = simp_eff_bracket_color,
-      size = simp_eff_bracket_line_size,
+      linewidth = simp_eff_bracket_line_width,
       inherit.aes = FALSE)
     # the horizontal segment at the top of the bracket
     g1 <- g1 + ggplot2::geom_segment(
@@ -893,7 +895,7 @@ spotlight_2_by_continuous <- function(
       xend = temp_bracket_x_end,
       yend = temp_bracket_y_end,
       color = simp_eff_bracket_color,
-      size = simp_eff_bracket_line_size,
+      linewidth = simp_eff_bracket_line_width,
       inherit.aes = FALSE)
     # x coordinate of the simple effect texts
     temp_simp_eff_text_x <- dt2[

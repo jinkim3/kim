@@ -19,9 +19,9 @@ spotlight_2_by_continuous(
   dot_size = 3,
   observed_dots = FALSE,
   reg_lines = FALSE,
-  reg_line_size = 1,
+  reg_line_width = 1,
   lines_connecting_est_dv = TRUE,
-  lines_connecting_est_dv_size = 1,
+  lines_connecting_est_dv_width = 1,
   estimated_dv_dot_shape = 15,
   estimated_dv_dot_size = 6,
   error_bar = "ci",
@@ -36,7 +36,7 @@ spotlight_2_by_continuous(
   simp_eff_bracket_offset = NULL,
   simp_eff_bracket_offset_perc = 1,
   simp_eff_bracket_color = "black",
-  simp_eff_bracket_line_size = 1,
+  simp_eff_bracket_line_width = 1,
   simp_eff_text_offset = NULL,
   simp_eff_text_offset_percent = 7,
   simp_eff_text_hjust = 0.5,
@@ -119,13 +119,13 @@ lines from regressing DV on MOD at each value of IV will be plotted.
 If \code{reg_lines = FALSE}, these regression lines will not be plotted.
 By default, \code{observed_dots = FALSE}.}
 
-\item{reg_line_size}{thickness of the regression lines (default = 1).}
+\item{reg_line_width}{thickness of the regression lines (default = 1).}
 
 \item{lines_connecting_est_dv}{logical. Should lines connecting the
 estimated values of DV be drawn? (default = TRUE)}
 
-\item{lines_connecting_est_dv_size}{thickness of the lines connecting the
-estimated values of DV (default = 1).}
+\item{lines_connecting_est_dv_width}{thickness of the lines connecting
+the estimated values of DV (default = 1).}
 
 \item{estimated_dv_dot_shape}{ggplot value for shape of the dots
 at estimated values of DV (default = 15, a square shape).}
@@ -162,7 +162,7 @@ at the end of error bars (default = 0.13)}
 
 \item{simp_eff_bracket_color}{(default)}
 
-\item{simp_eff_bracket_line_size}{(default)}
+\item{simp_eff_bracket_line_width}{(default)}
 
 \item{simp_eff_text_offset}{(default)}
 
@@ -255,6 +255,9 @@ By default \code{plot_margin = ggplot2::unit(c(60, 30, 7, 7), "pt")}}
 \item{silent}{If \code{silent = FALSE}, (various) messages will be
 printed. If \code{silent = TRUE}, the messages will be suppressed.
 By default, \code{silent = FALSE}.}
+
+\item{reg_line_size}{deprecated. Use \code{reg_line_width} instead.
+thickness of the regression lines (default = 1).}
 }
 \description{
 Conduct a spotlight analysis for a 2 x Continuous design.

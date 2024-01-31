@@ -24,7 +24,7 @@
 #' ggplot object
 #' @examples
 #' \donttest{
-#' prep(ggplot2)
+#' library(ggplot2)
 #' ggplot(mtcars, aes(x = cyl, y = mpg)) + geom_point() +
 #' bracket(6.1, 6.2, 17, 22, bracket_shape = "]", label = "abc")
 #' }
@@ -103,13 +103,13 @@ bracket <- function(
     bracket_element_list <- list(
       geom_segment_fn(
         x = xmax, xend = xmax, y = ymin, yend = ymax,
-        size = thickness, color = bracket_color),
+        linewidth = thickness, color = bracket_color),
       geom_segment_fn(
         x = xmin, xend = xmax, y = ymin, yend = ymin,
-        size = thickness, color = bracket_color),
+        linewidth = thickness, color = bracket_color),
       geom_segment_fn(
         x = xmin, xend = xmax, y = ymax, yend = ymax,
-        size = thickness, color = bracket_color))
+        linewidth = thickness, color = bracket_color))
     # label hjust and vjust
     if (is.null(label_hjust)) {
       label_hjust <- -1
@@ -125,13 +125,13 @@ bracket <- function(
     bracket_element_list <- list(
       geom_segment_fn(
         x = xmin, xend = xmin, y = ymin, yend = ymax,
-        size = thickness, color = bracket_color),
+        linewidth = thickness, color = bracket_color),
       geom_segment_fn(
         x = xmin, xend = xmax, y = ymin, yend = ymin,
-        size = thickness, color = bracket_color),
+        linewidth = thickness, color = bracket_color),
       geom_segment_fn(
         x = xmin, xend = xmax, y = ymax, yend = ymax,
-        size = thickness, color = bracket_color))
+        linewidth = thickness, color = bracket_color))
     # label hjust and vjust
     if (is.null(label_hjust)) {
       label_hjust <- 2
@@ -147,13 +147,13 @@ bracket <- function(
     bracket_element_list <- list(
       geom_segment_fn(
         x = xmin, xend = xmax, y = ymin, yend = ymin,
-        size = thickness, color = bracket_color),
+        linewidth = thickness, color = bracket_color),
       geom_segment_fn(
         x = xmin, xend = xmin, y = ymin, yend = ymax,
-        size = thickness, color = bracket_color),
+        linewidth = thickness, color = bracket_color),
       geom_segment_fn(
         x = xmax, xend = xmax, y = ymin, yend = ymax,
-        size = thickness, color = bracket_color))
+        linewidth = thickness, color = bracket_color))
     # label hjust and vjust
     if (is.null(label_hjust)) {
       label_hjust <- 0.5
@@ -169,13 +169,13 @@ bracket <- function(
     bracket_element_list <- list(
       geom_segment_fn(
         x = xmin, xend = xmax, y = ymax, yend = ymax,
-        size = thickness, color = bracket_color),
+        linewidth = thickness, color = bracket_color),
       geom_segment_fn(
         x = xmin, xend = xmin, y = ymin, yend = ymax,
-        size = thickness, color = bracket_color),
+        linewidth = thickness, color = bracket_color),
       geom_segment_fn(
         x = xmax, xend = xmax, y = ymin, yend = ymax,
-        size = thickness, color = bracket_color))
+        linewidth = thickness, color = bracket_color))
     # label hjust and vjust
     if (is.null(label_hjust)) {
       label_hjust <- 0.5

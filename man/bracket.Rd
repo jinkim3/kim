@@ -69,7 +69,7 @@ Draw a square bracket with a label on a ggplot
 }
 \examples{
 \donttest{
-prep(ggplot2)
+library(ggplot2)
 ggplot(mtcars, aes(x = cyl, y = mpg)) + geom_point() +
 bracket(6.1, 6.2, 17, 22, bracket_shape = "]", label = "abc")
 }

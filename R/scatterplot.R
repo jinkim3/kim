@@ -273,7 +273,7 @@ scatterplot <- function(
         formula = y ~ x,
         method = line_of_fit_type,
         color = line_of_fit_color,
-        size = line_of_fit_thickness,
+        linewidth = line_of_fit_thickness,
         se = ci_for_line_of_fit)
     }
   }
