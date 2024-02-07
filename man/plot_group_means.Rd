@@ -15,12 +15,15 @@ plot_group_means(
   error_bar_thickness = 1,
   error_bar_caption = TRUE,
   lines_connecting_means = TRUE,
+  line_colors = NULL,
   line_types = NULL,
   line_thickness = 1,
   line_size = NULL,
   dot_size = 3,
   position_dodge = 0.13,
   legend_position = "right",
+  x_axis_title = NULL,
+  y_axis_title = NULL,
   y_axis_title_vjust = 0.85
 )
 }
@@ -56,6 +59,10 @@ the width of the error bars? (default = TRUE).}
 \item{lines_connecting_means}{logical. Should lines connecting means
 within each group be drawn? (default = TRUE)}
 
+\item{line_colors}{colors of the lines connecting means (default = NULL)
+If the second IV has two levels, then by default,
+\code{line_colors = c("red", "blue")}}
+
 \item{line_types}{types of the lines connecting means (default = NULL)
 If the second IV has two levels, then by default,
 \code{line_types = c("solid", "dashed")}}
@@ -75,6 +82,14 @@ be horizontally offset from each other so as not to overlap?
 \item{legend_position}{position of the legend:
 \code{"none", "top", "right", "bottom", "left", "none"}
 (default = \code{"right"})}
+
+\item{x_axis_title}{a character for the x-axis title. If no input
+is entered, then the name of the \code{iv_name} will be used as the
+title by default.}
+
+\item{y_axis_title}{a character for the y-axis title. If no input
+is entered, then the name of the \code{dv_name} will be used as the
+title by default.}
 
 \item{y_axis_title_vjust}{position of the y axis title (default = 0.85).
 If default is used, \code{y_axis_title_vjust = 0.85}, the y axis title
@@ -98,5 +113,10 @@ plot_group_means(
   data = mtcars, dv_name = "mpg", iv_name = c("vs", "am"),
   error_bar = "pi", error_bar_range = 0.99
 )
+# set line colors and types manually
+plot_group_means(
+data = mtcars, dv_name = "mpg", iv_name = c("vs", "am"),
+line_colors = c("green4", "purple"),
+line_types = c("solid", "solid"))
 }
 }

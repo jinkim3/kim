@@ -23,6 +23,9 @@
 #' the width of the error bars? (default = TRUE).
 #' @param lines_connecting_means logical. Should lines connecting means
 #' within each group be drawn? (default = TRUE)
+#' @param line_colors colors of the lines connecting means (default = NULL)
+#' If the second IV has two levels, then by default,
+#' \code{line_colors = c("red", "blue")}
 #' @param line_types types of the lines connecting means (default = NULL)
 #' If the second IV has two levels, then by default,
 #' \code{line_types = c("solid", "dashed")}
@@ -37,6 +40,12 @@
 #' @param legend_position position of the legend:
 #' \code{"none", "top", "right", "bottom", "left", "none"}
 #' (default = \code{"right"})
+#' @param x_axis_title a character for the x-axis title. If no input
+#' is entered, then the name of the \code{iv_name} will be used as the
+#' title by default.
+#' @param y_axis_title a character for the y-axis title. If no input
+#' is entered, then the name of the \code{dv_name} will be used as the
+#' title by default.
 #' @param y_axis_title_vjust position of the y axis title (default = 0.85).
 #' If default is used, \code{y_axis_title_vjust = 0.85}, the y axis title
 #' will be positioned at 85% of the way up from the bottom of the plot.
@@ -53,6 +62,11 @@
 #'   data = mtcars, dv_name = "mpg", iv_name = c("vs", "am"),
 #'   error_bar = "pi", error_bar_range = 0.99
 #' )
+#' # set line colors and types manually
+#' plot_group_means(
+#' data = mtcars, dv_name = "mpg", iv_name = c("vs", "am"),
+#' line_colors = c("green4", "purple"),
+#' line_types = c("solid", "solid"))
 #' }
 #' @export
 plot_group_means <- function(
@@ -66,12 +80,15 @@ plot_group_means <- function(
   error_bar_thickness = 1,
   error_bar_caption = TRUE,
   lines_connecting_means = TRUE,
+  line_colors = NULL,
   line_types = NULL,
   line_thickness = 1,
   line_size = NULL,
   dot_size = 3,
   position_dodge = 0.13,
   legend_position = "right",
+  x_axis_title = NULL,
+  y_axis_title = NULL,
   y_axis_title_vjust = 0.85) {
   # check if Package 'ggplot2' is installed
   if (!"ggplot2" %in% rownames(utils::installed.packages())) {
@@ -137,8 +154,22 @@ plot_group_means <- function(
   }
   # set defaults if there are two levels in IV 2
   if (num_of_levels_in_iv2 == 2) {
-    line_types = c("solid", "dashed")
-    line_colors = c("red", "blue")
+    if (is.null(line_colors)) {
+      line_colors = c("red", "blue")
+    }
+    if (is.null(line_types)) {
+      line_types = c("solid", "dashed")
+    }
+  }
+  # set line colors
+  if (!is.null(line_colors)) {
+    g1 <- g1 + ggplot2::scale_color_manual(
+      values = line_colors)
+  }
+  # set line types
+  if (!is.null(line_types)) {
+    g1 <- g1 + ggplot2::scale_linetype_manual(
+      values = line_types)
   }
   # The errorbars will overlap,
   # so use position_dodge to move them horizontally
@@ -147,10 +178,6 @@ plot_group_means <- function(
   if (lines_connecting_means == TRUE) {
     g1 <- g1 + ggplot2::geom_line(
       linewidth = line_thickness, position = pd)
-    if (!is.null(line_types)) {
-      g1 <- g1 + ggplot2::scale_linetype_manual(
-        values = line_types)
-    }
   }
   g1 <- g1 + ggplot2::geom_point(size = dot_size, position = pd)
   if (length(iv_name) == 2) {
@@ -190,8 +217,18 @@ plot_group_means <- function(
       )
     }
   }
-  g1 <- g1 + ggplot2::xlab(iv_name[1])
-  g1 <- g1 + ggplot2::ylab(dv_name)
+  # x axis title
+  if (is.null(x_axis_title)) {
+    g1 <- g1 + ggplot2::xlab(iv_name[1])
+  } else {
+    g1 <- g1 + ggplot2::xlab(x_axis_title)
+  }
+  # y axis title
+  if (is.null(y_axis_title)) {
+    g1 <- g1 + ggplot2::ylab(dv_name)
+  } else {
+    g1 <- g1 + ggplot2::ylab(y_axis_title)
+  }
   g1 <- g1 + ggplot2::labs(
     color = iv_name[2],
     linetype = iv_name[2])

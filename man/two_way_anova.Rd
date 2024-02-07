@@ -14,12 +14,14 @@ two_way_anova(
   sigfigs = 3,
   robust = FALSE,
   iterations = 2000,
-  plot = FALSE,
+  plot = TRUE,
   error_bar = "ci",
   error_bar_range = 0.95,
   error_bar_tip_width = 0.13,
   error_bar_thickness = 1,
   error_bar_caption = TRUE,
+  line_colors = NULL,
+  line_types = NULL,
   line_thickness = 1,
   dot_size = 3,
   position_dodge = 0.13,
@@ -58,7 +60,8 @@ The default is set at 2000, but consider increasing the number
 of samples to 5000, 10000, or an even larger number, if slower
 handling time is not an issue.}
 
-\item{plot}{if \code{TRUE}, print a plot and enable returning an output.}
+\item{plot}{if \code{TRUE}, print a plot and enable returning an output
+(default = TRUE)}
 
 \item{error_bar}{if \code{error_bar = "se"}; error bars will be +/-1
 standard error; if \code{error_bar = "ci"} error bars will be a
@@ -75,6 +78,14 @@ at the end of error bars (default = 0.13)}
 
 \item{error_bar_caption}{should a caption be included to indicate
 the width of the error bars? (default = TRUE).}
+
+\item{line_colors}{colors of the lines connecting means (default = NULL)
+If the second IV has two levels, then by default,
+\code{line_colors = c("red", "blue")}}
+
+\item{line_types}{types of the lines connecting means (default = NULL)
+If the second IV has two levels, then by default,
+\code{line_types = c("solid", "dashed")}}
 
 \item{line_thickness}{thickness of the lines connecting group means,
 (default = 1)}
