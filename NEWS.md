@@ -1,10 +1,6 @@
 # kim 0.5.422 (newer version of v0.5.422 as of jan 21 2024)
 * Updated the following function(s) (and other functions that use them): 
-loglinear analysis
-
-# kim 0.5.422 (newer version of v0.5.422 as of jan 21 2024)
-* Updated the following function(s) (and other functions that use them): 
-scatterplot
+scatterplot, loglinear_analysis, plot_group_means, two_way_anova
 
 # kim 0.5.421
 * Note to developer(s): "The errors for r-devel are from a recent change
