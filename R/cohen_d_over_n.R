@@ -78,14 +78,14 @@ cohen_d_over_n <- function(
   if (is.null(ylab)) {
     g1 <- g1 + ggplot2::ylab("Cohen's d")
   } else if (ylab == FALSE) {
-    g1 <- g1 + ggplot2::theme(axis.title.y = element_blank())
+    g1 <- g1 + ggplot2::theme(axis.title.y = ggplot2::element_blank())
   } else {
     g1 <- g1 + ggplot2::ylab(ylab)
   }
   if (is.null(xlab)) {
     g1 <- g1 + ggplot2::xlab("Sample Size (Chronological)")
   } else if (xlab == FALSE) {
-    g1 <- g1 + ggplot2::theme(axis.title.x = element_blank())
+    g1 <- g1 + ggplot2::theme(axis.title.x = ggplot2::element_blank())
   } else {
     g1 <- g1 + ggplot2::xlab(xlab)
   }

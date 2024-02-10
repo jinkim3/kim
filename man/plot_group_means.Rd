@@ -21,10 +21,11 @@ plot_group_means(
   line_size = NULL,
   dot_size = 3,
   position_dodge = 0.13,
-  legend_position = "right",
   x_axis_title = NULL,
   y_axis_title = NULL,
-  y_axis_title_vjust = 0.85
+  y_axis_title_vjust = 0.85,
+  legend_title = NULL,
+  legend_position = "right"
 )
 }
 \arguments{
@@ -79,21 +80,27 @@ If the second IV has two levels, then by default,
 be horizontally offset from each other so as not to overlap?
 (default = 0.13)}
 
+\item{x_axis_title}{a character string for the x-axis title. If no
+input is entered, then, by default, the first value of
+\code{iv_name} will be used as the x-axis title.}
+
+\item{y_axis_title}{a character string for the y-axis title. If no
+input is entered, then, by default, \code{dv_name} will be used
+as the y-axis title.}
+
+\item{y_axis_title_vjust}{position of the y axis title (default = 0.85).
+By default, \code{y_axis_title_vjust = 0.85}, which means that the
+y axis title will be positioned at 85\% of the way up from the bottom
+of the plot.}
+
+\item{legend_title}{a character for the legend title. If no input
+is entered, then, by default, the second value of \code{iv_name}
+will be used as the legend title. If \code{legend_title = FALSE},
+then the legend title will be removed.}
+
 \item{legend_position}{position of the legend:
 \code{"none", "top", "right", "bottom", "left", "none"}
 (default = \code{"right"})}
-
-\item{x_axis_title}{a character for the x-axis title. If no input
-is entered, then the name of the \code{iv_name} will be used as the
-title by default.}
-
-\item{y_axis_title}{a character for the y-axis title. If no input
-is entered, then the name of the \code{dv_name} will be used as the
-title by default.}
-
-\item{y_axis_title_vjust}{position of the y axis title (default = 0.85).
-If default is used, \code{y_axis_title_vjust = 0.85}, the y axis title
-will be positioned at 85\% of the way up from the bottom of the plot.}
 }
 \value{
 by default, the output will be a ggplot object.
@@ -118,5 +125,9 @@ plot_group_means(
 data = mtcars, dv_name = "mpg", iv_name = c("vs", "am"),
 line_colors = c("green4", "purple"),
 line_types = c("solid", "solid"))
+# remove axis titles
+plot_group_means(
+data = mtcars, dv_name = "mpg", iv_name = c("vs", "am"),
+x_axis_title = FALSE, y_axis_title = FALSE, legend_title = FALSE)
 }
 }

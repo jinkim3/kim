@@ -720,7 +720,7 @@ floodlight_for_contrasts <- function(
       g1 <- g1 + ggplot2::xlab(mod_name)
     } else {
       if (x_axis_title == FALSE) {
-        g1 <- g1 + ggplot2::theme(axis.title.x = element_blank())
+        g1 <- g1 + ggplot2::theme(axis.title.x = ggplot2::element_blank())
       } else {
         g1 <- g1 + ggplot2::xlab(x_axis_title)
       }
@@ -730,7 +730,7 @@ floodlight_for_contrasts <- function(
       g1 <- g1 + ggplot2::ylab(dv_name)
     } else {
       if (y_axis_title == FALSE) {
-        g1 <- g1 + ggplot2::theme(axis.title.y = element_blank())
+        g1 <- g1 + ggplot2::theme(axis.title.y = ggplot2::element_blank())
       } else {
         g1 <- g1 + ggplot2::ylab(y_axis_title)
       }
@@ -742,7 +742,7 @@ floodlight_for_contrasts <- function(
         linetype = iv_name)
     } else {
       if (legend_title == FALSE) {
-        g1 <- g1 + ggplot2::theme(legend.title = element_blank())
+        g1 <- g1 + ggplot2::theme(legend.title = ggplot2::element_blank())
       } else {
         g1 <- g1 + ggplot2::labs(
           color = legend_title,

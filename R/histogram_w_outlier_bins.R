@@ -174,7 +174,7 @@ histogram_w_outlier_bins <- function(
   # label axes
   if (!is.null(x_axis_title)) {
     if (x_axis_title == FALSE) {
-      g1 <- g1 + ggplot2::theme(axis.title.x = element_blank())
+      g1 <- g1 + ggplot2::theme(axis.title.x = ggplot2::element_blank())
     } else {
       g1 <- g1 + ggplot2::xlab(x_axis_title)
     }

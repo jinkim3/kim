@@ -53,6 +53,20 @@
 #' @param position_dodge by how much should the group means and error bars
 #' be horizontally offset from each other so as not to overlap?
 #' (default = 0.13)
+#' @param x_axis_title a character string for the x-axis title. If no
+#' input is entered, then, by default, the first value of
+#' \code{iv_name} will be used as the x-axis title.
+#' @param y_axis_title a character string for the y-axis title. If no
+#' input is entered, then, by default, \code{dv_name} will be used
+#' as the y-axis title.
+#' @param y_axis_title_vjust position of the y axis title (default = 0.85).
+#' By default, \code{y_axis_title_vjust = 0.85}, which means that the
+#' y axis title will be positioned at 85% of the way up from the bottom
+#' of the plot.
+#' @param legend_title a character for the legend title. If no input
+#' is entered, then, by default, the second value of \code{iv_name}
+#' will be used as the legend title. If \code{legend_title = FALSE},
+#' then the legend title will be removed.
 #' @param legend_position position of the legend:
 #' \code{"none", "top", "right", "bottom", "left", "none"}
 #' (default = \code{"right"})
@@ -112,6 +126,10 @@ two_way_anova <- function(
   line_thickness = 1,
   dot_size = 3,
   position_dodge = 0.13,
+  x_axis_title = NULL,
+  y_axis_title = NULL,
+  y_axis_title_vjust = 0.85,
+  legend_title = NULL,
   legend_position = "right",
   output = "anova_table",
   png_name = NULL,
@@ -226,6 +244,11 @@ two_way_anova <- function(
       line_thickness = line_thickness,
       dot_size = dot_size,
       position_dodge = position_dodge,
+      position_dodge = position_dodge,
+      x_axis_title = x_axis_title,
+      y_axis_title = y_axis_title,
+      y_axis_title_vjust = y_axis_title_vjust,
+      legend_title = legend_title,
       legend_position = legend_position)
     if (output == "plot") {
       return(g1)
