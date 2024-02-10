@@ -244,7 +244,6 @@ two_way_anova <- function(
       line_thickness = line_thickness,
       dot_size = dot_size,
       position_dodge = position_dodge,
-      position_dodge = position_dodge,
       x_axis_title = x_axis_title,
       y_axis_title = y_axis_title,
       y_axis_title_vjust = y_axis_title_vjust,
