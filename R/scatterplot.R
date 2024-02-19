@@ -98,6 +98,9 @@
 #'   data = mtcars, x_var_name = "wt", y_var_name = "mpg",
 #'   dot_label_var_name = "hp", weight_var_name = "cyl",
 #'   dot_label_size = 7, annotate_stats = TRUE)
+#' scatterplot(
+#' data = mtcars, x_var_name = "wt", y_var_name = "mpg",
+#' color_dots_by = "gear")
 #' }
 #' @export
 #' @import data.table
@@ -177,7 +180,8 @@ scatterplot <- function(
   # add the point label or weight column
   if (!is.null(dot_label_var_name)) {
     data.table::set(
-      dt01, j = "dot_labels", value = data[[dot_label_var_name]])
+      dt01, j = "dot_labels", value = as.factor(
+        data[[dot_label_var_name]]))
   }
   if (!is.null(weight_var_name)) {
     data.table::set(
@@ -242,20 +246,32 @@ scatterplot <- function(
   } else {
     # add jitter if necessary
     if (jitter_x_percent > 0 | jitter_y_percent > 0) {
-      g1 <- g1 + ggplot2::geom_point(
-        alpha = alpha, size = dot_size, position = pj,
-        color = dot_color)
+      # color dots by group
+      if (!is.null(color_dots_by)) {
+        g1 <- g1 + ggplot2::geom_point(
+          alpha = alpha, size = dot_size, position = pj)
+      } else {
+        g1 <- g1 + ggplot2::geom_point(
+          alpha = alpha, size = dot_size, position = pj,
+          color = dot_color)
+      }
     } else {
-      g1 <- g1 + ggplot2::geom_point(
-        alpha = alpha, size = dot_size,
-        color = dot_color)
+      # color dots by group
+      if (!is.null(color_dots_by)) {
+        g1 <- g1 + ggplot2::geom_point(
+          alpha = alpha, size = dot_size)
+      } else {
+        g1 <- g1 + ggplot2::geom_point(
+          alpha = alpha, size = dot_size,
+          color = dot_color)
+      }
     }
   }
   # scale points
   if (!is.null(weight_var_name)) {
     g1 <- g1 + ggplot2::aes(size = dt02$weight)
     g1 <- g1 + ggplot2::scale_size(
-      range = dot_size_range, guide = FALSE)
+      range = dot_size_range, guide = "none")
   }
   # weighted least squares line
   if (line_of_fit_type %in% c("lm", "loess")) {
@@ -264,17 +280,25 @@ scatterplot <- function(
       g1 <- g1 + ggplot2::geom_smooth(
         formula = y ~ x,
         method = line_of_fit_type,
-        mapping = ggplot2::aes(weight = dt02$weight),
+        mapping = ggplot2::aes(
+          x = dt02$x,
+          y = dt02$y,
+          weight = dt02$weight),
         color = line_of_fit_color,
         linewidth = line_of_fit_thickness,
-        se = ci_for_line_of_fit)
+        se = ci_for_line_of_fit,
+        inherit.aes = FALSE)
     } else {
       g1 <- g1 + ggplot2::geom_smooth(
         formula = y ~ x,
         method = line_of_fit_type,
+        mapping = ggplot2::aes(
+          x = dt02$x,
+          y = dt02$y),
         color = line_of_fit_color,
         linewidth = line_of_fit_thickness,
-        se = ci_for_line_of_fit)
+        se = ci_for_line_of_fit,
+        inherit.aes = FALSE)
     }
   }
   # correlation

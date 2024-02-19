@@ -433,7 +433,7 @@ floodlight_2_by_continuous <- function(
     if (lines_at_mod_extremes == TRUE) {
       vertical_line_xintercepts <- intersect(
         unlist(sig_region), c(
-        mod_min_observed, jn_points_final, mod_max_observed))
+          mod_min_observed, jn_points_final, mod_max_observed))
     } else {
       vertical_line_xintercepts <- jn_points_final
     }

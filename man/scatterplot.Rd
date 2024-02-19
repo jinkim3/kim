@@ -172,5 +172,8 @@ scatterplot(
   data = mtcars, x_var_name = "wt", y_var_name = "mpg",
   dot_label_var_name = "hp", weight_var_name = "cyl",
   dot_label_size = 7, annotate_stats = TRUE)
+scatterplot(
+data = mtcars, x_var_name = "wt", y_var_name = "mpg",
+color_dots_by = "gear")
 }
 }

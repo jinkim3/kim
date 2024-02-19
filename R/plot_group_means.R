@@ -79,27 +79,27 @@
 #' }
 #' @export
 plot_group_means <- function(
-  data = NULL,
-  dv_name = NULL,
-  iv_name = NULL,
-  na.rm = TRUE,
-  error_bar = "ci",
-  error_bar_range = 0.95,
-  error_bar_tip_width = 0.13,
-  error_bar_thickness = 1,
-  error_bar_caption = TRUE,
-  lines_connecting_means = TRUE,
-  line_colors = NULL,
-  line_types = NULL,
-  line_thickness = 1,
-  line_size = NULL,
-  dot_size = 3,
-  position_dodge = 0.13,
-  x_axis_title = NULL,
-  y_axis_title = NULL,
-  y_axis_title_vjust = 0.85,
-  legend_title = NULL,
-  legend_position = "right") {
+    data = NULL,
+    dv_name = NULL,
+    iv_name = NULL,
+    na.rm = TRUE,
+    error_bar = "ci",
+    error_bar_range = 0.95,
+    error_bar_tip_width = 0.13,
+    error_bar_thickness = 1,
+    error_bar_caption = TRUE,
+    lines_connecting_means = TRUE,
+    line_colors = NULL,
+    line_types = NULL,
+    line_thickness = 1,
+    line_size = NULL,
+    dot_size = 3,
+    position_dodge = 0.13,
+    x_axis_title = NULL,
+    y_axis_title = NULL,
+    y_axis_title_vjust = 0.85,
+    legend_title = NULL,
+    legend_position = "right") {
   # check if Package 'ggplot2' is installed
   if (!"ggplot2" %in% rownames(utils::installed.packages())) {
     message(paste0(
@@ -197,9 +197,9 @@ plot_group_means <- function(
   if (error_bar == "ci") {
     g1 <- g1 + ggplot2::geom_errorbar(ggplot2::aes(
       ymin = dt2$ci_95_ll, ymax = dt2$ci_95_ul),
-    width = error_bar_tip_width,
-    linewidth = error_bar_thickness,
-    position = pd)
+      width = error_bar_tip_width,
+      linewidth = error_bar_thickness,
+      position = pd)
     error_bar_desc_text <- paste0(
       error_bar_range * 100, "% confidence intervals")
   }
@@ -207,17 +207,17 @@ plot_group_means <- function(
     g1 <- g1 + ggplot2::geom_errorbar(ggplot2::aes(
       ymin = dt2$mean - dt2$se,
       ymax = dt2$mean + dt2$se),
-    width = error_bar_tip_width,
-    linewidth = error_bar_thickness,
-    position = pd)
+      width = error_bar_tip_width,
+      linewidth = error_bar_thickness,
+      position = pd)
     error_bar_desc_text <- "one standard error (+/- 1 SE)"
   }
   if (error_bar == "pi") {
     g1 <- g1 + ggplot2::geom_errorbar(ggplot2::aes(
       ymin = dt2$pi_95_ll, ymax = dt2$pi_95_ul),
-    width = error_bar_tip_width,
-    linewidth = error_bar_thickness,
-    position = pd)
+      width = error_bar_tip_width,
+      linewidth = error_bar_thickness,
+      position = pd)
     error_bar_desc_text <- paste0(
       error_bar_range * 100, "% prediction intervals"
     )
