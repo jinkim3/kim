@@ -360,6 +360,18 @@ scatterplot <- function(
         fontface = annotated_stats_font_face)
     }
   }
+  # set x axis tick marks for common cases
+  sorted_unique_values_in_x <- kim::su(dt02[, x])
+  if (identical(sorted_unique_values_in_x, 1:7)) {
+    g1 <- g1 + scale_x_continuous(
+      breaks = 1:7)
+  }
+  # set y axis tick marks for common cases
+  sorted_unique_values_in_y <- kim::su(dt02[, y])
+  if (identical(sorted_unique_values_in_y, 1:7)) {
+    g1 <- g1 + scale_y_continuous(
+      breaks = 1:7)
+  }
   # axis labels
   if (is.null(x_axis_label)) {
     x_axis_label <- x_var_name
