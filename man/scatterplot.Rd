@@ -24,6 +24,8 @@ scatterplot(
   dot_color = "black",
   x_axis_label = NULL,
   y_axis_label = NULL,
+  x_axis_tick_marks = NULL,
+  y_axis_tick_marks = NULL,
   dot_size = 2,
   dot_label_size = NULL,
   dot_size_range = c(3, 12),
@@ -102,6 +104,12 @@ confidence interval for the line of fit will be shaded}
 \item{x_axis_label}{alternative label for the x axis}
 
 \item{y_axis_label}{alternative label for the y axis}
+
+\item{x_axis_tick_marks}{a numeric vector indicating the
+positions of the tick marks on the x axis}
+
+\item{y_axis_tick_marks}{a numeric vector indicating the
+positions of the tick marks on the y axis}
 
 \item{dot_size}{size of the dots on the plot (default = 2)}
 

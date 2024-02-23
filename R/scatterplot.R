@@ -53,6 +53,10 @@
 #' @param dot_color color of the dots (default = "black")
 #' @param x_axis_label alternative label for the x axis
 #' @param y_axis_label alternative label for the y axis
+#' @param x_axis_tick_marks a numeric vector indicating the
+#' positions of the tick marks on the x axis
+#' @param y_axis_tick_marks a numeric vector indicating the
+#' positions of the tick marks on the y axis
 #' @param dot_size size of the dots on the plot (default = 2)
 #' @param dot_label_size size for dots' labels on the plot. If no
 #' input is entered for this argument, it will be set as
@@ -124,6 +128,8 @@ scatterplot <- function(
   dot_color = "black",
   x_axis_label = NULL,
   y_axis_label = NULL,
+  x_axis_tick_marks = NULL,
+  y_axis_tick_marks = NULL,
   dot_size = 2,
   dot_label_size = NULL,
   dot_size_range = c(3, 12),
@@ -360,17 +366,29 @@ scatterplot <- function(
         fontface = annotated_stats_font_face)
     }
   }
-  # set x axis tick marks for common cases
-  sorted_unique_values_in_x <- kim::su(dt02[, x])
-  if (identical(sorted_unique_values_in_x, 1:7)) {
+  # set x axis tick marks
+  if (is.null(x_axis_tick_marks)) {
+    # set x axis tick marks for common cases
+    sorted_unique_values_in_x <- kim::su(dt02[, x])
+    if (identical(sorted_unique_values_in_x, 1:7)) {
+      g1 <- g1 + scale_x_continuous(
+        breaks = 1:7)
+    }
+  } else {
     g1 <- g1 + scale_x_continuous(
-      breaks = 1:7)
+      breaks = x_axis_tick_marks)
   }
-  # set y axis tick marks for common cases
-  sorted_unique_values_in_y <- kim::su(dt02[, y])
-  if (identical(sorted_unique_values_in_y, 1:7)) {
+  # set y axis tick marks
+  if (is.null(y_axis_tick_marks)) {
+    # set y axis tick marks for common cases
+    sorted_unique_values_in_y <- kim::su(dt02[, y])
+    if (identical(sorted_unique_values_in_y, 1:7)) {
+      g1 <- g1 + scale_y_continuous(
+        breaks = 1:7)
+    }
+  } else {
     g1 <- g1 + scale_y_continuous(
-      breaks = 1:7)
+      breaks = y_axis_tick_marks)
   }
   # axis labels
   if (is.null(x_axis_label)) {
