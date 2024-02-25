@@ -140,7 +140,7 @@ scatterplot <- function(
   color_dots_by = NULL,
   png_name = NULL,
   save_as_png = FALSE,
-  width = 16,
+  width = 13,
   height = 9) {
   # bind the vars locally to the function
   x <- y <- NULL
