@@ -21,7 +21,8 @@ you need to set all the function's parameters in a single operation.
 \dontrun{
 assign_fn_parameters_as_vars(pm)
 kim::assign_fn_parameters_as_vars(mean)
-assign_fn_parameters_as_vars(sd)
+kim::assign_fn_parameters_as_vars(sum)
+kim::assign_fn_parameters_as_vars(sd)
 kim::assign_fn_parameters_as_vars(floodlight_2_by_continuous)
 ?get
 assign_fn_parameters_as_vars(scatterplot)
