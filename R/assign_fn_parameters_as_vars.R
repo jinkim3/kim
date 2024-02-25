@@ -17,6 +17,8 @@
 #' traceback()
 #' exists("1")
 #' ?exists("mean")
+#' getAnywhere("mean")
+#' environment(mean)
 #' rm(list = ls())
 #' }
 #' @export
@@ -25,16 +27,17 @@ assign_fn_parameters_as_vars <- function(
   fun = NULL) {
   # function as string
   function_as_string <- deparse(substitute(fun))
+  print(function_as_string)
   # search the function within the kim package
   if (exists(function_as_string) == TRUE) {
-    print(11)
+    print(21)
     utils::getAnywhere(function_as_string)
-    environment(function_as_string)
+    # environment(function_as_string)
     parameters <- formals(args(match.fun(function_as_string)))
   } else {
     if (exists(
       function_as_string, where = asNamespace("kim"), inherits = FALSE)) {
-      print(12)
+      print(22)
       function_from_kim <- utils::getFromNamespace(
         function_as_string, "kim")
       parameters <- formals(args(match.fun(function_from_kim)))
