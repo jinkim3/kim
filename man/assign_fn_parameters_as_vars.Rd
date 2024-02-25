@@ -20,21 +20,10 @@ you need to set all the function's parameters in a single operation.
 \examples{
 \dontrun{
 assign_fn_parameters_as_vars(pm)
-kim::assign_fn_parameters_as_vars(mean)
-kim::assign_fn_parameters_as_vars(sum)
-kim::assign_fn_parameters_as_vars(sd)
-kim::assign_fn_parameters_as_vars(floodlight_2_by_continuous)
-?get
-assign_fn_parameters_as_vars(scatterplot)
-traceback()
-exists("1")
-?exists("mean")
-getAnywhere("mean")
-getAnywhere("scatterplot")
-environment(mean)
-rm(list = ls())
-function_as_string <- "floodlight_2_by_continuous"
-search()
-print(paste0("ls list: ", ls()))
+assign_fn_parameters_as_vars(mean)
+assign_fn_parameters_as_vars(sum)
+assign_fn_parameters_as_vars(sd)
+assign_fn_parameters_as_vars(lm)
+assign_fn_parameters_as_vars(floodlight_2_by_continuous)
 }
 }
