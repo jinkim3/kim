@@ -15,6 +15,8 @@
 #' kim::assign_fn_parameters_as_vars(floodlight_2_by_continuous)
 #' assign_fn_parameters_as_vars(scatterplot)
 #' traceback()
+#' exists("1")
+#' ?exists("mean")
 #' rm(list = ls())
 #' }
 #' @export
@@ -25,12 +27,14 @@ assign_fn_parameters_as_vars <- function(
   function_as_string <- deparse(substitute(fun))
   # search the function within the kim package
   if (exists(function_as_string) == TRUE) {
-    print(1)
+    print(11)
+    utils::getAnywhere(function_as_string)
+    environment(function_as_string)
     parameters <- formals(args(match.fun(function_as_string)))
   } else {
     if (exists(
       function_as_string, where = asNamespace("kim"), inherits = FALSE)) {
-      print(2)
+      print(12)
       function_from_kim <- utils::getFromNamespace(
         function_as_string, "kim")
       parameters <- formals(args(match.fun(function_from_kim)))

@@ -25,6 +25,8 @@ assign_fn_parameters_as_vars(sd)
 kim::assign_fn_parameters_as_vars(floodlight_2_by_continuous)
 assign_fn_parameters_as_vars(scatterplot)
 traceback()
+exists("1")
+?exists("mean")
 rm(list = ls())
 }
 }
