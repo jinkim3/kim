@@ -27,6 +27,8 @@ assign_fn_parameters_as_vars(scatterplot)
 traceback()
 exists("1")
 ?exists("mean")
+getAnywhere("mean")
+environment(mean)
 rm(list = ls())
 }
 }
