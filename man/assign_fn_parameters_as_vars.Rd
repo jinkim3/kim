@@ -20,7 +20,7 @@ you need to set all the function's parameters in a single operation.
 \examples{
 \dontrun{
 assign_fn_parameters_as_vars(pm)
-assign_fn_parameters_as_vars(mean)
+kim::assign_fn_parameters_as_vars(mean)
 assign_fn_parameters_as_vars(sd)
 kim::assign_fn_parameters_as_vars(floodlight_2_by_continuous)
 ?get
@@ -29,6 +29,7 @@ traceback()
 exists("1")
 ?exists("mean")
 getAnywhere("mean")
+getAnywhere("scatterplot")
 environment(mean)
 rm(list = ls())
 function_as_string <- "floodlight_2_by_continuous"
