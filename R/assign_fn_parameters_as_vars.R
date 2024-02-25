@@ -35,7 +35,11 @@ assign_fn_parameters_as_vars <- function(
   print(function_as_string)
   # search the function within the default environment
   if (exists(function_as_string) && is.function(get(function_as_string))) {
-    print(31)
+    print(41)
+    print(exists(function_as_string, where = .GlobalEnv, inherits = FALSE))
+    print(42)
+    print(exists(function_as_string, where = baseenv(), inherits = FALSE))
+
     print(paste0("ls list: ", ls()))
     print(utils::getAnywhere(function_as_string))
     # environment(function_as_string)
@@ -44,7 +48,7 @@ assign_fn_parameters_as_vars <- function(
     # search the function within the package kim
     if (exists(
       function_as_string, where = asNamespace("kim"), inherits = FALSE)) {
-      print(32)
+      print(43)
       function_from_kim <- utils::getFromNamespace(
         function_as_string, "kim")
       parameters <- formals(args(match.fun(function_from_kim)))
