@@ -215,6 +215,7 @@ scatterplot <- function(
   }
   # add jitter of 1 percent and set alpha if dots overlap
   # kim::assign_fn_parameters_as_vars(scatterplot)
+  kim::assign_fn_parameters_as_vars(mean)
   #
   # exists(
   #   "scatterplot", where = asNamespace("kim"), inherits = FALSE)
