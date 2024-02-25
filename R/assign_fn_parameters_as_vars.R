@@ -31,15 +31,20 @@ assign_fn_parameters_as_vars <- function(
   fun = NULL) {
   # function as string
   function_as_string <- deparse(substitute(fun))
-  print(paste0("ls list: ", ls()))
   print(function_as_string)
-  message("66")
+  message("77")
   # search the function within the global environment
   if (exists(function_as_string, where = .GlobalEnv, inherits = FALSE)) {
     print(1)
+    kim::pm(
+      "The function `", function_as_string, "` was found ",
+      "within the global environment.")
   } else if (exists(
     function_as_string, where = baseenv(), inherits = FALSE)) {
     print(2)
+    kim::pm(
+      "The function `", function_as_string, "` was found ",
+      "within the base environment.")
   } else {
     print(3)
     # loop through the search path for attached packages and namespaces
@@ -49,23 +54,26 @@ assign_fn_parameters_as_vars <- function(
         function_as_string, where = as.environment(env),
         inherits = FALSE)) {
         pkg_containing_the_function <- env
-        print(pkg_containing_the_function)
+        kim::pm(
+          "The function `", function_as_string, "` was found ",
+          "within Package '", pkg_containing_the_function, "'.")
         break
       }
     }
-    print(pkg_containing_the_function)
   }
-  # else if (exists(
-  #   function_as_string, where = asNamespace("kim"), inherits = FALSE)) {
-  #   # search the function within the package kim
-  #   print(4)
-  #   function_from_kim <- utils::getFromNamespace(
-  #     function_as_string, "kim")
-  #   parameters <- formals(args(match.fun(function_from_kim)))
-  #   kim::pm(
-  #     "The function `", function_as_string, "` was found ",
-  #     "within Package 'kim'.")
-  # }
+  # search the function within the package kim
+  if (is.null(pkg_containing_the_function)) {
+    if (exists(
+      function_as_string, where = asNamespace("kim"), inherits = FALSE)) {
+      print(4)
+      function_from_kim <- utils::getFromNamespace(
+        function_as_string, "kim")
+      parameters <- formals(args(match.fun(function_from_kim)))
+      kim::pm(
+        "The function `", function_as_string, "` was found ",
+        "within Package 'kim'.")
+    }
+  }
   # manually assign each element of the list to the global environment
   for (name in names(parameters)) {
     assign(name, parameters[[name]], envir = .GlobalEnv)
