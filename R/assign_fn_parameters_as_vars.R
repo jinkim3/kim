@@ -34,7 +34,7 @@ assign_fn_parameters_as_vars <- function(
   print(paste0("ls list: ", ls()))
   print(function_as_string)
   # search the function within the default environment
-  if (exists(function_as_string, inherits = TRUE) == TRUE) {
+  if (exists(function_as_string) && is.function(get(function_as_string))) {
     print(31)
     print(paste0("ls list: ", ls()))
     print(utils::getAnywhere(function_as_string))
