@@ -1,6 +1,7 @@
 # kim 0.5.422 (newer version of v0.5.422 as of feb 23 2024)
 * Updated the following function(s) (and other functions that use them): 
-scatterplot, loglinear_analysis, plot_group_means, two_way_anova
+scatterplot, loglinear_analysis, plot_group_means, two_way_anova,
+floodlight_2_by_continuous
 * Added the following function(s): assign_fn_parameters_as_vars
 
 # kim 0.5.421

@@ -369,6 +369,16 @@ floodlight_2_by_continuous <- function(
     dot_alpha <- 0
     dot_alpha <- 0
   }
+  # add jitter if any pair of dots overlap
+  dt[, mod_dv_concatenated := paste0(mod, dv)]
+  if (any(duplicated(dt[, mod_dv_concatenated]))) {
+    jitter_x_y_percent <- 2
+    kim::pm(
+      "Because at least one pair of dots overlapped, ",
+      "the dots were\njittered vertically and horizontally by ",
+      jitter_x_y_percent, "%",
+      " (of the observed range).")
+  }
   # add jitter
   if (jitter_x_y_percent > 0) {
     jitter_x_percent <- jitter_x_y_percent

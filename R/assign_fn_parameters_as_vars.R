@@ -12,7 +12,6 @@
 #' assign_fn_parameters_as_vars(pm)
 #' assign_fn_parameters_as_vars(mean)
 #' assign_fn_parameters_as_vars(sum)
-#' assign_fn_parameters_as_vars(sd)
 #' assign_fn_parameters_as_vars(lm)
 #' assign_fn_parameters_as_vars(floodlight_2_by_continuous)
 #' }
@@ -57,7 +56,7 @@ assign_fn_parameters_as_vars <- function(
         parameters <- formals(args(match.fun(function_as_string)))
         kim::pm(
           "The function `", function_as_string, "` was found ",
-          "within Package '", pkg_containing_the_function, "'.")
+          "within '", pkg_containing_the_function, "'.")
         break
       }
     }

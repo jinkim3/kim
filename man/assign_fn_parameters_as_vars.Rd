@@ -22,7 +22,6 @@ you need to set all the function's parameters in a single operation.
 assign_fn_parameters_as_vars(pm)
 assign_fn_parameters_as_vars(mean)
 assign_fn_parameters_as_vars(sum)
-assign_fn_parameters_as_vars(sd)
 assign_fn_parameters_as_vars(lm)
 assign_fn_parameters_as_vars(floodlight_2_by_continuous)
 }

@@ -213,14 +213,18 @@ scatterplot <- function(
   if (!is.null(color_dots_by)) {
     g1 <- g1 + ggplot2::aes(color = dt02$color)
   }
-  # add jitter of 1 percent and set alpha if dots overlap
-  # kim::assign_fn_parameters_as_vars(scatterplot)
-  kim::assign_fn_parameters_as_vars(mean)
-  #
-  # exists(
-  #   "scatterplot", where = asNamespace("kim"), inherits = FALSE)
-
-
+  # add jitter and set alpha if any pair of dots overlap
+  dt02[, x_y_concatenated := paste0(x, y)]
+  if (any(duplicated(dt02[, x_y_concatenated]))) {
+    jitter_x_y_percent <- 2
+    alpha <- 0.4
+    kim::pm(
+      "Because at least one pair of dots overlapped, ",
+      "the dots were\njittered vertically and horizontally by ",
+      jitter_x_y_percent, "%",
+      " (of the observed range)\nand were set to be opaque (alpha = ",
+      alpha, ").")
+  }
   # add jitter
   if (jitter_x_y_percent > 0) {
     jitter_x_percent <- jitter_x_y_percent
