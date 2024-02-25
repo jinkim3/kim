@@ -31,7 +31,7 @@ assign_fn_parameters_as_vars <- function(
   # search the function within the kim package
   if (exists(function_as_string) == TRUE) {
     print(21)
-    utils::getAnywhere(function_as_string)
+    print(utils::getAnywhere(function_as_string))
     # environment(function_as_string)
     parameters <- formals(args(match.fun(function_as_string)))
   } else {
