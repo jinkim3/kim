@@ -21,6 +21,9 @@
 #' getAnywhere("mean")
 #' environment(mean)
 #' rm(list = ls())
+#' function_as_string <- "floodlight_2_by_continuous"
+#' search()
+#' print(paste0("ls list: ", ls()))
 #' }
 #' @export
 #' @import data.table
@@ -28,10 +31,12 @@ assign_fn_parameters_as_vars <- function(
   fun = NULL) {
   # function as string
   function_as_string <- deparse(substitute(fun))
+  print(paste0("ls list: ", ls()))
   print(function_as_string)
   # search the function within the default environment
   if (exists(function_as_string, inherits = TRUE) == TRUE) {
-    print(21)
+    print(31)
+    print(paste0("ls list: ", ls()))
     print(utils::getAnywhere(function_as_string))
     # environment(function_as_string)
     parameters <- formals(args(match.fun(function_as_string)))
@@ -39,7 +44,7 @@ assign_fn_parameters_as_vars <- function(
     # search the function within the package kim
     if (exists(
       function_as_string, where = asNamespace("kim"), inherits = FALSE)) {
-      print(22)
+      print(32)
       function_from_kim <- utils::getFromNamespace(
         function_as_string, "kim")
       parameters <- formals(args(match.fun(function_from_kim)))

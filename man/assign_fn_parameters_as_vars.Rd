@@ -31,5 +31,8 @@ exists("1")
 getAnywhere("mean")
 environment(mean)
 rm(list = ls())
+function_as_string <- "floodlight_2_by_continuous"
+search()
+print(paste0("ls list: ", ls()))
 }
 }
