@@ -66,7 +66,7 @@
 #' @param dot_size_range minimum and maximum size for dots
 #' on the plot when they are weighted
 #' @param jitter_x_y_percent horizontally and vertically jitter dots
-#' by a percentage of the range of x and y values.
+#' by a percentage of the respective ranges of x and y values.
 #' @param jitter_x_percent horizontally jitter dots by a percentage of the
 #' range of x values.
 #' @param jitter_y_percent vertically jitter dots by a percentage of the
@@ -133,9 +133,9 @@ scatterplot <- function(
   dot_size = 2,
   dot_label_size = NULL,
   dot_size_range = c(3, 12),
+  jitter_x_y_percent = 0,
   jitter_x_percent = 0,
   jitter_y_percent = 0,
-  jitter_x_y_percent = 0,
   cap_axis_lines = TRUE,
   color_dots_by = NULL,
   png_name = NULL,
@@ -213,6 +213,13 @@ scatterplot <- function(
   if (!is.null(color_dots_by)) {
     g1 <- g1 + ggplot2::aes(color = dt02$color)
   }
+  # add jitter of 1 percent and set alpha if dots overlap
+  # kim::assign_fn_parameters_as_vars(scatterplot)
+  #
+  # exists(
+  #   "scatterplot", where = asNamespace("kim"), inherits = FALSE)
+
+
   # add jitter
   if (jitter_x_y_percent > 0) {
     jitter_x_percent <- jitter_x_y_percent

@@ -22,6 +22,9 @@ you need to set all the function's parameters in a single operation.
 assign_fn_parameters_as_vars(pm)
 assign_fn_parameters_as_vars(mean)
 assign_fn_parameters_as_vars(sd)
-assign_fn_parameters_as_vars(floodlight_2_by_continuous)
+kim::assign_fn_parameters_as_vars(floodlight_2_by_continuous)
+assign_fn_parameters_as_vars(scatterplot)
+traceback()
+rm(list = ls())
 }
 }

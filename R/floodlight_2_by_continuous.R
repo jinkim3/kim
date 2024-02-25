@@ -23,6 +23,8 @@
 #' @param output type of output (default = "reg_lines_plot").
 #' Possible inputs: "interactions_pkg_results", "simple_effects_plot",
 #' "jn_points", "regions", "reg_lines_plot"
+#' @param jitter_x_y_percent horizontally and vertically jitter dots
+#' by a percentage of the respective ranges of x and y values.
 #' @param jitter_x_percent horizontally jitter dots by a percentage of the
 #' range of x values
 #' @param jitter_y_percent vertically jitter dots by a percentage of the
@@ -143,6 +145,7 @@ floodlight_2_by_continuous <- function(
     interaction_p_include = TRUE,
     iv_level_order = NULL,
     output = "reg_lines_plot",
+    jitter_x_y_percent = 0,
     jitter_x_percent = 0,
     jitter_y_percent = 0,
     dot_alpha = 0.5,
@@ -351,7 +354,7 @@ floodlight_2_by_continuous <- function(
     g1 <- g1 + ggplot2::ylab(paste0("Slope of ", iv_name))
     return(g1)
   }
-  # jitter
+  # ranges of x and y for jitter
   x_range <- max(dt[, mod], na.rm = TRUE) - min(dt[, mod], na.rm = TRUE)
   y_range <- max(dt[, dv], na.rm = TRUE) - min(dt[, dv], na.rm = TRUE)
   # plot
@@ -365,6 +368,11 @@ floodlight_2_by_continuous <- function(
   if (!is.null(covariate_name)) {
     dot_alpha <- 0
     dot_alpha <- 0
+  }
+  # add jitter
+  if (jitter_x_y_percent > 0) {
+    jitter_x_percent <- jitter_x_y_percent
+    jitter_y_percent <- jitter_x_y_percent
   }
   g1 <- g1 + ggplot2::geom_point(
     size = dot_size,

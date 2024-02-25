@@ -13,6 +13,7 @@ floodlight_2_by_continuous(
   interaction_p_include = TRUE,
   iv_level_order = NULL,
   output = "reg_lines_plot",
+  jitter_x_y_percent = 0,
   jitter_x_percent = 0,
   jitter_y_percent = 0,
   dot_alpha = 0.5,
@@ -62,6 +63,9 @@ independent variable ordered using R's base function \code{sort}.}
 \item{output}{type of output (default = "reg_lines_plot").
 Possible inputs: "interactions_pkg_results", "simple_effects_plot",
 "jn_points", "regions", "reg_lines_plot"}
+
+\item{jitter_x_y_percent}{horizontally and vertically jitter dots
+by a percentage of the respective ranges of x and y values.}
 
 \item{jitter_x_percent}{horizontally jitter dots by a percentage of the
 range of x values}
