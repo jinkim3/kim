@@ -33,12 +33,41 @@ assign_fn_parameters_as_vars <- function(
   function_as_string <- deparse(substitute(fun))
   print(paste0("ls list: ", ls()))
   print(function_as_string)
+  message("5555")
   # search the function within the default environment
   if (exists(function_as_string) && is.function(get(function_as_string))) {
-    print(41)
+    print(1)
     print(exists(function_as_string, where = .GlobalEnv, inherits = FALSE))
-    print(42)
+    print(2)
     print(exists(function_as_string, where = baseenv(), inherits = FALSE))
+
+
+    # Get the list of attached packages' namespaces
+    attached_packages <- search()
+
+    # Initialize a variable to store the search result
+    found_in_packages <- FALSE
+
+    # Loop through each attached package
+    for (pkg in attached_packages) {
+      # Attempt to convert the package name into a namespace, and then check if the object exists within it
+      if (grepl("package:", pkg)) {
+        namespace <- sub("package:", "", pkg)
+        if (exists(function_as_string, where = asNamespace(namespace), inherits = FALSE)) {
+          cat(sprintf("Found '%s' in package: %s\n", function_as_string, namespace))
+          found_in_packages <- TRUE
+          break
+        }
+      }
+    }
+
+    # If the object wasn't found in any attached package
+    if (!found_in_packages) {
+      cat(sprintf("'%s' was not found in any attached packages.\n", function_as_string))
+    }
+
+
+
 
     print(paste0("ls list: ", ls()))
     print(utils::getAnywhere(function_as_string))
@@ -48,7 +77,7 @@ assign_fn_parameters_as_vars <- function(
     # search the function within the package kim
     if (exists(
       function_as_string, where = asNamespace("kim"), inherits = FALSE)) {
-      print(43)
+      print(3)
       function_from_kim <- utils::getFromNamespace(
         function_as_string, "kim")
       parameters <- formals(args(match.fun(function_from_kim)))
