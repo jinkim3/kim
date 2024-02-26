@@ -32,9 +32,9 @@
 #' lines from regressing DV on MOD at each value of IV will be plotted.
 #' If \code{reg_lines = FALSE}, these regression lines will not be plotted.
 #' By default, \code{observed_dots = FALSE}.
+#' @param reg_line_width thickness of the regression lines (default = 1).
 #' @param reg_line_size deprecated. Use `reg_line_width` instead.
 #' thickness of the regression lines (default = 1).
-#' @param reg_line_width thickness of the regression lines (default = 1).
 #' @param lines_connecting_est_dv logical. Should lines connecting the
 #' estimated values of DV be drawn? (default = TRUE)
 #' @param lines_connecting_est_dv_width thickness of the lines connecting
@@ -193,6 +193,7 @@ spotlight_2_by_continuous <- function(
     observed_dots = FALSE,
     reg_lines = FALSE,
     reg_line_width = 1,
+    reg_line_size = 1,
     lines_connecting_est_dv = TRUE,
     lines_connecting_est_dv_width = 1,
     estimated_dv_dot_shape = 15,

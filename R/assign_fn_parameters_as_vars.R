@@ -76,7 +76,7 @@ assign_fn_parameters_as_vars <- function(
   }
   # manually assign each element of the list to the global environment
   for (name in names(parameters)) {
-    assign(name, parameters[[name]], envir = .GlobalEnv)
+    assign(name, parameters[[name]], envir = get(".GlobalEnv"))
   }
   # notify the user of the assignments
   kim::pm(

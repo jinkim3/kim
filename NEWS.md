@@ -1,4 +1,4 @@
-# kim 0.5.422 (newer version of v0.5.422 as of feb 23 2024)
+# kim 0.5.422
 * Updated the following function(s) (and other functions that use them): 
 scatterplot, loglinear_analysis, plot_group_means, two_way_anova,
 floodlight_2_by_continuous

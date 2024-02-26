@@ -5,7 +5,7 @@ Authors@R:
     person(given = "Jin",
            family = "Kim",
            role = c("aut", "cre"),
-           email = "jin.m.kim@yale.edu",
+           email = "jin.kim1@northeastern.edu",
            comment = c(ORCID = "https://orcid.org/0000-0002-5013-3958"))
 Description: A collection of functions for analyzing data typically collected 
     or used by behavioral scientists. Examples of the functions include

@@ -212,7 +212,8 @@ floodlight_2_by_continuous <- function(
     stop("Please enter a variable name for the input 'mod_name'")
   }
   # bind the vars locally to the function
-  dv <- iv <- iv_binary <- iv_factor <- mod <- NULL
+  dv <- iv <- iv_binary <- iv_factor <- mod <- mod_dv_concatenated <-
+    x_y_concatenated <- NULL
   # convert to data.table
   dt <- data.table::setDT(data.table::copy(data))
   # remove columns not needed for analysis

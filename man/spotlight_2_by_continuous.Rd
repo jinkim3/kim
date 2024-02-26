@@ -20,6 +20,7 @@ spotlight_2_by_continuous(
   observed_dots = FALSE,
   reg_lines = FALSE,
   reg_line_width = 1,
+  reg_line_size = 1,
   lines_connecting_est_dv = TRUE,
   lines_connecting_est_dv_width = 1,
   estimated_dv_dot_shape = 15,
@@ -120,6 +121,9 @@ If \code{reg_lines = FALSE}, these regression lines will not be plotted.
 By default, \code{observed_dots = FALSE}.}
 
 \item{reg_line_width}{thickness of the regression lines (default = 1).}
+
+\item{reg_line_size}{deprecated. Use \code{reg_line_width} instead.
+thickness of the regression lines (default = 1).}
 
 \item{lines_connecting_est_dv}{logical. Should lines connecting the
 estimated values of DV be drawn? (default = TRUE)}
@@ -255,9 +259,6 @@ By default \code{plot_margin = ggplot2::unit(c(60, 30, 7, 7), "pt")}}
 \item{silent}{If \code{silent = FALSE}, (various) messages will be
 printed. If \code{silent = TRUE}, the messages will be suppressed.
 By default, \code{silent = FALSE}.}
-
-\item{reg_line_size}{deprecated. Use \code{reg_line_width} instead.
-thickness of the regression lines (default = 1).}
 }
 \description{
 Conduct a spotlight analysis for a 2 x Continuous design.
