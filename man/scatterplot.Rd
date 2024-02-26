@@ -36,7 +36,7 @@ scatterplot(
   color_dots_by = NULL,
   png_name = NULL,
   save_as_png = FALSE,
-  width = 16,
+  width = 13,
   height = 9
 )
 }

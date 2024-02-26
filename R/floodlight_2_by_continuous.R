@@ -126,14 +126,14 @@
 #' dv_name = "mpg",
 #' mod_name = "qsec",
 #' lines_at_mod_extremes = TRUE)
-#' }
-#' # remove the labels for jn points
+#' #' # remove the labels for jn points
 #' floodlight_2_by_continuous(
 #' data = mtcars,
 #' iv_name = "am",
 #' dv_name = "mpg",
 #' mod_name = "qsec",
 #' jn_point_label_add = FALSE)
+#' }
 #' @export
 #' @import data.table
 floodlight_2_by_continuous <- function(
