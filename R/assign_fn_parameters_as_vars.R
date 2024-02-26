@@ -1,12 +1,14 @@
 #' Assign function parameters as variables
 #'
 #' Take a function and assign all the parameters defined within it
-#' as variables in the global environment
+#' as values in the specified environment (e.g., global environment)
 #'
 #' This function can be useful when you are testing a function and
 #' you need to set all the function's parameters in a single operation.
 #'
 #' @param fun a function
+#' @param envir an environment in which to assign the parameters as
+#' variables (default = \code{.GlobalEnv})
 #' @examples
 #' \dontrun{
 #' assign_fn_parameters_as_vars(pm)
@@ -18,7 +20,8 @@
 #' @export
 #' @import data.table
 assign_fn_parameters_as_vars <- function(
-  fun = NULL) {
+  fun = NULL,
+  envir = NULL) {
   # function as string
   function_as_string <- deparse(substitute(fun))
   # message("77")
@@ -74,9 +77,13 @@ assign_fn_parameters_as_vars <- function(
         "within Package 'kim'.")
     }
   }
+  # set default environment
+  if (is.null(envir)) {
+    envir <- .GlobalEnv
+  }
   # manually assign each element of the list to the global environment
   for (name in names(parameters)) {
-    assign(name, parameters[[name]], envir = get(".GlobalEnv"))
+    assign(name, parameters[[name]], envir = envir)
   }
   # notify the user of the assignments
   kim::pm(
