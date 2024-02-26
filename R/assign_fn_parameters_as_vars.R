@@ -1,4 +1,4 @@
-#' Assign function parameters as variables
+#' Assign function parameters as values
 #'
 #' Take a function and assign all the parameters defined within it
 #' as values in the specified environment (e.g., global environment)
@@ -8,7 +8,7 @@
 #'
 #' @param fun a function
 #' @param envir an environment in which to assign the parameters as
-#' variables (default = \code{.GlobalEnv})
+#' values (default = \code{.GlobalEnv})
 #' @examples
 #' \dontrun{
 #' assign_fn_parameters_as_vars(pm)
@@ -88,6 +88,6 @@ assign_fn_parameters_as_vars <- function(
   # notify the user of the assignments
   kim::pm(
     "Parameters of the function `", function_as_string,
-    "` now should have been assigned\nas variables in ",
+    "` now should have been assigned\nas values in ",
     "the global environment.")
 }

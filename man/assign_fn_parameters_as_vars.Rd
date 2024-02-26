@@ -2,7 +2,7 @@
 % Please edit documentation in R/assign_fn_parameters_as_vars.R
 \name{assign_fn_parameters_as_vars}
 \alias{assign_fn_parameters_as_vars}
-\title{Assign function parameters as variables}
+\title{Assign function parameters as values}
 \usage{
 assign_fn_parameters_as_vars(fun = NULL, envir = NULL)
 }
@@ -10,7 +10,7 @@ assign_fn_parameters_as_vars(fun = NULL, envir = NULL)
 \item{fun}{a function}
 
 \item{envir}{an environment in which to assign the parameters as
-variables (default = \code{.GlobalEnv})}
+values (default = \code{.GlobalEnv})}
 }
 \description{
 Take a function and assign all the parameters defined within it
