@@ -143,7 +143,7 @@ scatterplot <- function(
   width = 13,
   height = 9) {
   # bind the vars locally to the function
-  x <- y <- NULL
+  x <- y <- x_y_concatenated <- NULL
   # installed packages
   installed_pkgs <- rownames(utils::installed.packages())
   # check if Package 'ggplot2' is installed

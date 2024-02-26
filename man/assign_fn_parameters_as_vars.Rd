@@ -4,14 +4,17 @@
 \alias{assign_fn_parameters_as_vars}
 \title{Assign function parameters as variables}
 \usage{
-assign_fn_parameters_as_vars(fun = NULL)
+assign_fn_parameters_as_vars(fun = NULL, envir = NULL)
 }
 \arguments{
 \item{fun}{a function}
+
+\item{envir}{an environment in which to assign the parameters as
+variables (default = \code{.GlobalEnv})}
 }
 \description{
 Take a function and assign all the parameters defined within it
-as variables in the global environment
+as values in the specified environment (e.g., global environment)
 }
 \details{
 This function can be useful when you are testing a function and
