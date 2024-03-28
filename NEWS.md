@@ -1,6 +1,6 @@
 # kim 0.5.423
 * Updated the following function(s) (and other functions that use them): 
-floodlight_2_by_continuous, scatterplot
+floodlight_2_by_continuous, scatterplot, install_all_dependencies
 
 # kim 0.5.422
 * Updated the following function(s) (and other functions that use them): 

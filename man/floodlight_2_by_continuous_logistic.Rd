@@ -20,6 +20,7 @@ floodlight_2_by_continuous_logistic(
   dot_alpha = 0.3,
   dot_size = 6,
   interaction_p_value_font_size = 8,
+  jn_point_label_add = TRUE,
   jn_point_font_size = 8,
   jn_point_label_hjust = NULL,
   interaction_p_vjust = -3,
@@ -98,6 +99,9 @@ range of y values (default = 5)}
 
 \item{interaction_p_value_font_size}{font size for the interaction
 p value (default = 8)}
+
+\item{jn_point_label_add}{logical. Should the labels for
+Johnson-Neyman point labels be added to the plot? (default = TRUE)}
 
 \item{jn_point_font_size}{font size for Johnson-Neyman point labels
 (default = 8)}

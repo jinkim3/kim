@@ -50,6 +50,8 @@
 #' @param dot_size size of the dots (default = 6)
 #' @param interaction_p_value_font_size font size for the interaction
 #' p value (default = 8)
+#' @param jn_point_label_add logical. Should the labels for
+#' Johnson-Neyman point labels be added to the plot? (default = TRUE)
 #' @param jn_point_font_size font size for Johnson-Neyman point labels
 #' (default = 8)
 #' @param jn_point_label_hjust a vector of hjust values for
@@ -132,6 +134,7 @@ floodlight_2_by_continuous_logistic <- function(
     dot_alpha = 0.3,
     dot_size = 6,
     interaction_p_value_font_size = 8,
+    jn_point_label_add = TRUE,
     jn_point_font_size = 8,
     jn_point_label_hjust = NULL,
     interaction_p_vjust = -3,
@@ -709,19 +712,21 @@ floodlight_2_by_continuous_logistic <- function(
         yend = dv_max_observed,
         color = "black",
         linewidth = jn_line_thickness)
-      # label jn points
-      if (is.null(jn_point_label_hjust)) {
-        jn_point_label_hjust <- rep(0.5, num_of_jn_points)
+      if (jn_point_label_add == TRUE) {
+        # label jn points
+        if (is.null(jn_point_label_hjust)) {
+          jn_point_label_hjust <- rep(0.5, num_of_jn_points)
+        }
+        g1 <- g1 + ggplot2::annotate(
+          geom = "text",
+          x = jn_points_final[j],
+          y = Inf,
+          label = round(jn_points_final[j], round_jn_point_labels),
+          hjust = jn_point_label_hjust[j], vjust = -0.5,
+          fontface = "bold",
+          color = "black",
+          size = jn_point_font_size)
       }
-      g1 <- g1 + ggplot2::annotate(
-        geom = "text",
-        x = jn_points_final[j],
-        y = Inf,
-        label = round(jn_points_final[j], round_jn_point_labels),
-        hjust = jn_point_label_hjust[j], vjust = -0.5,
-        fontface = "bold",
-        color = "black",
-        size = jn_point_font_size)
     }
   }
   # x axis title
