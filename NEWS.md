@@ -1,3 +1,7 @@
+# kim 0.5.423
+* Updated the following function(s) (and other functions that use them): 
+floodlight_2_by_continuous, scatterplot
+
 # kim 0.5.422
 * Updated the following function(s) (and other functions that use them): 
 scatterplot, loglinear_analysis, plot_group_means, two_way_anova,

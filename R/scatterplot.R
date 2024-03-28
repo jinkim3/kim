@@ -215,7 +215,8 @@ scatterplot <- function(
   }
   # add jitter and set alpha if any pair of dots overlap
   dt02[, x_y_concatenated := paste0(x, y)]
-  if (any(duplicated(dt02[, x_y_concatenated]))) {
+  if (any(duplicated(dt02[, x_y_concatenated])) &
+      jitter_x_y_percent == 0) {
     jitter_x_y_percent <- 2
     alpha <- 0.4
     kim::pm(
@@ -226,8 +227,10 @@ scatterplot <- function(
       alpha, ").")
   }
   # add jitter
-  if (jitter_x_y_percent > 0) {
+  if (jitter_x_percent == 0 & jitter_x_y_percent > 0) {
     jitter_x_percent <- jitter_x_y_percent
+  }
+  if (jitter_y_percent == 0 & jitter_x_y_percent > 0) {
     jitter_y_percent <- jitter_x_y_percent
   }
   if (jitter_x_percent > 0 | jitter_y_percent > 0) {

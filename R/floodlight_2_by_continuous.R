@@ -372,7 +372,8 @@ floodlight_2_by_continuous <- function(
   }
   # add jitter if any pair of dots overlap
   dt[, mod_dv_concatenated := paste0(mod, dv)]
-  if (any(duplicated(dt[, mod_dv_concatenated]))) {
+  if (any(duplicated(dt[, mod_dv_concatenated])) &
+      jitter_x_y_percent == 0) {
     jitter_x_y_percent <- 2
     kim::pm(
       "Because at least one pair of dots overlapped, ",
@@ -381,8 +382,10 @@ floodlight_2_by_continuous <- function(
       " (of the observed range).")
   }
   # add jitter
-  if (jitter_x_y_percent > 0) {
+  if (jitter_x_percent == 0 & jitter_x_y_percent > 0) {
     jitter_x_percent <- jitter_x_y_percent
+  }
+  if (jitter_y_percent == 0 & jitter_x_y_percent > 0) {
     jitter_y_percent <- jitter_x_y_percent
   }
   g1 <- g1 + ggplot2::geom_point(
