@@ -111,7 +111,7 @@ mixed_anova_2_way <- function(
   g1 <- g1 + ggplot2::geom_line(linewidth = 1)
   g1 <- g1 + ggplot2::geom_errorbar(
     mapping = ggplot2::aes(
-      x = repeated_measure,
+      x = iv,
       y = mean,
       ymin = ci_95_ll,
       ymax = ci_95_ul),
