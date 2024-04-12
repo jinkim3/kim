@@ -27,7 +27,8 @@ mixed_anova_2_way <- function(
   dv_name = NULL,
   iv_name_bw_group = NULL,
   repeated_measures_col_names = NULL,
-  iv_name_bw_group_values = NULL) {
+  iv_name_bw_group_values = NULL,
+  output = "all") {
   # installed packages
   installed_pkgs <- rownames(utils::installed.packages())
   # check if Package 'ggplot2' is installed
@@ -104,7 +105,8 @@ mixed_anova_2_way <- function(
       x = repeated_measure,
       y = mean,
       color = iv,
-      group = iv))
+      group = iv,
+      linetype = iv))
   g1 <- g1 + ggplot2::geom_point(size = 5)
   g1 <- g1 + ggplot2::geom_line(linewidth = 1)
   g1 <- g1 + ggplot2::geom_errorbar(
@@ -122,7 +124,7 @@ mixed_anova_2_way <- function(
     expand = ggplot2::expansion(add = c(0.2, 0.03)))
   g1 <- g1 + ggplot2::theme(
     axis.title.x = ggplot2::element_blank())
-  g1
+  print(g1)
   if (output == "plot") {
     invisible(g1)
   }

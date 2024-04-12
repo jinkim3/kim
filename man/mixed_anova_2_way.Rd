@@ -9,7 +9,8 @@ mixed_anova_2_way(
   dv_name = NULL,
   iv_name_bw_group = NULL,
   repeated_measures_col_names = NULL,
-  iv_name_bw_group_values = NULL
+  iv_name_bw_group_values = NULL,
+  output = "all"
 )
 }
 \arguments{
