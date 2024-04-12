@@ -102,11 +102,11 @@ mixed_anova_2_way <- function(
   # plot
   g1 <- ggplot2::ggplot(
     data = dt3, mapping = ggplot2::aes(
-      x = repeated_measure,
+      x = iv,
       y = mean,
-      color = iv,
-      group = iv,
-      linetype = iv))
+      color = repeated_measure,
+      group = repeated_measure,
+      linetype = repeated_measure))
   g1 <- g1 + ggplot2::geom_point(size = 5)
   g1 <- g1 + ggplot2::geom_line(linewidth = 1)
   g1 <- g1 + ggplot2::geom_errorbar(
