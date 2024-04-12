@@ -1,3 +1,9 @@
+# kim 0.5.425
+* Added the following function(s): factorial_anova_2_way,
+mixed_anova_2_way, ci_of_mean
+* Updated the following function(s) (and other functions that use them): 
+two_way_anova, se_of_mean
+
 # kim 0.5.423
 * Updated the following function(s) (and other functions that use them): 
 floodlight_2_by_continuous, scatterplot, install_all_dependencies

@@ -75,7 +75,7 @@ histogram_by_group(data = mtcars, iv_name = "cyl", dv_name = "mpg")
 plot_group_means(data = mtcars, dv_name = "mpg", iv_name = "gear")
 
 # conduct a two-way ANOVA
-two_way_anova(
+factorial_anova_2_way(
   data = mtcars, dv_name = "mpg", iv_1_name = "vs", iv_2_name = "am")
 
 # conduct a multiple regression analysis

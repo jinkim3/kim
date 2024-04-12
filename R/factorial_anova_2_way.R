@@ -1,7 +1,4 @@
-#' Two-Way Factorial ANOVA
-#'
-#' This function is deprecated. Use the function 'factorial_anova_2_way'
-#' instead.
+#' Factorial ANOVA 2-Way (Two-Way Factorial ANOVA)
 #'
 #' Conduct a two-way factorial analysis of variance (ANOVA).
 #'
@@ -73,12 +70,12 @@
 #' @param legend_position position of the legend:
 #' \code{"none", "top", "right", "bottom", "left", "none"}
 #' (default = \code{"right"})
-#' @param output output type can be one of the following: \code{"anova_table"},
-#' \code{"group_stats"}, \code{"plot"},
+#' @param output output type can be one of the following:
+#' \code{"anova_table"}, \code{"group_stats"}, \code{"plot"},
 #' \code{"robust_anova_results"}, \code{"robust_anova_post_hoc_results"},
 #' \code{"robust_anova_post_hoc_contrast"}, \code{"all"}
 #' @param png_name name of the PNG file to be saved.
-#' If \code{png_name = TRUE}, the name will be "two_way_anova_"
+#' If \code{png_name = TRUE}, the name will be "factorial_anova_2_way_"
 #' followed by a timestamp of the current time.
 #' The timestamp will be in the format, jan_01_2021_1300_10_000001,
 #' where "jan_01_2021" would indicate January 01, 2021;
@@ -98,17 +95,17 @@
 #' @return by default, the output will be \code{"anova_table"}
 #' @examples
 #' \donttest{
-#' two_way_anova(
+#' factorial_anova_2_way(
 #'   data = mtcars, dv_name = "mpg", iv_1_name = "vs",
 #'   iv_2_name = "am", iterations = 100)
-#' anova_results <- two_way_anova(
+#' anova_results <- factorial_anova_2_way(
 #'   data = mtcars, dv_name = "mpg", iv_1_name = "vs",
 #'   iv_2_name = "am", output = "all")
 #' anova_results
 #' }
 #' @export
 #' @import data.table
-two_way_anova <- function(
+factorial_anova_2_way <- function(
   data = NULL,
   dv_name = NULL,
   iv_1_name = NULL,
@@ -141,10 +138,6 @@ two_way_anova <- function(
   units = "px",
   res = 300,
   layout_matrix = NULL) {
-  kim::pm(
-    "Warning: The function 'two_way_anova' is deprecated.\n",
-    "Please use the function 'factorial_anova_2_way' or\n",
-    "'mixed_anova_2_way' instead.")
   # installed packages
   installed_pkgs <- rownames(utils::installed.packages())
   # check if Package 'ggplot2' is installed
@@ -161,7 +154,7 @@ two_way_anova <- function(
   # check if Package 'car' is installed
   if (!"car" %in% installed_pkgs) {
     message(paste0(
-      "To conduct a two-way ANOVA, Package 'car' must ",
+      "To conduct a two-way factorial ANOVA, Package 'car' must ",
       "be installed.\nTo install Package 'car', type ",
       "'kim::prep(car)'",
       "\n\nAlternatively, to install all packages (dependencies) required ",
@@ -338,7 +331,7 @@ two_way_anova <- function(
       # ts stands for time stamp
       ts <- tolower(
         gsub("\\.", "_", format(Sys.time(), "_%b_%d_%Y_%H%M_%OS6")))
-      png_name <- paste0("two_way_anova_results", ts)
+      png_name <- paste0("factorial_anova_2_way_results", ts)
     }
     # initialize the png
     grDevices::png(

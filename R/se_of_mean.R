@@ -1,7 +1,8 @@
 #' Standard error of the mean
 #'
 #' @param vector a numeric vector
-#' @param na.rm if \code{TRUE}, NA values will be removed before calculation
+#' @param na.rm Deprecated. By default, NA values will be removed
+#' before calculation
 #' @param notify_na_count if \code{TRUE}, notify how many observations
 #' were removed due to missing values. By default, NA count will be printed
 #' only if there are any NA values.

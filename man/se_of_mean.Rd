@@ -9,7 +9,8 @@ se_of_mean(vector, na.rm = TRUE, notify_na_count = NULL)
 \arguments{
 \item{vector}{a numeric vector}
 
-\item{na.rm}{if \code{TRUE}, NA values will be removed before calculation}
+\item{na.rm}{Deprecated. By default, NA values will be removed
+before calculation}
 
 \item{notify_na_count}{if \code{TRUE}, notify how many observations
 were removed due to missing values. By default, NA count will be printed
