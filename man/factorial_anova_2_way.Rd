@@ -20,7 +20,7 @@ factorial_anova_2_way(
   error_bar_tip_width = 0.13,
   error_bar_thickness = 1,
   error_bar_caption = TRUE,
-  line_colors = NULL,
+  line_colors = c("red", "blue"),
   line_types = NULL,
   line_thickness = 1,
   dot_size = 3,

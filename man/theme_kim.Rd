@@ -10,6 +10,7 @@ theme_kim(
   legend_key_size = 3,
   base_size = 20,
   axis_tick_font_size = 20,
+  axis_tick_marks_color = "black",
   axis_title_font_size = 24,
   y_axis_title_vjust = 0.85,
   axis_title_margin_size = 24,
@@ -28,6 +29,8 @@ the unit of "cm" (default = 1)}
 \item{base_size}{base font size}
 
 \item{axis_tick_font_size}{font size for axis tick marks}
+
+\item{axis_tick_marks_color}{color of the axis tick marks}
 
 \item{axis_title_font_size}{font size for axis title}
 

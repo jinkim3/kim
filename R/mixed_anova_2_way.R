@@ -14,6 +14,28 @@
 #' @param iv_name_bw_group_values restrict all analyses to
 #' observations having these values for the between-group
 #' independent variable
+#' @param colors colors of the dots and lines connecting means
+#' (default = NULL) If there are exactly two repeated measures,
+#' then, by default, \code{line_colors = c("red", "blue")}
+#' @param position_dodge by how much should the group means and error bars
+#' be horizontally offset from each other so as not to overlap?
+#' (default = 0.13)
+#' @param legend_title a character for the legend title. If no input
+#' is entered, then, by default, the legend title will be removed.
+#' @param x_axis_expansion_add inputs for the \code{add} parameter
+#' of the \code{expand} argument. The first and second values respectively
+#' determine the amount of space to add to the left and right along
+#' the x-axis. By default, \code{x_axis_expansion_add = c(0.2, 0.03)} which
+#' means that space with the width of 0.2 will be added to the left, and
+#' space with the width of 0.03 will be added to the right.
+#' @param x_axis_title a character string for the x-axis title.
+#' If \code{x_axis_title == FALSE}, which is the default value,
+#' the x-axis title will be removed.
+#' @param y_axis_title a character string for the y-axis title
+#' (default = "Mean"). If \code{x_axis_title == FALSE}, the y-axis title
+#' will be removed.
+#' @param output output type can be one of the following:
+#' \code{"plot"}, \code{"all"}
 #' @examples
 #' \donttest{
 #' mixed_anova_2_way(
@@ -28,6 +50,12 @@ mixed_anova_2_way <- function(
   iv_name_bw_group = NULL,
   repeated_measures_col_names = NULL,
   iv_name_bw_group_values = NULL,
+  colors = NULL,
+  position_dodge = 0.13,
+  legend_title = NULL,
+  x_axis_expansion_add = c(0.2, 0.03),
+  x_axis_title = NULL,
+  y_axis_title = "Mean",
   output = "all") {
   # installed packages
   installed_pkgs <- rownames(utils::installed.packages())
@@ -109,6 +137,14 @@ mixed_anova_2_way <- function(
       linetype = repeated_measure))
   g1 <- g1 + ggplot2::geom_point(size = 5)
   g1 <- g1 + ggplot2::geom_line(linewidth = 1)
+  # apply colors
+  if (num_of_dvs == 2) {
+    colors <- c("red", "blue")
+  }
+  if (!is.null(colors)) {
+    g1 <- g1 + ggplot2::scale_color_manual(
+      values = colors)
+  }
   g1 <- g1 + ggplot2::geom_errorbar(
     mapping = ggplot2::aes(
       x = iv,
@@ -117,13 +153,40 @@ mixed_anova_2_way <- function(
       ymax = ci_95_ul),
     width = 0,
     linewidth = 1)
+  # The errorbars will overlap,
+  # so use position_dodge to move them horizontally
+  pd <- ggplot2::position_dodge(width = position_dodge)
   g1 <- g1 + kim::theme_kim(
     legend_position = "right",
     cap_axis_lines = TRUE)
   g1 <- g1 + ggplot2::scale_x_discrete(
-    expand = ggplot2::expansion(add = c(0.2, 0.03)))
-  g1 <- g1 + ggplot2::theme(
-    axis.title.x = ggplot2::element_blank())
+    expand = ggplot2::expansion(add = x_axis_expansion_add))
+  # legend
+  if (is.null(legend_title)) {
+    g1 <- g1 + ggplot2::theme(
+      legend.title = ggplot2::element_blank())
+  } else {
+    g1 <- g1 + ggplot2::labs(
+      color = legend_title,
+      group = legend_title,
+      linetype = legend_title)
+  }
+  # axis titles
+  if (is.null(x_axis_title) || x_axis_title == FALSE) {
+    g1 <- g1 + ggplot2::theme(
+      axis.title.x = ggplot2::element_blank())
+  } else {
+    g1 <- g1 + ggplot2::labs(
+      x = x_axis_title)
+  }
+  if (is.null(y_axis_title) || y_axis_title == FALSE) {
+    g1 <- g1 + ggplot2::theme(
+      axis.title.y = ggplot2::element_blank())
+  } else {
+    g1 <- g1 + ggplot2::labs(
+      x = y_axis_title)
+  }
+  # print the plot
   print(g1)
   if (output == "plot") {
     invisible(g1)

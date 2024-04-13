@@ -10,6 +10,12 @@ mixed_anova_2_way(
   iv_name_bw_group = NULL,
   repeated_measures_col_names = NULL,
   iv_name_bw_group_values = NULL,
+  colors = NULL,
+  position_dodge = 0.13,
+  legend_title = NULL,
+  x_axis_expansion_add = c(0.2, 0.03),
+  x_axis_title = NULL,
+  y_axis_title = "Mean",
   output = "all"
 )
 }
@@ -24,6 +30,35 @@ the repeated measures}
 \item{iv_name_bw_group_values}{restrict all analyses to
 observations having these values for the between-group
 independent variable}
+
+\item{colors}{colors of the dots and lines connecting means
+(default = NULL) If there are exactly two repeated measures,
+then, by default, \code{line_colors = c("red", "blue")}}
+
+\item{position_dodge}{by how much should the group means and error bars
+be horizontally offset from each other so as not to overlap?
+(default = 0.13)}
+
+\item{legend_title}{a character for the legend title. If no input
+is entered, then, by default, the legend title will be removed.}
+
+\item{x_axis_expansion_add}{inputs for the \code{add} parameter
+of the \code{expand} argument. The first and second values respectively
+determine the amount of space to add to the left and right along
+the x-axis. By default, \code{x_axis_expansion_add = c(0.2, 0.03)} which
+means that space with the width of 0.2 will be added to the left, and
+space with the width of 0.03 will be added to the right.}
+
+\item{x_axis_title}{a character string for the x-axis title.
+If \code{x_axis_title == FALSE}, which is the default value,
+the x-axis title will be removed.}
+
+\item{y_axis_title}{a character string for the y-axis title
+(default = "Mean"). If \code{x_axis_title == FALSE}, the y-axis title
+will be removed.}
+
+\item{output}{output type can be one of the following:
+\code{"plot"}, \code{"all"}}
 }
 \description{
 Conduct a two-way mixed analysis of variance (ANOVA).

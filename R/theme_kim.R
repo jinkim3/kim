@@ -15,6 +15,7 @@
 #' (default = 3)
 #' @param base_size base font size
 #' @param axis_tick_font_size font size for axis tick marks
+#' @param axis_tick_marks_color color of the axis tick marks
 #' @param axis_title_font_size font size for axis title
 #' @param y_axis_title_vjust position of the y axis title (default = 0.85).
 #' If default is used, \code{y_axis_title_vjust = 0.85}, the y axis title
@@ -40,6 +41,7 @@ theme_kim <- function(
   legend_key_size = 3,
   base_size = 20,
   axis_tick_font_size = 20,
+  axis_tick_marks_color = "black",
   axis_title_font_size = 24,
   y_axis_title_vjust = 0.85,
   axis_title_margin_size = 24,
@@ -88,6 +90,7 @@ theme_kim <- function(
         face = "bold", color = "black", size = axis_title_font_size),
       axis.text = ggplot2::element_text(
         face = "bold", color= "black", size = axis_tick_font_size),
+      axis.ticks = ggplot2::element_line(colour = "black"),
       legend.title = ggplot2::element_text(
         face = "bold", color = "black", size = axis_title_font_size),
       legend.text = ggplot2::element_text(
