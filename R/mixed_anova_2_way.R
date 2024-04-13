@@ -112,13 +112,13 @@ mixed_anova_2_way <- function(
           "repeated_measure" = repeated_measures_col_names[j],
           "n" = sum(!is.na(temp_vector)),
           "mean" = mean(temp_vector, na.rm = TRUE),
-          "sd" = sd(temp_vector, na.rm = TRUE),
+          "sd" = stats::sd(temp_vector, na.rm = TRUE),
           "se_of_mean" = kim::se_of_mean(temp_vector),
-          "ci_95_ll" = ci_of_mean(
+          "ci_95_ll" = kim::ci_of_mean(
             temp_vector, confidence_level = 0.95)[1],
-          "ci_95_ul" = ci_of_mean(
+          "ci_95_ul" = kim::ci_of_mean(
             temp_vector, confidence_level = 0.95)[2],
-          "median" = median(temp_vector, na.rm = TRUE),
+          "median" = stats::median(temp_vector, na.rm = TRUE),
           "min" = min(temp_vector, na.rm = TRUE),
           "max" = min(temp_vector, na.rm = TRUE))
     }
