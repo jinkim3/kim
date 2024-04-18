@@ -78,9 +78,10 @@ Fox et al. (2020),
 mixed_anova_2_way(
   data = iris, iv_name_bw_group = "Species",
   repeated_measures_col_names = c("Sepal.Length", "Petal.Length"))
-mixed_anova_2_way(
+g1 <- mixed_anova_2_way(
   data = iris, iv_name_bw_group = "Species",
   repeated_measures_col_names = c("Sepal.Length", "Petal.Length"),
-  error_bar = "se")
+  error_bar = "se",
+  output = "plot")
 }
 }

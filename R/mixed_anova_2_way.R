@@ -44,10 +44,11 @@
 #' mixed_anova_2_way(
 #'   data = iris, iv_name_bw_group = "Species",
 #'   repeated_measures_col_names = c("Sepal.Length", "Petal.Length"))
-#' mixed_anova_2_way(
+#' g1 <- mixed_anova_2_way(
 #'   data = iris, iv_name_bw_group = "Species",
 #'   repeated_measures_col_names = c("Sepal.Length", "Petal.Length"),
-#'   error_bar = "se")
+#'   error_bar = "se",
+#'   output = "plot")
 #' }
 #' @export
 #' @import data.table
@@ -216,9 +217,8 @@ mixed_anova_2_way <- function(
   print(g1)
   if (output == "plot") {
     invisible(g1)
-  }
-  # return all
-  if (output == "all") {
+  } else if (output == "all") {
+    # return all
     output <- list(
       "desc_stats_table" = dt3,
       "plot" = g1)
