@@ -140,7 +140,9 @@ mixed_anova_2_way <- function(
   g1 <- g1 + ggplot2::geom_point(
     size = 5,
     position = pd)
-  g1 <- g1 + ggplot2::geom_line(linewidth = 1)
+  g1 <- g1 + ggplot2::geom_line(
+    linewidth = 1,
+    position = pd)
   # apply colors
   if (num_of_dvs == 2) {
     colors <- c("red", "blue")
