@@ -16,7 +16,7 @@
 #' independent variable
 #' @param colors colors of the dots and lines connecting means
 #' (default = NULL) If there are exactly two repeated measures,
-#' then, by default, \code{line_colors = c("red", "blue")}
+#' then, by default, \code{colors = c("red", "blue")}
 #' @param error_bar if \code{error_bar = "ci"} error bars will be a 95%
 #' confidence interval; if \code{error_bar = "se"}, error bars will be +/-1
 #' standard error. By default, \code{error_bar = "ci"}
@@ -153,12 +153,11 @@ mixed_anova_2_way <- function(
     linewidth = 1,
     position = pd)
   # apply colors
-  if (num_of_dvs == 2) {
-    colors <- c("red", "blue")
-  }
   if (!is.null(colors)) {
     g1 <- g1 + ggplot2::scale_color_manual(
       values = colors)
+  } else if (num_of_dvs == 2) {
+    colors <- c("red", "blue")
   }
   # error bars
   if (error_bar == "ci") {

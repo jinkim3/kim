@@ -33,7 +33,7 @@ independent variable}
 
 \item{colors}{colors of the dots and lines connecting means
 (default = NULL) If there are exactly two repeated measures,
-then, by default, \code{line_colors = c("red", "blue")}}
+then, by default, \code{colors = c("red", "blue")}}
 
 \item{error_bar}{if \code{error_bar = "ci"} error bars will be a 95\%
 confidence interval; if \code{error_bar = "se"}, error bars will be +/-1
