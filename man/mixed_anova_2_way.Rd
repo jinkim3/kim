@@ -10,6 +10,7 @@ mixed_anova_2_way(
   repeated_measures_col_names = NULL,
   iv_name_bw_group_values = NULL,
   colors = NULL,
+  error_bar = "ci",
   position_dodge = 0.13,
   legend_title = NULL,
   x_axis_expansion_add = c(0.2, 0.03),
@@ -33,6 +34,10 @@ independent variable}
 \item{colors}{colors of the dots and lines connecting means
 (default = NULL) If there are exactly two repeated measures,
 then, by default, \code{line_colors = c("red", "blue")}}
+
+\item{error_bar}{if \code{error_bar = "ci"} error bars will be a 95\%
+confidence interval; if \code{error_bar = "se"}, error bars will be +/-1
+standard error. By default, \code{error_bar = "ci"}}
 
 \item{position_dodge}{by how much should the group means and error bars
 be horizontally offset from each other so as not to overlap?
@@ -73,5 +78,9 @@ Fox et al. (2020),
 mixed_anova_2_way(
   data = iris, iv_name_bw_group = "Species",
   repeated_measures_col_names = c("Sepal.Length", "Petal.Length"))
+mixed_anova_2_way(
+  data = iris, iv_name_bw_group = "Species",
+  repeated_measures_col_names = c("Sepal.Length", "Petal.Length"),
+  error_bar = "se")
 }
 }

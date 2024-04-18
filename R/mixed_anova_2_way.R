@@ -17,6 +17,9 @@
 #' @param colors colors of the dots and lines connecting means
 #' (default = NULL) If there are exactly two repeated measures,
 #' then, by default, \code{line_colors = c("red", "blue")}
+#' @param error_bar if \code{error_bar = "ci"} error bars will be a 95%
+#' confidence interval; if \code{error_bar = "se"}, error bars will be +/-1
+#' standard error. By default, \code{error_bar = "ci"}
 #' @param position_dodge by how much should the group means and error bars
 #' be horizontally offset from each other so as not to overlap?
 #' (default = 0.13)
@@ -41,6 +44,10 @@
 #' mixed_anova_2_way(
 #'   data = iris, iv_name_bw_group = "Species",
 #'   repeated_measures_col_names = c("Sepal.Length", "Petal.Length"))
+#' mixed_anova_2_way(
+#'   data = iris, iv_name_bw_group = "Species",
+#'   repeated_measures_col_names = c("Sepal.Length", "Petal.Length"),
+#'   error_bar = "se")
 #' }
 #' @export
 #' @import data.table
@@ -50,6 +57,7 @@ mixed_anova_2_way <- function(
   repeated_measures_col_names = NULL,
   iv_name_bw_group_values = NULL,
   colors = NULL,
+  error_bar = "ci",
   position_dodge = 0.13,
   legend_title = NULL,
   x_axis_expansion_add = c(0.2, 0.03),
@@ -151,15 +159,29 @@ mixed_anova_2_way <- function(
     g1 <- g1 + ggplot2::scale_color_manual(
       values = colors)
   }
-  g1 <- g1 + ggplot2::geom_errorbar(
-    mapping = ggplot2::aes(
-      x = iv,
-      y = mean,
-      ymin = ci_95_ll,
-      ymax = ci_95_ul),
-    width = 0,
-    linewidth = 1,
-    position = pd)
+  # error bars
+  if (error_bar == "ci") {
+    g1 <- g1 + ggplot2::geom_errorbar(
+      mapping = ggplot2::aes(
+        x = iv,
+        y = mean,
+        ymin = ci_95_ll,
+        ymax = ci_95_ul),
+      width = 0,
+      linewidth = 1,
+      position = pd)
+  } else if (error_bar == "se") {
+    g1 <- g1 + ggplot2::geom_errorbar(
+      mapping = ggplot2::aes(
+        x = iv,
+        y = mean,
+        ymin = mean - se_of_mean,
+        ymax = mean + se_of_mean),
+      width = 0,
+      linewidth = 1,
+      position = pd)
+  }
+  # apply a theme etc
   g1 <- g1 + kim::theme_kim(
     legend_position = "right",
     cap_axis_lines = TRUE)
