@@ -134,7 +134,12 @@ mixed_anova_2_way <- function(
       color = repeated_measure,
       group = repeated_measure,
       linetype = repeated_measure))
-  g1 <- g1 + ggplot2::geom_point(size = 5)
+  # The dots may overlap,
+  # so use position_dodge to move them horizontally
+  pd <- ggplot2::position_dodge(width = position_dodge)
+  g1 <- g1 + ggplot2::geom_point(
+    size = 5,
+    position = pd)
   g1 <- g1 + ggplot2::geom_line(linewidth = 1)
   # apply colors
   if (num_of_dvs == 2) {
@@ -151,10 +156,8 @@ mixed_anova_2_way <- function(
       ymin = ci_95_ll,
       ymax = ci_95_ul),
     width = 0,
-    linewidth = 1)
-  # The errorbars will overlap,
-  # so use position_dodge to move them horizontally
-  pd <- ggplot2::position_dodge(width = position_dodge)
+    linewidth = 1,
+    position = pd)
   g1 <- g1 + kim::theme_kim(
     legend_position = "right",
     cap_axis_lines = TRUE)
