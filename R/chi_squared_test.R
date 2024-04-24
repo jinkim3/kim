@@ -23,6 +23,9 @@
 #' round the limits of the odds ratio's confidence interval (default = 2)
 #' @param invert logical. Whether the inverse of the odds ratio
 #' (i.e., 1 / odds ratio) should be returned.
+#' @param notify_na_count if \code{TRUE}, notify how many rows
+#' were removed due to missing values. By default, NA count will be printed
+#' only if there are any NA values.
 #' @examples
 #' chi_squared_test(data = mtcars, iv_name = "cyl", dv_name = "am")
 #' # if the iv has only two levels, odds ratio will also be calculated
@@ -38,10 +41,32 @@ chi_squared_test <- function(
   correct = TRUE,
   odds_ratio_ci = 0.95,
   round_odds_ratio_ci_limits = 2,
-  invert = FALSE
+  invert = FALSE,
+  notify_na_count = NULL
 ) {
+  # check inputs
+  if (is.null(data) | is.null(iv_name) | is.null(dv_name)) {
+    stop(paste0(
+      "Please check your inputs. You must enter an input for\n",
+      "'data', 'iv_name', and 'dv_name'"))
+  }
+  # convert data to data table
+  dt1 <- data.table::setDT(data.table::copy(data))
+  # deal with NA values
+  dt2 <- na.omit(dt1[, c(iv_name, dv_name), with = FALSE])
+  na_count <- nrow(dt1) - nrow(dt2)
+  # by default, notify only if NA values are present
+  if (is.null(notify_na_count)) {
+    notify_na_count <- ifelse(na_count > 0, TRUE, FALSE)
+  }
+  if (notify_na_count == TRUE) {
+    message(paste0(
+      "\n", na_count,
+      " rows(s) were excluded from analysis due to missing values.\n"
+    ))
+  }
   # make sure the dv has only two levels of value
-  values_of_dv <- unique(data[[dv_name]])
+  values_of_dv <- unique(dt2[[dv_name]])
   if (length(values_of_dv) < 2) {
     stop(paste0(
       "The DV has ", length(values_of_dv), " level(s), rather than the ",
@@ -54,14 +79,8 @@ chi_squared_test <- function(
       "function\nin the 'gmodels' package as in the following example:\n",
       "gmodels::CrossTable(mtcars$cyl, mtcars$carb)"))
   }
-  # check inputs
-  if (is.null(data) | is.null(iv_name) | is.null(dv_name)) {
-    stop(paste0(
-      "Please check your inputs. You must enter an input for\n",
-      "'data', 'iv_name', and 'dv_name'"))
-  }
   # ct is short for contingency table
-  ct <- table(data[[iv_name]], data[[dv_name]])
+  ct <- table(dt2[[iv_name]], dt2[[dv_name]])
   ct2 <- data.frame(matrix(ct, nrow(ct)))
   row.names(ct2) <- dimnames(ct)[[1]]
   names(ct2) <- dimnames(ct)[[2]]
@@ -79,7 +98,7 @@ chi_squared_test <- function(
   print(pt2)
   # chi squared test
   chi_sq_test_results <- stats::chisq.test(
-    data[[iv_name]], data[[dv_name]], correct = correct)
+    dt2[[iv_name]], dt2[[dv_name]], correct = correct)
   chi_sq_test_df <- chi_sq_test_results[["parameter"]][["df"]]
   chi_sq_test_stat <- chi_sq_test_results[["statistic"]][["X-squared"]]
   chi_sq_test_p <- chi_sq_test_results[["p.value"]]
@@ -107,10 +126,10 @@ chi_squared_test <- function(
     chi_sq_test_inference_pt_5))
   cat("\n")
   # calculate the odds ratio if the iv has two levels
-  values_of_iv <- unique(data[[iv_name]])
+  values_of_iv <- unique(dt2[[iv_name]])
   if (length(values_of_iv) == 2) {
     kim::odds_ratio(
-      data = data, iv_name = iv_name, dv_name = dv_name,
+      data = dt2, iv_name = iv_name, dv_name = dv_name,
       ci = odds_ratio_ci,
       round_ci_limits = round_odds_ratio_ci_limits,
       invert = invert)

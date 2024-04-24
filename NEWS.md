@@ -2,7 +2,8 @@
 * Added the following function(s): factorial_anova_2_way,
 mixed_anova_2_way, ci_of_mean
 * Updated the following function(s) (and other functions that use them): 
-two_way_anova, se_of_mean, theme_kim, plot_group_means
+two_way_anova, se_of_mean, theme_kim, plot_group_means,
+chi_squared_test
 
 # kim 0.5.423
 * Updated the following function(s) (and other functions that use them): 

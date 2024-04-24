@@ -5,6 +5,9 @@
 #' @param x a numeric vector
 #' @param confidence_level What is the desired confidence level
 #' expressed as a decimal? (default = 0.95)
+#' @param notify_na_count if \code{TRUE}, notify how many observations
+#' were removed due to missing values. By default, NA count will be printed
+#' only if there are any NA values.
 #' @return the output will be a named numeric vector with the
 #' lower and upper limit of the confidence interval.
 #' @examples

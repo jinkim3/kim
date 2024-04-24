@@ -14,7 +14,8 @@ chi_squared_test(
   correct = TRUE,
   odds_ratio_ci = 0.95,
   round_odds_ratio_ci_limits = 2,
-  invert = FALSE
+  invert = FALSE,
+  notify_na_count = NULL
 )
 }
 \arguments{
@@ -48,6 +49,10 @@ round the limits of the odds ratio's confidence interval (default = 2)}
 
 \item{invert}{logical. Whether the inverse of the odds ratio
 (i.e., 1 / odds ratio) should be returned.}
+
+\item{notify_na_count}{if \code{TRUE}, notify how many rows
+were removed due to missing values. By default, NA count will be printed
+only if there are any NA values.}
 }
 \description{
 Conduct a chi-squared test and produce a contingency table

@@ -11,6 +11,10 @@ ci_of_mean(x = NULL, confidence_level = 0.95, notify_na_count = NULL)
 
 \item{confidence_level}{What is the desired confidence level
 expressed as a decimal? (default = 0.95)}
+
+\item{notify_na_count}{if \code{TRUE}, notify how many observations
+were removed due to missing values. By default, NA count will be printed
+only if there are any NA values.}
 }
 \value{
 the output will be a named numeric vector with the
