@@ -158,6 +158,8 @@ mixed_anova_2_way <- function(
       values = colors)
   } else if (num_of_dvs == 2) {
     colors <- c("red", "blue")
+    g1 <- g1 + ggplot2::scale_color_manual(
+      values = colors)
   }
   # error bars
   if (error_bar == "ci") {
