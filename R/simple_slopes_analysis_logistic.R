@@ -44,7 +44,7 @@ simple_slopes_analysis_logistic <- function(
   iv <- dv <- mod <- iv_binary_1 <- iv_binary_2 <- NULL
   # take a subset of data
   dt <- data.table::setDT(data.table::copy(data))
-  dt <- dt[, .SD, .SDcols = c(iv_name, mod_name, dv_name)]
+  dt <- dt[, c(iv_name, mod_name, dv_name), with = FALSE]
   # deal with na values
   dt <- stats::na.omit(dt)
   # check if dv is binary
@@ -68,15 +68,27 @@ simple_slopes_analysis_logistic <- function(
     formula = glm_formula_for_interaction,
     data = dt, family = stats::binomial())
   glm_interaction_summary <- summary(glm_interaction)
+  # name of the interaction term in the model
+  reg_table_row_names <- row.names(
+    glm_interaction_summary[["coefficients"]])
+  interaction_term_name <-
+    reg_table_row_names[length(reg_table_row_names)]
+  # a colon should be in the name
+  if (grepl(":", interaction_term_name) == FALSE) {
+    warning(paste0(
+      "The function had an issue while locating the\n",
+      "interaction term in a regression table.\n",
+      "The output of the function may be incorrect."))
+  }
   # interaction p
   interaction_b <- glm_interaction_summary[[
-    "coefficients"]][paste0(iv_name, ":", mod_name), "Estimate"]
+    "coefficients"]][interaction_term_name, "Estimate"]
   interaction_se <- glm_interaction_summary[[
-    "coefficients"]][paste0(iv_name, ":", mod_name), "Std. Error"]
+    "coefficients"]][interaction_term_name, "Std. Error"]
   interaction_z <- glm_interaction_summary[[
-    "coefficients"]][paste0(iv_name, ":", mod_name), "z value"]
+    "coefficients"]][interaction_term_name, "z value"]
   interaction_p <- glm_interaction_summary[[
-    "coefficients"]][paste0(iv_name, ":", mod_name), "Pr(>|z|)"]
+    "coefficients"]][interaction_term_name, "Pr(>|z|)"]
   results_msg_interaction_sig_text <- data.table::fcase(
     interaction_p < 0.05, "significantly predicted",
     interaction_p >= 0.05, "did not significantly predict",
@@ -101,10 +113,10 @@ simple_slopes_analysis_logistic <- function(
   if (kim::lenu(dt$iv) == 2) {
     iv_lvl_1 <- sort(unique(dt$iv))[1]
     iv_lvl_2 <- sort(unique(dt$iv))[2]
-    dt[, iv_binary_1 := fcase(
+    dt[, iv_binary_1 := data.table::fcase(
       iv == iv_lvl_1, 0,
       iv == iv_lvl_2, 1)]
-    dt[, iv_binary_2 := fcase(
+    dt[, iv_binary_2 := data.table::fcase(
       iv == iv_lvl_2, 0,
       iv == iv_lvl_1, 1)]
     # simple slope 1
@@ -144,6 +156,7 @@ simple_slopes_analysis_logistic <- function(
     simple_slopes_table_rounded[, p := kim::pretty_round_p_value(
       p, round_digits_after_decimal = round_p)]
     message("\nSimple Slope Estimates Associated With Focal Value(s):")
+    print(simple_slopes_table_rounded)
     # prepare the message output for the simple slopes analysis
     simple_slopes_results_msg <- kim::p0(
       "\nA simple slopes analysis revealed that\n",
@@ -151,14 +164,14 @@ simple_slopes_analysis_logistic <- function(
       iv_lvl_1, "} was\nb = ",
       round(simple_slope_1_b, round_b), ", SE = ",
       round(simple_slope_1_se, round_se), ", z = ",
-      round(simple_slope_1_t, round_z), ", ",
+      round(simple_slope_1_z, round_z), ", ",
       kim::pretty_round_p_value(
         simple_slope_1_p, include_p_equals = TRUE),
       ", whereas\nthe simple slope estimated for {'", iv_name, "' = ",
       iv_lvl_2, "} was\nb = ",
       round(simple_slope_2_b, round_b), ", SE = ",
       round(simple_slope_2_se, round_se), ", z = ",
-      round(simple_slope_2_t, round_z), ", ",
+      round(simple_slope_2_z, round_z), ", ",
       kim::pretty_round_p_value(
         simple_slope_2_p, include_p_equals = TRUE), ".")
     if (length(unique(dt[["dv"]])) == 2) {
