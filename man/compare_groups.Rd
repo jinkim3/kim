@@ -85,7 +85,8 @@ in t-tests (default = 1)}
 \item{round_p}{number of decimal places to which to round
 p-values (default = 3)}
 
-\item{save_as_png}{if \code{save = "all"} or if \code{save = TRUE},
+\item{save_as_png}{if \code{save_as_png = "all"} or
+if \code{save_as_png = TRUE},
 the histogram by group, descriptive statistics by group,
 and pairwise comparison results will be saved as a PNG file.}
 
@@ -116,9 +117,9 @@ place tick marks on the x axis.}
 \item{x_labels}{a vector containing labels for the place tick marks
 on the x axis.}
 
-\item{width}{width of the PNG file (default = 4000)}
+\item{width}{width of the PNG file (default = 5000)}
 
-\item{height}{height of the PNG file (default = 3000)}
+\item{height}{height of the PNG file (default = 3600)}
 
 \item{units}{the units for the \code{width} and \code{height} arguments.
 Can be \code{"px"} (pixels), \code{"in"} (inches), \code{"cm"},
@@ -126,8 +127,7 @@ or \code{"mm"}. By default, \code{units = "px"}.}
 
 \item{res}{The nominal resolution in ppi which will be recorded
 in the png file, if a positive integer. Used for units
-other than the default. If not specified, taken as 300 ppi
-to set the size of text and line widths.}
+other than the default. By default, \code{res = 300}}
 
 \item{layout_matrix}{The layout argument for arranging plots and tables
 using the \code{grid.arrange} function.}

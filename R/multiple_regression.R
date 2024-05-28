@@ -38,6 +38,23 @@
 #' @param silent If \code{silent = FALSE}, a message regarding
 #' mean-centered variables will be printed. If \code{silent = TRUE},
 #' this message will be suppressed. By default, \code{silent = FALSE}.
+#' @param save_as_png if \code{save_as_png = TRUE},
+#' the regression table will be saved as a PNG file (default = FALSE).
+#' @param png_name name of the PNG file to be saved. By default, the name
+#' will be "mult_reg_" followed by a timestamp of the
+#' current time.
+#' The timestamp will be in the format, jan_01_2021_1300_10_000001,
+#' where "jan_01_2021" would indicate January 01, 2021;
+#' 1300 would indicate 13:00 (i.e., 1 PM); and 10_000001 would
+#' indicate 10.000001 seconds after the hour.
+#' @param width width of the PNG file (default = 1600)
+#' @param height height of the PNG file (default = 1200)
+#' @param units the units for the \code{width} and \code{height} arguments.
+#' Can be \code{"px"} (pixels), \code{"in"} (inches), \code{"cm"},
+#' or \code{"mm"}. By default, \code{units = "px"}.
+#' @param res The nominal resolution in ppi which will be recorded
+#' in the png file, if a positive integer. Used for units
+#' other than the default. By default, \code{res = 200}
 #' @return the output will be a data.table showing multiple regression
 #' results.
 #' @examples
@@ -47,22 +64,31 @@
 #' data = mtcars, formula = mpg ~ gear * cyl,
 #' mean_center_vars = "gear",
 #' round_digits_after_decimal = 2)
+#' multiple_regression(
+#' data = mtcars, formula = mpg ~ gear * cyl,
+#' png_name = "mtcars reg table 1")
 #' }
 #' @export
 multiple_regression <- function(
-  data = NULL,
-  formula = NULL,
-  vars_to_mean_center = NULL,
-  mean_center_vars = NULL,
-  sigfigs = NULL,
-  round_digits_after_decimal = NULL,
-  round_p = NULL,
-  pretty_round_p_value = TRUE,
-  return_table_upper_half = FALSE,
-  round_r_squared = 3,
-  round_f_stat = 2,
-  prettify_reg_table_col_names = TRUE,
-  silent = FALSE) {
+    data = NULL,
+    formula = NULL,
+    vars_to_mean_center = NULL,
+    mean_center_vars = NULL,
+    sigfigs = NULL,
+    round_digits_after_decimal = NULL,
+    round_p = NULL,
+    pretty_round_p_value = TRUE,
+    return_table_upper_half = FALSE,
+    round_r_squared = 3,
+    round_f_stat = 2,
+    prettify_reg_table_col_names = TRUE,
+    silent = FALSE,
+    save_as_png = FALSE,
+    png_name = NULL,
+    width = 1600,
+    height = 1200,
+    units = "px",
+    res = 200) {
   # installed packages
   installed_pkgs <- rownames(utils::installed.packages())
   # check if Package 'lm.beta' is installed
@@ -236,6 +262,41 @@ multiple_regression <- function(
     data.table::setnames(
       t4, c("variable", "estimate", "se", "std_beta", "t_stat", "p_value"),
       c("Variable", "B", "SE B", "Std. Beta", "t", "p"))
+  }
+  # save as png
+  if (save_as_png == TRUE || !is.null(png_name)) {
+    # installed packages
+    installed_pkgs <- rownames(utils::installed.packages())
+    # required packages
+    # required_pkgs <-
+    # check if Package 'gridExtra' is installed
+    if (!"gridExtra" %in% installed_pkgs) {
+      message(paste0(
+        "This function requires the installation of Package 'gridExtra'.",
+        "\nTo install Package 'gridExtra', type ",
+        "'kim::prep(gridExtra)'",
+        "\n\nAlternatively, to install all packages (dependencies) required ",
+        "for all\nfunctions in Package 'kim', type ",
+        "'kim::install_all_dependencies()'"))
+      return()
+    } else {
+      # proceed if Package 'gridExtra' is already installed
+      grid_table_from_grid_extra <- utils::getFromNamespace(
+        "grid.table", "gridExtra")
+    }
+    # default file name
+    if (is.null(png_name)) {
+      ts <- tolower(
+        gsub("\\.", "_", format(Sys.time(), "_%b_%d_%Y_%H%M_%OS6")))
+      png_name <- paste0("mult_reg_", ts)
+    }
+    # initialize the png
+    grDevices::png(
+      paste0(png_name, ".png"),
+      height = height, width = width, units = units, res = res)
+    # grobs
+    grid_table_from_grid_extra(t4)
+    grDevices::dev.off()
   }
   return(t4)
 }
