@@ -11,7 +11,8 @@ correlation_matrix(
   col_var_names = NULL,
   round_r = 2,
   round_p = 3,
-  output_type = "r"
+  output_type = "rp",
+  numbered_cols = NULL
 )
 }
 \arguments{
@@ -38,7 +39,11 @@ coefficients; if \code{output_type = "p"}, p-values;
 if \code{output_type = "rp"}, correlation coefficients with
 significance symbols based on p-values;
 if \code{output_type = "n"}, sizes of the samples used to calculate
-the correlation coefficients}
+the correlation coefficients. By default, \code{output_type = "rp"}}
+
+\item{numbered_cols}{logical. If \code{numbered_cols == TRUE} and
+if \code{identical(row_var_names, col_var_names) == TRUE}, then
+the columns will be numbered instead of containing variable names.}
 }
 \value{
 the output will be a correlation matrix in a data.table format
@@ -50,4 +55,8 @@ Creates a correlation matrix
 correlation_matrix(data = mtcars, var_names = c("mpg", "cyl", "wt"))
 correlation_matrix(data = mtcars,
 row_var_names = c("mpg", "cyl", "hp"), col_var_names = c("wt", "am"))
+correlation_matrix(
+data = mtcars, var_names = c("mpg", "cyl", "wt"),
+numbered_cols = FALSE)
+)
 }

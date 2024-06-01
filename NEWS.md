@@ -3,7 +3,8 @@
 mixed_anova_2_way, ci_of_mean, data_simplify
 * Updated the following function(s) (and other functions that use them): 
 two_way_anova, se_of_mean, theme_kim, plot_group_means,
-chi_squared_test, multiple_regression, compare_groups
+chi_squared_test, multiple_regression, compare_groups, 
+correlation_matrix
 
 # kim 0.5.423
 * Updated the following function(s) (and other functions that use them): 
