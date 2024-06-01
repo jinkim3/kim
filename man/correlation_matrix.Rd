@@ -58,5 +58,6 @@ row_var_names = c("mpg", "cyl", "hp"), col_var_names = c("wt", "am"))
 correlation_matrix(
 data = mtcars, var_names = c("mpg", "cyl", "wt"),
 numbered_cols = FALSE)
-)
+correlation_matrix(
+data = mtcars, var_names = c("mpg", "cyl", "wt"), output_type = "r")
 }

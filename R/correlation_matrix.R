@@ -31,7 +31,8 @@
 #' correlation_matrix(
 #' data = mtcars, var_names = c("mpg", "cyl", "wt"),
 #' numbered_cols = FALSE)
-#' )
+#' correlation_matrix(
+#' data = mtcars, var_names = c("mpg", "cyl", "wt"), output_type = "r")
 #' @export
 correlation_matrix <- function(
   data = NULL,
@@ -77,20 +78,23 @@ correlation_matrix <- function(
       }
       r <- round(
         cor_result[["estimate"]], round_r)
+      # remove the leading zero
+      r_no_zero <- sub(
+        "^-0\\.", "-.", sub(
+          "^0\\.", ".", format(r, scientific = FALSE)))
       p <- cor_result[["p.value"]]
       p_nice <- kim::pretty_round_p_value(
         p, round_digits_after_decimal = round_p)
       n <- cor_result[["parameter"]][["df"]] + 2
       rp <- data.table::fcase(
-        r == 1, "1",
-        p < .001, paste0(r, "***"),
-        p < .01, paste0(r, "**"),
-        p < .05, paste0(r, "*"),
-        p < .1, paste0(r, " m.s."),
-        default = as.character(r)
-      )
+        r_no_zero == 1, "",
+        p < .001, paste0(r_no_zero, "***"),
+        p < .01, paste0(r_no_zero, "**"),
+        p < .05, paste0(r_no_zero, "*"),
+        p < .1, paste0(r_no_zero, " m.s."),
+        default = r_no_zero)
       output <- ifelse(
-        output_type == "r", r, ifelse(
+        output_type == "r", r_no_zero, ifelse(
           output_type == "p", p_nice, ifelse(
             output_type == "rp", rp, ifelse(
               output_type == "n", n, NULL))))
