@@ -57,10 +57,10 @@ pretty_round_p_value <- function(
     # exclude the p and equal sign
     output <- ifelse(
       p_value_vector < 1 / (10 ^ round_digits_after_decimal),
-      paste0("p < ", gsub(
+      gsub(
         "^0\\.", ".",
         as.character(format(
-          1 / (10 ^ round_digits_after_decimal), scientific = FALSE)))),
+          1 / (10 ^ round_digits_after_decimal), scientific = FALSE))),
       sub("^0?", "", sprintf(
         paste0("%.", round_digits_after_decimal, "f"),
         p_value_vector)))
