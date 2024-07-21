@@ -11,7 +11,11 @@
 #' @return the output will be a character vector with p values, e.g.,
 #' a vector of strings like "< .001" (or "p < .001").
 #' @examples
-#' pretty_round_p_value(0.0495, 3)
+#' pretty_round_p_value(0.00001)
+#' pretty_round_p_value(0.00001, round_digits_after_decimal = 4)
+#' pretty_round_p_value(0.00001, round_digits_after_decimal = 5)
+#' # WARNING: the line of code below adding precision that may be unwarranted
+#' pretty_round_p_value(0.00001, round_digits_after_decimal = 6)
 #' pretty_round_p_value(
 #'   p_value_vector = 0.049,
 #'   round_digits_after_decimal = 2, include_p_equals = FALSE)
@@ -40,7 +44,11 @@ pretty_round_p_value <- function(
     # include the p and equal sign
     if (include_p_equals == TRUE) {
       output <- ifelse(
-        p_value_vector < .001, "p < .001",
+        p_value_vector < 1 / (10 ^ round_digits_after_decimal),
+        paste0("p < ", gsub(
+          "^0\\.", ".",
+          as.character(format(
+            1 / (10 ^ round_digits_after_decimal), scientific = FALSE)))),
         paste0("p = ", sub("^0?", "", sprintf(
           paste0("%.", round_digits_after_decimal, "f"),
           p_value_vector))))
@@ -48,7 +56,11 @@ pretty_round_p_value <- function(
     }
     # exclude the p and equal sign
     output <- ifelse(
-      p_value_vector < .001, "< .001",
+      p_value_vector < 1 / (10 ^ round_digits_after_decimal),
+      paste0("p < ", gsub(
+        "^0\\.", ".",
+        as.character(format(
+          1 / (10 ^ round_digits_after_decimal), scientific = FALSE)))),
       sub("^0?", "", sprintf(
         paste0("%.", round_digits_after_decimal, "f"),
         p_value_vector)))

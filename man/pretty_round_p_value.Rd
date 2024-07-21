@@ -28,7 +28,11 @@ Round p-values to the desired number of decimals and remove
 leading 0s before the decimal.
 }
 \examples{
-pretty_round_p_value(0.0495, 3)
+pretty_round_p_value(0.00001)
+pretty_round_p_value(0.00001, round_digits_after_decimal = 4)
+pretty_round_p_value(0.00001, round_digits_after_decimal = 5)
+# WARNING: the line of code below adding precision that may be unwarranted
+pretty_round_p_value(0.00001, round_digits_after_decimal = 6)
 pretty_round_p_value(
   p_value_vector = 0.049,
   round_digits_after_decimal = 2, include_p_equals = FALSE)

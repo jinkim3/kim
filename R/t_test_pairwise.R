@@ -93,7 +93,10 @@ t_test_pairwise <- function(
       "'\nvaried significantly as a function of '", iv_name,
       ",'\nF(", anova_df_groups, ", ", anova_df_error, ") = ",
       round(anova_f, round_f), ", ",
-      kim::pretty_round_p_value(anova_p, include_p_equals = TRUE), ".\n")
+      kim::pretty_round_p_value(
+        p_value_vector = anova_p,
+        round_digits_after_decimal = round_p,
+        include_p_equals = TRUE), ".\n")
     message(results)
   }
   # pairs
@@ -228,24 +231,28 @@ t_test_pairwise <- function(
   if (length(t_test_p_value) > 1) {
     if (adjust_p == "holm") {
       holm_adjusted_p_for_t_tests <- kim::pretty_round_p_value(
-        stats::p.adjust(p = t_test_p_value, method = "holm"))
+        stats::p.adjust(p = t_test_p_value, method = "holm"),
+        round_digits_after_decimal = round_p)
       output <- data.table::data.table(output, holm_adjusted_p_for_t_tests)
       if (mann_whitney == TRUE) {
         holm_adjusted_p_for_mann_whitney <- kim::pretty_round_p_value(
           stats::p.adjust(
-            p = mann_whitney_p_value, method = "holm"))
+            p = mann_whitney_p_value, method = "holm"),
+          round_digits_after_decimal = round_p)
         output <- data.table::data.table(
           output, holm_adjusted_p_for_mann_whitney)
       }
     } else if (adjust_p == "bonferroni") {
       bonferroni_adjusted_p_for_t_tests <- kim::pretty_round_p_value(
-        stats::p.adjust(p = t_test_p_value, method = "bonferroni"))
+        stats::p.adjust(p = t_test_p_value, method = "bonferroni"),
+        round_digits_after_decimal = round_p)
       output <- data.table::data.table(
         output, bonferroni_adjusted_p_for_t_tests)
       if (mann_whitney == TRUE) {
         bonferroni_adjusted_p_for_mann_whitney <-
           kim::pretty_round_p_value(stats::p.adjust(
-            p = mann_whitney_p_value, method = "bonferroni"))
+            p = mann_whitney_p_value, method = "bonferroni"),
+            round_digits_after_decimal = round_p)
         output <- data.table::data.table(
           output, bonferroni_adjusted_p_for_mann_whitney)
       }
