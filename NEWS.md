@@ -1,3 +1,6 @@
+# kim 0.5.431
+* Package is being prepared for submission to CRAN
+
 # kim 0.5.425
 * Added the following function(s): factorial_anova_2_way,
 mixed_anova_2_way, ci_of_mean, data_simplify

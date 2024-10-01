@@ -22,9 +22,9 @@
 #' pretty_round_p_value(c(0.0015, 0.0014, 0.0009), include_p_equals = TRUE)
 #' @export
 pretty_round_p_value <- function(
-  p_value_vector = NULL,
-  round_digits_after_decimal = 3,
-  include_p_equals = FALSE) {
+    p_value_vector = NULL,
+    round_digits_after_decimal = 3,
+    include_p_equals = FALSE) {
   # check if numeric
   if (is.numeric(p_value_vector) == FALSE) {
     stop(paste0("The input for p_value_vector is not a numeric vector."))
@@ -32,7 +32,7 @@ pretty_round_p_value <- function(
   # check if negative values exist
   if (any(p_value_vector[!is.na(p_value_vector)] < 0)) {
     stop(paste0("The input for p_value_vector contains a negative ",
-    "p-value, which should not possible."))
+                "p-value, which should not possible."))
   }
   # check if p-values are between 0 and 1
   if (any(p_value_vector[!is.na(p_value_vector)] > 1)) {

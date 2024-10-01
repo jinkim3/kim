@@ -53,7 +53,7 @@ chi_squared_test <- function(
   # convert data to data table
   dt1 <- data.table::setDT(data.table::copy(data))
   # deal with NA values
-  dt2 <- na.omit(dt1[, c(iv_name, dv_name), with = FALSE])
+  dt2 <- stats::na.omit(dt1[, c(iv_name, dv_name), with = FALSE])
   na_count <- nrow(dt1) - nrow(dt2)
   # by default, notify only if NA values are present
   if (is.null(notify_na_count)) {

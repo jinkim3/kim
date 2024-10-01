@@ -44,7 +44,8 @@ simple_slopes_analysis <- function(
     focal_values = NULL
 ) {
   # bind the vars locally to the function
-  iv <- dv <- mod <- iv_binary_1 <- iv_binary_2 <- NULL
+  iv <- dv <- mod <- iv_binary_1 <- iv_binary_2 <-
+    b <- se <- p <- iv_minus_focal_value <- NULL
   # take a subset of data
   dt <- data.table::setDT(data.table::copy(data))
   dt <- dt[, c(iv_name, mod_name, dv_name), with = FALSE]

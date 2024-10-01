@@ -79,7 +79,7 @@ mixed_anova_2_way <- function(
     return()
   }
   # bind the vars locally to the function
-  p <- NULL
+  p <- iv <- ci_95_ll <- ci_95_ul <- repeated_measure <- NULL
   # convert data to data table
   dt1 <- data.table::setDT(data.table::copy(data))
   dt1 <- dt1[, c(

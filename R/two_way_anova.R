@@ -97,7 +97,7 @@
 #' using the \code{grid.arrange} function.
 #' @return by default, the output will be \code{"anova_table"}
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' two_way_anova(
 #'   data = mtcars, dv_name = "mpg", iv_1_name = "vs",
 #'   iv_2_name = "am", iterations = 100)
