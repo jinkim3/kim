@@ -114,7 +114,7 @@ histogram <- function(
                  ymin = ymin, ymax = ymax),
     fill = bin_fill_color,
     color = bin_border_color,
-    size = bin_border_thickness)
+    linewidth = bin_border_thickness)
   # x axis tick marks
   if (!is.null(x_axis_tick_marks)) {
     g1 <- g1 + ggplot2::scale_x_continuous(

@@ -106,38 +106,38 @@
 #' @export
 #' @import data.table
 factorial_anova_2_way <- function(
-  data = NULL,
-  dv_name = NULL,
-  iv_1_name = NULL,
-  iv_2_name = NULL,
-  iv_1_values = NULL,
-  iv_2_values = NULL,
-  sigfigs = 3,
-  robust = FALSE,
-  iterations = 2000,
-  plot = TRUE,
-  error_bar = "ci",
-  error_bar_range = 0.95,
-  error_bar_tip_width = 0.13,
-  error_bar_thickness = 1,
-  error_bar_caption = TRUE,
-  line_colors = c("red", "blue"),
-  line_types = NULL,
-  line_thickness = 1,
-  dot_size = 3,
-  position_dodge = 0.13,
-  x_axis_title = NULL,
-  y_axis_title = NULL,
-  y_axis_title_vjust = 0.85,
-  legend_title = NULL,
-  legend_position = "right",
-  output = "anova_table",
-  png_name = NULL,
-  width = 7000,
-  height = 4000,
-  units = "px",
-  res = 300,
-  layout_matrix = NULL) {
+    data = NULL,
+    dv_name = NULL,
+    iv_1_name = NULL,
+    iv_2_name = NULL,
+    iv_1_values = NULL,
+    iv_2_values = NULL,
+    sigfigs = 3,
+    robust = FALSE,
+    iterations = 2000,
+    plot = TRUE,
+    error_bar = "ci",
+    error_bar_range = 0.95,
+    error_bar_tip_width = 0.13,
+    error_bar_thickness = 1,
+    error_bar_caption = TRUE,
+    line_colors = NULL,
+    line_types = NULL,
+    line_thickness = 1,
+    dot_size = 3,
+    position_dodge = 0.13,
+    x_axis_title = NULL,
+    y_axis_title = NULL,
+    y_axis_title_vjust = 0.85,
+    legend_title = NULL,
+    legend_position = "right",
+    output = "anova_table",
+    png_name = NULL,
+    width = 7000,
+    height = 4000,
+    units = "px",
+    res = 300,
+    layout_matrix = NULL) {
   # installed packages
   installed_pkgs <- rownames(utils::installed.packages())
   # check if Package 'ggplot2' is installed
@@ -228,6 +228,11 @@ factorial_anova_2_way <- function(
   }
   message(paste0("\nGroup Statistics on ", dv_name, ":"))
   print(group_stats)
+  # set default colors
+  if (length(iv_2_values) == 2) {
+    line_colors <- c("red", "blue")
+    line_types <- c("solid", "dashed")
+  }
   # print or return plot
   if (plot == TRUE | output %in% c("plot", "all") | !is.null(png_name)) {
     g1 <- kim::plot_group_means(

@@ -1,3 +1,7 @@
+# kim 0.5.432
+* Updated the following function(s) (and other functions that use them): 
+histogram, factorial_anova_2_way
+
 # kim 0.5.431
 * Package is being prepared for submission to CRAN
 
@@ -5,7 +9,7 @@
 * Added the following function(s): factorial_anova_2_way,
 mixed_anova_2_way, ci_of_mean, data_simplify
 * Updated the following function(s) (and other functions that use them): 
-two_way_anova, se_of_mean, theme_kim, plot_group_means,
+factorial_anova_2_way, se_of_mean, theme_kim, plot_group_means,
 chi_squared_test, multiple_regression, compare_groups, 
 correlation_matrix, t_test_p_value, pretty_round_p_value
 

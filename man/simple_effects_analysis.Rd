@@ -53,7 +53,7 @@ See Field et al. (2012, ISBN: 978-1-4462-0045-2).
 }
 \examples{
 \donttest{
-two_way_anova(
+factorial_anova_2_way(
   data = mtcars, dv_name = "mpg", iv_1_name = "vs",
   iv_2_name = "am", iterations = 100, plot = TRUE)
 simple_effects_analysis(
