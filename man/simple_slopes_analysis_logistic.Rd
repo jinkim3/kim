@@ -37,10 +37,10 @@ t statistics from the regression analysis (default = 2)}
 \item{round_p}{number of decimal places to which to round
 p values from the regression analysis (default = 2)}
 
-\item{focal_values}{this input will be used only in cases where IV
-is continuous. In such cases, what are the focal values of the IV
-at which to estimate the effect of MOD on DV? By default, values
-corresponding to the mean of IV +/-1 SD will be used.}
+\item{focal_values}{this input will be used only in cases where MOD
+is continuous. In such cases, what are the focal values of the MOD
+at which to estimate the effect of IV on DV? By default, values
+corresponding to the mean of MOD, and mean of MOD +/-1 SD will be used.}
 }
 \description{
 Conduct a simple slopes analysis with logistic regression analyses,

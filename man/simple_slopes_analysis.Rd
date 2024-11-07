@@ -9,6 +9,7 @@ simple_slopes_analysis(
   iv_name = NULL,
   dv_name = NULL,
   mod_name = NULL,
+  round_focal_value = 2,
   round_b = 2,
   round_se = 2,
   round_t = 2,
@@ -25,6 +26,9 @@ simple_slopes_analysis(
 
 \item{mod_name}{name of the moderator variable (MOD)}
 
+\item{round_focal_value}{number of decimal places to which to round
+the focal values (default = 2)}
+
 \item{round_b}{number of decimal places to which to round
 coefficients from the regression analysis (default = 2)}
 
@@ -37,10 +41,11 @@ t statistics from the regression analysis (default = 2)}
 \item{round_p}{number of decimal places to which to round
 p values from the regression analysis (default = 2)}
 
-\item{focal_values}{this input will be used only in cases where IV
-is continuous. In such cases, what are the focal values of the IV
-at which to estimate the effect of MOD on DV? By default, values
-corresponding to the mean of IV +/-1 SD will be used.}
+\item{focal_values}{this input will be used only in cases where
+moderator is continuous. In such cases, what are the focal values
+of the moderator at which to estimate the effect of IV on DV?
+By default, values corresponding to the mean of MOD, and
+mean of MOD +/-1 SD will be used.}
 }
 \description{
 Conduct a simple slopes analysis, typically to probe a two-way
@@ -48,6 +53,8 @@ interaction.
 }
 \examples{
 \donttest{
+simple_slopes_analysis(
+data = mtcars, iv_name = "vs", dv_name = "mpg", mod_name = "am")
 simple_slopes_analysis(
 data = mtcars, iv_name = "vs", dv_name = "mpg", mod_name = "hp")
 simple_slopes_analysis(

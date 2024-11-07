@@ -1,6 +1,7 @@
 # kim 0.5.432
 * Updated the following function(s) (and other functions that use them): 
-histogram, factorial_anova_2_way
+histogram, factorial_anova_2_way, simple_slopes_analysis,
+simple_slopes_analysis_logistic
 
 # kim 0.5.431
 * Package is being prepared for submission to CRAN
