@@ -233,7 +233,7 @@ t_test_pairwise <- function(
     output <- data.table::data.table(
       output,
       t_test_df = round(t_test_df, round_t_test_df),
-      t_test_stat = kim::round_flexibly(t_test_stat, round_t))
+      t_test_stat = round(t_test_stat, round_t))
   }
   # t test p values are added by default
   output[, "t_test_p_value" := kim::pretty_round_p_value(
