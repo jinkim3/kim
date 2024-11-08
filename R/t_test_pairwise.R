@@ -53,6 +53,7 @@
 #' pairwise comparisons between levels of the independent variable.
 #' @examples
 #' \dontrun{
+#' # Basic example
 #' t_test_pairwise(
 #' data = iris, iv_name = "Species", dv_name = "Sepal.Length")
 #' # Welch's t-test
@@ -61,6 +62,7 @@
 #' # A Student's t-test
 #' t_test_pairwise(
 #' data = mtcars, iv_name = "am", dv_name = "hp", welch = FALSE)
+#' # Other examples
 #' t_test_pairwise(data = iris, iv_name = "Species",
 #' dv_name = "Sepal.Length", t_test_stats = TRUE, sd = TRUE)
 #' t_test_pairwise(

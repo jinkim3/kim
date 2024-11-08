@@ -102,6 +102,7 @@ with Holm or Bonferroni correction
 }
 \examples{
 \dontrun{
+# Basic example
 t_test_pairwise(
 data = iris, iv_name = "Species", dv_name = "Sepal.Length")
 # Welch's t-test
@@ -110,6 +111,7 @@ data = mtcars, iv_name = "am", dv_name = "hp")
 # A Student's t-test
 t_test_pairwise(
 data = mtcars, iv_name = "am", dv_name = "hp", welch = FALSE)
+# Other examples
 t_test_pairwise(data = iris, iv_name = "Species",
 dv_name = "Sepal.Length", t_test_stats = TRUE, sd = TRUE)
 t_test_pairwise(

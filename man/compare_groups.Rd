@@ -164,5 +164,11 @@ comparisons (t-tests and Mann-Whitney tests).
 compare_groups(data = iris, iv_name = "Species", dv_name = "Sepal.Length")
 compare_groups(data = iris, iv_name = "Species", dv_name = "Sepal.Length",
 x_breaks = 4:8)
+# Welch's t-test
+compare_groups(
+data = mtcars, iv_name = "am", dv_name = "hp")
+# A Student's t-test
+compare_groups(
+data = mtcars, iv_name = "am", dv_name = "hp", welch = FALSE)
 }
 }
