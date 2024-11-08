@@ -9,17 +9,21 @@ t_test_pairwise(
   iv_name = NULL,
   dv_name = NULL,
   sigfigs = 3,
+  welch = TRUE,
   cohen_d = TRUE,
   cohen_d_w_ci = TRUE,
   adjust_p = "holm",
   bonferroni = NULL,
   mann_whitney = TRUE,
-  t_test_stats = FALSE,
+  mann_whitney_exact = FALSE,
+  t_test_stats = TRUE,
   t_test_df_decimals = 1,
   sd = FALSE,
   round_p = 3,
-  anova = TRUE,
-  round_f = 2
+  anova = FALSE,
+  round_f = 2,
+  round_t = 2,
+  round_t_test_df = 2
 )
 }
 \arguments{
@@ -30,6 +34,9 @@ t_test_pairwise(
 \item{dv_name}{name of the dependent variable}
 
 \item{sigfigs}{number of significant digits to round to}
+
+\item{welch}{Should Welch's t-tests be conducted?
+By default, \code{welch = TRUE}}
 
 \item{cohen_d}{if \code{cohen_d = TRUE}, Cohen's d statistics will be
 included in the output data.table.}
@@ -51,8 +58,16 @@ conducted for t-tests or Mann-Whitney tests.}
 included in the output data.table. If \code{FALSE}, Mann-Whitney
 tests will not be performed.}
 
+\item{mann_whitney_exact}{this is the input for the 'exact'
+argument used in the 'stats::wilcox.test' function, which
+conducts a Mann-Whitney test. By default, \code{
+mann_whitney_exact = FALSE}. If you want to use the default settings
+for the 'stats::wilcox.test' function, consider setting
+\code{mann_whitney_exact = TRUE}.}
+
 \item{t_test_stats}{if \code{t_test_stats = TRUE}, t-test statistic
-and degrees of freedom will be included in the output data.table.}
+and degrees of freedom will be included in the output data.table.
+By default, \code{t_test_stats = TRUE}}
 
 \item{t_test_df_decimals}{number of decimals for the degrees of freedom
 in t-tests (default = 1)}
@@ -64,10 +79,18 @@ included in the output data.table.}
 p-values (default = 3)}
 
 \item{anova}{Should a one-way ANOVA be conducted and reported?
-(default = TRUE)}
+By default, \code{anova = FALSE}, but when there are more than two
+levels in the independent variable, the value will change such tat
+\code{anova = TRUE}.}
 
 \item{round_f}{number of decimal places to which to round
 the f statistic (default = 2)}
+
+\item{round_t}{number of decimal places to which to round
+the t statistic (default = 2)}
+
+\item{round_t_test_df}{number of decimal places to which to round
+the degree of freedom of t tests (default = 2)}
 }
 \value{
 the output will be a data.table showing results of all
@@ -79,10 +102,18 @@ with Holm or Bonferroni correction
 }
 \examples{
 \dontrun{
-t_test_pairwise(data = iris, iv_name = "Species", dv_name = "Sepal.Length")
+t_test_pairwise(
+data = iris, iv_name = "Species", dv_name = "Sepal.Length")
+# Welch's t-test
+t_test_pairwise(
+data = mtcars, iv_name = "am", dv_name = "hp")
+# A Student's t-test
+t_test_pairwise(
+data = mtcars, iv_name = "am", dv_name = "hp", welch = FALSE)
 t_test_pairwise(data = iris, iv_name = "Species",
 dv_name = "Sepal.Length", t_test_stats = TRUE, sd = TRUE)
-t_test_pairwise(data = iris, iv_name = "Species", dv_name = "Sepal.Length",
+t_test_pairwise(
+data = iris, iv_name = "Species", dv_name = "Sepal.Length",
 mann_whitney = FALSE)
 }
 }

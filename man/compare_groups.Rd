@@ -10,6 +10,7 @@ compare_groups(
   dv_name = NULL,
   sigfigs = 3,
   stats = "basic",
+  welch = TRUE,
   cohen_d = TRUE,
   cohen_d_w_ci = TRUE,
   adjust_p = "holm",
@@ -54,6 +55,9 @@ The \code{stats} argument can also be a character vector with types of
 statistics to calculate. For example, entering
 \code{stats = c("mean", "median")} will calculate mean and median.
 By default, \code{stats = "basic"}}
+
+\item{welch}{Should Welch's t-tests be conducted?
+By default, \code{welch = TRUE}}
 
 \item{cohen_d}{if \code{cohen_d = TRUE}, Cohen's d statistics will be
 included in the pairwise comparison data.table.}

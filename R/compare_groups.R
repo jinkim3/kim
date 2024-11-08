@@ -19,6 +19,8 @@
 #' statistics to calculate. For example, entering
 #' \code{stats = c("mean", "median")} will calculate mean and median.
 #' By default, \code{stats = "basic"}
+#' @param welch Should Welch's t-tests be conducted?
+#' By default, \code{welch = TRUE}
 #' @param cohen_d if \code{cohen_d = TRUE}, Cohen's d statistics will be
 #' included in the pairwise comparison data.table.
 #' @param cohen_d_w_ci if \code{cohen_d_w_ci = TRUE},
@@ -103,6 +105,7 @@ compare_groups <- function(
   dv_name = NULL,
   sigfigs = 3,
   stats = "basic",
+  welch = TRUE,
   cohen_d = TRUE,
   cohen_d_w_ci = TRUE,
   adjust_p = "holm",
@@ -142,6 +145,7 @@ compare_groups <- function(
   output_3 <- kim::t_test_pairwise(
     data = data, iv_name = iv_name, dv_name = dv_name,
     sigfigs = sigfigs,
+    welch = welch,
     cohen_d = cohen_d,
     cohen_d_w_ci = cohen_d_w_ci,
     adjust_p = adjust_p,

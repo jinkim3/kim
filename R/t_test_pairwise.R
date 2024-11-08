@@ -7,6 +7,8 @@
 #' @param iv_name name of the independent variable
 #' @param dv_name name of the dependent variable
 #' @param sigfigs number of significant digits to round to
+#' @param welch Should Welch's t-tests be conducted?
+#' By default, \code{welch = TRUE}
 #' @param cohen_d if \code{cohen_d = TRUE}, Cohen's d statistics will be
 #' included in the output data.table.
 #' @param cohen_d_w_ci if \code{cohen_d_w_ci = TRUE},
@@ -22,8 +24,15 @@
 #' @param mann_whitney if \code{TRUE}, Mann-Whitney test results will be
 #' included in the output data.table. If \code{FALSE}, Mann-Whitney
 #' tests will not be performed.
+#' @param mann_whitney_exact this is the input for the 'exact'
+#' argument used in the 'stats::wilcox.test' function, which
+#' conducts a Mann-Whitney test. By default, \code{
+#' mann_whitney_exact = FALSE}. If you want to use the default settings
+#' for the 'stats::wilcox.test' function, consider setting
+#' \code{mann_whitney_exact = TRUE}.
 #' @param t_test_stats if \code{t_test_stats = TRUE}, t-test statistic
 #' and degrees of freedom will be included in the output data.table.
+#' By default, \code{t_test_stats = TRUE}
 #' @param t_test_df_decimals number of decimals for the degrees of freedom
 #' in t-tests (default = 1)
 #' @param sd if \code{sd = TRUE}, standard deviations will be
@@ -31,17 +40,31 @@
 #' @param round_p number of decimal places to which to round
 #' p-values (default = 3)
 #' @param anova Should a one-way ANOVA be conducted and reported?
-#' (default = TRUE)
+#' By default, \code{anova = FALSE}, but when there are more than two
+#' levels in the independent variable, the value will change such tat
+#' \code{anova = TRUE}.
 #' @param round_f number of decimal places to which to round
 #' the f statistic (default = 2)
+#' @param round_t number of decimal places to which to round
+#' the t statistic (default = 2)
+#' @param round_t_test_df number of decimal places to which to round
+#' the degree of freedom of t tests (default = 2)
 #' @return the output will be a data.table showing results of all
 #' pairwise comparisons between levels of the independent variable.
 #' @examples
 #' \dontrun{
-#' t_test_pairwise(data = iris, iv_name = "Species", dv_name = "Sepal.Length")
+#' t_test_pairwise(
+#' data = iris, iv_name = "Species", dv_name = "Sepal.Length")
+#' # Welch's t-test
+#' t_test_pairwise(
+#' data = mtcars, iv_name = "am", dv_name = "hp")
+#' # A Student's t-test
+#' t_test_pairwise(
+#' data = mtcars, iv_name = "am", dv_name = "hp", welch = FALSE)
 #' t_test_pairwise(data = iris, iv_name = "Species",
 #' dv_name = "Sepal.Length", t_test_stats = TRUE, sd = TRUE)
-#' t_test_pairwise(data = iris, iv_name = "Species", dv_name = "Sepal.Length",
+#' t_test_pairwise(
+#' data = iris, iv_name = "Species", dv_name = "Sepal.Length",
 #' mann_whitney = FALSE)
 #' }
 #' @export
@@ -51,17 +74,21 @@ t_test_pairwise <- function(
   iv_name = NULL,
   dv_name = NULL,
   sigfigs = 3,
+  welch = TRUE,
   cohen_d = TRUE,
   cohen_d_w_ci = TRUE,
   adjust_p = "holm",
   bonferroni = NULL,
   mann_whitney = TRUE,
-  t_test_stats = FALSE,
+  mann_whitney_exact = FALSE,
+  t_test_stats = TRUE,
   t_test_df_decimals = 1,
   sd = FALSE,
   round_p = 3,
-  anova = TRUE,
-  round_f = 2) {
+  anova = FALSE,
+  round_f = 2,
+  round_t = 2,
+  round_t_test_df = 2) {
   # bind the vars locally to the function
   iv <- dv <- group_1 <- group_2 <- NULL
   # check number of iv_name and dv_name
@@ -77,6 +104,9 @@ t_test_pairwise <- function(
   # convert iv to factor
   dt01[, iv := factor(iv)]
   dt01 <- stats::na.omit(dt01)
+  if (length(unique(dt01[, iv])) > 2) {
+    anova <- TRUE
+  }
   # conduct and report a one way anova
   if (anova == TRUE) {
     anova_results <- stats::aov(dv ~ iv, data = dt01)
@@ -155,22 +185,25 @@ t_test_pairwise <- function(
       return(output)
     }, FUN.VALUE = as.character(1L))
   }
-  # t stats?
+  # welch s t tests
+  treat_vars_as_equal <- ifelse(welch == TRUE, FALSE, TRUE)
+  # t test results
+  t_test_results <- lapply(seq_len(nrow(dt02)), function(i) {
+    stats::t.test(
+      formula = dv ~ iv,
+      data = dt01[iv %in% dt02[i, ]],
+      var.equal = treat_vars_as_equal)})
+  # add t stats
   if (t_test_stats == TRUE) {
     # t stat
-    t_test_stat <- vapply(seq_len(nrow(dt02)), function(i) {
-      stats::t.test(dv ~ iv, dt01[iv %in% dt02[i, ]])[["statistic"]]},
-      FUN.VALUE = numeric(1L))
+    t_test_stat <- sapply(t_test_results, function(test) test$statistic)
     # t stat df
-    t_test_df <- vapply(seq_len(nrow(dt02)), function(i) {
-      stats::t.test(
-        dv ~ iv, dt01[iv %in% dt02[i, ]])[["parameter"]][["df"]]},
-      FUN.VALUE = numeric(1L))
+    t_test_df <- sapply(
+      t_test_results, function(test) test$parameter[["df"]])
   }
   # t test p values
-  t_test_p_value <- vapply(seq_len(nrow(dt02)), function(i) {
-    stats::t.test(dv ~ iv, dt01[iv %in% dt02[i, ]])[["p.value"]]},
-    FUN.VALUE = numeric(1L))
+  t_test_p_value <- sapply(
+    t_test_results, function(test) test$p.value)
   # put everything together
   output <- data.table::data.table(
     dt02,
@@ -207,11 +240,30 @@ t_test_pairwise <- function(
   output[, "t_test_p_value" := kim::pretty_round_p_value(
     p_value_vector = t_test_p_value,
     round_digits_after_decimal = round_p)][]
+  # report a t-test in the case where the IV has only two levels
+  if (anova == FALSE) {
+    results_first_part <- data.table::fcase(
+      welch == TRUE, "A Welch's t-test",
+      welch == FALSE, "A t-test")
+    results <- paste0(
+      results_first_part, " revealed that '", dv_name,
+      "'\nvaried significantly as a function of '", iv_name,
+      "',\nt(", round(t_test_df, round_t_test_df), ") = ",
+      round(t_test_stat, round_t), ", ",
+      kim::pretty_round_p_value(
+        p_value_vector = t_test_p_value,
+        round_digits_after_decimal = round_p,
+        include_p_equals = TRUE), ".\n")
+    message(results)
+  }
+
   # mann whitney
   if (mann_whitney == TRUE) {
     mann_whitney_p_value <- vapply(seq_len(nrow(dt02)), function(i) {
       stats::wilcox.test(
-        dv ~ iv, dt01[iv %in% dt02[i, ]])[["p.value"]]},
+        formula = dv ~ iv,
+        data = dt01[iv %in% dt02[i, ]],
+        exact = mann_whitney_exact)[["p.value"]]},
       FUN.VALUE = numeric(1L))
     output[, "mann_whitney_p_value" := kim::pretty_round_p_value(
       p_value_vector = mann_whitney_p_value,
