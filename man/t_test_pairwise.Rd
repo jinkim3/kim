@@ -17,7 +17,6 @@ t_test_pairwise(
   mann_whitney = TRUE,
   mann_whitney_exact = FALSE,
   t_test_stats = TRUE,
-  t_test_df_decimals = 1,
   sd = FALSE,
   round_p = 3,
   anova = FALSE,
@@ -69,9 +68,6 @@ for the 'stats::wilcox.test' function, consider setting
 and degrees of freedom will be included in the output data.table.
 By default, \code{t_test_stats = TRUE}}
 
-\item{t_test_df_decimals}{number of decimals for the degrees of freedom
-in t-tests (default = 1)}
-
 \item{sd}{if \code{sd = TRUE}, standard deviations will be
 included in the output data.table.}
 
@@ -90,7 +86,7 @@ the f statistic (default = 2)}
 the t statistic (default = 2)}
 
 \item{round_t_test_df}{number of decimal places to which to round
-the degree of freedom of t tests (default = 2)}
+the degrees of freedom for t tests (default = 2)}
 }
 \value{
 the output will be a data.table showing results of all

@@ -33,8 +33,6 @@
 #' @param t_test_stats if \code{t_test_stats = TRUE}, t-test statistic
 #' and degrees of freedom will be included in the output data.table.
 #' By default, \code{t_test_stats = TRUE}
-#' @param t_test_df_decimals number of decimals for the degrees of freedom
-#' in t-tests (default = 1)
 #' @param sd if \code{sd = TRUE}, standard deviations will be
 #' included in the output data.table.
 #' @param round_p number of decimal places to which to round
@@ -48,7 +46,7 @@
 #' @param round_t number of decimal places to which to round
 #' the t statistic (default = 2)
 #' @param round_t_test_df number of decimal places to which to round
-#' the degree of freedom of t tests (default = 2)
+#' the degrees of freedom for t tests (default = 2)
 #' @return the output will be a data.table showing results of all
 #' pairwise comparisons between levels of the independent variable.
 #' @examples
@@ -84,7 +82,6 @@ t_test_pairwise <- function(
   mann_whitney = TRUE,
   mann_whitney_exact = FALSE,
   t_test_stats = TRUE,
-  t_test_df_decimals = 1,
   sd = FALSE,
   round_p = 3,
   anova = FALSE,
@@ -235,8 +232,8 @@ t_test_pairwise <- function(
   if (t_test_stats == TRUE) {
     output <- data.table::data.table(
       output,
-      t_test_df = round(t_test_df, t_test_df_decimals),
-      t_test_stat = kim::round_flexibly(t_test_stat, sigfigs))
+      t_test_df = round(t_test_df, round_t_test_df),
+      t_test_stat = kim::round_flexibly(t_test_stat, round_t))
   }
   # t test p values are added by default
   output[, "t_test_p_value" := kim::pretty_round_p_value(
