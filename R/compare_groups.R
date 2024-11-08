@@ -41,11 +41,19 @@
 #' If \code{FALSE}, Mann-Whitney tests will not be performed.
 #' @param t_test_stats if \code{t_test_stats = FALSE}, t-test statistic
 #' and degrees of freedom will be excluded in the pairwise comparison
-#' data.table.
-#' @param t_test_df_decimals number of decimals for the degrees of freedom
-#' in t-tests (default = 1)
+#' data.table. (default = TRUE)
 #' @param round_p number of decimal places to which to round
 #' p-values (default = 3)
+#' @param anova Should a one-way ANOVA be conducted and reported?
+#' By default, \code{anova = FALSE}, but when there are more than two
+#' levels in the independent variable, the value will change such tat
+#' \code{anova = TRUE}.
+#' @param round_f number of decimal places to which to round
+#' the f statistic (default = 2)
+#' @param round_t number of decimal places to which to round
+#' the t statistic (default = 2)
+#' @param round_t_test_df number of decimal places to which to round
+#' the degrees of freedom for t tests (default = 2)
 #' @param save_as_png if \code{save_as_png = "all"} or
 #' if \code{save_as_png = TRUE},
 #' the histogram by group, descriptive statistics by group,
@@ -118,8 +126,11 @@ compare_groups <- function(
   bonferroni = NULL,
   mann_whitney = TRUE,
   t_test_stats = TRUE,
-  t_test_df_decimals = 1,
   round_p = 3,
+  anova = FALSE,
+  round_f = 2,
+  round_t = 2,
+  round_t_test_df = 2,
   save_as_png = FALSE,
   png_name = NULL,
   xlab = NULL,
@@ -157,8 +168,11 @@ compare_groups <- function(
     adjust_p = adjust_p,
     mann_whitney = mann_whitney,
     t_test_stats = t_test_stats,
-    t_test_df_decimals = t_test_df_decimals,
-    round_p = round_p)
+    round_p = round_p,
+    anova = anova,
+    round_f = round_f,
+    round_t = round_t,
+    round_t_test_df = round_t_test_df)
   # print outputs
   output_1
   output_2
