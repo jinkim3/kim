@@ -8,6 +8,7 @@ scatterplot(
   data = NULL,
   x_var_name = NULL,
   y_var_name = NULL,
+  print_correlation = TRUE,
   dot_label_var_name = NULL,
   weight_var_name = NULL,
   alpha = 1,
@@ -46,6 +47,9 @@ scatterplot(
 \item{x_var_name}{name of the variable that will go on the x axis}
 
 \item{y_var_name}{name of the variable that will go on the y axis}
+
+\item{print_correlation}{should the correlation be printed in the
+console? (default = TRUE)}
 
 \item{dot_label_var_name}{name of the variable that will be used to
 label individual observations}

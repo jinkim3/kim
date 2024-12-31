@@ -11,6 +11,8 @@
 #' @param data a data object (a data frame or a data.table)
 #' @param x_var_name name of the variable that will go on the x axis
 #' @param y_var_name name of the variable that will go on the y axis
+#' @param print_correlation should the correlation be printed in the
+#' console? (default = TRUE)
 #' @param dot_label_var_name name of the variable that will be used to
 #' label individual observations
 #' @param weight_var_name name of the variable by which to weight
@@ -112,6 +114,7 @@ scatterplot <- function(
   data = NULL,
   x_var_name = NULL,
   y_var_name = NULL,
+  print_correlation = TRUE,
   dot_label_var_name = NULL,
   weight_var_name = NULL,
   alpha = 1,
@@ -203,6 +206,10 @@ scatterplot <- function(
   } else {
     dt02 <- dt01
   }
+  # print correlation
+  correlation_summary <- kim::correlation_kim(
+    x = dt02$x, y = dt02$y)
+  message(correlation_summary)
   # ranges for x and y
   x_range <- max(dt02$x) - min(dt02$x)
   y_range <- max(dt02$y) - min(dt02$y)
