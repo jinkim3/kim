@@ -26,6 +26,25 @@
 #' @param notify_na_count if \code{TRUE}, notify how many rows
 #' were removed due to missing values. By default, NA count will be printed
 #' only if there are any NA values.
+#' @param save_as_png if \code{save_as_png = TRUE},
+#' the results will be saved as a PNG file (default = FALSE).
+#' @param png_name name of the PNG file to be saved. By default, the name
+#' will be "chi_sq_" followed by a timestamp of the
+#' current time.
+#' The timestamp will be in the format, jan_01_2021_1300_10_000001,
+#' where "jan_01_2021" would indicate January 01, 2021;
+#' 1300 would indicate 13:00 (i.e., 1 PM); and 10_000001 would
+#' indicate 10.000001 seconds after the hour.
+#' @param width width of the PNG file (default = 1600)
+#' @param height height of the PNG file (default = 1200)
+#' @param units the units for the \code{width} and \code{height} arguments.
+#' Can be \code{"px"} (pixels), \code{"in"} (inches), \code{"cm"},
+#' or \code{"mm"}. By default, \code{units = "px"}.
+#' @param res The nominal resolution in ppi which will be recorded
+#' in the png file, if a positive integer. Used for units
+#' other than the default. By default, \code{res = 200}
+#' @param layout_matrix The layout argument for arranging section
+#' titles and tables using the \code{grid.arrange} function.
 #' @examples
 #' chi_squared_test(data = mtcars, iv_name = "cyl", dv_name = "am")
 #' # if the iv has only two levels, odds ratio will also be calculated
@@ -42,7 +61,14 @@ chi_squared_test <- function(
   odds_ratio_ci = 0.95,
   round_odds_ratio_ci_limits = 2,
   invert = FALSE,
-  notify_na_count = NULL
+  notify_na_count = NULL,
+  save_as_png = FALSE,
+  png_name = NULL,
+  width = 1200,
+  height = 800,
+  units = "px",
+  res = 200,
+  layout_matrix = NULL
 ) {
   # check inputs
   if (is.null(data) | is.null(iv_name) | is.null(dv_name)) {
@@ -118,20 +144,103 @@ chi_squared_test <- function(
     ", ", kim::pretty_round_p_value(
       chi_sq_test_p, round_p, include_p_equals = TRUE))
   cat("\n")
-  message(paste0(
+  chi_sq_test_inference_combined <- paste0(
     chi_sq_test_inference_pt_1,
     chi_sq_test_inference_pt_2,
     chi_sq_test_inference_pt_3,
     chi_sq_test_inference_pt_4,
-    chi_sq_test_inference_pt_5))
+    chi_sq_test_inference_pt_5)
+  message(chi_sq_test_inference_combined)
   cat("\n")
   # calculate the odds ratio if the iv has two levels
   values_of_iv <- unique(dt2[[iv_name]])
   if (length(values_of_iv) == 2) {
-    kim::odds_ratio(
+    odds_ratio_table <- kim::odds_ratio(
       data = dt2, iv_name = iv_name, dv_name = dv_name,
       ci = odds_ratio_ci,
       round_ci_limits = round_odds_ratio_ci_limits,
       invert = invert)
+    print(odds_ratio_table)
+  }
+  # save as png
+  if (save_as_png == TRUE || !is.null(png_name)) {
+    # installed packages
+    installed_pkgs <- rownames(utils::installed.packages())
+    # required packages
+    # required_pkgs <-
+    # check if Package 'gridExtra' is installed
+    if (!"gridExtra" %in% installed_pkgs) {
+      message(paste0(
+        "This function requires the installation of Package 'gridExtra'.",
+        "\nTo install Package 'gridExtra', type ",
+        "'kim::prep(gridExtra)'",
+        "\n\nAlternatively, to install all packages (dependencies) required ",
+        "for all\nfunctions in Package 'kim', type ",
+        "'kim::install_all_dependencies()'"))
+      return()
+    } else {
+      # proceed if Package 'gridExtra' is already installed
+      table_grob_from_grid_extra <- utils::getFromNamespace(
+        "tableGrob", "gridExtra")
+      grid_arrange_from_grid_extra <- utils::getFromNamespace(
+        "grid.arrange", "gridExtra")
+    }
+    # default file name
+    if (is.null(png_name)) {
+      ts <- tolower(
+        gsub("\\.", "_", format(Sys.time(), "_%b_%d_%Y_%H%M_%OS6")))
+      png_name <- paste0("chi_sq_", ts)
+    }
+    # initialize the png
+    grDevices::png(
+      paste0(png_name, ".png"),
+      height = height, width = width, units = units, res = res)
+    # grobs
+    grob_1 <- grid::textGrob("Table of Counts:")
+    grob_2 <- table_grob_from_grid_extra(ct2)
+    grob_3 <- grid::textGrob("Table of Proportions:")
+    grob_4 <- table_grob_from_grid_extra(pt2)
+    grob_5 <- grid::textGrob(chi_sq_test_inference_combined)
+    # grob list
+    if (length(values_of_iv) == 2) {
+      odds_ratio_table_df <- as.data.frame(t(odds_ratio_table))
+      grob_list <- list(
+        grob_1, grob_2, grob_3, grob_4, grob_5,
+        table_grob_from_grid_extra(odds_ratio_table_df))
+    } else {
+      grob_list <- list(grob_1, grob_2, grob_3, grob_4, grob_5)
+    }
+    # layout matrix
+    if (is.null(layout_matrix)) {
+      if (length(grob_list) == 5) {
+        layout_matrix <- rbind(
+          c(1,1,2,2,2,2),
+          c(1,1,2,2,2,2),
+          c(3,3,4,4,4,4),
+          c(3,3,4,4,4,4),
+          c(5,5,5,5,5,5),
+          c(5,5,5,5,5,5))
+      } else if (length(grob_list) == 6) {
+        layout_matrix <- rbind(
+          c(1,1,2,2,2,2),
+          c(1,1,2,2,2,2),
+          c(3,3,4,4,4,4),
+          c(3,3,4,4,4,4),
+          c(5,5,5,5,5,5),
+          c(5,5,5,5,5,5),
+          c(6,6,6,6,6,6),
+          c(6,6,6,6,6,6))
+      } else {
+        stop("Please check the input for this argument: `layout_matrix`")
+      }
+    }
+    # layout matrix
+    if (is.null(layout_matrix)) {
+      grid_arrange_from_grid_extra(grobs = grob_list)
+    } else {
+      grid_arrange_from_grid_extra(
+        grobs = grob_list, layout_matrix = layout_matrix)
+    }
+    invisible(grDevices::dev.off())
   }
 }

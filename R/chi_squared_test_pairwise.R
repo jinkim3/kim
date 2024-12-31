@@ -40,8 +40,8 @@
 #' where "jan_01_2021" would indicate January 01, 2021;
 #' 1300 would indicate 13:00 (i.e., 1 PM); and 10_000001 would
 #' indicate 10.000001 seconds after the hour.
-#' @param width width of the PNG file (default = 1600)
-#' @param height height of the PNG file (default = 1200)
+#' @param width width of the PNG file (default = 2000)
+#' @param height height of the PNG file (default = 800)
 #' @param units the units for the \code{width} and \code{height} arguments.
 #' Can be \code{"px"} (pixels), \code{"in"} (inches), \code{"cm"},
 #' or \code{"mm"}. By default, \code{units = "px"}.
@@ -334,7 +334,7 @@ chi_squared_test_pairwise <- function(
     grob_list <- list(grob_1, grob_2, grob_3, grob_4)
     # layout matrix
     if (is.null(layout_matrix)) {
-      # get number of groups
+      # get number of rows
       num_of_rows_in_pairwise_table <- nrow(output)
       pairwise_table_layout_matrix_input <-
         matrix(4, nrow = num_of_rows_in_pairwise_table, ncol = 6)
@@ -347,7 +347,7 @@ chi_squared_test_pairwise <- function(
     }
     grid_arrange_from_grid_extra(
       grobs = grob_list, layout_matrix = layout_matrix)
-    grDevices::dev.off()
+    invisible(grDevices::dev.off())
   }
   return(output)
 }

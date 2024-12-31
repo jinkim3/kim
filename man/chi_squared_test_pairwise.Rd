@@ -78,9 +78,9 @@ where "jan_01_2021" would indicate January 01, 2021;
 1300 would indicate 13:00 (i.e., 1 PM); and 10_000001 would
 indicate 10.000001 seconds after the hour.}
 
-\item{width}{width of the PNG file (default = 1600)}
+\item{width}{width of the PNG file (default = 2000)}
 
-\item{height}{height of the PNG file (default = 1200)}
+\item{height}{height of the PNG file (default = 800)}
 
 \item{units}{the units for the \code{width} and \code{height} arguments.
 Can be \code{"px"} (pixels), \code{"in"} (inches), \code{"cm"},
