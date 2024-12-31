@@ -31,6 +31,25 @@
 #' in the pairwise comparison data.table.
 #' @param correct logical. Should continuity correction be applied?
 #' (default = TRUE)
+#' @param save_as_png if \code{save_as_png = TRUE},
+#' the results will be saved as a PNG file (default = FALSE).
+#' @param png_name name of the PNG file to be saved. By default, the name
+#' will be "chi_sq_" followed by a timestamp of the
+#' current time.
+#' The timestamp will be in the format, jan_01_2021_1300_10_000001,
+#' where "jan_01_2021" would indicate January 01, 2021;
+#' 1300 would indicate 13:00 (i.e., 1 PM); and 10_000001 would
+#' indicate 10.000001 seconds after the hour.
+#' @param width width of the PNG file (default = 1600)
+#' @param height height of the PNG file (default = 1200)
+#' @param units the units for the \code{width} and \code{height} arguments.
+#' Can be \code{"px"} (pixels), \code{"in"} (inches), \code{"cm"},
+#' or \code{"mm"}. By default, \code{units = "px"}.
+#' @param res The nominal resolution in ppi which will be recorded
+#' in the png file, if a positive integer. Used for units
+#' other than the default. By default, \code{res = 200}
+#' @param layout_matrix The layout argument for arranging section
+#' titles and tables using the \code{grid.arrange} function.
 #' @examples
 #' chi_squared_test_pairwise(data = mtcars, iv_name = "vs", dv_name = "am")
 #' chi_squared_test_pairwise(data = mtcars, iv_name = "vs", dv_name = "am",
@@ -60,7 +79,14 @@ chi_squared_test_pairwise <- function(
   counts_only = NULL,
   sigfigs = 3,
   chi_sq_test_stats = FALSE,
-  correct = TRUE
+  correct = TRUE,
+  save_as_png = FALSE,
+  png_name = NULL,
+  width = 2000,
+  height = 800,
+  units = "px",
+  res = 200,
+  layout_matrix = NULL
 ) {
   # bind the vars locally to the function
   iv <- dv <- g1_dv_count <- g2_dv_count <- NULL
@@ -93,11 +119,12 @@ chi_squared_test_pairwise <- function(
     row.names(contingency_table_df) <- contingency_table_row_names
     names(contingency_table_df) <- contingency_table_col_names
     # print
-    message("Table of Percentages:")
+    section_1_title <- "Table of Percentages:"
   } else if (contingency_table == "counts") {
     contingency_table_df <- as.data.frame.matrix(table(dt01$iv, dt01$dv))
-    message("Table of Counts:")
+    section_1_title <- "Table of Counts:"
   }
+  message(section_1_title)
   # print the contingency table
   if (contingency_table %in% list(TRUE, "percentages", "counts")) {
     print(contingency_table_df)
@@ -264,6 +291,63 @@ chi_squared_test_pairwise <- function(
       chi_sq_test_stat = kim::round_flexibly(chi_sq_test_stat, sigfigs),
       chi_sq_p_value = kim::pretty_round_p_value(chi_sq_p_value),
       bonferroni_sig)
+  }
+  # save as png
+  if (save_as_png == TRUE || !is.null(png_name)) {
+    # installed packages
+    installed_pkgs <- rownames(utils::installed.packages())
+    # required packages
+    # required_pkgs <-
+    # check if Package 'gridExtra' is installed
+    if (!"gridExtra" %in% installed_pkgs) {
+      message(paste0(
+        "This function requires the installation of Package 'gridExtra'.",
+        "\nTo install Package 'gridExtra', type ",
+        "'kim::prep(gridExtra)'",
+        "\n\nAlternatively, to install all packages (dependencies) required ",
+        "for all\nfunctions in Package 'kim', type ",
+        "'kim::install_all_dependencies()'"))
+      return()
+    } else {
+      # proceed if Package 'gridExtra' is already installed
+      table_grob_from_grid_extra <- utils::getFromNamespace(
+        "tableGrob", "gridExtra")
+      grid_arrange_from_grid_extra <- utils::getFromNamespace(
+        "grid.arrange", "gridExtra")
+    }
+    # default file name
+    if (is.null(png_name)) {
+      ts <- tolower(
+        gsub("\\.", "_", format(Sys.time(), "_%b_%d_%Y_%H%M_%OS6")))
+      png_name <- paste0("chi_sq_", ts)
+    }
+    # initialize the png
+    grDevices::png(
+      paste0(png_name, ".png"),
+      height = height, width = width, units = units, res = res)
+    # grobs
+    grob_1 <- grid::textGrob(section_1_title)
+    grob_2 <- table_grob_from_grid_extra(contingency_table_df)
+    grob_3 <- grid::textGrob("Pairwise Comparisons:")
+    grob_4 <- table_grob_from_grid_extra(output)
+    # grob list
+    grob_list <- list(grob_1, grob_2, grob_3, grob_4)
+    # layout matrix
+    if (is.null(layout_matrix)) {
+      # get number of groups
+      num_of_rows_in_pairwise_table <- nrow(output)
+      pairwise_table_layout_matrix_input <-
+        matrix(4, nrow = num_of_rows_in_pairwise_table, ncol = 6)
+      layout_matrix <- rbind(
+        rbind(
+          c(1,1,2,2,2,2),
+          c(1,1,2,2,2,2),
+          c(3,3,3,3,3,3)),
+        pairwise_table_layout_matrix_input)
+    }
+    grid_arrange_from_grid_extra(
+      grobs = grob_list, layout_matrix = layout_matrix)
+    grDevices::dev.off()
   }
   return(output)
 }

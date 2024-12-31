@@ -16,7 +16,14 @@ chi_squared_test_pairwise(
   counts_only = NULL,
   sigfigs = 3,
   chi_sq_test_stats = FALSE,
-  correct = TRUE
+  correct = TRUE,
+  save_as_png = FALSE,
+  png_name = NULL,
+  width = 2000,
+  height = 800,
+  units = "px",
+  res = 200,
+  layout_matrix = NULL
 )
 }
 \arguments{
@@ -59,6 +66,32 @@ in the pairwise comparison data.table.}
 
 \item{correct}{logical. Should continuity correction be applied?
 (default = TRUE)}
+
+\item{save_as_png}{if \code{save_as_png = TRUE},
+the results will be saved as a PNG file (default = FALSE).}
+
+\item{png_name}{name of the PNG file to be saved. By default, the name
+will be "chi_sq_" followed by a timestamp of the
+current time.
+The timestamp will be in the format, jan_01_2021_1300_10_000001,
+where "jan_01_2021" would indicate January 01, 2021;
+1300 would indicate 13:00 (i.e., 1 PM); and 10_000001 would
+indicate 10.000001 seconds after the hour.}
+
+\item{width}{width of the PNG file (default = 1600)}
+
+\item{height}{height of the PNG file (default = 1200)}
+
+\item{units}{the units for the \code{width} and \code{height} arguments.
+Can be \code{"px"} (pixels), \code{"in"} (inches), \code{"cm"},
+or \code{"mm"}. By default, \code{units = "px"}.}
+
+\item{res}{The nominal resolution in ppi which will be recorded
+in the png file, if a positive integer. Used for units
+other than the default. By default, \code{res = 200}}
+
+\item{layout_matrix}{The layout argument for arranging section
+titles and tables using the \code{grid.arrange} function.}
 }
 \description{
 Conducts a chi-squared test for every possible pairwise comparison
