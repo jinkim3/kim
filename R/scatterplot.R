@@ -209,7 +209,7 @@ scatterplot <- function(
   # print correlation
   correlation_summary <- kim::correlation_kim(
     x = dt02$x, y = dt02$y)
-  message(correlation_summary)
+  cat(correlation_summary, "\n")
   # ranges for x and y
   x_range <- max(dt02$x) - min(dt02$x)
   y_range <- max(dt02$y) - min(dt02$y)
