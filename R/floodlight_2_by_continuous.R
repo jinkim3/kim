@@ -285,6 +285,15 @@ floodlight_2_by_continuous <- function(
   } else {
     lm_formula <- dv ~ iv_binary * mod
   }
+  # interaction
+  lm_summary <- summary(stats::lm(formula = lm_formula, data = dt))
+  interaction_p_value <- kim::pretty_round_p_value(
+    lm_summary[["coefficients"]]["iv_binary:mod", "Pr(>|t|)"],
+    include_p_equals = TRUE,
+    round_digits_after_decimal = round_decimals_int_p_value)
+  interaction_p_value_text <- paste0(
+    "Interaction ", interaction_p_value)
+  message(interaction_p_value_text)
   # find jn points
   johnson_neyman_result <- jn_fn_from_interactions(
     stats::lm(formula = lm_formula, data = dt),
@@ -406,13 +415,6 @@ floodlight_2_by_continuous <- function(
   }
   # include interaction p value
   if (interaction_p_include == TRUE) {
-    lm_summary <- summary(stats::lm(formula = lm_formula, data = dt))
-    interaction_p_value <- kim::pretty_round_p_value(
-      lm_summary[["coefficients"]]["iv_binary:mod", "Pr(>|t|)"],
-      include_p_equals = TRUE,
-      round_digits_after_decimal = round_decimals_int_p_value)
-    interaction_p_value_text <- paste0(
-      "Interaction ", interaction_p_value)
     # label interaction p value
     g1 <- g1 + ggplot2::annotate(
       geom = "text",

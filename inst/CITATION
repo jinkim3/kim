@@ -4,14 +4,14 @@ bibentry(
   bibtype = "Manual",
   title = "kim: A Toolkit for Behavioral Scientists",
   author = "Jin Kim",
-  year = "2024",
+  year = "2025",
   doi = "10.32614/CRAN.package.kim",
-  note = "R package version 0.5.431",
+  note = "R package version 0.6.1",
   howpublished = "url{https://jinkim.science/docs/kim.pdf}",
   url = "https://cran.r-project.org/package=kim",
   textVersion = paste0(
-  "Jin Kim (2024). ",
+  "Jin Kim (2025). ",
   "kim: A Toolkit for Behavioral Scientists. ",
-  "R package version 0.5.431"
+  "R package version 0.6.1"
   )
 )

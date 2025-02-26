@@ -1,11 +1,11 @@
 Package: kim
 Title: A Toolkit for Behavioral Scientists
-Version: 0.5.432
+Version: 0.6.1
 Authors@R: 
     person(given = "Jin",
            family = "Kim",
            role = c("aut", "cre"),
-           email = "jin.kim1@northeastern.edu",
+           email = "jinkim@aya.yale.edu",
            comment = c(ORCID = "https://orcid.org/0000-0002-5013-3958"))
 Description: A collection of functions for analyzing data typically collected 
     or used by behavioral scientists. Examples of the functions include

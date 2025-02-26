@@ -1,8 +1,8 @@
-# kim 0.5.432
+# kim 0.6.1
 * Updated the following function(s) (and other functions that use them): 
 histogram, factorial_anova_2_way, simple_slopes_analysis,
 simple_slopes_analysis_logistic, t_test_pairwise, compare_groups,
-scatterplot
+scatterplot, floodlight_2_by_continuous
 
 # kim 0.5.431
 * Package is being prepared for submission to CRAN
