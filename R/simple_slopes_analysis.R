@@ -51,7 +51,7 @@ simple_slopes_analysis <- function(
 ) {
   # bind the vars locally to the function
   iv <- dv <- mod <- mod_binary_1 <- mod_binary_2 <-
-    b <- se <- p <- mod_minus_focal_value <-
+    b <- se <- p <- focal_value_of_mod <- mod_minus_focal_value <-
     focal_value_type <- NULL
   # take a subset of data
   dt <- data.table::as.data.table(data.table::copy(data))

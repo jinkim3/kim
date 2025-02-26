@@ -44,8 +44,9 @@ simple_slopes_analysis_logistic <- function(
     "This function has not been tested. By using this function, \n",
     "you acknolwedge that it can yield completely incorrect results."))
   # bind the vars locally to the function
-  iv <- dv <- mod <- iv_binary_1 <- iv_binary_2 <-
-    b <- se <- z <- p <- iv_minus_focal_value <- NULL
+  iv <- dv <- mod <- mod_binary_1 <- mod_binary_2 <-
+    mod_minus_focal_value <- b <- se <-
+    z <- p <- iv_minus_focal_value <- NULL
   # take a subset of data
   dt <- data.table::setDT(data.table::copy(data))
   dt <- dt[, c(iv_name, mod_name, dv_name), with = FALSE]
