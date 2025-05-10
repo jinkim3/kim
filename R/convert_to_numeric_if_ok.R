@@ -69,6 +69,7 @@ convert_to_numeric_if_ok <- function(
       return(x)
     } else {
       if (notify_success == TRUE) {
+
         message("The vector was successfully converted to numeric.")
       }
       return(out)
