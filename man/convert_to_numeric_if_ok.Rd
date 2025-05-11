@@ -4,50 +4,67 @@
 \alias{convert_to_numeric_if_ok}
 \title{Convert a vector to numeric if appropriate}
 \usage{
-convert_to_numeric_if_ok(x, notify_failure = TRUE, notify_success = TRUE)
+convert_to_numeric_if_ok(x, verbose = TRUE, strict = TRUE)
 }
 \arguments{
-\item{x}{a vector}
+\item{x}{A vector to attempt to convert.}
 
-\item{notify_failure}{logical. Should a conversion failure be notified?
-(default = TRUE).}
+\item{verbose}{Logical. Should messages about conversion be shown?
+Default = TRUE.}
 
-\item{notify_success}{logical. Should a conversion failure be notified?
-(default = TRUE)}
+\item{strict}{Logical. If TRUE, return original vector if any values fail.
+If FALSE, returns numeric vector with NAs where conversion fails.
+Default = TRUE.}
+}
+\value{
+A numeric vector, or the original input if strict=TRUE and conversion fails.
 }
 \description{
-Check whether a vector contains only values that can be
-interpreted as numbers, and convert to numeric if so.
+Attempt to convert a vector to numeric. Handles trimming, coercion,
+and optionally notifies of conversion success/failure.
 }
 \examples{
 \donttest{
-# conversion should succeed
-convert_to_numeric_if_ok(c(1, "2"))
-convert_to_numeric_if_ok(c("1", "2"))
-convert_to_numeric_if_ok(
-c("1", "2", "Inf", "-Inf", " 123 ", "-1.2", "+0.5", "1e-2"))
+# Successful conversions from character
+convert_to_numeric_if_ok(c("123", " 456 ", "-78.9", "+0.5", "1e3"))
+convert_to_numeric_if_ok(c("Inf", "-Inf", "NaN"))  # special values
 
-# conversion should fail
-convert_to_numeric_if_ok(c(1, 2, "a"))
-# A vector of diverse test cases to evaluate numeric conversion handling:
+# Input is already numeric
+convert_to_numeric_if_ok(1:3)  # returns same vector
+
+# Logical input (TRUE = 1, FALSE = 0)
+convert_to_numeric_if_ok(c(TRUE, FALSE))
+
+# Mixed types are coerced before entering function
+convert_to_numeric_if_ok(c(1, "2"))  # actually character vector
+
+# Factor input (coerced to character first)
+convert_to_numeric_if_ok(factor(c("1", "2", "bad")))  # includes one invalid
+
+# Partial failure with default strict = TRUE (returns original)
+convert_to_numeric_if_ok(c("1", "a", "3"))
+
+# Partial failure with strict = FALSE (returns numeric with NA)
+convert_to_numeric_if_ok(c("1", "a", "3"), strict = FALSE)
+
+# Suppress all messages
+convert_to_numeric_if_ok(
+c("1", "a", "3"), strict = FALSE, verbose = FALSE)
+
+# Edge cases: whitespace, empty strings, missing values
+convert_to_numeric_if_ok(c("", " ", "\t\n", NA))
+convert_to_numeric_if_ok(c("NA", NA))  # "NA" as string vs NA
+
+# All invalid inputs (strict = FALSE)
+convert_to_numeric_if_ok(c("abc", "$100", "1.2.3"), strict = FALSE)
+
+# Mixed sanity test vector
 crazy_vec <- c(
-"123",        # valid integer
-" 456 ",      # valid number with leading/trailing whitespace
-"-78.9",      # valid negative decimal
-"+0.5",       # valid number with explicit plus sign
-"1e-3",       # valid scientific notation
-"1.2.3",      # invalid: multiple decimal points
-"abc123",     # invalid: contains letters
-"$100",       # invalid: contains currency symbol
-"NaN",        # valid: special numeric value (Not a Number)
-"Inf",        # valid: positive infinity
-"-Inf",       # valid: negative infinity
-"TRUE",       # invalid: logical string, not numeric
-"",           # invalid: empty string
-" ",          # invalid: whitespace only
-"\t\n",       # invalid: tab and newline characters
-NA            # valid: actual missing value
+  "123", " 456 ", "-78.9", "+0.5", "1e-3",  # valid
+  "1.2.3", "abc123", "$100", "NaN", "Inf", # mixed
+  "-Inf", "TRUE", "", " ", "\t\n", NA      # edge + invalid
 )
-convert_to_numeric_if_ok(crazy_vec)
+convert_to_numeric_if_ok(crazy_vec, strict = FALSE)
 }
+
 }
