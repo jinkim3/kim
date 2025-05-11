@@ -63,14 +63,11 @@ convert_to_numeric_if_ok <- function(
 ) {
   # Ensure character vector, trim whitespace
   x_as_trimmed_char <- trimws(as.character(x))
-
   # Attempt conversion and capture warnings (selectively)
   out <- suppressWarnings(as.numeric(x_as_trimmed_char))
-
   # Identify conversion failures
   failed <- !is.na(x_as_trimmed_char) & is.na(out)
   n_failed <- sum(failed)
-
   if (n_failed > 0) {
     if (verbose) {
       failed_indices <- which(failed)
@@ -83,19 +80,20 @@ convert_to_numeric_if_ok <- function(
           "Index/Value pairs: ",
           paste0(
             failed_indices[1:n_to_show], " = ",
-            failed_values[1:n_to_show], collapse = " | ")
-        )
-      )
+            failed_values[1:n_to_show], collapse = " | ")))
     }
     if (strict) {
-      if (verbose) message("Returning original vector due to strict = TRUE.")
+      if (verbose) message(
+        "Returning original vector due to strict = TRUE.")
       return(x)
     } else {
-      if (verbose) message("Returning partially converted numeric vector with NA values.")
+      if (verbose) message(
+        "Returning partially converted numeric vector with NA values.")
       return(out)
     }
   } else {
-    if (verbose) message("The vector was successfully converted to numeric.")
+    if (verbose) message(
+      "The vector was successfully converted to numeric.")
     return(out)
   }
 }
