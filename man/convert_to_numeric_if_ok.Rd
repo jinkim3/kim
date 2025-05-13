@@ -22,6 +22,7 @@ A numeric vector, or the original input if strict=TRUE and conversion fails.
 \description{
 Attempt to convert a vector to numeric. Handles trimming, coercion,
 and optionally notifies of conversion success/failure.
+The code below is written by ChatGPT for the most part.
 }
 \examples{
 \donttest{

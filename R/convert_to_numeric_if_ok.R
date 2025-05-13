@@ -2,6 +2,7 @@
 #'
 #' Attempt to convert a vector to numeric. Handles trimming, coercion,
 #' and optionally notifies of conversion success/failure.
+#' The code below is written by ChatGPT for the most part.
 #'
 #' @param x A vector to attempt to convert.
 #' @param verbose Logical. Should messages about conversion be shown?
