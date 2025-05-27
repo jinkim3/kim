@@ -7,39 +7,24 @@
 update_kim(force = TRUE, upgrade_other_pkg = FALSE, confirm = TRUE)
 }
 \arguments{
-\item{force}{logical. If \code{force = TRUE}, force installing the
-update. If \code{force = FALSE}, do not force installing the update.
-By default, \code{force = TRUE}.}
+\item{force}{logical. If TRUE, force installing the update.
+By default, TRUE.}
 
-\item{upgrade_other_pkg}{input for the \code{upgrade} argument to
-be passed on to \code{remotes::install_github}.
-One of "default", "ask", "always", "never", TRUE, or FALSE.
-"default" respects the value of the R_REMOTES_UPGRADE environment
-variable if set, and falls back to "ask" if unset.
-"ask" prompts the user for which out of date packages to upgrade.
-For non-interactive sessions "ask" is equivalent to "always".
-TRUE and FALSE correspond to "always" and "never" respectively.
-By default, \code{upgrade_other_pkg = FALSE}.}
+\item{upgrade_other_pkg}{passed to \code{remotes::install_github}.
+By default, FALSE.}
 
-\item{confirm}{logical. If \code{confirm = TRUE}, the user will
-need to confirm the update. If \code{confirm = FALSE}, the confirmation
-step will be skipped. By default, \code{confirm = TRUE}.}
+\item{confirm}{logical. If TRUE, ask the user before updating.
+By default, TRUE.}
 }
 \value{
-there will be no output from this function. Rather, executing
-this function will update the current 'kim' package by installing
-the most recent version of the package from GitHub.
+Invisibly returns NULL. Called for side effects.
 }
 \description{
+(Rewritten by ChatGPT on May 27, 2025.
+May not function properly because of the rewrite.)
+}
+\details{
 Updates the current package 'kim' by installing the
-most recent version of the package from GitHub
-This function requires installing Package 'remotes' v2.4.2
-(or possibly a higher version) by Csardi et al. (2021),
-\url{https://cran.r-project.org/package=remotes}
-}
-\examples{
-\dontrun{
-if (interactive()) {update_kim()}
-}
-
+most recent version of the package from GitHub.
+This function requires the 'remotes' package.
 }
