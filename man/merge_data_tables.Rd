@@ -40,6 +40,10 @@ cell values in the first data.table will remain intact and
 the cell values in the second data.table will be discarded for the
 resulting merged data table.
 }
+\details{
+This function was edited using ChatGPT on Jun 10, 2025.
+But not all of ChatGPT's edit suggestions were incorporated.
+}
 \examples{
 ## Example 1: Typical Usage
 data_1 <- data.table::data.table(

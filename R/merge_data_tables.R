@@ -6,6 +6,9 @@
 #' the cell values in the second data.table will be discarded for the
 #' resulting merged data table.
 #'
+#' This function was edited using ChatGPT on Jun 10, 2025.
+#' But not all of ChatGPT's edit suggestions were incorporated.
+#'
 #' @param dt1 the first data.table which will remain intact
 #' @param dt2 the second data.table which will be joined outside of
 #' (around) the first data.table. If there are any duplicated
@@ -128,19 +131,12 @@ merge_data_tables <- function(
   }
   # check the id column for cases when there multiple id columns
   if (length(id) > 1) {
-    warning(paste0(
-      "Merging using multiple columns may not work properly.\n",
-      "Please refer to the usage example of merging data_6 and data_7",
-      "\nin the manual. Type `?kim::merge_data_tables`\n",
-      "and scroll to the bottom to view the example.\n",
-      "To prevent this warning message from popping up again,\n",
-      "use the 'suppressWarnings' as in the example."))
     if (any(duplicated(id))) {
       stop("Each id column name must be unique.")
     }
     # check whether all the id columns exist in dt1
     id_cols_not_in_dt1 <- setdiff(id, names(dt1c))
-    if (length(id_cols_not_in_dt1) > 1) {
+    if (length(id_cols_not_in_dt1) > 0) {
       stop(paste0(
         "The following id column(s) are not found in the ",
         "first data table, dt1:\n",
@@ -148,7 +144,7 @@ merge_data_tables <- function(
     }
     # check whether all the id columns exist in dt2
     id_cols_not_in_dt2 <- setdiff(id, names(dt2c))
-    if (length(id_cols_not_in_dt2) > 1) {
+    if (length(id_cols_not_in_dt2) > 0) {
       stop(paste0(
         "The following id column(s) are not found in the ",
         "second data table, dt2:\n",
@@ -159,7 +155,6 @@ merge_data_tables <- function(
   # are given as input for id
   if (length(id) > 1) {
     i <- 1
-    temp_id_col_suffix_max <- 999999999
     suffix_found <- FALSE
     while(suffix_found == FALSE) {
       if (!paste0("temp_col_name_kim_", i) %in% names(dt1c) &
@@ -170,6 +165,7 @@ merge_data_tables <- function(
         i <- i + 1
       }
     }
+    # use a timestamp-based separator unlikely to appear in ID values
     separator <- gsub("\\.", "", format(Sys.time(), "_%Y%m%d%H%M%OS6_"))
     dt1c[, (temp_id_col_name) :=
            do.call(paste, c(.SD, sep = separator)), .SDcols = id]
@@ -189,14 +185,13 @@ merge_data_tables <- function(
         "based on the\ninput of ID columns. This is likely due to ",
         "the function's limitations."))
     }
-    # id values in each data table; replicate so that the order is preserved
-    # jin is not sure if the 'rep' function is necessary
-    dt1c_id_values <- rep(dt1c[[temp_id_col_name]])
-    dt2c_id_values <- rep(dt2c[[temp_id_col_name]])
+    # id values in each data table
+    dt1c_id_values <- dt1c[[temp_id_col_name]]
+    dt2c_id_values <- dt2c[[temp_id_col_name]]
   } else if (length(id) == 1) {
-    # id values in each data table; replicate so that the order is preserved
-    dt1c_id_values <- rep(dt1c[[id]])
-    dt2c_id_values <- rep(dt2c[[id]])
+    # id values in each data table
+    dt1c_id_values <- dt1c[[id]]
+    dt2c_id_values <- dt2c[[id]]
   }
   # id values in the final dt
   id_in_final_dt <- union(dt1c_id_values, dt2c_id_values)
@@ -281,20 +276,39 @@ merge_data_tables <- function(
     data.table::setnames(
       merged_dt, old = cols_to_replace, duplicated_col_names)
   }
-  # restore the original order of rows
+  # chatgpt suggested replacing the commented out section 1 below w section 2
+  # section 1 begins here
+  # # restore the original order of rows
+  # if (length(id) == 1) {
+  #   output <- kim::order_rows_specifically_in_dt(
+  #     dt = merged_dt,
+  #     col_to_order_by = id,
+  #     specific_order = id_in_final_dt)
+  # } else if (length(id) > 1) {
+  #   output <- kim::order_rows_specifically_in_dt(
+  #     dt = merged_dt,
+  #     col_to_order_by = temp_id_col_name,
+  #     specific_order = id_in_final_dt)
+  #   # remove the temporary id column
+  #   output[, (temp_id_col_name) := NULL][]
+  # }
+  # section 1 ends here
+  # section 2 begins here
+  # restore the original order of rows and set 'sorted' attribute
   if (length(id) == 1) {
-    output <- kim::order_rows_specifically_in_dt(
-      dt = merged_dt,
-      col_to_order_by = id,
-      specific_order = id_in_final_dt)
-  } else if (length(id) > 1) {
-    output <- kim::order_rows_specifically_in_dt(
-      dt = merged_dt,
-      col_to_order_by = temp_id_col_name,
-      specific_order = id_in_final_dt)
-    # remove the temporary id column
-    output[, (temp_id_col_name) := NULL][]
+    data.table::setorderv(merged_dt, id)
+    output <- merged_dt
+  } else {
+    data.table::setorderv(merged_dt, temp_id_col_name)
+    merged_dt[, (temp_id_col_name) := NULL]
+    output <- merged_dt
   }
+  # restore key if both dt1 and dt2 had the same key
+  if (identical(data.table::key(dt1), id) &&
+      identical(data.table::key(dt2), id)) {
+    data.table::setkeyv(output, id)
+  }
+  # section 2 ends here
   # output
   return(output)
 }
