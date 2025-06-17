@@ -1,6 +1,7 @@
 #' Update the package 'kim'
 #'
-#' (Rewritten by ChatGPT on May 27, 2025.
+#' (Rewritten by ChatGPT on May 27, 2025,
+#' then again on Jun 17, 2025.
 #' May not function properly because of the rewrite.)
 #'
 #' Updates the current package 'kim' by installing the
@@ -21,7 +22,9 @@ update_kim <- function(
     confirm = TRUE
 ) {
   if (!requireNamespace("remotes", quietly = TRUE)) {
-    stop("The 'remotes' package is required but not installed. Please install it with install.packages('remotes').")
+    stop(p0(
+      "The 'remotes' package is required but not installed. ",
+      "Please install it with install.packages('remotes')."))
   }
 
   is_github_reachable <- function() {
@@ -107,20 +110,29 @@ update_kim <- function(
         " (probably the most recent version available through GitHub)."
       ))
     } else {
-      user_reply <- if (confirm && interactive()) {
-        utils::menu(
-          c("Yes.", "No."),
-          title = "\nDo you want to try to update the package 'kim'?"
-        )
-      } else 1
+      # only check if version info makes update seem worthwhile
+      if (current_pkg_version == "unknown" ||
+          github_pkg_version == "unknown" ||
+          compare_version_result < 0) {
 
-      if (user_reply == 1) {
-        unload_kim_package()
-        if (is_github_reachable()) {
+        # now check GitHub before prompting
+        if (!is_github_reachable()) {
+          message("GitHub is not reachable. Skipping update.")
+          return(invisible(NULL))
+        }
+
+        # now it's safe to ask
+        user_reply <- if (confirm && interactive()) {
+          utils::menu(
+            c("Yes.", "No."),
+            title = "\nDo you want to try to update the package 'kim'?"
+          )
+        } else 1
+
+        if (user_reply == 1) {
+          unload_kim_package()
           safe_install_kim()
           try(kim::prep("kim", silent_if_successful = TRUE), silent = TRUE)
-        } else {
-          message("GitHub is not reachable. Skipping update.")
         }
       }
     }

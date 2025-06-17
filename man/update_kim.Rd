@@ -20,7 +20,8 @@ By default, TRUE.}
 Invisibly returns NULL. Called for side effects.
 }
 \description{
-(Rewritten by ChatGPT on May 27, 2025.
+(Rewritten by ChatGPT on May 27, 2025,
+then again on Jun 17, 2025.
 May not function properly because of the rewrite.)
 }
 \details{
