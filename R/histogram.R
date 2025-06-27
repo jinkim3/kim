@@ -79,7 +79,7 @@ histogram <- function(
     if (percent == TRUE) {
       breaks <- hist_results$breaks
       counts <- hist_results$counts / sum(hist_results$counts) * 100
-      y_axis_title <- "Percentage"
+      y_axis_title <- "Relative\nFrequency\n(%)"
     } else {
       if (is.null(breaks) & is.null(counts)) {
         breaks <- hist_results$breaks
