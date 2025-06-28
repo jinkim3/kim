@@ -9,8 +9,8 @@
 #' @param counts a numeric vector containing counts for the bins
 #' (i.e., heights of the bins). By default, no input is required
 #' for this argument.
-#' @param percent logical. If \code{percent = TRUE}, percentages
-#' will be plotted rather than frequencies (default = FALSE).
+#' @param percent logical. If \code{percent = TRUE}, relative frequency
+#' in percentages will be plotted rather than frequencies (default = TRUE).
 #' @param bin_fill_color color of the area inside each bin
 #' (default = "green4")
 #' @param bin_border_color color of the border around each bin
@@ -38,7 +38,7 @@
 #' histogram(1:100)
 #' histogram(c(1:100, NA))
 #' histogram(vector = mtcars[["mpg"]])
-#' histogram(vector = mtcars[["mpg"]], percent = TRUE)
+#' histogram(vector = mtcars[["mpg"]], percent = FALSE)
 #' histogram(vector = mtcars[["mpg"]],
 #' x_axis_tick_marks = c(10, 25, 35), y_axis_title_vjust = 0.5,
 #' y_axis_title = "Freq", x_axis_title = "Values of mpg")
@@ -48,7 +48,7 @@ histogram <- function(
     vector = NULL,
     breaks = NULL,
     counts = NULL,
-    percent = FALSE,
+    percent = TRUE,
     bin_fill_color = "green4",
     bin_border_color = "black",
     bin_border_thickness = 1,
