@@ -2,6 +2,7 @@
 #'
 #' Conduct a simple slopes analysis, typically to probe a two-way
 #' interaction.
+#' (This function was edited with ChatGPT on Dec 13, 2025.)
 #'
 #' @param data a data object (a data frame or a data.table)
 #' @param iv_name name of the independent variable (IV)
@@ -34,6 +35,12 @@
 #' data = mtcars, iv_name = "vs", dv_name = "am", mod_name = "hp")
 #' simple_slopes_analysis(
 #' data = mtcars, iv_name = "disp", dv_name = "am", mod_name = "hp")
+#' # when the iv is a factor
+#' simple_slopes_analysis(
+#' data = ToothGrowth, iv_name = "supp", dv_name = "len", mod_name = "dose")
+#' # from the example above, switch the iv and moderator
+#' simple_slopes_analysis(
+#' data = ToothGrowth, iv_name = "dose", dv_name = "len", mod_name = "supp")
 #' }
 #' @export
 #' @import data.table
@@ -53,6 +60,24 @@ simple_slopes_analysis <- function(
   iv <- dv <- mod <- mod_binary_1 <- mod_binary_2 <-
     b <- se <- p <- focal_value_of_mod <- mod_minus_focal_value <-
     focal_value_type <- NULL
+  simple_slopes_table <- NULL
+  simple_slopes_table_rounded <- NULL
+  # ---- INPUT VALIDATION (ADD THIS BLOCK) ----
+  if (is.null(iv_name) || is.null(mod_name) || is.null(dv_name)) {
+    stop(
+      "simple_slopes_analysis(): ",
+      "'iv_name', 'mod_name', and 'dv_name' must all be provided."
+    )
+  }
+  required_cols <- c(iv_name, mod_name, dv_name)
+  missing_cols <- setdiff(required_cols, names(data))
+  if (length(missing_cols) > 0) {
+    stop(
+      "simple_slopes_analysis(): missing column(s): ",
+      paste(missing_cols, collapse = ", ")
+    )
+  }
+  # ---- END INPUT VALIDATION ----
   # take a subset of data
   dt <- data.table::as.data.table(data.table::copy(data))
   dt <- dt[, c(iv_name, mod_name, dv_name), with = FALSE]
@@ -80,15 +105,29 @@ simple_slopes_analysis <- function(
   # name of the interaction term in the model
   reg_table_row_names <- row.names(
     lm_interaction_summary[["coefficients"]])
-  interaction_term_name <-
-    reg_table_row_names[length(reg_table_row_names)]
-  # a colon should be in the name
-  if (grepl(":", interaction_term_name) == FALSE) {
-    warning(paste0(
-      "The function had an issue while locating the\n",
-      "interaction term in a regression table.\n",
-      "The output of the function may be incorrect."))
+  # locate interaction term row name (robust to factor coding)
+  interaction_candidates <- reg_table_row_names[
+    grepl(":", reg_table_row_names) &
+      grepl(iv_name, reg_table_row_names, fixed = TRUE) &
+      grepl(mod_name, reg_table_row_names, fixed = TRUE)
+  ]
+  if (length(interaction_candidates) == 0) {
+    stop(paste0(
+      "simple_slopes_analysis(): could not locate an interaction term involving '",
+      iv_name, "' and '", mod_name, "' in the regression table.\n",
+      "Coefficient rows were:\n- ",
+      paste(reg_table_row_names, collapse = "\n- ")
+    ))
   }
+  if (length(interaction_candidates) > 1) {
+    stop(paste0(
+      "simple_slopes_analysis(): found multiple interaction terms involving '",
+      iv_name, "' and '", mod_name, "':\n- ",
+      paste(interaction_candidates, collapse = "\n- "),
+      "\nThis typically occurs when one predictor is multi-level factor."
+    ))
+  }
+  interaction_term_name <- interaction_candidates[1]
   # interaction p
   interaction_b <- lm_interaction_summary[[
     "coefficients"]][interaction_term_name, "Estimate"]
@@ -117,7 +156,23 @@ simple_slopes_analysis <- function(
       interaction_p, include_p_equals = TRUE))
   message(interaction_results_msg)
   # change var names
-  names(dt) <- c("iv", "mod", "dv")
+  data.table::setnames(
+    dt,
+    old = c(iv_name, mod_name, dv_name),
+    new = c("iv", "mod", "dv")
+  )
+  # ensure iv is numeric (0/1) so coefficient is named "iv"
+  if (is.character(dt$iv) || is.factor(dt$iv)) {
+    if (kim::lenu(dt$iv) != 2) {
+      stop(
+        "simple_slopes_analysis(): ",
+        "when 'iv' is a factor or character, it must have exactly ",
+        "2 unique values to be converted to numeric."
+      )
+    }
+    iv_levels <- sort(unique(dt$iv))
+    dt[, iv := as.integer(iv == iv_levels[2])]
+  }
   # cases when moderator is binary
   if (kim::lenu(dt$mod) == 2) {
     mod_lvl_1 <- sort(unique(dt$mod))[1]
@@ -133,8 +188,6 @@ simple_slopes_analysis <- function(
       formula = dv ~ iv * mod_binary_1,
       data = dt)
     lm_1_summary <- summary(lm_1)
-    intercept_for_simple_slope_1 <- lm_1_summary[[
-      "coefficients"]]["(Intercept)", "Estimate"]
     simple_slope_1_b <- lm_1_summary[["coefficients"]]["iv", "Estimate"]
     simple_slope_1_se <- lm_1_summary[["coefficients"]]["iv", "Std. Error"]
     simple_slope_1_t <- lm_1_summary[["coefficients"]]["iv", "t value"]
@@ -144,8 +197,6 @@ simple_slopes_analysis <- function(
       formula = dv ~ iv * mod_binary_2,
       data = dt)
     lm_2_summary <- summary(lm_2)
-    intercept_for_simple_slope_2 <- lm_2_summary[[
-      "coefficients"]]["(Intercept)", "Estimate"]
     simple_slope_2_b <- lm_2_summary[["coefficients"]]["iv", "Estimate"]
     simple_slope_2_se <- lm_2_summary[["coefficients"]]["iv", "Std. Error"]
     simple_slope_2_t <- lm_2_summary[["coefficients"]]["iv", "t value"]
@@ -159,8 +210,10 @@ simple_slopes_analysis <- function(
       p = c(simple_slope_1_p, simple_slope_2_p))
     simple_slopes_table_rounded <-
       data.table::copy(simple_slopes_table)
-    simple_slopes_table_rounded[, focal_value_of_mod := round(
-      focal_value_of_mod, round_focal_value)]
+    if (is.numeric(simple_slopes_table_rounded[["focal_value_of_mod"]])) {
+      simple_slopes_table_rounded[, focal_value_of_mod := round(
+        focal_value_of_mod, round_focal_value)]
+    }
     simple_slopes_table_rounded[, b := round(b, round_b)]
     simple_slopes_table_rounded[, se := round(se, round_se)]
     simple_slopes_table_rounded[, t := round(t, round_t)]
@@ -194,6 +247,17 @@ simple_slopes_analysis <- function(
     message(simple_slopes_results_msg)
   } else if (kim::lenu(dt$mod) > 2) {
     # cases when mod is continuous
+    # ensure moderator is numeric in the continuous-mod case
+    if (!is.numeric(dt$mod)) {
+      stop(
+        "simple_slopes_analysis(): ",
+        "when the moderator has more than 2 unique values, ",
+        "it must be numeric."
+      )
+    }
+    if (!is.null(focal_values) && !is.numeric(focal_values)) {
+      stop("simple_slopes_analysis(): 'focal_values' must be numeric.")
+    }
     if (is.null(focal_values)) {
       focal_value_type <- c(
         "Mean - 1 SD", "Mean", "Mean + 1 SD")
@@ -212,8 +276,6 @@ simple_slopes_analysis <- function(
         formula = dv ~ iv * mod_minus_focal_value,
         data = dt)
       lm_3_summary <- summary(lm_3)
-      intercept_for_simple_slope_temp <- lm_3_summary[[
-        "coefficients"]]["(Intercept)", "Estimate"]
       simple_slope_temp_b <- lm_3_summary[[
         "coefficients"]]["iv", "Estimate"]
       simple_slope_temp_se <- lm_3_summary[[
@@ -297,4 +359,16 @@ simple_slopes_analysis <- function(
       cat("\n")
     }
   }
+  invisible(list(
+    interaction = data.table::data.table(
+      term = interaction_term_name,
+      b = interaction_b,
+      se = interaction_se,
+      t = interaction_t,
+      p = interaction_p,
+      df = error_df
+    ),
+    simple_slopes = simple_slopes_table,
+    simple_slopes_rounded = simple_slopes_table_rounded
+  ))
 }

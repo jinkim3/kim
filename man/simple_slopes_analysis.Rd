@@ -50,6 +50,7 @@ mean of MOD +/-1 SD will be used.}
 \description{
 Conduct a simple slopes analysis, typically to probe a two-way
 interaction.
+(This function was edited with ChatGPT on Dec 13, 2025.)
 }
 \examples{
 \donttest{
@@ -63,5 +64,11 @@ simple_slopes_analysis(
 data = mtcars, iv_name = "vs", dv_name = "am", mod_name = "hp")
 simple_slopes_analysis(
 data = mtcars, iv_name = "disp", dv_name = "am", mod_name = "hp")
+# when the iv is a factor
+simple_slopes_analysis(
+data = ToothGrowth, iv_name = "supp", dv_name = "len", mod_name = "dose")
+# from the example above, switch the iv and moderator
+simple_slopes_analysis(
+data = ToothGrowth, iv_name = "dose", dv_name = "len", mod_name = "supp")
 }
 }
