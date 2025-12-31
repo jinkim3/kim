@@ -1,6 +1,7 @@
 # kim 0.6.3
 * Updated the following function(s) (and other functions that use them): 
-merge_data_tables, update_kim, histogram, simple_slopes_analysis
+merge_data_tables, update_kim, histogram, simple_slopes_analysis,
+multiple_regression
 
 # kim 0.6.2
 * Added the following function(s): convert_to_numeric_if_ok
