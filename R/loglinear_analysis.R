@@ -24,8 +24,10 @@
 #' will follow the format suggested by Andy Field (2012)
 #' (ISBN: 978-1-4462-0045-2, p. 851)
 #' @examples
-#' \donttest{
-#' loglinear_analysis(data = data.frame(Titanic), "Survived", "Sex", "Age")
+#' \dontrun{
+#' if (requireNamespace("MASS", quietly = TRUE)) {
+#'   loglinear_analysis(data = data.frame(Titanic), "Survived", "Sex", "Age")
+#' }
 #' }
 #' @export
 loglinear_analysis <- function(
@@ -42,12 +44,14 @@ loglinear_analysis <- function(
   report_as_field = FALSE) {
   # bind the vars locally to the function
   round_trail_0 <- NULL
-  # installed packages
+  # check for required suggested package
   if (!requireNamespace("MASS", quietly = TRUE)) {
-    stop("Package 'MASS' is required for loglinear_analysis().",
-         call. = FALSE)
+    message(
+      "This function requires the 'MASS' package.\n",
+      "Install it via install.packages('MASS')."
+    )
+    return(invisible(NULL))
   }
-  loglm_from_MASS <- MASS::loglm
   # check inputs ----
   if (is.null(data)) {
     stop("Please specify a data set for the analysis.")
@@ -91,7 +95,7 @@ loglinear_analysis <- function(
   # saturated model ----
   formula_2 <- stats::as.formula(
     paste0("~ ", iv_1_name, " * ", iv_2_name, " * ", dv_name))
-  saturated <- loglm_from_MASS(formula = formula_2, data = ct_1)
+  saturated <- MASS::loglm(formula = formula_2, data = ct_1)
   # summary(saturated)
   # three way interaction ----
   formula_3 <- stats::as.formula(
@@ -99,7 +103,7 @@ loglinear_analysis <- function(
            iv_1_name, ":", iv_2_name, " + ",
            iv_1_name, ":", dv_name, " + ",
            iv_2_name, ":", dv_name))
-  three_way <- loglm_from_MASS(formula = formula_3, data = ct_1)
+  three_way <- MASS::loglm(formula = formula_3, data = ct_1)
   # summary(three_way)
   # mc stands model comparison ----
   mc_1 <- stats::anova(saturated, three_way)
