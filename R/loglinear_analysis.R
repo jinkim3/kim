@@ -11,7 +11,8 @@
 #' @param iv_2_values restrict all analyses to observations having
 #' these values for the second independent variable
 #' @param output type of the output. If \code{output_type = "all"},
-#' the function will return a results summary and print a mosaic plot.
+#' the function prints a results summary and (optionally) a mosaic plot.
+#' Other options include \code{"list"} and \code{"results_summary"}.
 #' (default = "all")
 #' @param round_p number of decimal places to which to round
 #' p-values (default = 3)
@@ -42,22 +43,11 @@ loglinear_analysis <- function(
   # bind the vars locally to the function
   round_trail_0 <- NULL
   # installed packages
-  installed_pkgs <- rownames(utils::installed.packages())
-  # check if Package 'MASS' is installed ----
-  if (!"MASS" %in% installed_pkgs) {
-    message(paste0(
-      "This function requires the installation of Package 'MASS'.",
-      "\nTo install Package 'MASS', type ",
-      "'kim::prep(MASS)'",
-      "\n\nAlternatively, to install all packages (dependencies) required ",
-      "for all\nfunctions in Package 'kim', type ",
-      "'kim::install_all_dependencies()'"))
-    return()
-  } else {
-    # proceed if Package 'MASS' is already installed
-    loglm_from_MASS <- utils::getFromNamespace(
-      "loglm", "MASS")
+  if (!requireNamespace("MASS", quietly = TRUE)) {
+    stop("Package 'MASS' is required for loglinear_analysis().",
+         call. = FALSE)
   }
+  loglm_from_MASS <- MASS::loglm
   # check inputs ----
   if (is.null(data)) {
     stop("Please specify a data set for the analysis.")
