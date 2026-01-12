@@ -1,4 +1,4 @@
-# kim 0.6.3
+# kim 0.6.4
 * Updated the following function(s) (and other functions that use them): 
 merge_data_tables, update_kim, histogram, simple_slopes_analysis,
 multiple_regression
